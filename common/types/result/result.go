@@ -1,8 +1,6 @@
 package result
 
 import (
-	"fmt"
-
 	"go.uber.org/zap/zapcore"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -17,34 +15,12 @@ type Layer struct {
 
 // FirstValid returns first block that crossed positive tortoise threshold,
 // or if layer didn't accumulate enough weight yet - use hare result.
-func (l *Layer) FirstValid() types.BlockID {
-	for _, block := range l.Blocks {
-		if block.Valid {
-			return block.Header.ID
-		}
-	}
-	for _, block := range l.Blocks {
-		if block.Hare && !block.Invalid {
-			return block.Header.ID
-		}
-	}
-	return types.EmptyBlockID
-}
+func (l *Layer) FirstValid() types.BlockID { _ = "STUB: not implemented"; return *new(types.BlockID) }
 
-func (l Layer) String() string {
-	return fmt.Sprintf("%d %+v", l.Layer, l.Blocks)
-}
+func (l Layer) String() string { _ = "STUB: not implemented"; return "" }
 
 func (l *Layer) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("layer", l.Layer.Uint32())
-	encoder.AddString("opinion", l.Opinion.ShortString())
-	encoder.AddBool("verified", l.Verified)
-	encoder.AddArray("blocks", zapcore.ArrayMarshalerFunc(func(arrayEncoder zapcore.ArrayEncoder) error {
-		for i := range l.Blocks {
-			arrayEncoder.AppendObject(&l.Blocks[i])
-		}
-		return nil
-	}))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -58,11 +34,6 @@ type Block struct {
 }
 
 func (b *Block) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	b.Header.MarshalLogObject(encoder)
-	encoder.AddBool("valid", b.Valid)
-	encoder.AddBool("invalid", b.Invalid)
-	encoder.AddBool("hare", b.Hare)
-	encoder.AddBool("data", b.Data)
-	encoder.AddBool("local", b.Local)
+	_ = "STUB: not implemented"
 	return nil
 }

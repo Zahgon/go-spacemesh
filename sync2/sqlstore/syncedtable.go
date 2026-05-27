@@ -2,7 +2,6 @@ package sqlstore
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/spacemeshos/go-spacemesh/sql"
@@ -30,18 +29,8 @@ type SyncedTable struct {
 }
 
 func (st *SyncedTable) cacheQuery(name string, gen func() expr.Statement) string {
-	st.mtx.Lock()
-	defer st.mtx.Unlock()
-	s, ok := st.queries[name]
-	if ok {
-		return s
-	}
-	if st.queries == nil {
-		st.queries = make(map[string]string)
-	}
-	s = gen().String()
-	st.queries[name] = s
-	return s
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (st *SyncedTable) exec(
@@ -51,125 +40,83 @@ func (st *SyncedTable) exec(
 	enc sql.Encoder,
 	dec sql.Decoder,
 ) error {
-	_, err := db.Exec(st.cacheQuery(name, gen), func(stmt *sql.Statement) {
-		if st.Binder != nil {
-			st.Binder(stmt)
-		}
-		enc(stmt)
-	}, dec)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // genSelectMaxRowID generates a SELECT statement that returns the maximum rowid in the
 // table.
 func (st *SyncedTable) genSelectMaxRowID() expr.Statement {
-	return expr.Select(expr.Call("max", expr.Ident("rowid"))).
-		From(expr.TableSource(st.TableName)).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // rowIDCutoff returns an expression that represents a rowid cutoff, that is, limits the
 // rowid to be less than or equal to a bind parameter.
-func (st *SyncedTable) rowIDCutoff() expr.Expr {
-	return expr.Op(expr.Ident("rowid"), expr.LE, expr.Bind())
-}
+func (st *SyncedTable) rowIDCutoff() expr.Expr { _ = "STUB: not implemented"; return *new(expr.Expr) }
 
 // timestampCutoff returns an expression that represents a timestamp cutoff, that is, limits the
 // timestamp to be greater than or equal to a bind parameter.
 func (st *SyncedTable) timestampCutoff() expr.Expr {
-	return expr.Op(expr.Ident(st.TimestampColumn), expr.GE, expr.Bind())
+	_ = "STUB: not implemented"
+	return *new(expr.Expr)
 }
 
 // genSelectAll generates a SELECT statement that returns all the rows in the table
 // satisfying the filter expression and the rowid cutoff.
 func (st *SyncedTable) genSelectAll() expr.Statement {
-	return expr.Select(expr.Ident(st.IDColumn)).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(st.Filter, st.rowIDCutoff())).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // genCount generates a SELECT statement that returns the number of rows in the table
 // satisfying the filter expression and the rowid cutoff.
 func (st *SyncedTable) genCount() expr.Statement {
-	return expr.Select(expr.Call("count", expr.Ident(st.IDColumn))).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(st.Filter, st.rowIDCutoff())).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // genSelectAllSinceSnapshot generates a SELECT statement that returns all the rows in the
 // table satisfying the filter expression that have rowid between the specified min and
 // max parameter values, inclusive.
 func (st *SyncedTable) genSelectAllSinceSnapshot() expr.Statement {
-	return expr.Select(expr.Ident(st.IDColumn)).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(
-			st.Filter,
-			expr.Between(expr.Ident("rowid"), expr.Bind(), expr.Bind()))).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // genSelectRange generates a SELECT statement that returns the rows in the table
 // satisfying the filter expression, the rowid cutoff and the specified ID range.
 func (st *SyncedTable) genSelectRange() expr.Statement {
-	return expr.Select(expr.Ident(st.IDColumn)).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(
-			st.Filter,
-			expr.Op(expr.Ident(st.IDColumn), expr.GE, expr.Bind()),
-			st.rowIDCutoff())).
-		OrderBy(expr.Asc(expr.Ident(st.IDColumn))).
-		Limit(expr.Bind()).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // genRecentCount generates a SELECT statement that returns the number of rows in the table
 // added starting with the specified timestamp, taking into account the filter expression
 // and the rowid cutoff.
 func (st *SyncedTable) genRecentCount() expr.Statement {
-	return expr.Select(expr.Call("count", expr.Ident(st.IDColumn))).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(st.Filter, st.rowIDCutoff(), st.timestampCutoff())).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // genRecentCount generates a SELECT statement that returns the rows in the table added
 // starting with the specified timestamp, taking into account the filter expression and
 // the rowid cutoff.
 func (st *SyncedTable) genSelectRecent() expr.Statement {
-	return expr.Select(expr.Ident(st.IDColumn)).
-		From(expr.TableSource(st.TableName)).
-		Where(expr.MaybeAnd(
-			st.Filter,
-			expr.Op(expr.Ident(st.IDColumn), expr.GE, expr.Bind()),
-			st.rowIDCutoff(), st.timestampCutoff())).
-		OrderBy(expr.Asc(expr.Ident(st.IDColumn))).
-		Limit(expr.Bind()).
-		Get()
+	_ = "STUB: not implemented"
+	return *new(expr.Statement)
 }
 
 // loadMaxRowID returns the max rowid in the table.
 func (st *SyncedTable) loadMaxRowID(db sql.Executor) (maxRowID int64, err error) {
-	nRows, err := db.Exec(
-		st.cacheQuery("selectMaxRowID", st.genSelectMaxRowID), nil,
-		func(st *sql.Statement) bool {
-			maxRowID = st.ColumnInt64(0)
-			return true
-		})
-	if nRows != 1 {
-		return 0, fmt.Errorf("expected 1 row, got %d", nRows)
-	}
-	return maxRowID, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Snapshot creates a snapshot of the table based on its current max rowid value.
 func (st *SyncedTable) Snapshot(db sql.Executor) (*SyncedTableSnapshot, error) {
-	maxRowID, err := st.loadMaxRowID(db)
-	if err != nil {
-		return nil, err
-	}
-	return &SyncedTableSnapshot{st, maxRowID}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SyncedTableSnapshot represents a snapshot of an append-only table.
@@ -187,26 +134,16 @@ func (sts *SyncedTableSnapshot) Load(
 	db sql.Executor,
 	dec func(stmt *sql.Statement) bool,
 ) error {
-	return sts.exec(db, "selectAll", sts.genSelectAll, func(stmt *sql.Statement) {
-		stmt.BindInt64(stmt.BindParamCount(), sts.maxRowID)
-	}, dec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LoadCount returns the number of rows in the snapshot.
 func (sts *SyncedTableSnapshot) LoadCount(
 	db sql.Executor,
 ) (int, error) {
-	var count int
-	err := sts.exec(
-		db, "count", sts.genCount,
-		func(stmt *sql.Statement) {
-			stmt.BindInt64(stmt.BindParamCount(), sts.maxRowID)
-		},
-		func(stmt *sql.Statement) bool {
-			count = stmt.ColumnInt(0)
-			return true
-		})
-	return count, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // LoadSinceSnapshot loads rows added since the specified previous snapshot.
@@ -215,14 +152,8 @@ func (sts *SyncedTableSnapshot) LoadSinceSnapshot(
 	prev *SyncedTableSnapshot,
 	dec func(stmt *sql.Statement) bool,
 ) error {
-	return sts.exec(
-		db, "selectAllSinceSnapshot", sts.genSelectAllSinceSnapshot,
-		func(stmt *sql.Statement) {
-			nParams := stmt.BindParamCount()
-			stmt.BindInt64(nParams-1, prev.maxRowID+1)
-			stmt.BindInt64(nParams, sts.maxRowID)
-		},
-		dec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LoadRange loads ids starting from the specified one.
@@ -233,15 +164,8 @@ func (sts *SyncedTableSnapshot) LoadRange(
 	limit int,
 	dec func(stmt *sql.Statement) bool,
 ) error {
-	return sts.exec(
-		db, "selectRange", sts.genSelectRange,
-		func(stmt *sql.Statement) {
-			nParams := stmt.BindParamCount()
-			stmt.BindBytes(nParams-2, fromID)
-			stmt.BindInt64(nParams-1, sts.maxRowID)
-			stmt.BindInt64(nParams, int64(limit))
-		},
-		dec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var errNoTimestampColumn = errors.New("no timestamp column")
@@ -251,22 +175,8 @@ func (sts *SyncedTableSnapshot) LoadRecentCount(
 	db sql.Executor,
 	since int64,
 ) (int, error) {
-	if sts.TimestampColumn == "" {
-		return 0, errNoTimestampColumn
-	}
-	var count int
-	err := sts.exec(
-		db, "genRecentCount", sts.genRecentCount,
-		func(stmt *sql.Statement) {
-			nParams := stmt.BindParamCount()
-			stmt.BindInt64(nParams-1, sts.maxRowID)
-			stmt.BindInt64(nParams, since)
-		},
-		func(stmt *sql.Statement) bool {
-			count = stmt.ColumnInt(0)
-			return true
-		})
-	return count, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // LoadRecent loads rows added since the specified timestamp.
@@ -277,17 +187,6 @@ func (sts *SyncedTableSnapshot) LoadRecent(
 	since int64,
 	dec func(stmt *sql.Statement) bool,
 ) error {
-	if sts.TimestampColumn == "" {
-		return errNoTimestampColumn
-	}
-	return sts.exec(
-		db, "selectRecent", sts.genSelectRecent,
-		func(stmt *sql.Statement) {
-			nParams := stmt.BindParamCount()
-			stmt.BindBytes(nParams-3, fromID)
-			stmt.BindInt64(nParams-2, sts.maxRowID)
-			stmt.BindInt64(nParams-1, since)
-			stmt.BindInt64(nParams, int64(limit))
-		},
-		dec)
+	_ = "STUB: not implemented"
+	return nil
 }

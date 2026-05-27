@@ -2,7 +2,6 @@ package vault
 
 import (
 	"errors"
-	"math/big"
 
 	"github.com/spacemeshos/go-scale"
 
@@ -33,77 +32,47 @@ type Vault struct {
 	VestingEnd          core.LayerID
 }
 
-func (v *Vault) isOwner(address core.Address) bool {
-	return v.Owner == address
-}
+func (v *Vault) isOwner(address core.Address) bool { _ = "STUB: not implemented"; return false }
 
-func (v *Vault) Vested(lid core.LayerID) uint64 {
-	if lid.Before(v.VestingStart) {
-		return 0
-	}
-	if !lid.Before(v.VestingEnd) {
-		return v.TotalAmount
-	}
-	vested := new(big.Int).SetUint64(v.TotalAmount)
-	vested.Mul(vested, new(big.Int).SetUint64(uint64(lid.Difference(v.VestingStart))))
-	// Note: VestingStart may equal VestingEnd but division by zero is not possible here since in this case
-	// one of the first two conditionals above would have been triggered and the method would already have
-	// returned.
-	vested.Div(vested, new(big.Int).SetUint64(uint64(v.VestingEnd.Difference(v.VestingStart))))
-	return vested.Uint64()
-}
+func (v *Vault) Vested(lid core.LayerID) uint64 { _ = "STUB: not implemented"; return 0 }
+
+// Note: VestingStart may equal VestingEnd but division by zero is not possible here since in this case
+// one of the first two conditionals above would have been triggered and the method would already have
+// returned.
 
 // Spend transaction.
 func (v *Vault) Spend(host core.Host, to core.Address, amount uint64) error {
-	if !v.isOwner(host.Principal()) {
-		return ErrNotOwner
-	}
-	vested := v.Vested(host.Layer())
-
-	// sanity checks
-
-	// cannot vest more than initial endowment
-	if vested > v.TotalAmount {
-		panic("wrong math")
-	}
-
-	// account must contain at least unvested portion of initial endowment
-	if host.Balance() < v.TotalAmount-vested {
-		return ErrMisconfigured
-	}
-
-	// current account balance minus unvested portion of initial endowment equals unspent, vested coins
-	// plus coins received. in simpler pseudocode:
-	//   unvested_portion = v.TotalAmount - vested
-	//   spendable_portion = host.balance() - unvested_portion
-	//   if amount > spendable_portion { ... }
-	if amount > host.Balance()-v.TotalAmount+vested {
-		return ErrAmountNotAvailable
-	}
-	if err := host.Transfer(to, amount); err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// sanity checks
+
+// cannot vest more than initial endowment
+
+// account must contain at least unvested portion of initial endowment
+
+// current account balance minus unvested portion of initial endowment equals unspent, vested coins
+// plus coins received. in simpler pseudocode:
+//   unvested_portion = v.TotalAmount - vested
+//   spendable_portion = host.balance() - unvested_portion
+//   if amount > spendable_portion { ... }
+
 // MaxSpend is noop for this template type, principal of this account type can't submit transactions.
-func (v *Vault) MaxSpend(uint8, any) (uint64, error) {
-	return 0, nil
-}
+func (v *Vault) MaxSpend(uint8, any) (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (v *Vault) BaseGas(uint8) uint64 {
-	return 0
-}
+func (v *Vault) BaseGas(uint8) uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (v *Vault) LoadGas() uint64 {
-	return 0
-}
+func (v *Vault) LoadGas() uint64 { _ = "STUB: not implemented"; return 0 }
 
 func (v *Vault) ExecGas(uint8) uint64 {
+	_ = "STUB: not implemented"
+
+	// Verify always returns false.
 	return 0
 }
 
-// Verify always returns false.
 func (v *Vault) Verify(core.Host, []byte, *scale.Decoder) bool {
+	_ = "STUB: not implemented"
 	return false
 }

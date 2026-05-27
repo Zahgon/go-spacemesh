@@ -11,7 +11,6 @@ package mocks
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	fetch "github.com/spacemeshos/go-spacemesh/fetch"
@@ -33,35 +32,25 @@ type MockfetcherMockRecorder struct {
 }
 
 // NewMockfetcher creates a new mock instance.
-func NewMockfetcher(ctrl *gomock.Controller) *Mockfetcher {
-	mock := &Mockfetcher{ctrl: ctrl}
-	mock.recorder = &MockfetcherMockRecorder{mock}
-	return mock
-}
+func NewMockfetcher(ctrl *gomock.Controller) *Mockfetcher { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockfetcher) EXPECT() *MockfetcherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAtxs mocks base method.
+	return nil
 }
 
-// GetAtxs mocks base method.
 func (m *Mockfetcher) GetAtxs(arg0 context.Context, arg1 []types.ATXID, arg2 ...system.GetAtxOpt) error {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetAtxs", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAtxs indicates an expected call of GetAtxs.
 func (mr *MockfetcherMockRecorder) GetAtxs(arg0, arg1 any, arg2 ...any) *MockfetcherGetAtxsCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAtxs", reflect.TypeOf((*Mockfetcher)(nil).GetAtxs), varargs...)
-	return &MockfetcherGetAtxsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetAtxsCall wrap *gomock.Call
@@ -71,36 +60,32 @@ type MockfetcherGetAtxsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetAtxsCall) Return(arg0 error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetAtxsCall) Do(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetAtxsCall) DoAndReturn(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerEpochInfo mocks base method.
 func (m *Mockfetcher) PeerEpochInfo(arg0 context.Context, arg1 p2p.Peer, arg2 types.EpochID) (*fetch.EpochData, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerEpochInfo", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*fetch.EpochData)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerEpochInfo indicates an expected call of PeerEpochInfo.
 func (mr *MockfetcherMockRecorder) PeerEpochInfo(arg0, arg1, arg2 any) *MockfetcherPeerEpochInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerEpochInfo", reflect.TypeOf((*Mockfetcher)(nil).PeerEpochInfo), arg0, arg1, arg2)
-	return &MockfetcherPeerEpochInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherPeerEpochInfoCall wrap *gomock.Call
@@ -110,35 +95,32 @@ type MockfetcherPeerEpochInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherPeerEpochInfoCall) Return(arg0 *fetch.EpochData, arg1 error) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherPeerEpochInfoCall) Do(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherPeerEpochInfoCall) DoAndReturn(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled mocks base method.
 func (m *Mockfetcher) SelectBestShuffled(arg0 int) []p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectBestShuffled", arg0)
-	ret0, _ := ret[0].([]p2p.Peer)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled indicates an expected call of SelectBestShuffled.
 func (mr *MockfetcherMockRecorder) SelectBestShuffled(arg0 any) *MockfetcherSelectBestShuffledCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectBestShuffled", reflect.TypeOf((*Mockfetcher)(nil).SelectBestShuffled), arg0)
-	return &MockfetcherSelectBestShuffledCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherSelectBestShuffledCall wrap *gomock.Call
@@ -148,18 +130,18 @@ type MockfetcherSelectBestShuffledCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherSelectBestShuffledCall) Return(arg0 []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherSelectBestShuffledCall) Do(f func(int) []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherSelectBestShuffledCall) DoAndReturn(f func(int) []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

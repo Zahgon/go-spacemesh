@@ -10,8 +10,6 @@
 package weakcoin
 
 import (
-	reflect "reflect"
-
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,29 +28,24 @@ type MockvrfSignerMockRecorder struct {
 
 // NewMockvrfSigner creates a new mock instance.
 func NewMockvrfSigner(ctrl *gomock.Controller) *MockvrfSigner {
-	mock := &MockvrfSigner{ctrl: ctrl}
-	mock.recorder = &MockvrfSignerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockvrfSigner) EXPECT() *MockvrfSignerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// NodeID mocks base method.
+	return nil
 }
 
-// NodeID mocks base method.
-func (m *MockvrfSigner) NodeID() types.NodeID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NodeID")
-	ret0, _ := ret[0].(types.NodeID)
-	return ret0
-}
+func (m *MockvrfSigner) NodeID() types.NodeID { _ = "STUB: not implemented"; return *new(types.NodeID) }
 
 // NodeID indicates an expected call of NodeID.
 func (mr *MockvrfSignerMockRecorder) NodeID() *MockvrfSignerNodeIDCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NodeID", reflect.TypeOf((*MockvrfSigner)(nil).NodeID))
-	return &MockvrfSignerNodeIDCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvrfSignerNodeIDCall wrap *gomock.Call
@@ -62,35 +55,32 @@ type MockvrfSignerNodeIDCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvrfSignerNodeIDCall) Return(arg0 types.NodeID) *MockvrfSignerNodeIDCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvrfSignerNodeIDCall) Do(f func() types.NodeID) *MockvrfSignerNodeIDCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvrfSignerNodeIDCall) DoAndReturn(f func() types.NodeID) *MockvrfSignerNodeIDCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Sign mocks base method.
 func (m *MockvrfSigner) Sign(msg []byte) types.VrfSignature {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Sign", msg)
-	ret0, _ := ret[0].(types.VrfSignature)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.VrfSignature)
 }
 
 // Sign indicates an expected call of Sign.
 func (mr *MockvrfSignerMockRecorder) Sign(msg any) *MockvrfSignerSignCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Sign", reflect.TypeOf((*MockvrfSigner)(nil).Sign), msg)
-	return &MockvrfSignerSignCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvrfSignerSignCall wrap *gomock.Call
@@ -100,20 +90,20 @@ type MockvrfSignerSignCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvrfSignerSignCall) Return(arg0 types.VrfSignature) *MockvrfSignerSignCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvrfSignerSignCall) Do(f func([]byte) types.VrfSignature) *MockvrfSignerSignCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvrfSignerSignCall) DoAndReturn(f func([]byte) types.VrfSignature) *MockvrfSignerSignCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvrfVerifier is a mock of vrfVerifier interface.
@@ -130,29 +120,27 @@ type MockvrfVerifierMockRecorder struct {
 
 // NewMockvrfVerifier creates a new mock instance.
 func NewMockvrfVerifier(ctrl *gomock.Controller) *MockvrfVerifier {
-	mock := &MockvrfVerifier{ctrl: ctrl}
-	mock.recorder = &MockvrfVerifierMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockvrfVerifier) EXPECT() *MockvrfVerifierMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Verify mocks base method.
+	return nil
 }
 
-// Verify mocks base method.
 func (m *MockvrfVerifier) Verify(nodeID types.NodeID, msg []byte, sig types.VrfSignature) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify", nodeID, msg, sig)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Verify indicates an expected call of Verify.
 func (mr *MockvrfVerifierMockRecorder) Verify(nodeID, msg, sig any) *MockvrfVerifierVerifyCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockvrfVerifier)(nil).Verify), nodeID, msg, sig)
-	return &MockvrfVerifierVerifyCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvrfVerifierVerifyCall wrap *gomock.Call
@@ -162,20 +150,20 @@ type MockvrfVerifierVerifyCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvrfVerifierVerifyCall) Return(arg0 bool) *MockvrfVerifierVerifyCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvrfVerifierVerifyCall) Do(f func(types.NodeID, []byte, types.VrfSignature) bool) *MockvrfVerifierVerifyCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvrfVerifierVerifyCall) DoAndReturn(f func(types.NodeID, []byte, types.VrfSignature) bool) *MockvrfVerifierVerifyCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknonceFetcher is a mock of nonceFetcher interface.
@@ -192,30 +180,27 @@ type MocknonceFetcherMockRecorder struct {
 
 // NewMocknonceFetcher creates a new mock instance.
 func NewMocknonceFetcher(ctrl *gomock.Controller) *MocknonceFetcher {
-	mock := &MocknonceFetcher{ctrl: ctrl}
-	mock.recorder = &MocknonceFetcherMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocknonceFetcher) EXPECT() *MocknonceFetcherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// VRFNonce mocks base method.
+	return nil
 }
 
-// VRFNonce mocks base method.
 func (m *MocknonceFetcher) VRFNonce(arg0 types.NodeID, arg1 types.EpochID) (types.VRFPostIndex, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VRFNonce", arg0, arg1)
-	ret0, _ := ret[0].(types.VRFPostIndex)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.VRFPostIndex), nil
 }
 
 // VRFNonce indicates an expected call of VRFNonce.
 func (mr *MocknonceFetcherMockRecorder) VRFNonce(arg0, arg1 any) *MocknonceFetcherVRFNonceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VRFNonce", reflect.TypeOf((*MocknonceFetcher)(nil).VRFNonce), arg0, arg1)
-	return &MocknonceFetcherVRFNonceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknonceFetcherVRFNonceCall wrap *gomock.Call
@@ -225,20 +210,20 @@ type MocknonceFetcherVRFNonceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknonceFetcherVRFNonceCall) Return(arg0 types.VRFPostIndex, arg1 error) *MocknonceFetcherVRFNonceCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknonceFetcherVRFNonceCall) Do(f func(types.NodeID, types.EpochID) (types.VRFPostIndex, error)) *MocknonceFetcherVRFNonceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknonceFetcherVRFNonceCall) DoAndReturn(f func(types.NodeID, types.EpochID) (types.VRFPostIndex, error)) *MocknonceFetcherVRFNonceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mockallowance is a mock of allowance interface.
@@ -255,29 +240,27 @@ type MockallowanceMockRecorder struct {
 
 // NewMockallowance creates a new mock instance.
 func NewMockallowance(ctrl *gomock.Controller) *Mockallowance {
-	mock := &Mockallowance{ctrl: ctrl}
-	mock.recorder = &MockallowanceMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockallowance) EXPECT() *MockallowanceMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// MinerAllowance mocks base method.
+	return nil
 }
 
-// MinerAllowance mocks base method.
 func (m *Mockallowance) MinerAllowance(arg0 types.EpochID, arg1 types.NodeID) uint32 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MinerAllowance", arg0, arg1)
-	ret0, _ := ret[0].(uint32)
-	return ret0
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // MinerAllowance indicates an expected call of MinerAllowance.
 func (mr *MockallowanceMockRecorder) MinerAllowance(arg0, arg1 any) *MockallowanceMinerAllowanceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MinerAllowance", reflect.TypeOf((*Mockallowance)(nil).MinerAllowance), arg0, arg1)
-	return &MockallowanceMinerAllowanceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockallowanceMinerAllowanceCall wrap *gomock.Call
@@ -287,18 +270,18 @@ type MockallowanceMinerAllowanceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockallowanceMinerAllowanceCall) Return(arg0 uint32) *MockallowanceMinerAllowanceCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockallowanceMinerAllowanceCall) Do(f func(types.EpochID, types.NodeID) uint32) *MockallowanceMinerAllowanceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockallowanceMinerAllowanceCall) DoAndReturn(f func(types.EpochID, types.NodeID) uint32) *MockallowanceMinerAllowanceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -11,15 +11,7 @@ const (
 	dbLabel   = "db"
 )
 
-func newQueryLatency() *prometheus.HistogramVec {
-	return metrics.NewHistogramWithBuckets(
-		"query_latency_ns",
-		namespace,
-		"Latency of the query in nanoseconds",
-		[]string{"query"},
-		prometheus.ExponentialBuckets(100_000, 2, 20),
-	)
-}
+func newQueryLatency() *prometheus.HistogramVec { _ = "STUB: not implemented"; return nil }
 
 var (
 	ConnWaitLatency = metrics.NewHistogramWithBuckets(

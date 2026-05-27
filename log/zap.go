@@ -2,11 +2,7 @@ package log
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"reflect"
-	"runtime/debug"
-	"strings"
 	"time"
 
 	"go.uber.org/zap"
@@ -22,35 +18,22 @@ type Log struct {
 // Exported from Log basic logging options.
 
 // Info prints formatted info level log message.
-func (l Log) Info(format string, args ...any) {
-	l.logger.Sugar().Infof(format, args...)
-}
+func (l Log) Info(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Debug prints formatted debug level log message.
-func (l Log) Debug(format string, args ...any) {
-	l.logger.Sugar().Debugf(format, args...)
-}
+func (l Log) Debug(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Error prints formatted error level log message.
-func (l Log) Error(format string, args ...any) {
-	l.logger.Sugar().Errorf(format, args...)
-}
+func (l Log) Error(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Warning prints formatted warning level log message.
-func (l Log) Warning(format string, args ...any) {
-	l.logger.Sugar().Warnf(format, args...)
-}
+func (l Log) Warning(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Panic prints the log message and then panics.
-func (l Log) Panic(format string, args ...any) {
-	l.logger.Sugar().Error("Fatal: goroutine panicked. Stacktrace: ", string(debug.Stack()))
-	l.logger.Sugar().Panicf(format, args...)
-}
+func (l Log) Panic(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Fatal prints formatted fatal level log message.
-func (l Log) Fatal(format string, args ...any) {
-	l.logger.Sugar().Fatalf(format, args...)
-}
+func (l Log) Fatal(format string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Wrap and export field logic
 
@@ -58,36 +41,28 @@ func (l Log) Fatal(format string, args ...any) {
 type Field zap.Field
 
 // Field satisfies loggable field interface.
-func (f Field) Field() Field { return f }
+func (f Field) Field() Field {
+	_ = "STUB: not implemented"
 
-// FieldNamed returns a field with the provided name instead of the default.
+	// FieldNamed returns a field with the provided name instead of the default.
+	return *new(Field)
+}
+
 func FieldNamed(name string, field LoggableField) Field {
-	if field == nil || (reflect.ValueOf(field).Kind() == reflect.Ptr && reflect.ValueOf(field).IsNil()) {
-		return String(name, "nil")
-	}
-	f := field.Field()
-	f.Key = name
-	return f
+	_ = "STUB: not implemented"
+	return *new(Field)
 }
 
-func (f Field) AddTo(enc zapcore.ObjectEncoder) {
-	(zapcore.Field)(f).AddTo(enc)
-}
+func (f Field) AddTo(enc zapcore.ObjectEncoder) { _ = "STUB: not implemented"; return }
 
 // String returns a string Field.
-func String(name, val string) Field {
-	return Field(zap.String(name, val))
-}
+func String(name, val string) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Strings returns a strings Field.
-func Strings(name string, val []string) Field {
-	return Field(zap.Strings(name, val))
-}
+func Strings(name string, val []string) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Stringer returns an fmt.Sringer Field.
-func Stringer(name string, val fmt.Stringer) Field {
-	return Field(zap.Stringer(name, val))
-}
+func Stringer(name string, val fmt.Stringer) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 type ShortString interface {
 	ShortString() string
@@ -97,86 +72,54 @@ type shortStringAdapter struct {
 	val ShortString
 }
 
-func (a shortStringAdapter) String() string {
-	return a.val.ShortString()
-}
+func (a shortStringAdapter) String() string { _ = "STUB: not implemented"; return "" }
 
 func ShortStringer(name string, val ShortString) Field {
-	return Field(zap.Stringer(name, shortStringAdapter{val: val}))
+	_ = "STUB: not implemented"
+	return *new(Field)
 }
 
 func ZShortStringer(name string, val ShortString) zap.Field {
-	return zap.Stringer(name, shortStringAdapter{val: val})
+	_ = "STUB: not implemented"
+	return *new(zap.Field)
 }
 
 // Uint16 returns an uint32 Field.
-func Uint16(name string, val uint16) Field {
-	return Field(zap.Uint16(name, val))
-}
+func Uint16(name string, val uint16) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Uint32 returns an uint32 Field.
-func Uint32(name string, val uint32) Field {
-	return Field(zap.Uint32(name, val))
-}
+func Uint32(name string, val uint32) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Time returns a field for time.Time struct value.
-func Time(name string, val time.Time) Field {
-	return Field(zap.Time(name, val))
-}
+func Time(name string, val time.Time) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Duration returns a duration field.
-func Duration(name string, val time.Duration) Field {
-	return Field(zap.Duration(name, val))
-}
+func Duration(name string, val time.Duration) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Err returns an error field.
-func Err(err error) Field {
-	var loggable zapcore.ObjectMarshaler
-	if errors.As(err, &loggable) {
-		return Field(zap.Inline(loggable))
-	}
-	return Field(zap.NamedError("errmsg", err))
-}
+func Err(err error) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Inline for inline logging.
-func Inline(object zapcore.ObjectMarshaler) Field {
-	return Field(zap.Inline(object))
-}
+func Inline(object zapcore.ObjectMarshaler) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 // Array for logging array efficiently.
 func Array(name string, array zapcore.ArrayMarshaler) Field {
-	return Field(zap.Array(name, array))
+	_ = "STUB: not implemented"
+	return *new(Field)
 }
 
-func ZContext(ctx context.Context) zap.Field {
-	return zap.Inline(&marshalledContext{Context: ctx})
-}
+func ZContext(ctx context.Context) zap.Field { _ = "STUB: not implemented"; return *new(zap.Field) }
 
-func NiceZapError(err error) zap.Field {
-	var loggable zapcore.ObjectMarshaler
-	if errors.As(err, &loggable) {
-		return zap.Inline(loggable)
-	}
-	return zap.Error(err)
-}
+func NiceZapError(err error) zap.Field { _ = "STUB: not implemented"; return *new(zap.Field) }
 
-func Any(key string, value any) Field {
-	return Field(zap.Any(key, value))
-}
+func Any(key string, value any) Field { _ = "STUB: not implemented"; return *new(Field) }
 
 type marshalledContext struct {
 	context.Context
 }
 
 func (c *marshalledContext) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if c.Context != nil {
-		if ctxRequestID, ok := ExtractRequestID(c.Context); ok {
-			encoder.AddString("requestId", ctxRequestID)
-		}
-		if ctxSessionID, ok := ExtractSessionID(c.Context); ok {
-			encoder.AddString("sessionId", ctxSessionID)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -185,13 +128,7 @@ type LoggableField interface {
 	Field() Field
 }
 
-func unpack(fields []LoggableField) []zap.Field {
-	flds := make([]zap.Field, len(fields))
-	for i, f := range fields {
-		flds[i] = zap.Field(f.Field())
-	}
-	return flds
-}
+func unpack(fields []LoggableField) []zap.Field { _ = "STUB: not implemented"; return nil }
 
 // FieldLogger is a logger that only logs messages with fields. It does not support formatting.
 type FieldLogger struct {
@@ -200,101 +137,60 @@ type FieldLogger struct {
 }
 
 // With returns a logger object that logs fields.
-func (l Log) With() FieldLogger {
-	return FieldLogger{l.logger, l.name}
-}
+func (l Log) With() FieldLogger { _ = "STUB: not implemented"; return *new(FieldLogger) }
 
 // SetLevel returns a logger with level as the log level derived from l.
 func (l Log) SetLevel(level *zap.AtomicLevel) Log {
+	_ = "STUB: not implemented"
 	// Warn if the new level is lower than the parent level
-	if willWrite := l.logger.Check(level.Level(), "test"); willWrite == nil {
-		Warning("attempt to SetLevel of logger lower than parent level, this may result in " +
-			"log entries being dropped silently")
-	}
-	lgr := l.logger.WithOptions(zap.IncreaseLevel(level))
-	return Log{logger: lgr, name: l.name}
+	return *new(Log)
 }
 
 // Check if following level is supported by the logger.
-func (l Log) Check(level zapcore.Level) bool {
-	return l.logger.Check(level, "") != nil
-}
+func (l Log) Check(level zapcore.Level) bool { _ = "STUB: not implemented"; return false }
 
 // WithName appends a name to a current name.
-func (l Log) WithName(prefix string) Log {
-	lgr := l.logger.Named(prefix)
-	var name string
-	if l.name == "" {
-		name = prefix
-	} else {
-		name = strings.Join([]string{l.name, prefix}, ".")
-	}
-	return Log{logger: lgr, name: name}
-}
+func (l Log) WithName(prefix string) Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // Named overwrites name.
-func (l Log) Named(name string) Log {
-	return NewFromLog(l.logger.Named(name))
-}
+func (l Log) Named(name string) Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // WithFields returns a logger with fields permanently appended to it.
-func (l Log) WithFields(fields ...LoggableField) Log {
-	lgr := l.logger.With(unpack(fields)...)
-	return Log{logger: lgr, name: l.name}
-}
+func (l Log) WithFields(fields ...LoggableField) Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // WithContext creates a Log from an existing log and a context object.
-func (l Log) WithContext(ctx context.Context) Log {
-	var fields []LoggableField
-	if ctx != nil {
-		if ctxRequestID, ok := ExtractRequestID(ctx); ok {
-			fields = append(fields, append(ExtractRequestFields(ctx), String("requestId", ctxRequestID))...)
-		}
-		if ctxSessionID, ok := ExtractSessionID(ctx); ok {
-			fields = append(fields, append(ExtractSessionFields(ctx), String("sessionId", ctxSessionID))...)
-		}
-	}
-	return l.WithFields(fields...)
-}
+func (l Log) WithContext(ctx context.Context) Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // Zap returns internal zap logger.
 func (l Log) Zap() *zap.Logger {
-	return l.logger
-}
+	_ = "STUB: not implemented"
 
-// note: we construct the fieldset on the fly, below, rather than simply adding `name' as a field since it may change
-// if a child logger is created from a parent. once a field has been added to a logger it cannot be changed or removed.
-// see WithName, above.
+	// note: we construct the fieldset on the fly, below, rather than simply adding `name' as a field since it may change
+	// if a child logger is created from a parent. once a field has been added to a logger it cannot be changed or removed.
+	// see WithName, above.
+	return nil
+}
 
 // Info prints message with fields.
-func (fl FieldLogger) Info(msg string, fields ...LoggableField) {
-	fl.l.Info(msg, unpack(append(fields, String("name", fl.name)))...)
-}
+func (fl FieldLogger) Info(msg string, fields ...LoggableField) { _ = "STUB: not implemented"; return }
 
 // Debug prints message with fields.
-func (fl FieldLogger) Debug(msg string, fields ...LoggableField) {
-	fl.l.Debug(msg, unpack(append(fields, String("name", fl.name)))...)
-}
+func (fl FieldLogger) Debug(msg string, fields ...LoggableField) { _ = "STUB: not implemented"; return }
 
 // Error prints message with fields.
-func (fl FieldLogger) Error(msg string, fields ...LoggableField) {
-	fl.l.Error(msg, unpack(append(fields, String("name", fl.name)))...)
-}
+func (fl FieldLogger) Error(msg string, fields ...LoggableField) { _ = "STUB: not implemented"; return }
 
 // Warning prints message with fields.
 func (fl FieldLogger) Warning(msg string, fields ...LoggableField) {
-	fl.l.Warn(msg, unpack(append(fields, String("name", fl.name)))...)
+	_ = "STUB: not implemented"
+	return
 }
 
 // Panic prints message with fields.
-func (fl FieldLogger) Panic(msg string, fields ...LoggableField) {
-	fl.l.Panic(msg, unpack(append(fields, String("name", fl.name)))...)
-}
+func (fl FieldLogger) Panic(msg string, fields ...LoggableField) { _ = "STUB: not implemented"; return }
 
 // DebugField is only added if debug level is enabled.
 func DebugField(logger *zap.Logger, field zap.Field) zap.Field {
-	if logger.Core().Enabled(zap.DebugLevel) {
-		return field
-	}
-	return zap.Skip()
+	_ = "STUB: not implemented"
+	return *new(zap.Field)
 }

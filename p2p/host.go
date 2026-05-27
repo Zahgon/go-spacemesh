@@ -2,118 +2,36 @@ package p2p
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"slices"
 	"time"
 
-	lp2plog "github.com/ipfs/go-log/v2"
 	"github.com/libp2p/go-libp2p"
 	"github.com/libp2p/go-libp2p-pubsub/timecache"
-	ccmgr "github.com/libp2p/go-libp2p/core/connmgr"
-	"github.com/libp2p/go-libp2p/core/crypto"
-	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/libp2p/go-libp2p/core/pnet"
-	"github.com/libp2p/go-libp2p/core/protocol"
-	"github.com/libp2p/go-libp2p/core/transport"
 	"github.com/libp2p/go-libp2p/p2p/host/autorelay"
-	"github.com/libp2p/go-libp2p/p2p/host/peerstore/pstoremem"
-	rcmgr "github.com/libp2p/go-libp2p/p2p/host/resource-manager"
-	"github.com/libp2p/go-libp2p/p2p/muxer/yamux"
-	"github.com/libp2p/go-libp2p/p2p/net/connmgr"
-	tptu "github.com/libp2p/go-libp2p/p2p/net/upgrader"
-	"github.com/libp2p/go-libp2p/p2p/protocol/circuitv2/relay"
-	"github.com/libp2p/go-libp2p/p2p/protocol/holepunch"
-	"github.com/libp2p/go-libp2p/p2p/protocol/identify"
-	"github.com/libp2p/go-libp2p/p2p/security/noise"
-	quic "github.com/libp2p/go-libp2p/p2p/transport/quic"
-	"github.com/libp2p/go-libp2p/p2p/transport/quicreuse"
-	"github.com/libp2p/go-libp2p/p2p/transport/tcp"
-	ma "github.com/multiformats/go-multiaddr"
-	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/fx"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
 	"github.com/spacemeshos/go-spacemesh/p2p/handshake"
-	p2pmetrics "github.com/spacemeshos/go-spacemesh/p2p/metrics"
-	"github.com/spacemeshos/go-spacemesh/p2p/peerinfo"
 )
 
 // DefaultConfig config.
-func DefaultConfig() Config {
-	return Config{
-		Listen:                 MustParseAddresses("/ip4/0.0.0.0/tcp/7513"),
-		Flood:                  false,
-		MinPeers:               20,
-		LowPeers:               40,
-		HighPeers:              100,
-		AutoscalePeers:         true,
-		GracePeersShutdown:     30 * time.Second,
-		MaxMessageSize:         2 << 20,
-		DisableResourceManager: true,
-		AcceptQueue:            tptu.AcceptQueueLength,
-		EnableHolepunching:     true,
-		InboundFraction:        0.8,
-		OutboundFraction:       1.1,
-		RelayServer: RelayServer{
-			TTL:               20 * time.Minute,
-			Reservations:      512,
-			ConnDurationLimit: 2 * time.Minute,
-			ConnDataLimit:     1 << 17, // 128K
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
-			MaxCircuits: 16,
-			BufferSize:  2048,
+// 128K
 
-			MaxReservationsPerIP:  8,
-			MaxReservationsPerASN: 32,
-		},
-		IP4Blocklist: []string{
-			// localhost
-			"127.0.0.0/8",
-			// private networks
-			"10.0.0.0/8",
-			"100.64.0.0/10",
-			"172.16.0.0/12",
-			"192.168.0.0/16",
-			// link local
-			"169.254.0.0/16",
-		},
-		IP6Blocklist: []string{
-			// localhost
-			"::1/128",
-			// ULA reserved
-			"fc00::/7",
-			// link local
-			"fe80::/10",
-		},
-		GossipQueueSize:             50000,
-		GossipValidationThrottle:    50000,
-		GossipAtxValidationThrottle: 50000,
-		PingInterval:                time.Second,
-		EnableTCPTransport:          true,
-		EnableQUICTransport:         false,
-		AutoNATServer: AutoNATServer{
-			// Defaults taken from libp2p
-			GlobalMax:   30,
-			PeerMax:     3,
-			ResetPeriod: time.Minute,
-		},
-		DiscoveryTimings: DiscoveryTimings{
-			AdvertiseDelay:          time.Hour,
-			AdvertiseInterval:       2 * time.Hour,
-			AdvertiseIntervalSpread: time.Hour,
-			AdvertiseRetryDelay:     time.Minute,
-			FindPeersRetryDelay:     time.Minute,
-			MinBackoff:              60 * time.Second,
-			MaxBackoff:              time.Hour,
-			MinConnBackoff:          10 * time.Second,
-			MaxConnBackoff:          time.Hour,
-			DialTimeout:             2 * time.Minute,
-		},
-	}
-}
+// localhost
+
+// private networks
+
+// link local
+
+// localhost
+
+// ULA reserved
+
+// link local
+
+// Defaults taken from libp2p
 
 const (
 	PublicReachability  = "public"
@@ -195,8 +113,8 @@ type DeprecatedMaxReservationsPerPeer struct{}
 
 // DeprecatedMsg implements Deprecated interface.
 func (DeprecatedMaxReservationsPerPeer) DeprecatedMsg() string {
-	return `The 'max-reservations-per-peer' is deprecated. ` +
-		`There's always 1 reservation per peer.`
+	_ = "STUB: not implemented"
+	return ""
 }
 
 type RelayServer struct {
@@ -212,35 +130,7 @@ type RelayServer struct {
 	MaxReservationsPerASN  int                              `mapstructure:"max-reservations-per-asn"`
 }
 
-func (cfg *Config) Validate() error {
-	if !cfg.EnableTCPTransport && !cfg.EnableQUICTransport {
-		return errors.New("no transports enabled")
-	}
-
-	if !cfg.Relay {
-		if cfg.RelayServer.Enable {
-			return errors.New("cannot enable relay server without enabling relay")
-		}
-		if len(cfg.StaticRelays) != 0 {
-			return errors.New("cannot specify static-relays without enabling relay")
-		}
-	}
-
-	if len(cfg.ForceReachability) > 0 {
-		if cfg.ForceReachability != PublicReachability &&
-			cfg.ForceReachability != PrivateReachability {
-			return fmt.Errorf("p2p-reachability flag is invalid. should be one of %s, %s. got %s",
-				PublicReachability, PrivateReachability, cfg.ForceReachability,
-			)
-		}
-	}
-
-	if cfg.DiscoveryTimings.AdvertiseIntervalSpread > cfg.DiscoveryTimings.AdvertiseInterval {
-		return errors.New("advertise-interval-spread cannot be greater than advertise-interval")
-	}
-
-	return nil
-}
+func (cfg *Config) Validate() error { _ = "STUB: not implemented"; return nil }
 
 // New initializes libp2p host configured for spacemesh.
 func New(
@@ -250,194 +140,20 @@ func New(
 	quicNetCookie handshake.NetworkCookie,
 	opts ...Opt,
 ) (*Host, error) {
-	if err := cfg.Validate(); err != nil {
-		return nil, err
-	}
-
-	logger.Info("starting libp2p host", zap.Any("config", &cfg))
-	key, err := EnsureIdentity(cfg.DataDir)
-	if err != nil {
-		return nil, err
-	}
-	lp2plog.SetPrimaryCore(logger.Core())
-	lp2plog.SetAllLoggers(lp2plog.LogLevel(cfg.LogLevel))
-	streamer := *yamux.DefaultTransport
-	streamer.Config().ConnectionWriteTimeout = 25 * time.Second // should be NOT exposed in the config
-	ps, err := pstoremem.NewPeerstore()
-	if err != nil {
-		return nil, fmt.Errorf("can't create peer store: %w", err)
-	}
-
-	bootnodesMap := make(map[peer.ID]struct{})
-	bootnodes, err := parseIntoAddr(cfg.Bootnodes)
-	if err != nil {
-		return nil, err
-	}
-	for _, pid := range bootnodes {
-		bootnodesMap[pid.ID] = struct{}{}
-	}
-
-	// leaves a small room for outbound connections in order to
-	// reduce risk of network isolation
-	g, err := newGater(cfg)
-	if err != nil {
-		return nil, fmt.Errorf("can't set up connection gater: %w", err)
-	}
-
-	var idService identify.IDService
-	pt := peerinfo.NewPeerInfoTracker()
-	lopts := []libp2p.Option{
-		libp2p.Identity(key),
-		libp2p.UserAgent("go-spacemesh"),
-		libp2p.Muxer("/yamux/1.0.0", &streamer),
-		libp2p.Peerstore(ps),
-		libp2p.BandwidthReporter(p2pmetrics.NewBandwidthCollector(pt)),
-		libp2p.EnableNATService(),
-		libp2p.AutoNATServiceRateLimit(
-			cfg.AutoNATServer.GlobalMax,
-			cfg.AutoNATServer.PeerMax,
-			cfg.AutoNATServer.ResetPeriod),
-		libp2p.ConnectionGater(g),
-		// Obtain the IDService via fx dependency injection.
-		// This function is always called by libp2p.New().
-		libp2p.WithFxOption(fx.Invoke(func(ids identify.IDService) {
-			idService = ids
-		})),
-	}
-	if cfg.EnableTCPTransport {
-		lopts = append(lopts,
-			libp2p.Transport(
-				func(upgrader transport.Upgrader, rcmgr network.ResourceManager) (transport.Transport, error) {
-					opts := []tcp.Option{}
-					if cfg.DisableReusePort {
-						opts = append(opts, tcp.DisableReuseport())
-					}
-					if cfg.Metrics {
-						opts = append(opts, tcp.WithMetrics())
-					}
-					return tcp.NewTCPTransport(upgrader, rcmgr, nil, opts...)
-				},
-			),
-			libp2p.Security(
-				noise.ID,
-				func(id protocol.ID, privkey crypto.PrivKey, muxers []tptu.StreamMuxer,
-				) (*noise.SessionTransport, error) {
-					tp, err := noise.New(id, privkey, muxers)
-					if err != nil {
-						return nil, err
-					}
-					return tp.WithSessionOptions(noise.Prologue(prologue))
-				},
-			),
-		)
-	}
-	if cfg.EnableQUICTransport {
-		lopts = append(lopts,
-			libp2p.Transport(
-				func(key crypto.PrivKey, connManager *quicreuse.ConnManager, psk pnet.PSK,
-					gater ccmgr.ConnectionGater,
-					rcmgr network.ResourceManager,
-				) (transport.Transport, error) {
-					tr, err := quic.NewTransport(key, connManager, psk, gater, rcmgr)
-					if err != nil {
-						return nil, err
-					}
-					return handshake.MaybeWrapTransport(tr, quicNetCookie, handshake.WithLog(logger)), nil
-				}),
-		)
-	}
-	if !cfg.DisableConnectionManager {
-		cm, err := connmgr.NewConnManager(
-			cfg.LowPeers,
-			cfg.HighPeers,
-			connmgr.WithGracePeriod(cfg.GracePeersShutdown),
-		)
-		if err != nil {
-			return nil, fmt.Errorf("p2p create conn mgr: %w", err)
-		}
-		lopts = append(lopts, libp2p.ConnectionManager(cm))
-	} else {
-		lopts = append(lopts, libp2p.ConnectionManager(&ccmgr.NullConnMgr{}))
-	}
-	if len(cfg.AdvertiseAddress) > 0 {
-		lopts = append(
-			lopts,
-			libp2p.AddrsFactory(func([]ma.Multiaddr) []ma.Multiaddr {
-				return slices.Clone(cfg.AdvertiseAddress)
-			}),
-		)
-	}
-	if cfg.EnableHolepunching {
-		mt := holepunch.NewMetricsTracer(holepunch.WithRegisterer(prometheus.DefaultRegisterer))
-		hpt := peerinfo.NewHolePunchTracer(pt, mt)
-		lopts = append(lopts,
-			libp2p.EnableHolePunching(holepunch.WithMetricsTracer(hpt)))
-	}
-	if cfg.Relay {
-		if cfg.RelayServer.Enable {
-			resources := relay.DefaultResources()
-			resources.Limit.Duration = cfg.RelayServer.ConnDurationLimit
-			resources.Limit.Data = cfg.RelayServer.ConnDataLimit
-			resources.ReservationTTL = cfg.RelayServer.TTL
-			resources.MaxReservations = cfg.RelayServer.Reservations
-			resources.MaxCircuits = cfg.RelayServer.MaxCircuits
-			resources.BufferSize = cfg.RelayServer.BufferSize
-			resources.MaxReservationsPerIP = cfg.RelayServer.MaxReservationsPerIP
-			resources.MaxReservationsPerASN = cfg.RelayServer.MaxReservationsPerASN
-			lopts = append(lopts, libp2p.EnableRelayService(relay.WithResources(resources)))
-		}
-
-		lopts = append(lopts, libp2p.EnableRelay())
-		if len(cfg.StaticRelays) != 0 {
-			relays, err := parseIntoAddr(cfg.StaticRelays)
-			if err != nil {
-				return nil, err
-			}
-			lopts = append(lopts, libp2p.EnableAutoRelayWithStaticRelays(relays))
-		} else if cfg.EnableRoutingDiscovery {
-			peerSrc, relayCh := relayPeerSource(logger)
-			lopts = append(lopts, libp2p.EnableAutoRelayWithPeerSource(peerSrc))
-			opts = append(opts, WithRelayCandidateChannel(relayCh))
-		} else {
-			lopts = append(lopts, libp2p.EnableAutoRelayWithStaticRelays(bootnodes))
-		}
-	} else {
-		lopts = append(lopts, libp2p.DisableRelay())
-	}
-	if cfg.ForceReachability == PublicReachability {
-		lopts = append(lopts, libp2p.ForceReachabilityPublic())
-	} else if cfg.ForceReachability == PrivateReachability {
-		lopts = append(lopts, libp2p.ForceReachabilityPrivate())
-	}
-	lopts = append(lopts, setupResourcesManager(cfg))
-	if !cfg.DisableNatPort {
-		lopts = append(lopts, libp2p.NATPortMap())
-	}
-	if cfg.AcceptQueue != 0 {
-		tptu.AcceptQueueLength = cfg.AcceptQueue
-	}
-	h, err := libp2p.New(lopts...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize libp2p host: %w", err)
-	}
-	g.updateHost(h)
-	h.Network().Notify(p2pmetrics.NewConnectionsMeeter())
-	pt.Start(h.Network())
-
-	logger.Info("local node identity", zap.Stringer("identity", h.ID()))
-	// TODO(dshulyak) this is small mess. refactor to avoid this patching
-	// both New and Upgrade should use options.
-	opts = append(
-		opts,
-		WithConfig(cfg),
-		WithLog(logger),
-		WithBootnodes(bootnodesMap),
-		WithDirectNodes(g.direct),
-		WithPeerInfo(pt),
-		WithIDService(idService),
-	)
-	return Upgrade(h, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// should be NOT exposed in the config
+
+// leaves a small room for outbound connections in order to
+// reduce risk of network isolation
+
+// Obtain the IDService via fx dependency injection.
+// This function is always called by libp2p.New().
+
+// TODO(dshulyak) this is small mess. refactor to avoid this patching
+// both New and Upgrade should use options.
 
 // AutoStart initializes a new host and starts it.
 func AutoStart(ctx context.Context,
@@ -447,101 +163,21 @@ func AutoStart(ctx context.Context,
 	quicNetCookie handshake.NetworkCookie,
 	opts ...Opt,
 ) (*Host, error) {
-	host, err := New(logger, cfg, prologue, quicNetCookie, opts...)
-	if err != nil {
-		return nil, err
-	}
-	if err := host.Start(); err != nil {
-		return nil, err
-	}
-	return host, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func setupResourcesManager(hostcfg Config) func(cfg *libp2p.Config) error {
-	return func(cfg *libp2p.Config) error {
-		rcmgr.MustRegisterWith(prometheus.DefaultRegisterer)
-		str, err := rcmgr.NewStatsTraceReporter()
-		if err != nil {
-			return err
-		}
-		highPeers := hostcfg.HighPeers
-		limits := rcmgr.DefaultLimits
-		limits.ConnBaseLimit.ConnsInbound = highPeers
-		limits.ConnBaseLimit.ConnsOutbound = highPeers
-		limits.ConnBaseLimit.Conns = 2 * highPeers
-		limits.SystemBaseLimit.ConnsInbound = highPeers
-		limits.SystemBaseLimit.ConnsOutbound = highPeers
-		limits.SystemBaseLimit.Conns = 2 * highPeers
-		limits.SystemBaseLimit.FD = 2 * highPeers
-		limits.SystemBaseLimit.StreamsInbound = 8 * highPeers
-		limits.SystemBaseLimit.StreamsOutbound = 8 * highPeers
-		limits.SystemBaseLimit.Streams = 16 * highPeers
-		limits.ServiceBaseLimit.StreamsInbound = 8 * highPeers
-		limits.ServiceBaseLimit.StreamsOutbound = 8 * highPeers
-		limits.ServiceBaseLimit.Streams = 16 * highPeers
-		limits.StreamBaseLimit.StreamsInbound = 8 * highPeers
-		limits.StreamBaseLimit.StreamsOutbound = 8 * highPeers
-		limits.StreamBaseLimit.Streams = 16 * highPeers
-		limits.ProtocolBaseLimit.StreamsInbound = 8 * highPeers
-		limits.ProtocolBaseLimit.StreamsOutbound = 8 * highPeers
-		limits.ProtocolBaseLimit.Streams = 16 * highPeers
-		libp2p.SetDefaultServiceLimits(&limits)
-
-		concrete := limits.AutoScale()
-		if !hostcfg.AutoscalePeers {
-			concrete = limits.Scale(0, 0)
-		}
-		if hostcfg.DisableResourceManager {
-			concrete = rcmgr.InfiniteLimits
-		}
-		mgr, err := rcmgr.NewResourceManager(
-			rcmgr.NewFixedLimiter(concrete),
-			rcmgr.WithTraceReporter(str),
-		)
-		if err != nil {
-			return err
-		}
-		cfg.Apply(libp2p.ResourceManager(mgr))
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func parseIntoAddr(nodes []string) ([]peer.AddrInfo, error) {
-	var addrs []peer.AddrInfo
-	for _, boot := range nodes {
-		addr, err := peer.AddrInfoFromString(boot)
-		if err != nil {
-			return nil, fmt.Errorf("can't parse bootnode %s: %w", boot, err)
-		}
-		addrs = append(addrs, *addr)
-	}
-	return addrs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func relayPeerSource(logger *zap.Logger) (autorelay.PeerSource, chan<- peer.AddrInfo) {
-	relayCandidateCh := make(chan peer.AddrInfo)
-	return func(ctx context.Context, num int) <-chan peer.AddrInfo {
-		r := make(chan peer.AddrInfo)
-		go func() {
-			defer close(r)
-			for ; num != 0; num-- {
-				select {
-				case addrInfo, ok := <-relayCandidateCh:
-					if !ok {
-						return
-					}
-					select {
-					case r <- addrInfo:
-						logger.Debug("discovered relay candidate",
-							zap.Stringer("addrInfo", addrInfo))
-					case <-ctx.Done():
-						return
-					}
-				case <-ctx.Done():
-					return
-				}
-			}
-		}()
-		return r
-	}, relayCandidateCh
+	_ = "STUB: not implemented"
+	return *new(autorelay.PeerSource), nil
 }

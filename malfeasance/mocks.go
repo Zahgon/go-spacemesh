@@ -11,7 +11,6 @@ package malfeasance
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	wire "github.com/spacemeshos/go-spacemesh/malfeasance/wire"
@@ -31,28 +30,22 @@ type MocktortoiseMockRecorder struct {
 }
 
 // NewMocktortoise creates a new mock instance.
-func NewMocktortoise(ctrl *gomock.Controller) *Mocktortoise {
-	mock := &Mocktortoise{ctrl: ctrl}
-	mock.recorder = &MocktortoiseMockRecorder{mock}
-	return mock
-}
+func NewMocktortoise(ctrl *gomock.Controller) *Mocktortoise { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mocktortoise) EXPECT() *MocktortoiseMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// OnMalfeasance mocks base method.
+	return nil
 }
 
-// OnMalfeasance mocks base method.
-func (m *Mocktortoise) OnMalfeasance(arg0 types.NodeID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "OnMalfeasance", arg0)
-}
+func (m *Mocktortoise) OnMalfeasance(arg0 types.NodeID) { _ = "STUB: not implemented"; return }
 
 // OnMalfeasance indicates an expected call of OnMalfeasance.
 func (mr *MocktortoiseMockRecorder) OnMalfeasance(arg0 any) *MocktortoiseOnMalfeasanceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnMalfeasance", reflect.TypeOf((*Mocktortoise)(nil).OnMalfeasance), arg0)
-	return &MocktortoiseOnMalfeasanceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktortoiseOnMalfeasanceCall wrap *gomock.Call
@@ -62,20 +55,20 @@ type MocktortoiseOnMalfeasanceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktortoiseOnMalfeasanceCall) Return() *MocktortoiseOnMalfeasanceCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktortoiseOnMalfeasanceCall) Do(f func(types.NodeID)) *MocktortoiseOnMalfeasanceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktortoiseOnMalfeasanceCall) DoAndReturn(f func(types.NodeID)) *MocktortoiseOnMalfeasanceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mocksyncer is a mock of syncer interface.
@@ -91,30 +84,22 @@ type MocksyncerMockRecorder struct {
 }
 
 // NewMocksyncer creates a new mock instance.
-func NewMocksyncer(ctrl *gomock.Controller) *Mocksyncer {
-	mock := &Mocksyncer{ctrl: ctrl}
-	mock.recorder = &MocksyncerMockRecorder{mock}
-	return mock
-}
+func NewMocksyncer(ctrl *gomock.Controller) *Mocksyncer { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mocksyncer) EXPECT() *MocksyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ListenToATXGossip mocks base method.
+	return nil
 }
 
-// ListenToATXGossip mocks base method.
-func (m *Mocksyncer) ListenToATXGossip() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListenToATXGossip")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *Mocksyncer) ListenToATXGossip() bool { _ = "STUB: not implemented"; return false }
 
 // ListenToATXGossip indicates an expected call of ListenToATXGossip.
 func (mr *MocksyncerMockRecorder) ListenToATXGossip() *MocksyncerListenToATXGossipCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenToATXGossip", reflect.TypeOf((*Mocksyncer)(nil).ListenToATXGossip))
-	return &MocksyncerListenToATXGossipCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocksyncerListenToATXGossipCall wrap *gomock.Call
@@ -124,20 +109,20 @@ type MocksyncerListenToATXGossipCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocksyncerListenToATXGossipCall) Return(arg0 bool) *MocksyncerListenToATXGossipCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocksyncerListenToATXGossipCall) Do(f func() bool) *MocksyncerListenToATXGossipCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocksyncerListenToATXGossipCall) DoAndReturn(f func() bool) *MocksyncerListenToATXGossipCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMalfeasanceHandler is a mock of MalfeasanceHandler interface.
@@ -154,30 +139,27 @@ type MockMalfeasanceHandlerMockRecorder struct {
 
 // NewMockMalfeasanceHandler creates a new mock instance.
 func NewMockMalfeasanceHandler(ctrl *gomock.Controller) *MockMalfeasanceHandler {
-	mock := &MockMalfeasanceHandler{ctrl: ctrl}
-	mock.recorder = &MockMalfeasanceHandlerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMalfeasanceHandler) EXPECT() *MockMalfeasanceHandlerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Info mocks base method.
+	return nil
 }
 
-// Info mocks base method.
 func (m *MockMalfeasanceHandler) Info(data wire.ProofData) (map[string]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Info", data)
-	ret0, _ := ret[0].(map[string]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Info indicates an expected call of Info.
 func (mr *MockMalfeasanceHandlerMockRecorder) Info(data any) *MockMalfeasanceHandlerInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Info", reflect.TypeOf((*MockMalfeasanceHandler)(nil).Info), data)
-	return &MockMalfeasanceHandlerInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMalfeasanceHandlerInfoCall wrap *gomock.Call
@@ -187,35 +169,29 @@ type MockMalfeasanceHandlerInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMalfeasanceHandlerInfoCall) Return(arg0 map[string]string, arg1 error) *MockMalfeasanceHandlerInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMalfeasanceHandlerInfoCall) Do(f func(wire.ProofData) (map[string]string, error)) *MockMalfeasanceHandlerInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMalfeasanceHandlerInfoCall) DoAndReturn(f func(wire.ProofData) (map[string]string, error)) *MockMalfeasanceHandlerInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ReportLabel mocks base method.
-func (m *MockMalfeasanceHandler) ReportLabel() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReportLabel")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
+func (m *MockMalfeasanceHandler) ReportLabel() string { _ = "STUB: not implemented"; return "" }
 
 // ReportLabel indicates an expected call of ReportLabel.
 func (mr *MockMalfeasanceHandlerMockRecorder) ReportLabel() *MockMalfeasanceHandlerReportLabelCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportLabel", reflect.TypeOf((*MockMalfeasanceHandler)(nil).ReportLabel))
-	return &MockMalfeasanceHandlerReportLabelCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMalfeasanceHandlerReportLabelCall wrap *gomock.Call
@@ -225,36 +201,32 @@ type MockMalfeasanceHandlerReportLabelCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMalfeasanceHandlerReportLabelCall) Return(arg0 string) *MockMalfeasanceHandlerReportLabelCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMalfeasanceHandlerReportLabelCall) Do(f func() string) *MockMalfeasanceHandlerReportLabelCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMalfeasanceHandlerReportLabelCall) DoAndReturn(f func() string) *MockMalfeasanceHandlerReportLabelCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validate mocks base method.
 func (m *MockMalfeasanceHandler) Validate(ctx context.Context, data wire.ProofData) (types.NodeID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validate", ctx, data)
-	ret0, _ := ret[0].(types.NodeID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.NodeID), nil
 }
 
 // Validate indicates an expected call of Validate.
 func (mr *MockMalfeasanceHandlerMockRecorder) Validate(ctx, data any) *MockMalfeasanceHandlerValidateCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validate", reflect.TypeOf((*MockMalfeasanceHandler)(nil).Validate), ctx, data)
-	return &MockMalfeasanceHandlerValidateCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMalfeasanceHandlerValidateCall wrap *gomock.Call
@@ -264,18 +236,18 @@ type MockMalfeasanceHandlerValidateCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMalfeasanceHandlerValidateCall) Return(arg0 types.NodeID, arg1 error) *MockMalfeasanceHandlerValidateCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMalfeasanceHandlerValidateCall) Do(f func(context.Context, wire.ProofData) (types.NodeID, error)) *MockMalfeasanceHandlerValidateCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMalfeasanceHandlerValidateCall) DoAndReturn(f func(context.Context, wire.ProofData) (types.NodeID, error)) *MockMalfeasanceHandlerValidateCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

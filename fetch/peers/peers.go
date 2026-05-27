@@ -1,16 +1,12 @@
 package peers
 
 import (
-	"slices"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/protocol"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/p2p"
 )
 
 type data struct {
@@ -21,31 +17,13 @@ type data struct {
 	protocols         func() []protocol.ID
 }
 
-func (d *data) latency(global float64) float64 {
-	switch {
-	case d.success+d.failures == 0:
-		return 0.9 * global // to prioritize trying out new peer
-	default:
-		return d.averageLatency + d.failRate*global
-	}
-}
+func (d *data) latency(global float64) float64 { _ = "STUB: not implemented"; return 0 }
 
-func (p *data) less(other *data, global float64) bool {
-	peerLatency := p.latency(global)
-	otherLatency := other.latency(global)
-	if peerLatency < otherLatency {
-		return true
-	} else if peerLatency > otherLatency {
-		return false
-	}
-	return strings.Compare(string(p.id), string(other.id)) == -1
-}
+// to prioritize trying out new peer
 
-func New() *Peers {
-	return &Peers{
-		peers: map[peer.ID]*data{},
-	}
-}
+func (p *data) less(other *data, global float64) bool { _ = "STUB: not implemented"; return false }
+
+func New() *Peers { _ = "STUB: not implemented"; return nil }
 
 type Peers struct {
 	mu    sync.Mutex
@@ -57,92 +35,44 @@ type Peers struct {
 	globalLatency float64
 }
 
-func (p *Peers) Contains(id peer.ID) bool {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	_, exist := p.peers[id]
-	return exist
-}
+func (p *Peers) Contains(id peer.ID) bool { _ = "STUB: not implemented"; return false }
 
 func (p *Peers) Add(id peer.ID, protocols func() []protocol.ID) bool {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	_, exist := p.peers[id]
-	if exist {
-		return false
-	}
-	p.peers[id] = &data{id: id, protocols: protocols}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (p *Peers) Delete(id peer.ID) {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	delete(p.peers, id)
-}
+func (p *Peers) Delete(id peer.ID) { _ = "STUB: not implemented"; return }
 
 // OnLatency updates average peer and global latency.
 func (p *Peers) onLatency(id peer.ID, size int, latency time.Duration, failed bool) {
+	_ = "STUB: not implemented"
 	// We assume that latency is proportional to the size of the message
 	// and define it as a duration to transmit 1kiB.
 	// To account for the additional overhead of transmitting small messages,
 	// we treat them as if they were 1kiB.
-	latency = latency / time.Duration(max(size/1024, 1))
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	peer, exist := p.peers[id]
-	if !exist {
-		return
-	}
-	if failed {
-		peer.failures++
-	} else {
-		peer.success++
-	}
-	peer.failRate = float64(peer.failures) / float64(peer.success+peer.failures)
-	if peer.averageLatency != 0 {
-		delta := (float64(latency) - float64(peer.averageLatency)) / 10 // 86% of the value is the last 19
-		peer.averageLatency += delta
-	} else {
-		peer.averageLatency = float64(latency)
-	}
-	if p.globalLatency != 0 {
-		delta := (float64(latency) - float64(p.globalLatency)) / 25 // 86% of the value is the last 49
-		p.globalLatency += delta
-	} else {
-		p.globalLatency = float64(latency)
-	}
+	return
 }
 
+// 86% of the value is the last 19
+
+// 86% of the value is the last 49
+
 func (p *Peers) OnFailure(id peer.ID, size int, latency time.Duration) {
-	p.onLatency(id, size, latency, true)
+	_ = "STUB: not implemented"
+	return
 }
 
 // OnLatency updates average peer and global latency.
 func (p *Peers) OnLatency(id peer.ID, size int, latency time.Duration) {
-	p.onLatency(id, size, latency, false)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SelectBest peer with preferences.
 func (p *Peers) SelectBestFrom(peers []peer.ID) peer.ID {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	var best *data
-	for _, peer := range peers {
-		pdata, exist := p.peers[peer]
-		if !exist {
-			continue
-		}
-		if best == nil {
-			best = pdata
-		} else if pdata.less(best, p.globalLatency) {
-			best = pdata
-		}
-	}
-	if best != nil {
-		return best.id
-	}
-	return p2p.NoPeer
+	_ = "STUB: not implemented"
+	return *new(peer.ID)
 }
 
 // SelectBest selects at most n peers sorted by responsiveness and latency.
@@ -151,86 +81,24 @@ func (p *Peers) SelectBestFrom(peers []peer.ID) peer.ID {
 // connections to guarantee that it will get complete data set.
 // If it doesn't get complete data set it will have to fallback into hash resolution, which is
 // generally more expensive.
-func (p *Peers) SelectBest(n int) []peer.ID {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	return p.selectBest(n, nil)
-}
+func (p *Peers) SelectBest(n int) []peer.ID { _ = "STUB: not implemented"; return nil }
 
 // SelectBestWithProtocols is similar to SelectBest but filters peers by supported protocols.
 // If protocols is empty, it returns the best peers regardless of the protocol.
 // If protocols is not empty, it returns the best peers that support at least one of the protocols.
 func (p *Peers) SelectBestWithProtocols(n int, protocols []protocol.ID) []peer.ID {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	return p.selectBest(n, protocols)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *Peers) selectBest(n int, protocols []protocol.ID) []peer.ID {
-	slices.Sort(protocols)
-	protocols = slices.Compact(protocols)
-	lth := min(len(p.peers), n)
-	if lth == 0 {
-		return nil
-	}
-	best := make([]*data, 0, lth)
-	for _, peer := range p.peers {
-		if len(protocols) > 0 {
-			found := false
-			for _, proto := range peer.protocols() {
-				if slices.Contains(protocols, proto) {
-					found = true
-					break
-				}
-			}
-			if !found {
-				continue
-			}
-		}
-		for i := range best {
-			if peer.less(best[i], p.globalLatency) {
-				best[i], peer = peer, best[i]
-			}
-		}
-		if len(best) < cap(best) {
-			best = append(best, peer)
-		}
-	}
-	rst := make([]peer.ID, len(best))
-	for i := range rst {
-		rst[i] = best[i].id
-	}
-	return rst
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (p *Peers) Total() int {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	return len(p.peers)
-}
+func (p *Peers) Total() int { _ = "STUB: not implemented"; return 0 }
 
-func (p *Peers) Stats() Stats {
-	best := p.SelectBest(5)
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	stats := Stats{
-		Total:                len(p.peers),
-		GlobalAverageLatency: time.Duration(p.globalLatency),
-	}
-	for _, peer := range best {
-		peerData, exist := p.peers[peer]
-		if !exist {
-			continue
-		}
-		stats.BestPeers = append(stats.BestPeers, PeerStats{
-			ID:       peerData.id,
-			Success:  peerData.success,
-			Failures: peerData.failures,
-			Latency:  time.Duration(peerData.averageLatency),
-		})
-	}
-	return stats
-}
+func (p *Peers) Stats() Stats { _ = "STUB: not implemented"; return *new(Stats) }
 
 type Stats struct {
 	Total                int
@@ -239,14 +107,7 @@ type Stats struct {
 }
 
 func (s *Stats) MarshalLogObject(enc zapcore.ObjectEncoder) error {
-	enc.AddInt("total", s.Total)
-	enc.AddDuration("global average latency", s.GlobalAverageLatency)
-	enc.AddArray("best peers", zapcore.ArrayMarshalerFunc(func(arrEnc zapcore.ArrayEncoder) error {
-		for _, peer := range s.BestPeers {
-			arrEnc.AppendObject(&peer)
-		}
-		return nil
-	}))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -258,9 +119,6 @@ type PeerStats struct {
 }
 
 func (p *PeerStats) MarshalLogObject(enc zapcore.ObjectEncoder) error {
-	enc.AddString("id", p.ID.String())
-	enc.AddInt("success", p.Success)
-	enc.AddInt("failures", p.Failures)
-	enc.AddDuration("latency per 1024 bytes", p.Latency)
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -41,52 +41,69 @@ type BandwidthCollector struct {
 
 // NewBandwidthCollector creates a new BandwidthCollector.
 func NewBandwidthCollector(pi peerinfo.PeerInfo) *BandwidthCollector {
-	return &BandwidthCollector{pi: pi}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LogSentMessageStream logs the message node sent to the peer.
 func (b *BandwidthCollector) LogSentMessageStream(size int64, proto protocol.ID, p peer.ID) {
-	totalOut.WithLabelValues().Add(float64(size))
-	trafficPerProtocol.WithLabelValues(string(proto), outgoing).Add(float64(size))
-	messagesPerProtocol.WithLabelValues(string(proto), outgoing).Inc()
-	b.pi.RecordSent(size, proto, p)
+	_ = "STUB: not implemented"
+	return
 }
 
 // LogRecvMessageStream logs the message that node received from the peer.
 func (b *BandwidthCollector) LogRecvMessageStream(size int64, proto protocol.ID, p peer.ID) {
-	totalIn.WithLabelValues().Add(float64(size))
-	trafficPerProtocol.WithLabelValues(string(proto), incoming).Add(float64(size))
-	messagesPerProtocol.WithLabelValues(string(proto), incoming).Inc()
-	b.pi.RecordReceived(size, proto, p)
+	_ = "STUB: not implemented"
+	return
 }
 
 // LogSentMessage  logs the message sent to the peer.
-func (b *BandwidthCollector) LogSentMessage(int64) {}
+func (b *BandwidthCollector) LogSentMessage(int64) {
+	_ = "STUB: not implemented"
 
-// LogRecvMessage logs the message received from the peer.
-func (b *BandwidthCollector) LogRecvMessage(int64) {}
+	// LogRecvMessage logs the message received from the peer.
+	return
+}
 
-// GetBandwidthForPeer mock returns the bandwidth for a given peer.
+func (b *BandwidthCollector) LogRecvMessage(int64) {
+	_ = "STUB: not implemented"
+
+	// GetBandwidthForPeer mock returns the bandwidth for a given peer.
+	return
+}
+
 func (b *BandwidthCollector) GetBandwidthForPeer(peer.ID) metrics.Stats {
-	return metrics.Stats{}
+	_ = "STUB: not implemented"
+	return *
+
+	// GetBandwidthForProtocol mock returns the bandwidth for a given protocol.
+	new(metrics.Stats)
 }
 
-// GetBandwidthForProtocol mock returns the bandwidth for a given protocol.
 func (b *BandwidthCollector) GetBandwidthForProtocol(protocol.ID) metrics.Stats {
-	return metrics.Stats{}
+	_ = "STUB: not implemented"
+	return *
+
+	// GetBandwidthTotals returns mock the total bandwidth used by the node.
+	new(metrics.Stats)
 }
 
-// GetBandwidthTotals returns mock the total bandwidth used by the node.
 func (b *BandwidthCollector) GetBandwidthTotals() metrics.Stats {
-	return metrics.Stats{}
+	_ = "STUB: not implemented"
+	return *
+
+	// GetBandwidthByPeer mock returns the bandwidth for a given peer.
+	new(metrics.Stats)
 }
 
-// GetBandwidthByPeer mock returns the bandwidth for a given peer.
 func (b *BandwidthCollector) GetBandwidthByPeer() map[peer.ID]metrics.Stats {
+	_ = "STUB: not implemented"
+
+	// GetBandwidthByProtocol mock returns the bandwidth for a given protocol.
 	return nil
 }
 
-// GetBandwidthByProtocol mock returns the bandwidth for a given protocol.
 func (b *BandwidthCollector) GetBandwidthByProtocol() map[protocol.ID]metrics.Stats {
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -1,13 +1,9 @@
 package wire
 
 import (
-	"encoding/hex"
-
 	"go.uber.org/zap/zapcore"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/hash"
 	"github.com/spacemeshos/go-spacemesh/signing"
 )
 
@@ -44,13 +40,7 @@ type PostV1 struct {
 
 type PostRoot types.Hash32
 
-func (p *PostV1) Root() (result PostRoot) {
-	h := hash.GetHasher()
-	defer hash.PutHasher(h)
-	codec.MustEncodeTo(h, p)
-	h.Sum(result[:0])
-	return result
-}
+func (p *PostV1) Root() (result PostRoot) { _ = "STUB: not implemented"; return *new(PostRoot) }
 
 type MerkleProofV1 struct {
 	// Nodes on path from leaf to root (not including leaf)
@@ -85,180 +75,55 @@ type ATXMetadataV1 struct {
 	MsgHash types.Hash32
 }
 
-func (atx *ActivationTxV1) ID() types.ATXID {
-	if atx.id == types.EmptyATXID {
-		atx.id = types.ATXID(atx.HashInnerBytes())
-	}
-	return atx.id
-}
+func (atx *ActivationTxV1) ID() types.ATXID { _ = "STUB: not implemented"; return *new(types.ATXID) }
 
-func (atx *ActivationTxV1) SetID(id types.ATXID) {
-	atx.id = id
-}
+func (atx *ActivationTxV1) SetID(id types.ATXID) { _ = "STUB: not implemented"; return }
 
-func (atx *ActivationTxV1) Sign(signer *signing.EdSigner) {
-	if atx.PrevATXID == types.EmptyATXID {
-		nodeID := signer.NodeID()
-		atx.NodeID = &nodeID
-	}
-	atx.Signature = signer.Sign(signing.ATX, atx.SignedBytes())
-	atx.SmesherID = signer.NodeID()
-}
+func (atx *ActivationTxV1) Sign(signer *signing.EdSigner) { _ = "STUB: not implemented"; return }
 
-func (atx *ActivationTxV1) SignedBytes() []byte {
-	data := codec.MustEncode(&ATXMetadataV1{
-		Publish: atx.PublishEpoch,
-		MsgHash: atx.HashInnerBytes(),
-	})
-	return data
-}
+func (atx *ActivationTxV1) SignedBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func (atx *ActivationTxV1) Blob() types.AtxBlob {
-	if len(atx.blob) == 0 {
-		atx.blob = codec.MustEncode(atx)
-	}
-	return types.AtxBlob{
-		Blob:    atx.blob,
-		Version: types.AtxV1,
-	}
+	_ = "STUB: not implemented"
+	return *new(types.AtxBlob)
 }
 
-func DecodeAtxV1(blob []byte) (*ActivationTxV1, error) {
-	atx := &ActivationTxV1{
-		blob: blob,
-	}
-	if err := codec.Decode(blob, atx); err != nil {
-		return nil, err
-	}
-	return atx, nil
-}
+func DecodeAtxV1(blob []byte) (*ActivationTxV1, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (atx *ActivationTxV1) HashInnerBytes() (result types.Hash32) {
-	h := hash.GetHasher()
-	defer hash.PutHasher(h)
-	codec.MustEncodeTo(h, &atx.InnerActivationTxV1)
-	h.Sum(result[:0])
-	return result
+	_ = "STUB: not implemented"
+	return *new(types.Hash32)
 }
 
-func PostToWireV1(p *types.Post) *PostV1 {
-	if p == nil {
-		return nil
-	}
-	return &PostV1{
-		Nonce:   p.Nonce,
-		Indices: p.Indices,
-		Pow:     p.Pow,
-	}
-}
+func PostToWireV1(p *types.Post) *PostV1 { _ = "STUB: not implemented"; return nil }
 
-func NiPostToWireV1(n *types.NIPost) *NIPostV1 {
-	if n == nil {
-		return nil
-	}
-
-	return &NIPostV1{
-		Membership: MerkleProofV1{
-			Nodes:     n.Membership.Nodes,
-			LeafIndex: n.Membership.LeafIndex,
-		},
-		Post: PostToWireV1(n.Post),
-		PostMetadata: &PostMetadataV1{
-			Challenge:     n.PostMetadata.Challenge,
-			LabelsPerUnit: n.PostMetadata.LabelsPerUnit,
-		},
-	}
-}
+func NiPostToWireV1(n *types.NIPost) *NIPostV1 { _ = "STUB: not implemented"; return nil }
 
 func NIPostChallengeToWireV1(c *types.NIPostChallenge) *NIPostChallengeV1 {
-	return &NIPostChallengeV1{
-		PublishEpoch:     c.PublishEpoch,
-		Sequence:         c.Sequence,
-		PrevATXID:        c.PrevATXID,
-		PositioningATXID: c.PositioningATX,
-		CommitmentATXID:  c.CommitmentATX,
-		InitialPost:      PostToWireV1(c.InitialPost),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func ActivationTxFromWireV1(atx *ActivationTxV1) *types.ActivationTx {
-	result := &types.ActivationTx{
-		PublishEpoch:  atx.PublishEpoch,
-		Sequence:      atx.Sequence,
-		CommitmentATX: atx.CommitmentATXID,
-		Coinbase:      atx.Coinbase,
-		NumUnits:      atx.NumUnits,
-		SmesherID:     atx.SmesherID,
-	}
-	result.SetID(atx.ID())
-
-	if atx.VRFNonce != nil {
-		result.VRFNonce = types.VRFPostIndex(*atx.VRFNonce)
-	}
-
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func NiPostFromWireV1(nipost *NIPostV1) *types.NIPost {
-	if nipost == nil {
-		return nil
-	}
+func NiPostFromWireV1(nipost *NIPostV1) *types.NIPost { _ = "STUB: not implemented"; return nil }
 
-	return &types.NIPost{
-		Membership: types.MerkleProof{
-			LeafIndex: nipost.Membership.LeafIndex,
-			Nodes:     nipost.Membership.Nodes,
-		},
-		Post: PostFromWireV1(nipost.Post),
-		PostMetadata: &types.PostMetadata{
-			Challenge:     nipost.PostMetadata.Challenge,
-			LabelsPerUnit: nipost.PostMetadata.LabelsPerUnit,
-		},
-	}
-}
-
-func PostFromWireV1(post *PostV1) *types.Post {
-	if post == nil {
-		return nil
-	}
-	return &types.Post{
-		Nonce:   post.Nonce,
-		Indices: post.Indices,
-		Pow:     post.Pow,
-	}
-}
+func PostFromWireV1(post *PostV1) *types.Post { _ = "STUB: not implemented"; return nil }
 
 func (p *PostV1) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if p == nil {
-		return nil
-	}
-	encoder.AddUint32("nonce", p.Nonce)
-	encoder.AddUint64("k2pow", p.Pow)
-	encoder.AddString("indices", hex.EncodeToString(p.Indices))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nipost *NIPostV1) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if nipost == nil {
-		return nil
-	}
-	encoder.AddObject("post", nipost.Post)
-	encoder.AddBinary("challenge", nipost.PostMetadata.Challenge)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (atx *ActivationTxV1) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if atx == nil {
-		return nil
-	}
-	encoder.AddString("atx_id", atx.ID().String())
-	encoder.AddString("smesher", atx.SmesherID.String())
-	encoder.AddString("coinbase", atx.Coinbase.String())
-	encoder.AddUint64("num_units", uint64(atx.NumUnits))
-	if atx.VRFNonce != nil {
-		encoder.AddUint64("vrf_nonce", uint64(*atx.VRFNonce))
-	}
-	encoder.AddObject("challenge", &atx.NIPostChallengeV1)
-	encoder.AddObject("nipost", atx.NIPost)
+	_ = "STUB: not implemented"
 	return nil
 }

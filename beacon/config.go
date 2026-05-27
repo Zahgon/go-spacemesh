@@ -36,52 +36,13 @@ type Config struct {
 }
 
 // DefaultConfig returns the default configuration for the beacon.
-func DefaultConfig() Config {
-	return Config{
-		Kappa:                    40,
-		Q:                        *big.NewRat(1, 3),
-		RoundsNumber:             300,
-		GracePeriodDuration:      2 * time.Minute,
-		ProposalDuration:         2 * time.Minute,
-		FirstVotingRoundDuration: 1 * time.Hour,
-		VotingRoundDuration:      30 * time.Minute,
-		WeakCoinRoundDuration:    1 * time.Minute,
-		Theta:                    *big.NewRat(1, 4),
-		VotesLimit:               100, // TODO: around 100, find the calculation in the forum
-		BeaconSyncWeightUnits:    800, // at least 1 cluster of 800 weight units
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
+
+// TODO: around 100, find the calculation in the forum
+// at least 1 cluster of 800 weight units
 
 // UnitTestConfig returns the unit test configuration for the beacon.
-func UnitTestConfig() Config {
-	return Config{
-		Kappa:                    40,
-		Q:                        *big.NewRat(1, 3),
-		RoundsNumber:             10,
-		GracePeriodDuration:      50 * time.Millisecond,
-		ProposalDuration:         50 * time.Millisecond,
-		FirstVotingRoundDuration: 90 * time.Millisecond,
-		VotingRoundDuration:      50 * time.Millisecond,
-		WeakCoinRoundDuration:    50 * time.Millisecond,
-		Theta:                    *big.NewRat(1, 25000),
-		VotesLimit:               100,
-		BeaconSyncWeightUnits:    2,
-	}
-}
+func UnitTestConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 // NodeSimUnitTestConfig returns configuration for the beacon the unit tests with node simulation .
-func NodeSimUnitTestConfig(tb testing.TB) Config {
-	return Config{
-		Kappa:                    40,
-		Q:                        *big.NewRat(1, 3),
-		RoundsNumber:             2,
-		GracePeriodDuration:      200 * time.Millisecond,
-		ProposalDuration:         500 * time.Millisecond,
-		FirstVotingRoundDuration: time.Second,
-		VotingRoundDuration:      500 * time.Millisecond,
-		WeakCoinRoundDuration:    200 * time.Millisecond,
-		Theta:                    *big.NewRat(1, 25000),
-		VotesLimit:               100,
-		BeaconSyncWeightUnits:    10,
-	}
-}
+func NodeSimUnitTestConfig(tb testing.TB) Config { _ = "STUB: not implemented"; return *new(Config) }

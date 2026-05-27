@@ -11,7 +11,6 @@ package mocks
 
 import (
 	context "context"
-	reflect "reflect"
 	time "time"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
@@ -35,29 +34,27 @@ type MocklayerTickerMockRecorder struct {
 
 // NewMocklayerTicker creates a new mock instance.
 func NewMocklayerTicker(ctrl *gomock.Controller) *MocklayerTicker {
-	mock := &MocklayerTicker{ctrl: ctrl}
-	mock.recorder = &MocklayerTickerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocklayerTicker) EXPECT() *MocklayerTickerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// CurrentLayer mocks base method.
+	return nil
 }
 
-// CurrentLayer mocks base method.
 func (m *MocklayerTicker) CurrentLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CurrentLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // CurrentLayer indicates an expected call of CurrentLayer.
 func (mr *MocklayerTickerMockRecorder) CurrentLayer() *MocklayerTickerCurrentLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CurrentLayer", reflect.TypeOf((*MocklayerTicker)(nil).CurrentLayer))
-	return &MocklayerTickerCurrentLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocklayerTickerCurrentLayerCall wrap *gomock.Call
@@ -67,35 +64,32 @@ type MocklayerTickerCurrentLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocklayerTickerCurrentLayerCall) Return(arg0 types.LayerID) *MocklayerTickerCurrentLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocklayerTickerCurrentLayerCall) Do(f func() types.LayerID) *MocklayerTickerCurrentLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocklayerTickerCurrentLayerCall) DoAndReturn(f func() types.LayerID) *MocklayerTickerCurrentLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LayerToTime mocks base method.
 func (m *MocklayerTicker) LayerToTime(arg0 types.LayerID) time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LayerToTime", arg0)
-	ret0, _ := ret[0].(time.Time)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
 // LayerToTime indicates an expected call of LayerToTime.
 func (mr *MocklayerTickerMockRecorder) LayerToTime(arg0 any) *MocklayerTickerLayerToTimeCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LayerToTime", reflect.TypeOf((*MocklayerTicker)(nil).LayerToTime), arg0)
-	return &MocklayerTickerLayerToTimeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocklayerTickerLayerToTimeCall wrap *gomock.Call
@@ -105,20 +99,20 @@ type MocklayerTickerLayerToTimeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocklayerTickerLayerToTimeCall) Return(arg0 time.Time) *MocklayerTickerLayerToTimeCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocklayerTickerLayerToTimeCall) Do(f func(types.LayerID) time.Time) *MocklayerTickerLayerToTimeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocklayerTickerLayerToTimeCall) DoAndReturn(f func(types.LayerID) time.Time) *MocklayerTickerLayerToTimeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogic is a mock of fetchLogic interface.
@@ -135,34 +129,27 @@ type MockfetchLogicMockRecorder struct {
 
 // NewMockfetchLogic creates a new mock instance.
 func NewMockfetchLogic(ctrl *gomock.Controller) *MockfetchLogic {
-	mock := &MockfetchLogic{ctrl: ctrl}
-	mock.recorder = &MockfetchLogicMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockfetchLogic) EXPECT() *MockfetchLogicMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAtxs mocks base method.
+	return nil
 }
 
-// GetAtxs mocks base method.
 func (m *MockfetchLogic) GetAtxs(arg0 context.Context, arg1 []types.ATXID, arg2 ...system.GetAtxOpt) error {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetAtxs", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAtxs indicates an expected call of GetAtxs.
 func (mr *MockfetchLogicMockRecorder) GetAtxs(arg0, arg1 any, arg2 ...any) *MockfetchLogicGetAtxsCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAtxs", reflect.TypeOf((*MockfetchLogic)(nil).GetAtxs), varargs...)
-	return &MockfetchLogicGetAtxsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetAtxsCall wrap *gomock.Call
@@ -172,35 +159,32 @@ type MockfetchLogicGetAtxsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetAtxsCall) Return(arg0 error) *MockfetchLogicGetAtxsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetAtxsCall) Do(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetchLogicGetAtxsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetAtxsCall) DoAndReturn(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetchLogicGetAtxsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBallots mocks base method.
 func (m *MockfetchLogic) GetBallots(arg0 context.Context, arg1 []types.BallotID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBallots", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBallots indicates an expected call of GetBallots.
 func (mr *MockfetchLogicMockRecorder) GetBallots(arg0, arg1 any) *MockfetchLogicGetBallotsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBallots", reflect.TypeOf((*MockfetchLogic)(nil).GetBallots), arg0, arg1)
-	return &MockfetchLogicGetBallotsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetBallotsCall wrap *gomock.Call
@@ -210,35 +194,32 @@ type MockfetchLogicGetBallotsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetBallotsCall) Return(arg0 error) *MockfetchLogicGetBallotsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetBallotsCall) Do(f func(context.Context, []types.BallotID) error) *MockfetchLogicGetBallotsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetBallotsCall) DoAndReturn(f func(context.Context, []types.BallotID) error) *MockfetchLogicGetBallotsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks mocks base method.
 func (m *MockfetchLogic) GetBlocks(arg0 context.Context, arg1 []types.BlockID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlocks", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks indicates an expected call of GetBlocks.
 func (mr *MockfetchLogicMockRecorder) GetBlocks(arg0, arg1 any) *MockfetchLogicGetBlocksCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlocks", reflect.TypeOf((*MockfetchLogic)(nil).GetBlocks), arg0, arg1)
-	return &MockfetchLogicGetBlocksCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetBlocksCall wrap *gomock.Call
@@ -248,36 +229,32 @@ type MockfetchLogicGetBlocksCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetBlocksCall) Return(arg0 error) *MockfetchLogicGetBlocksCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetBlocksCall) Do(f func(context.Context, []types.BlockID) error) *MockfetchLogicGetBlocksCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetBlocksCall) DoAndReturn(f func(context.Context, []types.BlockID) error) *MockfetchLogicGetBlocksCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetCert mocks base method.
 func (m *MockfetchLogic) GetCert(arg0 context.Context, arg1 types.LayerID, arg2 types.BlockID, arg3 []p2p.Peer) (*types.Certificate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCert", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(*types.Certificate)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetCert indicates an expected call of GetCert.
 func (mr *MockfetchLogicMockRecorder) GetCert(arg0, arg1, arg2, arg3 any) *MockfetchLogicGetCertCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCert", reflect.TypeOf((*MockfetchLogic)(nil).GetCert), arg0, arg1, arg2, arg3)
-	return &MockfetchLogicGetCertCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetCertCall wrap *gomock.Call
@@ -287,36 +264,32 @@ type MockfetchLogicGetCertCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetCertCall) Return(arg0 *types.Certificate, arg1 error) *MockfetchLogicGetCertCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetCertCall) Do(f func(context.Context, types.LayerID, types.BlockID, []p2p.Peer) (*types.Certificate, error)) *MockfetchLogicGetCertCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetCertCall) DoAndReturn(f func(context.Context, types.LayerID, types.BlockID, []p2p.Peer) (*types.Certificate, error)) *MockfetchLogicGetCertCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerData mocks base method.
 func (m *MockfetchLogic) GetLayerData(arg0 context.Context, arg1 p2p.Peer, arg2 types.LayerID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerData", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerData indicates an expected call of GetLayerData.
 func (mr *MockfetchLogicMockRecorder) GetLayerData(arg0, arg1, arg2 any) *MockfetchLogicGetLayerDataCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerData", reflect.TypeOf((*MockfetchLogic)(nil).GetLayerData), arg0, arg1, arg2)
-	return &MockfetchLogicGetLayerDataCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetLayerDataCall wrap *gomock.Call
@@ -326,36 +299,32 @@ type MockfetchLogicGetLayerDataCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetLayerDataCall) Return(arg0 []byte, arg1 error) *MockfetchLogicGetLayerDataCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetLayerDataCall) Do(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetchLogicGetLayerDataCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetLayerDataCall) DoAndReturn(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetchLogicGetLayerDataCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerOpinions mocks base method.
 func (m *MockfetchLogic) GetLayerOpinions(arg0 context.Context, arg1 p2p.Peer, arg2 types.LayerID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerOpinions", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerOpinions indicates an expected call of GetLayerOpinions.
 func (mr *MockfetchLogicMockRecorder) GetLayerOpinions(arg0, arg1, arg2 any) *MockfetchLogicGetLayerOpinionsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerOpinions", reflect.TypeOf((*MockfetchLogic)(nil).GetLayerOpinions), arg0, arg1, arg2)
-	return &MockfetchLogicGetLayerOpinionsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicGetLayerOpinionsCall wrap *gomock.Call
@@ -365,36 +334,32 @@ type MockfetchLogicGetLayerOpinionsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicGetLayerOpinionsCall) Return(arg0 []byte, arg1 error) *MockfetchLogicGetLayerOpinionsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicGetLayerOpinionsCall) Do(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetchLogicGetLayerOpinionsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicGetLayerOpinionsCall) DoAndReturn(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetchLogicGetLayerOpinionsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerEpochInfo mocks base method.
 func (m *MockfetchLogic) PeerEpochInfo(arg0 context.Context, arg1 p2p.Peer, arg2 types.EpochID) (*fetch.EpochData, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerEpochInfo", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*fetch.EpochData)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerEpochInfo indicates an expected call of PeerEpochInfo.
 func (mr *MockfetchLogicMockRecorder) PeerEpochInfo(arg0, arg1, arg2 any) *MockfetchLogicPeerEpochInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerEpochInfo", reflect.TypeOf((*MockfetchLogic)(nil).PeerEpochInfo), arg0, arg1, arg2)
-	return &MockfetchLogicPeerEpochInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicPeerEpochInfoCall wrap *gomock.Call
@@ -404,36 +369,32 @@ type MockfetchLogicPeerEpochInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicPeerEpochInfoCall) Return(arg0 *fetch.EpochData, arg1 error) *MockfetchLogicPeerEpochInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicPeerEpochInfoCall) Do(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetchLogicPeerEpochInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicPeerEpochInfoCall) DoAndReturn(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetchLogicPeerEpochInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerMeshHashes mocks base method.
 func (m *MockfetchLogic) PeerMeshHashes(arg0 context.Context, arg1 p2p.Peer, arg2 *fetch.MeshHashRequest) (*fetch.MeshHashes, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerMeshHashes", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*fetch.MeshHashes)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerMeshHashes indicates an expected call of PeerMeshHashes.
 func (mr *MockfetchLogicMockRecorder) PeerMeshHashes(arg0, arg1, arg2 any) *MockfetchLogicPeerMeshHashesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerMeshHashes", reflect.TypeOf((*MockfetchLogic)(nil).PeerMeshHashes), arg0, arg1, arg2)
-	return &MockfetchLogicPeerMeshHashesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicPeerMeshHashesCall wrap *gomock.Call
@@ -443,40 +404,32 @@ type MockfetchLogicPeerMeshHashesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicPeerMeshHashesCall) Return(arg0 *fetch.MeshHashes, arg1 error) *MockfetchLogicPeerMeshHashesCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicPeerMeshHashesCall) Do(f func(context.Context, p2p.Peer, *fetch.MeshHashRequest) (*fetch.MeshHashes, error)) *MockfetchLogicPeerMeshHashesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicPeerMeshHashesCall) DoAndReturn(f func(context.Context, p2p.Peer, *fetch.MeshHashRequest) (*fetch.MeshHashes, error)) *MockfetchLogicPeerMeshHashesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PollLayerData mocks base method.
 func (m *MockfetchLogic) PollLayerData(arg0 context.Context, arg1 types.LayerID, arg2 ...p2p.Peer) error {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "PollLayerData", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PollLayerData indicates an expected call of PollLayerData.
 func (mr *MockfetchLogicMockRecorder) PollLayerData(arg0, arg1 any, arg2 ...any) *MockfetchLogicPollLayerDataCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PollLayerData", reflect.TypeOf((*MockfetchLogic)(nil).PollLayerData), varargs...)
-	return &MockfetchLogicPollLayerDataCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicPollLayerDataCall wrap *gomock.Call
@@ -486,37 +439,32 @@ type MockfetchLogicPollLayerDataCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicPollLayerDataCall) Return(arg0 error) *MockfetchLogicPollLayerDataCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicPollLayerDataCall) Do(f func(context.Context, types.LayerID, ...p2p.Peer) error) *MockfetchLogicPollLayerDataCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicPollLayerDataCall) DoAndReturn(f func(context.Context, types.LayerID, ...p2p.Peer) error) *MockfetchLogicPollLayerDataCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PollLayerOpinions mocks base method.
 func (m *MockfetchLogic) PollLayerOpinions(arg0 context.Context, arg1 types.LayerID, arg2 bool, arg3 []p2p.Peer) ([]*fetch.LayerOpinion, []*types.Certificate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PollLayerOpinions", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].([]*fetch.LayerOpinion)
-	ret1, _ := ret[1].([]*types.Certificate)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // PollLayerOpinions indicates an expected call of PollLayerOpinions.
 func (mr *MockfetchLogicMockRecorder) PollLayerOpinions(arg0, arg1, arg2, arg3 any) *MockfetchLogicPollLayerOpinionsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PollLayerOpinions", reflect.TypeOf((*MockfetchLogic)(nil).PollLayerOpinions), arg0, arg1, arg2, arg3)
-	return &MockfetchLogicPollLayerOpinionsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicPollLayerOpinionsCall wrap *gomock.Call
@@ -526,33 +474,32 @@ type MockfetchLogicPollLayerOpinionsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicPollLayerOpinionsCall) Return(arg0 []*fetch.LayerOpinion, arg1 []*types.Certificate, arg2 error) *MockfetchLogicPollLayerOpinionsCall {
-	c.Call = c.Call.Return(arg0, arg1, arg2)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicPollLayerOpinionsCall) Do(f func(context.Context, types.LayerID, bool, []p2p.Peer) ([]*fetch.LayerOpinion, []*types.Certificate, error)) *MockfetchLogicPollLayerOpinionsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicPollLayerOpinionsCall) DoAndReturn(f func(context.Context, types.LayerID, bool, []p2p.Peer) ([]*fetch.LayerOpinion, []*types.Certificate, error)) *MockfetchLogicPollLayerOpinionsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterPeerHashes mocks base method.
 func (m *MockfetchLogic) RegisterPeerHashes(peer p2p.Peer, hashes []types.Hash32) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "RegisterPeerHashes", peer, hashes)
+	_ = "STUB: not implemented"
+	return
 }
 
 // RegisterPeerHashes indicates an expected call of RegisterPeerHashes.
 func (mr *MockfetchLogicMockRecorder) RegisterPeerHashes(peer, hashes any) *MockfetchLogicRegisterPeerHashesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterPeerHashes", reflect.TypeOf((*MockfetchLogic)(nil).RegisterPeerHashes), peer, hashes)
-	return &MockfetchLogicRegisterPeerHashesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicRegisterPeerHashesCall wrap *gomock.Call
@@ -562,35 +509,32 @@ type MockfetchLogicRegisterPeerHashesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicRegisterPeerHashesCall) Return() *MockfetchLogicRegisterPeerHashesCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicRegisterPeerHashesCall) Do(f func(p2p.Peer, []types.Hash32)) *MockfetchLogicRegisterPeerHashesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicRegisterPeerHashesCall) DoAndReturn(f func(p2p.Peer, []types.Hash32)) *MockfetchLogicRegisterPeerHashesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled mocks base method.
 func (m *MockfetchLogic) SelectBestShuffled(arg0 int) []p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectBestShuffled", arg0)
-	ret0, _ := ret[0].([]p2p.Peer)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled indicates an expected call of SelectBestShuffled.
 func (mr *MockfetchLogicMockRecorder) SelectBestShuffled(arg0 any) *MockfetchLogicSelectBestShuffledCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectBestShuffled", reflect.TypeOf((*MockfetchLogic)(nil).SelectBestShuffled), arg0)
-	return &MockfetchLogicSelectBestShuffledCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetchLogicSelectBestShuffledCall wrap *gomock.Call
@@ -600,20 +544,20 @@ type MockfetchLogicSelectBestShuffledCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetchLogicSelectBestShuffledCall) Return(arg0 []p2p.Peer) *MockfetchLogicSelectBestShuffledCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetchLogicSelectBestShuffledCall) Do(f func(int) []p2p.Peer) *MockfetchLogicSelectBestShuffledCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetchLogicSelectBestShuffledCall) DoAndReturn(f func(int) []p2p.Peer) *MockfetchLogicSelectBestShuffledCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxSyncer is a mock of atxSyncer interface.
@@ -630,29 +574,27 @@ type MockatxSyncerMockRecorder struct {
 
 // NewMockatxSyncer creates a new mock instance.
 func NewMockatxSyncer(ctrl *gomock.Controller) *MockatxSyncer {
-	mock := &MockatxSyncer{ctrl: ctrl}
-	mock.recorder = &MockatxSyncerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockatxSyncer) EXPECT() *MockatxSyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Download mocks base method.
+	return nil
 }
 
-// Download mocks base method.
 func (m *MockatxSyncer) Download(arg0 context.Context, arg1 types.EpochID, arg2 time.Time) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Download", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Download indicates an expected call of Download.
 func (mr *MockatxSyncerMockRecorder) Download(arg0, arg1, arg2 any) *MockatxSyncerDownloadCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Download", reflect.TypeOf((*MockatxSyncer)(nil).Download), arg0, arg1, arg2)
-	return &MockatxSyncerDownloadCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxSyncerDownloadCall wrap *gomock.Call
@@ -662,20 +604,20 @@ type MockatxSyncerDownloadCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockatxSyncerDownloadCall) Return(arg0 error) *MockatxSyncerDownloadCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockatxSyncerDownloadCall) Do(f func(context.Context, types.EpochID, time.Time) error) *MockatxSyncerDownloadCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockatxSyncerDownloadCall) DoAndReturn(f func(context.Context, types.EpochID, time.Time) error) *MockatxSyncerDownloadCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmalSyncer is a mock of malSyncer interface.
@@ -692,29 +634,27 @@ type MockmalSyncerMockRecorder struct {
 
 // NewMockmalSyncer creates a new mock instance.
 func NewMockmalSyncer(ctrl *gomock.Controller) *MockmalSyncer {
-	mock := &MockmalSyncer{ctrl: ctrl}
-	mock.recorder = &MockmalSyncerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockmalSyncer) EXPECT() *MockmalSyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// DownloadLoop mocks base method.
+	return nil
 }
 
-// DownloadLoop mocks base method.
 func (m *MockmalSyncer) DownloadLoop(parent context.Context, malSyncStart types.EpochID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DownloadLoop", parent, malSyncStart)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DownloadLoop indicates an expected call of DownloadLoop.
 func (mr *MockmalSyncerMockRecorder) DownloadLoop(parent, malSyncStart any) *MockmalSyncerDownloadLoopCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DownloadLoop", reflect.TypeOf((*MockmalSyncer)(nil).DownloadLoop), parent, malSyncStart)
-	return &MockmalSyncerDownloadLoopCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmalSyncerDownloadLoopCall wrap *gomock.Call
@@ -724,35 +664,32 @@ type MockmalSyncerDownloadLoopCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmalSyncerDownloadLoopCall) Return(arg0 error) *MockmalSyncerDownloadLoopCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmalSyncerDownloadLoopCall) Do(f func(context.Context, types.EpochID) error) *MockmalSyncerDownloadLoopCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmalSyncerDownloadLoopCall) DoAndReturn(f func(context.Context, types.EpochID) error) *MockmalSyncerDownloadLoopCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EnsureInSync mocks base method.
 func (m *MockmalSyncer) EnsureInSync(parent context.Context, epochStart, epochEnd time.Time) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EnsureInSync", parent, epochStart, epochEnd)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EnsureInSync indicates an expected call of EnsureInSync.
 func (mr *MockmalSyncerMockRecorder) EnsureInSync(parent, epochStart, epochEnd any) *MockmalSyncerEnsureInSyncCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnsureInSync", reflect.TypeOf((*MockmalSyncer)(nil).EnsureInSync), parent, epochStart, epochEnd)
-	return &MockmalSyncerEnsureInSyncCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmalSyncerEnsureInSyncCall wrap *gomock.Call
@@ -762,35 +699,32 @@ type MockmalSyncerEnsureInSyncCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmalSyncerEnsureInSyncCall) Return(arg0 error) *MockmalSyncerEnsureInSyncCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmalSyncerEnsureInSyncCall) Do(f func(context.Context, time.Time, time.Time) error) *MockmalSyncerEnsureInSyncCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmalSyncerEnsureInSyncCall) DoAndReturn(f func(context.Context, time.Time, time.Time) error) *MockmalSyncerEnsureInSyncCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EnsureLegacyInSync mocks base method.
 func (m *MockmalSyncer) EnsureLegacyInSync(parent context.Context, epochStart, epochEnd time.Time) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EnsureLegacyInSync", parent, epochStart, epochEnd)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EnsureLegacyInSync indicates an expected call of EnsureLegacyInSync.
 func (mr *MockmalSyncerMockRecorder) EnsureLegacyInSync(parent, epochStart, epochEnd any) *MockmalSyncerEnsureLegacyInSyncCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnsureLegacyInSync", reflect.TypeOf((*MockmalSyncer)(nil).EnsureLegacyInSync), parent, epochStart, epochEnd)
-	return &MockmalSyncerEnsureLegacyInSyncCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmalSyncerEnsureLegacyInSyncCall wrap *gomock.Call
@@ -800,20 +734,20 @@ type MockmalSyncerEnsureLegacyInSyncCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmalSyncerEnsureLegacyInSyncCall) Return(arg0 error) *MockmalSyncerEnsureLegacyInSyncCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmalSyncerEnsureLegacyInSyncCall) Do(f func(context.Context, time.Time, time.Time) error) *MockmalSyncerEnsureLegacyInSyncCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmalSyncerEnsureLegacyInSyncCall) DoAndReturn(f func(context.Context, time.Time, time.Time) error) *MockmalSyncerEnsureLegacyInSyncCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mockfetcher is a mock of fetcher interface.
@@ -829,35 +763,25 @@ type MockfetcherMockRecorder struct {
 }
 
 // NewMockfetcher creates a new mock instance.
-func NewMockfetcher(ctrl *gomock.Controller) *Mockfetcher {
-	mock := &Mockfetcher{ctrl: ctrl}
-	mock.recorder = &MockfetcherMockRecorder{mock}
-	return mock
-}
+func NewMockfetcher(ctrl *gomock.Controller) *Mockfetcher { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockfetcher) EXPECT() *MockfetcherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAtxs mocks base method.
+	return nil
 }
 
-// GetAtxs mocks base method.
 func (m *Mockfetcher) GetAtxs(arg0 context.Context, arg1 []types.ATXID, arg2 ...system.GetAtxOpt) error {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetAtxs", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAtxs indicates an expected call of GetAtxs.
 func (mr *MockfetcherMockRecorder) GetAtxs(arg0, arg1 any, arg2 ...any) *MockfetcherGetAtxsCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAtxs", reflect.TypeOf((*Mockfetcher)(nil).GetAtxs), varargs...)
-	return &MockfetcherGetAtxsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetAtxsCall wrap *gomock.Call
@@ -867,35 +791,32 @@ type MockfetcherGetAtxsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetAtxsCall) Return(arg0 error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetAtxsCall) Do(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetAtxsCall) DoAndReturn(f func(context.Context, []types.ATXID, ...system.GetAtxOpt) error) *MockfetcherGetAtxsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBallots mocks base method.
 func (m *Mockfetcher) GetBallots(arg0 context.Context, arg1 []types.BallotID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBallots", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBallots indicates an expected call of GetBallots.
 func (mr *MockfetcherMockRecorder) GetBallots(arg0, arg1 any) *MockfetcherGetBallotsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBallots", reflect.TypeOf((*Mockfetcher)(nil).GetBallots), arg0, arg1)
-	return &MockfetcherGetBallotsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetBallotsCall wrap *gomock.Call
@@ -905,35 +826,32 @@ type MockfetcherGetBallotsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetBallotsCall) Return(arg0 error) *MockfetcherGetBallotsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetBallotsCall) Do(f func(context.Context, []types.BallotID) error) *MockfetcherGetBallotsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetBallotsCall) DoAndReturn(f func(context.Context, []types.BallotID) error) *MockfetcherGetBallotsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks mocks base method.
 func (m *Mockfetcher) GetBlocks(arg0 context.Context, arg1 []types.BlockID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlocks", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks indicates an expected call of GetBlocks.
 func (mr *MockfetcherMockRecorder) GetBlocks(arg0, arg1 any) *MockfetcherGetBlocksCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlocks", reflect.TypeOf((*Mockfetcher)(nil).GetBlocks), arg0, arg1)
-	return &MockfetcherGetBlocksCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetBlocksCall wrap *gomock.Call
@@ -943,36 +861,32 @@ type MockfetcherGetBlocksCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetBlocksCall) Return(arg0 error) *MockfetcherGetBlocksCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetBlocksCall) Do(f func(context.Context, []types.BlockID) error) *MockfetcherGetBlocksCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetBlocksCall) DoAndReturn(f func(context.Context, []types.BlockID) error) *MockfetcherGetBlocksCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetCert mocks base method.
 func (m *Mockfetcher) GetCert(arg0 context.Context, arg1 types.LayerID, arg2 types.BlockID, arg3 []p2p.Peer) (*types.Certificate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCert", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(*types.Certificate)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetCert indicates an expected call of GetCert.
 func (mr *MockfetcherMockRecorder) GetCert(arg0, arg1, arg2, arg3 any) *MockfetcherGetCertCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCert", reflect.TypeOf((*Mockfetcher)(nil).GetCert), arg0, arg1, arg2, arg3)
-	return &MockfetcherGetCertCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetCertCall wrap *gomock.Call
@@ -982,36 +896,32 @@ type MockfetcherGetCertCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetCertCall) Return(arg0 *types.Certificate, arg1 error) *MockfetcherGetCertCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetCertCall) Do(f func(context.Context, types.LayerID, types.BlockID, []p2p.Peer) (*types.Certificate, error)) *MockfetcherGetCertCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetCertCall) DoAndReturn(f func(context.Context, types.LayerID, types.BlockID, []p2p.Peer) (*types.Certificate, error)) *MockfetcherGetCertCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerData mocks base method.
 func (m *Mockfetcher) GetLayerData(arg0 context.Context, arg1 p2p.Peer, arg2 types.LayerID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerData", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerData indicates an expected call of GetLayerData.
 func (mr *MockfetcherMockRecorder) GetLayerData(arg0, arg1, arg2 any) *MockfetcherGetLayerDataCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerData", reflect.TypeOf((*Mockfetcher)(nil).GetLayerData), arg0, arg1, arg2)
-	return &MockfetcherGetLayerDataCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetLayerDataCall wrap *gomock.Call
@@ -1021,36 +931,32 @@ type MockfetcherGetLayerDataCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetLayerDataCall) Return(arg0 []byte, arg1 error) *MockfetcherGetLayerDataCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetLayerDataCall) Do(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetcherGetLayerDataCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetLayerDataCall) DoAndReturn(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetcherGetLayerDataCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerOpinions mocks base method.
 func (m *Mockfetcher) GetLayerOpinions(arg0 context.Context, arg1 p2p.Peer, arg2 types.LayerID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerOpinions", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerOpinions indicates an expected call of GetLayerOpinions.
 func (mr *MockfetcherMockRecorder) GetLayerOpinions(arg0, arg1, arg2 any) *MockfetcherGetLayerOpinionsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerOpinions", reflect.TypeOf((*Mockfetcher)(nil).GetLayerOpinions), arg0, arg1, arg2)
-	return &MockfetcherGetLayerOpinionsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherGetLayerOpinionsCall wrap *gomock.Call
@@ -1060,36 +966,32 @@ type MockfetcherGetLayerOpinionsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherGetLayerOpinionsCall) Return(arg0 []byte, arg1 error) *MockfetcherGetLayerOpinionsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherGetLayerOpinionsCall) Do(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetcherGetLayerOpinionsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherGetLayerOpinionsCall) DoAndReturn(f func(context.Context, p2p.Peer, types.LayerID) ([]byte, error)) *MockfetcherGetLayerOpinionsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerEpochInfo mocks base method.
 func (m *Mockfetcher) PeerEpochInfo(arg0 context.Context, arg1 p2p.Peer, arg2 types.EpochID) (*fetch.EpochData, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerEpochInfo", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*fetch.EpochData)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerEpochInfo indicates an expected call of PeerEpochInfo.
 func (mr *MockfetcherMockRecorder) PeerEpochInfo(arg0, arg1, arg2 any) *MockfetcherPeerEpochInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerEpochInfo", reflect.TypeOf((*Mockfetcher)(nil).PeerEpochInfo), arg0, arg1, arg2)
-	return &MockfetcherPeerEpochInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherPeerEpochInfoCall wrap *gomock.Call
@@ -1099,36 +1001,32 @@ type MockfetcherPeerEpochInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherPeerEpochInfoCall) Return(arg0 *fetch.EpochData, arg1 error) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherPeerEpochInfoCall) Do(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherPeerEpochInfoCall) DoAndReturn(f func(context.Context, p2p.Peer, types.EpochID) (*fetch.EpochData, error)) *MockfetcherPeerEpochInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerMeshHashes mocks base method.
 func (m *Mockfetcher) PeerMeshHashes(arg0 context.Context, arg1 p2p.Peer, arg2 *fetch.MeshHashRequest) (*fetch.MeshHashes, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerMeshHashes", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*fetch.MeshHashes)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerMeshHashes indicates an expected call of PeerMeshHashes.
 func (mr *MockfetcherMockRecorder) PeerMeshHashes(arg0, arg1, arg2 any) *MockfetcherPeerMeshHashesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerMeshHashes", reflect.TypeOf((*Mockfetcher)(nil).PeerMeshHashes), arg0, arg1, arg2)
-	return &MockfetcherPeerMeshHashesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherPeerMeshHashesCall wrap *gomock.Call
@@ -1138,33 +1036,32 @@ type MockfetcherPeerMeshHashesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherPeerMeshHashesCall) Return(arg0 *fetch.MeshHashes, arg1 error) *MockfetcherPeerMeshHashesCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherPeerMeshHashesCall) Do(f func(context.Context, p2p.Peer, *fetch.MeshHashRequest) (*fetch.MeshHashes, error)) *MockfetcherPeerMeshHashesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherPeerMeshHashesCall) DoAndReturn(f func(context.Context, p2p.Peer, *fetch.MeshHashRequest) (*fetch.MeshHashes, error)) *MockfetcherPeerMeshHashesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterPeerHashes mocks base method.
 func (m *Mockfetcher) RegisterPeerHashes(peer p2p.Peer, hashes []types.Hash32) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "RegisterPeerHashes", peer, hashes)
+	_ = "STUB: not implemented"
+	return
 }
 
 // RegisterPeerHashes indicates an expected call of RegisterPeerHashes.
 func (mr *MockfetcherMockRecorder) RegisterPeerHashes(peer, hashes any) *MockfetcherRegisterPeerHashesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterPeerHashes", reflect.TypeOf((*Mockfetcher)(nil).RegisterPeerHashes), peer, hashes)
-	return &MockfetcherRegisterPeerHashesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherRegisterPeerHashesCall wrap *gomock.Call
@@ -1174,35 +1071,32 @@ type MockfetcherRegisterPeerHashesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherRegisterPeerHashesCall) Return() *MockfetcherRegisterPeerHashesCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherRegisterPeerHashesCall) Do(f func(p2p.Peer, []types.Hash32)) *MockfetcherRegisterPeerHashesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherRegisterPeerHashesCall) DoAndReturn(f func(p2p.Peer, []types.Hash32)) *MockfetcherRegisterPeerHashesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled mocks base method.
 func (m *Mockfetcher) SelectBestShuffled(arg0 int) []p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectBestShuffled", arg0)
-	ret0, _ := ret[0].([]p2p.Peer)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SelectBestShuffled indicates an expected call of SelectBestShuffled.
 func (mr *MockfetcherMockRecorder) SelectBestShuffled(arg0 any) *MockfetcherSelectBestShuffledCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectBestShuffled", reflect.TypeOf((*Mockfetcher)(nil).SelectBestShuffled), arg0)
-	return &MockfetcherSelectBestShuffledCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockfetcherSelectBestShuffledCall wrap *gomock.Call
@@ -1212,20 +1106,20 @@ type MockfetcherSelectBestShuffledCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockfetcherSelectBestShuffledCall) Return(arg0 []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockfetcherSelectBestShuffledCall) Do(f func(int) []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockfetcherSelectBestShuffledCall) DoAndReturn(f func(int) []p2p.Peer) *MockfetcherSelectBestShuffledCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocklayerPatrol is a mock of layerPatrol interface.
@@ -1242,29 +1136,27 @@ type MocklayerPatrolMockRecorder struct {
 
 // NewMocklayerPatrol creates a new mock instance.
 func NewMocklayerPatrol(ctrl *gomock.Controller) *MocklayerPatrol {
-	mock := &MocklayerPatrol{ctrl: ctrl}
-	mock.recorder = &MocklayerPatrolMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocklayerPatrol) EXPECT() *MocklayerPatrolMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// IsHareInCharge mocks base method.
+	return nil
 }
 
-// IsHareInCharge mocks base method.
 func (m *MocklayerPatrol) IsHareInCharge(arg0 types.LayerID) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsHareInCharge", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // IsHareInCharge indicates an expected call of IsHareInCharge.
 func (mr *MocklayerPatrolMockRecorder) IsHareInCharge(arg0 any) *MocklayerPatrolIsHareInChargeCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsHareInCharge", reflect.TypeOf((*MocklayerPatrol)(nil).IsHareInCharge), arg0)
-	return &MocklayerPatrolIsHareInChargeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocklayerPatrolIsHareInChargeCall wrap *gomock.Call
@@ -1274,20 +1166,20 @@ type MocklayerPatrolIsHareInChargeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocklayerPatrolIsHareInChargeCall) Return(arg0 bool) *MocklayerPatrolIsHareInChargeCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocklayerPatrolIsHareInChargeCall) Do(f func(types.LayerID) bool) *MocklayerPatrolIsHareInChargeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocklayerPatrolIsHareInChargeCall) DoAndReturn(f func(types.LayerID) bool) *MocklayerPatrolIsHareInChargeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockcertHandler is a mock of certHandler interface.
@@ -1304,29 +1196,27 @@ type MockcertHandlerMockRecorder struct {
 
 // NewMockcertHandler creates a new mock instance.
 func NewMockcertHandler(ctrl *gomock.Controller) *MockcertHandler {
-	mock := &MockcertHandler{ctrl: ctrl}
-	mock.recorder = &MockcertHandlerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockcertHandler) EXPECT() *MockcertHandlerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// HandleSyncedCertificate mocks base method.
+	return nil
 }
 
-// HandleSyncedCertificate mocks base method.
 func (m *MockcertHandler) HandleSyncedCertificate(arg0 context.Context, arg1 types.LayerID, arg2 *types.Certificate) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HandleSyncedCertificate", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HandleSyncedCertificate indicates an expected call of HandleSyncedCertificate.
 func (mr *MockcertHandlerMockRecorder) HandleSyncedCertificate(arg0, arg1, arg2 any) *MockcertHandlerHandleSyncedCertificateCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandleSyncedCertificate", reflect.TypeOf((*MockcertHandler)(nil).HandleSyncedCertificate), arg0, arg1, arg2)
-	return &MockcertHandlerHandleSyncedCertificateCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockcertHandlerHandleSyncedCertificateCall wrap *gomock.Call
@@ -1336,20 +1226,20 @@ type MockcertHandlerHandleSyncedCertificateCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockcertHandlerHandleSyncedCertificateCall) Return(arg0 error) *MockcertHandlerHandleSyncedCertificateCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockcertHandlerHandleSyncedCertificateCall) Do(f func(context.Context, types.LayerID, *types.Certificate) error) *MockcertHandlerHandleSyncedCertificateCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockcertHandlerHandleSyncedCertificateCall) DoAndReturn(f func(context.Context, types.LayerID, *types.Certificate) error) *MockcertHandlerHandleSyncedCertificateCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinder is a mock of forkFinder interface.
@@ -1366,27 +1256,27 @@ type MockforkFinderMockRecorder struct {
 
 // NewMockforkFinder creates a new mock instance.
 func NewMockforkFinder(ctrl *gomock.Controller) *MockforkFinder {
-	mock := &MockforkFinder{ctrl: ctrl}
-	mock.recorder = &MockforkFinderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockforkFinder) EXPECT() *MockforkFinderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AddResynced mocks base method.
+	return nil
 }
 
-// AddResynced mocks base method.
 func (m *MockforkFinder) AddResynced(arg0 types.LayerID, arg1 types.Hash32) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddResynced", arg0, arg1)
+	_ = "STUB: not implemented"
+	return
 }
 
 // AddResynced indicates an expected call of AddResynced.
 func (mr *MockforkFinderMockRecorder) AddResynced(arg0, arg1 any) *MockforkFinderAddResyncedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddResynced", reflect.TypeOf((*MockforkFinder)(nil).AddResynced), arg0, arg1)
-	return &MockforkFinderAddResyncedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinderAddResyncedCall wrap *gomock.Call
@@ -1396,36 +1286,32 @@ type MockforkFinderAddResyncedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockforkFinderAddResyncedCall) Return() *MockforkFinderAddResyncedCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockforkFinderAddResyncedCall) Do(f func(types.LayerID, types.Hash32)) *MockforkFinderAddResyncedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockforkFinderAddResyncedCall) DoAndReturn(f func(types.LayerID, types.Hash32)) *MockforkFinderAddResyncedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // FindFork mocks base method.
 func (m *MockforkFinder) FindFork(arg0 context.Context, arg1 p2p.Peer, arg2 types.LayerID, arg3 types.Hash32) (types.LayerID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindFork", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(types.LayerID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.LayerID), nil
 }
 
 // FindFork indicates an expected call of FindFork.
 func (mr *MockforkFinderMockRecorder) FindFork(arg0, arg1, arg2, arg3 any) *MockforkFinderFindForkCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFork", reflect.TypeOf((*MockforkFinder)(nil).FindFork), arg0, arg1, arg2, arg3)
-	return &MockforkFinderFindForkCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinderFindForkCall wrap *gomock.Call
@@ -1435,35 +1321,32 @@ type MockforkFinderFindForkCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockforkFinderFindForkCall) Return(arg0 types.LayerID, arg1 error) *MockforkFinderFindForkCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockforkFinderFindForkCall) Do(f func(context.Context, p2p.Peer, types.LayerID, types.Hash32) (types.LayerID, error)) *MockforkFinderFindForkCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockforkFinderFindForkCall) DoAndReturn(f func(context.Context, p2p.Peer, types.LayerID, types.Hash32) (types.LayerID, error)) *MockforkFinderFindForkCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NeedResync mocks base method.
 func (m *MockforkFinder) NeedResync(arg0 types.LayerID, arg1 types.Hash32) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NeedResync", arg0, arg1)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // NeedResync indicates an expected call of NeedResync.
 func (mr *MockforkFinderMockRecorder) NeedResync(arg0, arg1 any) *MockforkFinderNeedResyncCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NeedResync", reflect.TypeOf((*MockforkFinder)(nil).NeedResync), arg0, arg1)
-	return &MockforkFinderNeedResyncCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinderNeedResyncCall wrap *gomock.Call
@@ -1473,38 +1356,29 @@ type MockforkFinderNeedResyncCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockforkFinderNeedResyncCall) Return(arg0 bool) *MockforkFinderNeedResyncCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockforkFinderNeedResyncCall) Do(f func(types.LayerID, types.Hash32) bool) *MockforkFinderNeedResyncCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockforkFinderNeedResyncCall) DoAndReturn(f func(types.LayerID, types.Hash32) bool) *MockforkFinderNeedResyncCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Purge mocks base method.
-func (m *MockforkFinder) Purge(arg0 bool, arg1 ...p2p.Peer) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0}
-	for _, a := range arg1 {
-		varargs = append(varargs, a)
-	}
-	m.ctrl.Call(m, "Purge", varargs...)
-}
+func (m *MockforkFinder) Purge(arg0 bool, arg1 ...p2p.Peer) { _ = "STUB: not implemented"; return }
 
 // Purge indicates an expected call of Purge.
 func (mr *MockforkFinderMockRecorder) Purge(arg0 any, arg1 ...any) *MockforkFinderPurgeCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0}, arg1...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Purge", reflect.TypeOf((*MockforkFinder)(nil).Purge), varargs...)
-	return &MockforkFinderPurgeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinderPurgeCall wrap *gomock.Call
@@ -1514,33 +1388,32 @@ type MockforkFinderPurgeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockforkFinderPurgeCall) Return() *MockforkFinderPurgeCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockforkFinderPurgeCall) Do(f func(bool, ...p2p.Peer)) *MockforkFinderPurgeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockforkFinderPurgeCall) DoAndReturn(f func(bool, ...p2p.Peer)) *MockforkFinderPurgeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpdateAgreement mocks base method.
 func (m *MockforkFinder) UpdateAgreement(arg0 p2p.Peer, arg1 types.LayerID, arg2 types.Hash32, arg3 time.Time) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "UpdateAgreement", arg0, arg1, arg2, arg3)
+	_ = "STUB: not implemented"
+	return
 }
 
 // UpdateAgreement indicates an expected call of UpdateAgreement.
 func (mr *MockforkFinderMockRecorder) UpdateAgreement(arg0, arg1, arg2, arg3 any) *MockforkFinderUpdateAgreementCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAgreement", reflect.TypeOf((*MockforkFinder)(nil).UpdateAgreement), arg0, arg1, arg2, arg3)
-	return &MockforkFinderUpdateAgreementCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockforkFinderUpdateAgreementCall wrap *gomock.Call
@@ -1550,20 +1423,20 @@ type MockforkFinderUpdateAgreementCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockforkFinderUpdateAgreementCall) Return() *MockforkFinderUpdateAgreementCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockforkFinderUpdateAgreementCall) Do(f func(p2p.Peer, types.LayerID, types.Hash32, time.Time)) *MockforkFinderUpdateAgreementCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockforkFinderUpdateAgreementCall) DoAndReturn(f func(p2p.Peer, types.LayerID, types.Hash32, time.Time)) *MockforkFinderUpdateAgreementCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmultiEpochAtxSyncerV2 is a mock of multiEpochAtxSyncerV2 interface.
@@ -1580,30 +1453,27 @@ type MockmultiEpochAtxSyncerV2MockRecorder struct {
 
 // NewMockmultiEpochAtxSyncerV2 creates a new mock instance.
 func NewMockmultiEpochAtxSyncerV2(ctrl *gomock.Controller) *MockmultiEpochAtxSyncerV2 {
-	mock := &MockmultiEpochAtxSyncerV2{ctrl: ctrl}
-	mock.recorder = &MockmultiEpochAtxSyncerV2MockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockmultiEpochAtxSyncerV2) EXPECT() *MockmultiEpochAtxSyncerV2MockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// EnsureSync mocks base method.
+	return nil
 }
 
-// EnsureSync mocks base method.
 func (m *MockmultiEpochAtxSyncerV2) EnsureSync(ctx context.Context, lastWaitEpoch, newEpoch types.EpochID) (types.EpochID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EnsureSync", ctx, lastWaitEpoch, newEpoch)
-	ret0, _ := ret[0].(types.EpochID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.EpochID), nil
 }
 
 // EnsureSync indicates an expected call of EnsureSync.
 func (mr *MockmultiEpochAtxSyncerV2MockRecorder) EnsureSync(ctx, lastWaitEpoch, newEpoch any) *MockmultiEpochAtxSyncerV2EnsureSyncCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnsureSync", reflect.TypeOf((*MockmultiEpochAtxSyncerV2)(nil).EnsureSync), ctx, lastWaitEpoch, newEpoch)
-	return &MockmultiEpochAtxSyncerV2EnsureSyncCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmultiEpochAtxSyncerV2EnsureSyncCall wrap *gomock.Call
@@ -1613,33 +1483,29 @@ type MockmultiEpochAtxSyncerV2EnsureSyncCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmultiEpochAtxSyncerV2EnsureSyncCall) Return(lastSynced types.EpochID, err error) *MockmultiEpochAtxSyncerV2EnsureSyncCall {
-	c.Call = c.Call.Return(lastSynced, err)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmultiEpochAtxSyncerV2EnsureSyncCall) Do(f func(context.Context, types.EpochID, types.EpochID) (types.EpochID, error)) *MockmultiEpochAtxSyncerV2EnsureSyncCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmultiEpochAtxSyncerV2EnsureSyncCall) DoAndReturn(f func(context.Context, types.EpochID, types.EpochID) (types.EpochID, error)) *MockmultiEpochAtxSyncerV2EnsureSyncCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Stop mocks base method.
-func (m *MockmultiEpochAtxSyncerV2) Stop() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Stop")
-}
+func (m *MockmultiEpochAtxSyncerV2) Stop() { _ = "STUB: not implemented"; return }
 
 // Stop indicates an expected call of Stop.
 func (mr *MockmultiEpochAtxSyncerV2MockRecorder) Stop() *MockmultiEpochAtxSyncerV2StopCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stop", reflect.TypeOf((*MockmultiEpochAtxSyncerV2)(nil).Stop))
-	return &MockmultiEpochAtxSyncerV2StopCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmultiEpochAtxSyncerV2StopCall wrap *gomock.Call
@@ -1649,18 +1515,18 @@ type MockmultiEpochAtxSyncerV2StopCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmultiEpochAtxSyncerV2StopCall) Return() *MockmultiEpochAtxSyncerV2StopCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmultiEpochAtxSyncerV2StopCall) Do(f func()) *MockmultiEpochAtxSyncerV2StopCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmultiEpochAtxSyncerV2StopCall) DoAndReturn(f func()) *MockmultiEpochAtxSyncerV2StopCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -1,8 +1,6 @@
 package beacon
 
 import (
-	"encoding/hex"
-
 	"github.com/spacemeshos/go-scale"
 	"go.uber.org/zap/zapcore"
 
@@ -29,23 +27,24 @@ type Proposal [types.BeaconSize]byte
 
 // EncodeScale implements scale codec interface.
 func (p *Proposal) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, p[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (p *Proposal) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, p[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (p Proposal) MarshalLogObject(enc zapcore.ObjectEncoder) error {
-	enc.AddString("proposal", hex.EncodeToString(p[:]))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func ProposalFromVrf(vrf types.VrfSignature) Proposal {
-	var p Proposal
-	copy(p[:], vrf[:])
-	return p
+	_ = "STUB: not implemented"
+	return *new(Proposal)
 }
 
 // FirstVotingMessageBody is FirstVotingMessage without a signature.

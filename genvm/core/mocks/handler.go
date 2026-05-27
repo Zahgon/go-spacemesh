@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	scale "github.com/spacemeshos/go-scale"
 	core "github.com/spacemeshos/go-spacemesh/genvm/core"
 	gomock "go.uber.org/mock/gomock"
@@ -30,30 +28,25 @@ type MockHandlerMockRecorder struct {
 }
 
 // NewMockHandler creates a new mock instance.
-func NewMockHandler(ctrl *gomock.Controller) *MockHandler {
-	mock := &MockHandler{ctrl: ctrl}
-	mock.recorder = &MockHandlerMockRecorder{mock}
-	return mock
-}
+func NewMockHandler(ctrl *gomock.Controller) *MockHandler { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockHandler) EXPECT() *MockHandlerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Args mocks base method.
+	return nil
 }
 
-// Args mocks base method.
 func (m *MockHandler) Args(arg0 uint8) scale.Type {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Args", arg0)
-	ret0, _ := ret[0].(scale.Type)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(scale.Type)
 }
 
 // Args indicates an expected call of Args.
 func (mr *MockHandlerMockRecorder) Args(arg0 any) *MockHandlerArgsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Args", reflect.TypeOf((*MockHandler)(nil).Args), arg0)
-	return &MockHandlerArgsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockHandlerArgsCall wrap *gomock.Call
@@ -63,35 +56,32 @@ type MockHandlerArgsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockHandlerArgsCall) Return(arg0 scale.Type) *MockHandlerArgsCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockHandlerArgsCall) Do(f func(uint8) scale.Type) *MockHandlerArgsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockHandlerArgsCall) DoAndReturn(f func(uint8) scale.Type) *MockHandlerArgsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Exec mocks base method.
 func (m *MockHandler) Exec(arg0 core.Host, arg1 uint8, arg2 scale.Encodable) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Exec", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Exec indicates an expected call of Exec.
 func (mr *MockHandlerMockRecorder) Exec(arg0, arg1, arg2 any) *MockHandlerExecCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exec", reflect.TypeOf((*MockHandler)(nil).Exec), arg0, arg1, arg2)
-	return &MockHandlerExecCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockHandlerExecCall wrap *gomock.Call
@@ -101,36 +91,32 @@ type MockHandlerExecCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockHandlerExecCall) Return(arg0 error) *MockHandlerExecCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockHandlerExecCall) Do(f func(core.Host, uint8, scale.Encodable) error) *MockHandlerExecCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockHandlerExecCall) DoAndReturn(f func(core.Host, uint8, scale.Encodable) error) *MockHandlerExecCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Load mocks base method.
 func (m *MockHandler) Load(arg0 []byte) (core.Template, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Load", arg0)
-	ret0, _ := ret[0].(core.Template)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
 
 // Load indicates an expected call of Load.
 func (mr *MockHandlerMockRecorder) Load(arg0 any) *MockHandlerLoadCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Load", reflect.TypeOf((*MockHandler)(nil).Load), arg0)
-	return &MockHandlerLoadCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockHandlerLoadCall wrap *gomock.Call
@@ -140,36 +126,32 @@ type MockHandlerLoadCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockHandlerLoadCall) Return(arg0 core.Template, arg1 error) *MockHandlerLoadCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockHandlerLoadCall) Do(f func([]byte) (core.Template, error)) *MockHandlerLoadCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockHandlerLoadCall) DoAndReturn(f func([]byte) (core.Template, error)) *MockHandlerLoadCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // New mocks base method.
 func (m *MockHandler) New(arg0 any) (core.Template, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "New", arg0)
-	ret0, _ := ret[0].(core.Template)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
 
 // New indicates an expected call of New.
 func (mr *MockHandlerMockRecorder) New(arg0 any) *MockHandlerNewCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "New", reflect.TypeOf((*MockHandler)(nil).New), arg0)
-	return &MockHandlerNewCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockHandlerNewCall wrap *gomock.Call
@@ -179,36 +161,32 @@ type MockHandlerNewCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockHandlerNewCall) Return(arg0 core.Template, arg1 error) *MockHandlerNewCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockHandlerNewCall) Do(f func(any) (core.Template, error)) *MockHandlerNewCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockHandlerNewCall) DoAndReturn(f func(any) (core.Template, error)) *MockHandlerNewCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Parse mocks base method.
 func (m *MockHandler) Parse(arg0 uint8, arg1 *scale.Decoder) (core.ParseOutput, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Parse", arg0, arg1)
-	ret0, _ := ret[0].(core.ParseOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(core.ParseOutput), nil
 }
 
 // Parse indicates an expected call of Parse.
 func (mr *MockHandlerMockRecorder) Parse(arg0, arg1 any) *MockHandlerParseCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse", reflect.TypeOf((*MockHandler)(nil).Parse), arg0, arg1)
-	return &MockHandlerParseCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockHandlerParseCall wrap *gomock.Call
@@ -218,18 +196,18 @@ type MockHandlerParseCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockHandlerParseCall) Return(arg0 core.ParseOutput, arg1 error) *MockHandlerParseCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockHandlerParseCall) Do(f func(uint8, *scale.Decoder) (core.ParseOutput, error)) *MockHandlerParseCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockHandlerParseCall) DoAndReturn(f func(uint8, *scale.Decoder) (core.ParseOutput, error)) *MockHandlerParseCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

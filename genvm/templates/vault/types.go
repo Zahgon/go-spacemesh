@@ -1,8 +1,6 @@
 package vault
 
 import (
-	"fmt"
-
 	"github.com/spacemeshos/go-spacemesh/genvm/core"
 	"github.com/spacemeshos/go-spacemesh/genvm/templates/wallet"
 )
@@ -21,8 +19,4 @@ type SpawnArguments struct {
 	VestingEnd          core.LayerID
 }
 
-func (args *SpawnArguments) String() string {
-	return fmt.Sprintf("owner = %s. total = %d smidge. initial = %d smidge. start = %d. end = %d",
-		args.Owner.String(), args.TotalAmount, args.InitialUnlockAmount, args.VestingStart, args.VestingEnd,
-	)
-}
+func (args *SpawnArguments) String() string { _ = "STUB: not implemented"; return "" }

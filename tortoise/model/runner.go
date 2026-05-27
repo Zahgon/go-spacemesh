@@ -3,7 +3,6 @@ package model
 import (
 	"math/rand"
 	"reflect"
-	"strconv"
 	"testing"
 
 	"go.uber.org/zap"
@@ -16,7 +15,8 @@ type model interface {
 }
 
 func newCluster(tb testing.TB, logger *zap.Logger, rng *rand.Rand) *cluster {
-	return &cluster{tb: tb, logger: logger, rng: rng}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type cluster struct {
@@ -26,33 +26,17 @@ type cluster struct {
 	models []model
 }
 
-func (r *cluster) nextid() string {
-	return strconv.Itoa(len(r.models))
-}
+func (r *cluster) nextid() string { _ = "STUB: not implemented"; return "" }
 
-func (r *cluster) add(m model) *cluster {
-	r.models = append(r.models, m)
-	return r
-}
+func (r *cluster) add(m model) *cluster { _ = "STUB: not implemented"; return nil }
 
-func (r *cluster) addCore() *cluster {
-	id := r.nextid()
-	return r.add(newCore(r.tb, r.rng, id, r.logger.Named("core-"+id)))
-}
+func (r *cluster) addCore() *cluster { _ = "STUB: not implemented"; return nil }
 
-func (r *cluster) addHare() *cluster {
-	return r.add(newHare(r.rng))
-}
+func (r *cluster) addHare() *cluster { _ = "STUB: not implemented"; return nil }
 
-func (r *cluster) addBeacon() *cluster {
-	return r.add(newBeacon(r.rng))
-}
+func (r *cluster) addBeacon() *cluster { _ = "STUB: not implemented"; return nil }
 
-func (r *cluster) iterate(f func(m model)) {
-	for _, m := range r.models {
-		f(m)
-	}
-}
+func (r *cluster) iterate(f func(m model)) { _ = "STUB: not implemented"; return }
 
 func newFailingRunner(c *cluster,
 	messenger Messenger,
@@ -60,13 +44,8 @@ func newFailingRunner(c *cluster,
 	rng *rand.Rand,
 	probability [2]int,
 ) *failingRunner {
-	return &failingRunner{
-		cluster:     c,
-		messenger:   messenger,
-		monitors:    monitors,
-		rng:         rng,
-		probability: probability,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type failingRunner struct {
@@ -80,44 +59,13 @@ type failingRunner struct {
 	failables   map[reflect.Type]struct{}
 }
 
-func (r *failingRunner) next() {
-	r.lid = r.lid.Add(1)
-	r.messenger.Send(MessageLayerStart{LayerID: r.lid})
-	r.consume()
-	r.messenger.Send(MessageLayerEnd{LayerID: r.lid})
-	r.consume()
-}
+func (r *failingRunner) next() { _ = "STUB: not implemented"; return }
 
 func (r *failingRunner) failable(events ...Message) *failingRunner {
-	if r.failables == nil {
-		r.failables = map[reflect.Type]struct{}{}
-	}
-	for _, ev := range events {
-		r.failables[reflect.TypeOf(ev)] = struct{}{}
-	}
-	return r
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (r *failingRunner) isFailable(ev Message) bool {
-	if r.failables == nil {
-		return true
-	}
-	_, exist := r.failables[reflect.TypeOf(ev)]
-	return exist
-}
+func (r *failingRunner) isFailable(ev Message) bool { _ = "STUB: not implemented"; return false }
 
-func (r *failingRunner) consume() {
-	for msg := r.messenger.PopMessage(); msg != nil; msg = r.messenger.PopMessage() {
-		if r.isFailable(msg) && r.probability[0] > r.rng.Intn(r.probability[1]) {
-			continue
-		}
-		r.cluster.iterate(func(m model) {
-			m.OnMessage(r.messenger, msg)
-		})
-	}
-	for ev := r.messenger.PopEvent(); ev != nil; ev = r.messenger.PopEvent() {
-		for _, monitor := range r.monitors {
-			monitor.OnEvent(ev)
-		}
-	}
-}
+func (r *failingRunner) consume() { _ = "STUB: not implemented"; return }

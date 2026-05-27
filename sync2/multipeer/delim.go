@@ -1,8 +1,6 @@
 package multipeer
 
 import (
-	"encoding/binary"
-
 	"github.com/spacemeshos/go-spacemesh/sync2/rangesync"
 )
 
@@ -17,16 +15,6 @@ import (
 // The ranges to scan are:
 // [k0,ks[0]); [k0,ks[1]); ... [k0,ks[numPeers-2]); [ks[numPeers-2],0).
 func getDelimiters(numPeers, keyLen, maxDepth int) (ks []rangesync.KeyBytes) {
-	if numPeers < 2 {
-		return nil
-	}
-	mask := uint64(0xffffffffffffffff) << (64 - maxDepth)
-	inc := (uint64(0x80) << 56) / uint64(numPeers)
-	ks = make([]rangesync.KeyBytes, numPeers-1)
-	for i, v := 0, uint64(0); i < numPeers-1; i++ {
-		ks[i] = make(rangesync.KeyBytes, keyLen)
-		v += inc
-		binary.BigEndian.PutUint64(ks[i], (v<<1)&mask)
-	}
-	return ks
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -14,13 +14,14 @@ type LayerConverter struct {
 
 // TimeToLayer returns the layer of the provided time.
 func (lc LayerConverter) TimeToLayer(t time.Time) types.LayerID {
-	if t.Before(lc.genesis) { // the genesis is in the future
-		return 0
-	}
-	return types.LayerID(uint32(t.Sub(lc.genesis) / lc.duration))
+	_ = "STUB: not implemented"
+	return *
+	// the genesis is in the future
+	new(types.LayerID)
 }
 
 // LayerToTime returns the time of the provided layer.
 func (lc LayerConverter) LayerToTime(id types.LayerID) time.Time {
-	return lc.genesis.Add(time.Duration(id.Uint32()) * lc.duration)
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }

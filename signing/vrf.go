@@ -2,7 +2,6 @@ package signing
 
 import (
 	"github.com/oasisprotocol/curve25519-voi/primitives/ed25519"
-	"github.com/oasisprotocol/curve25519-voi/primitives/ed25519/extra/ecvrf"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
 )
@@ -15,32 +14,37 @@ type VRFSigner struct {
 
 // Sign signs a message for VRF purposes.
 func (s VRFSigner) Sign(msg []byte) types.VrfSignature {
-	return *(*[types.VrfSignatureSize]byte)(ecvrf.Prove(s.privateKey, msg))
+	_ = "STUB: not implemented"
+	return *new(types.VrfSignature)
 }
 
 // NodeID of the signer.
 func (s VRFSigner) NodeID() types.NodeID {
-	return s.nodeID
+	_ = "STUB: not implemented"
+
+	// PublicKey of the signer.
+	return *new(types.NodeID)
 }
 
-// PublicKey of the signer.
-func (s VRFSigner) PublicKey() *PublicKey {
-	return NewPublicKey(s.nodeID.Bytes())
-}
+func (s VRFSigner) PublicKey() *PublicKey { _ = "STUB: not implemented"; return nil }
 
 type VRFVerifier func(types.NodeID, []byte, types.VrfSignature) bool
 
 func NewVRFVerifier() VRFVerifier {
-	return VRFVerify
+	_ = "STUB: not implemented"
+
+	// Verify verifies that a signature matches public key and message.
+	return *new(VRFVerifier)
 }
 
-// Verify verifies that a signature matches public key and message.
 func (v VRFVerifier) Verify(nodeID types.NodeID, msg []byte, sig types.VrfSignature) bool {
-	return v(nodeID, msg, sig)
+	_ = "STUB: not implemented"
+	return false
+
+	// VRFVerify verifies that a signature matches public key and message.
 }
 
-// VRFVerify verifies that a signature matches public key and message.
 func VRFVerify(nodeID types.NodeID, msg []byte, sig types.VrfSignature) bool {
-	valid, _ := ecvrf.Verify(nodeID.Bytes(), sig[:], msg)
-	return valid
+	_ = "STUB: not implemented"
+	return false
 }

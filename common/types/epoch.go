@@ -1,8 +1,6 @@
 package types
 
 import (
-	"strconv"
-
 	"github.com/spacemeshos/go-scale"
 )
 
@@ -10,40 +8,28 @@ import (
 type EpochID uint32
 
 func (e EpochID) Uint32() uint32 {
-	return uint32(e)
+	_ = "STUB: not implemented"
+
+	// EncodeScale implements scale codec interface.
+	return 0
 }
 
-// EncodeScale implements scale codec interface.
 func (e EpochID) EncodeScale(enc *scale.Encoder) (int, error) {
-	return scale.EncodeCompact32(enc, e.Uint32())
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (e *EpochID) DecodeScale(dec *scale.Decoder) (int, error) {
-	value, n, err := scale.DecodeCompact32(dec)
-	if err != nil {
-		return n, err
-	}
-	*e = EpochID(value)
-	return n, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // FirstLayer returns the layer ID of the first layer in the epoch.
-func (e EpochID) FirstLayer() LayerID {
-	return LayerID(e).Mul(GetLayersPerEpoch())
-}
+func (e EpochID) FirstLayer() LayerID { _ = "STUB: not implemented"; return *new(LayerID) }
 
 // Add Epochs to the EpochID. Panics on wraparound.
-func (e EpochID) Add(epochs uint32) EpochID {
-	nl := uint32(e) + epochs
-	if nl < uint32(e) {
-		panic("epoch_id wraparound")
-	}
-	e = EpochID(nl)
-	return e
-}
+func (e EpochID) Add(epochs uint32) EpochID { _ = "STUB: not implemented"; return *new(EpochID) }
 
 // String returns string representation of the epoch id numeric value.
-func (e EpochID) String() string {
-	return strconv.FormatUint(uint64(e), 10)
-}
+func (e EpochID) String() string { _ = "STUB: not implemented"; return "" }

@@ -18,6 +18,6 @@ type getHashesOpts struct {
 
 type noLimit struct{}
 
-func (noLimit) Acquire(context.Context, int64) error { return nil }
+func (noLimit) Acquire(context.Context, int64) error { _ = "STUB: not implemented"; return nil }
 
-func (noLimit) Release(int64) {}
+func (noLimit) Release(int64) { _ = "STUB: not implemented"; return }

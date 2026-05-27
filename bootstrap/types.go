@@ -22,9 +22,7 @@ type EpochData struct {
 }
 
 func (ed *EpochData) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("epoch", ed.ID)
-	encoder.AddString("beacon", ed.Beacon)
-	encoder.AddInt("activeset_size", len(ed.ActiveSet))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -40,9 +38,6 @@ type EpochOverride struct {
 }
 
 func (vd *VerifiedUpdate) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("persisted", vd.Persisted)
-	encoder.AddString("epoch", vd.Data.Epoch.String())
-	encoder.AddString("beacon", vd.Data.Beacon.String())
-	encoder.AddInt("activeset_size", len(vd.Data.ActiveSet))
+	_ = "STUB: not implemented"
 	return nil
 }

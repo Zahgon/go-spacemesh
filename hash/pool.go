@@ -18,12 +18,7 @@ var pool = &sync.Pool{
 // It may or may not allocate a new one. Consumers are not required
 // to call Reset() on the hasher before putting it back in
 // the pool.
-func GetHasher() *blake3.Hasher {
-	return pool.Get().(*blake3.Hasher)
-}
+func GetHasher() *blake3.Hasher { _ = "STUB: not implemented"; return nil }
 
 // PutHasher resets the hasher and puts it back to the pool.
-func PutHasher(hasher *blake3.Hasher) {
-	hasher.Reset()
-	pool.Put(hasher)
-}
+func PutHasher(hasher *blake3.Hasher) { _ = "STUB: not implemented"; return }

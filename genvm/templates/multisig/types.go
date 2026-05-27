@@ -1,9 +1,6 @@
 package multisig
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/spacemeshos/go-spacemesh/genvm/core"
 	"github.com/spacemeshos/go-spacemesh/genvm/templates/wallet"
 )
@@ -16,14 +13,7 @@ type SpawnArguments struct {
 	PublicKeys []core.PublicKey `scale:"max=10"` // update StorageLimit if it changes.
 }
 
-func (s *SpawnArguments) String() string {
-	builder := bytes.NewBuffer(nil)
-	builder.WriteString(fmt.Sprintf("required=%d\n", s.Required))
-	for i, pub := range s.PublicKeys {
-		builder.WriteString(fmt.Sprintf("%d : %s\n", i, pub.String()))
-	}
-	return builder.String()
-}
+func (s *SpawnArguments) String() string { _ = "STUB: not implemented"; return "" }
 
 // Signatures is a collections of parts that must satisfy multisig
 // threshold requirement.

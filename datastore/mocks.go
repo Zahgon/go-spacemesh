@@ -11,7 +11,6 @@ package datastore
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
@@ -31,30 +30,27 @@ type MockMalfeasanceProviderMockRecorder struct {
 
 // NewMockMalfeasanceProvider creates a new mock instance.
 func NewMockMalfeasanceProvider(ctrl *gomock.Controller) *MockMalfeasanceProvider {
-	mock := &MockMalfeasanceProvider{ctrl: ctrl}
-	mock.recorder = &MockMalfeasanceProviderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMalfeasanceProvider) EXPECT() *MockMalfeasanceProviderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ProofByID mocks base method.
+	return nil
 }
 
-// ProofByID mocks base method.
 func (m *MockMalfeasanceProvider) ProofByID(ctx context.Context, nodeID types.NodeID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ProofByID", ctx, nodeID)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ProofByID indicates an expected call of ProofByID.
 func (mr *MockMalfeasanceProviderMockRecorder) ProofByID(ctx, nodeID any) *MockMalfeasanceProviderProofByIDCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProofByID", reflect.TypeOf((*MockMalfeasanceProvider)(nil).ProofByID), ctx, nodeID)
-	return &MockMalfeasanceProviderProofByIDCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMalfeasanceProviderProofByIDCall wrap *gomock.Call
@@ -64,18 +60,18 @@ type MockMalfeasanceProviderProofByIDCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMalfeasanceProviderProofByIDCall) Return(arg0 []byte, arg1 error) *MockMalfeasanceProviderProofByIDCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMalfeasanceProviderProofByIDCall) Do(f func(context.Context, types.NodeID) ([]byte, error)) *MockMalfeasanceProviderProofByIDCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMalfeasanceProviderProofByIDCall) DoAndReturn(f func(context.Context, types.NodeID) ([]byte, error)) *MockMalfeasanceProviderProofByIDCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

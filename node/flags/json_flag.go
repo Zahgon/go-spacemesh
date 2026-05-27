@@ -1,25 +1,11 @@
 package flags
 
-import (
-	"encoding/json"
-)
-
 type JSONFlag struct {
 	Value any
 }
 
-func (f *JSONFlag) String() string {
-	b, err := json.Marshal(f.Value)
-	if err != nil {
-		panic("failed to marshal object")
-	}
-	return string(b)
-}
+func (f *JSONFlag) String() string { _ = "STUB: not implemented"; return "" }
 
-func (f *JSONFlag) Set(v string) error {
-	return json.Unmarshal([]byte(v), f.Value)
-}
+func (f *JSONFlag) Set(v string) error { _ = "STUB: not implemented"; return nil }
 
-func (f *JSONFlag) Type() string {
-	return "json"
-}
+func (f *JSONFlag) Type() string { _ = "STUB: not implemented"; return "" }

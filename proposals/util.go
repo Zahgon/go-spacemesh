@@ -1,7 +1,6 @@
 package proposals
 
 import (
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/proposals/util"
 )
@@ -15,11 +14,8 @@ func MustGetNumEligibleSlots(
 	weight, minWeight, totalWeight uint64,
 	committeeSize, layersPerEpoch uint32,
 ) uint32 {
-	slots, err := GetNumEligibleSlots(weight, minWeight, totalWeight, committeeSize, layersPerEpoch)
-	if err != nil {
-		panic(err)
-	}
-	return slots
+	_ = "STUB: not implemented"
+	return 0
 }
 
 //go:generate scalegen -types VrfMessage
@@ -40,12 +36,6 @@ func MustSerializeVRFMessage(
 	nonce types.VRFPostIndex,
 	counter uint32,
 ) []byte {
-	m := VrfMessage{
-		Type:    types.EligibilityVoting,
-		Beacon:  beacon,
-		Epoch:   epoch,
-		Nonce:   nonce,
-		Counter: counter,
-	}
-	return codec.MustEncode(&m)
+	_ = "STUB: not implemented"
+	return nil
 }

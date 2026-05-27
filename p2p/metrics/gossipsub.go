@@ -85,106 +85,86 @@ type GossipCollector struct {
 }
 
 // NewGoSIPCollector creates a new GossipCollector.
-func NewGoSIPCollector() *GossipCollector {
-	return &GossipCollector{
-		peers: struct {
-			sync.Mutex
-			m map[peer.ID]protocol.ID
-		}{
-			m: make(map[peer.ID]protocol.ID),
-		},
-	}
-}
+func NewGoSIPCollector() *GossipCollector { _ = "STUB: not implemented"; return nil }
 
 // AddPeer is invoked when a new peer is added.
-func (g *GossipCollector) AddPeer(id peer.ID, proto protocol.ID) {
-	g.peers.Lock()
-	g.peers.m[id] = proto
-	g.peers.Unlock()
-
-	peersPerProtocol.WithLabelValues(string(proto)).Inc()
-	totalPeers.WithLabelValues().Inc()
-}
+func (g *GossipCollector) AddPeer(id peer.ID, proto protocol.ID) { _ = "STUB: not implemented"; return }
 
 // RemovePeer is invoked when a peer is removed.
-func (g *GossipCollector) RemovePeer(id peer.ID) {
-	g.peers.Lock()
-	proto := g.peers.m[id]
-	delete(g.peers.m, id)
-	g.peers.Unlock()
-
-	peersPerProtocol.WithLabelValues(string(proto)).Dec()
-	totalPeers.WithLabelValues().Dec()
-}
+func (g *GossipCollector) RemovePeer(id peer.ID) { _ = "STUB: not implemented"; return }
 
 // Join is invoked when a new topic is joined.
-func (g *GossipCollector) Join(string) {}
+func (g *GossipCollector) Join(string) {
+	_ = "STUB: not implemented"
 
-// Leave is invoked when a topic is abandoned.
-func (g *GossipCollector) Leave(string) {}
-
-// Graft is invoked when a new peer is grafted on the mesh (gossipsub).
-func (g *GossipCollector) Graft(peer.ID, string) {}
-
-// Prune is invoked when a peer is pruned from the message (gossipsub).
-func (g *GossipCollector) Prune(peer.ID, string) {}
-
-// ValidateMessage is invoked when a message first enters the validation pipeline.
-func (g *GossipCollector) ValidateMessage(msg *pubsub.Message) {
-	if msg.Topic == nil {
-		return
-	}
-	receivedMessagesBytes.WithLabelValues(*msg.Topic).Add(float64(len(msg.Data)))
-	receivedMessagesCount.WithLabelValues(*msg.Topic).Inc()
+	// Leave is invoked when a topic is abandoned.
+	return
 }
+
+func (g *GossipCollector) Leave(string) {
+	_ = "STUB: not implemented"
+
+	// Graft is invoked when a new peer is grafted on the mesh (gossipsub).
+	return
+}
+
+func (g *GossipCollector) Graft(peer.ID, string) {
+	_ = "STUB: not implemented"
+
+	// Prune is invoked when a peer is pruned from the message (gossipsub).
+	return
+}
+
+func (g *GossipCollector) Prune(peer.ID, string) {
+	_ = "STUB: not implemented"
+
+	// ValidateMessage is invoked when a message first enters the validation pipeline.
+	return
+}
+
+func (g *GossipCollector) ValidateMessage(msg *pubsub.Message) { _ = "STUB: not implemented"; return }
 
 // DeliverMessage is invoked when a message is delivered.
-func (g *GossipCollector) DeliverMessage(msg *pubsub.Message) {
-	if msg.Topic == nil {
-		return
-	}
-	deliveredMessagesBytes.WithLabelValues(*msg.Topic).Add(float64(len(msg.Data)))
-	deliveredMessagesCount.WithLabelValues(*msg.Topic).Inc()
-}
+func (g *GossipCollector) DeliverMessage(msg *pubsub.Message) { _ = "STUB: not implemented"; return }
 
 // RejectMessage is invoked when a message is Rejected or Ignored.
 // The reason argument can be one of the named strings Reject*.
 func (g *GossipCollector) RejectMessage(msg *pubsub.Message, reason string) {
-	topic := ""
-	if msg.Topic != nil {
-		topic = *msg.Topic
-	}
-	switch reason {
-	case pubsub.RejectValidationThrottled:
-		throttledCount.WithLabelValues(topic).Inc()
-	case pubsub.RejectValidationQueueFull:
-		queueFullCount.WithLabelValues(topic).Inc()
-	default:
-		rejectedCount.WithLabelValues(topic).Inc()
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // DuplicateMessage is invoked when a duplicate message is dropped.
-func (g *GossipCollector) DuplicateMessage(msg *pubsub.Message) {
-	if msg.Topic == nil {
-		return
-	}
-	receivedMessagesBytes.WithLabelValues(*msg.Topic).Add(float64(len(msg.Data)))
-	receivedMessagesCount.WithLabelValues(*msg.Topic).Inc()
-}
+func (g *GossipCollector) DuplicateMessage(msg *pubsub.Message) { _ = "STUB: not implemented"; return }
 
 // ThrottlePeer is invoked when a peer is throttled by the peer gater.
-func (g *GossipCollector) ThrottlePeer(peer.ID) {}
+func (g *GossipCollector) ThrottlePeer(peer.ID) {
+	_ = "STUB: not implemented"
 
-// RecvRPC is invoked when an incoming RPC is received.
-func (g *GossipCollector) RecvRPC(*pubsub.RPC) {}
+	// RecvRPC is invoked when an incoming RPC is received.
+	return
+}
 
-// SendRPC is invoked when a RPC is sent.
-func (g *GossipCollector) SendRPC(*pubsub.RPC, peer.ID) {}
+func (g *GossipCollector) RecvRPC(*pubsub.RPC) {
+	_ = "STUB: not implemented"
 
-// DropRPC is invoked when an outbound RPC is dropped, typically because of a queue full.
-func (g *GossipCollector) DropRPC(*pubsub.RPC, peer.ID) {}
+	// SendRPC is invoked when a RPC is sent.
+	return
+}
 
-// UndeliverableMessage is invoked when the consumer of Subscribe is not reading messages fast enough and
-// the pressure release mechanism trigger, dropping messages.
-func (g *GossipCollector) UndeliverableMessage(*pubsub.Message) {}
+func (g *GossipCollector) SendRPC(*pubsub.RPC, peer.ID) {
+	_ = "STUB: not implemented"
+
+	// DropRPC is invoked when an outbound RPC is dropped, typically because of a queue full.
+	return
+}
+
+func (g *GossipCollector) DropRPC(*pubsub.RPC, peer.ID) {
+	_ = "STUB: not implemented"
+
+	// UndeliverableMessage is invoked when the consumer of Subscribe is not reading messages fast enough and
+	// the pressure release mechanism trigger, dropping messages.
+	return
+}
+
+func (g *GossipCollector) UndeliverableMessage(*pubsub.Message) { _ = "STUB: not implemented"; return }

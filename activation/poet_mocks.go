@@ -11,7 +11,6 @@ package activation
 
 import (
 	context "context"
-	reflect "reflect"
 	time "time"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
@@ -32,29 +31,24 @@ type MockPoetClientMockRecorder struct {
 
 // NewMockPoetClient creates a new mock instance.
 func NewMockPoetClient(ctrl *gomock.Controller) *MockPoetClient {
-	mock := &MockPoetClient{ctrl: ctrl}
-	mock.recorder = &MockPoetClientMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPoetClient) EXPECT() *MockPoetClientMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Address mocks base method.
+	return nil
 }
 
-// Address mocks base method.
-func (m *MockPoetClient) Address() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Address")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
+func (m *MockPoetClient) Address() string { _ = "STUB: not implemented"; return "" }
 
 // Address indicates an expected call of Address.
 func (mr *MockPoetClientMockRecorder) Address() *MockPoetClientAddressCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Address", reflect.TypeOf((*MockPoetClient)(nil).Address))
-	return &MockPoetClientAddressCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientAddressCall wrap *gomock.Call
@@ -64,35 +58,29 @@ type MockPoetClientAddressCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientAddressCall) Return(arg0 string) *MockPoetClientAddressCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientAddressCall) Do(f func() string) *MockPoetClientAddressCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientAddressCall) DoAndReturn(f func() string) *MockPoetClientAddressCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Id mocks base method.
-func (m *MockPoetClient) Id() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Id")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *MockPoetClient) Id() []byte { _ = "STUB: not implemented"; return nil }
 
 // Id indicates an expected call of Id.
 func (mr *MockPoetClientMockRecorder) Id() *MockPoetClientIdCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Id", reflect.TypeOf((*MockPoetClient)(nil).Id))
-	return &MockPoetClientIdCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientIdCall wrap *gomock.Call
@@ -102,36 +90,32 @@ type MockPoetClientIdCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientIdCall) Return(arg0 []byte) *MockPoetClientIdCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientIdCall) Do(f func() []byte) *MockPoetClientIdCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientIdCall) DoAndReturn(f func() []byte) *MockPoetClientIdCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Info mocks base method.
 func (m *MockPoetClient) Info(ctx context.Context) (*types.PoetInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Info", ctx)
-	ret0, _ := ret[0].(*types.PoetInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Info indicates an expected call of Info.
 func (mr *MockPoetClientMockRecorder) Info(ctx any) *MockPoetClientInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Info", reflect.TypeOf((*MockPoetClient)(nil).Info), ctx)
-	return &MockPoetClientInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientInfoCall wrap *gomock.Call
@@ -141,36 +125,32 @@ type MockPoetClientInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientInfoCall) Return(arg0 *types.PoetInfo, arg1 error) *MockPoetClientInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientInfoCall) Do(f func(context.Context) (*types.PoetInfo, error)) *MockPoetClientInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientInfoCall) DoAndReturn(f func(context.Context) (*types.PoetInfo, error)) *MockPoetClientInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PowParams mocks base method.
 func (m *MockPoetClient) PowParams(ctx context.Context) (*PoetPowParams, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PowParams", ctx)
-	ret0, _ := ret[0].(*PoetPowParams)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PowParams indicates an expected call of PowParams.
 func (mr *MockPoetClientMockRecorder) PowParams(ctx any) *MockPoetClientPowParamsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PowParams", reflect.TypeOf((*MockPoetClient)(nil).PowParams), ctx)
-	return &MockPoetClientPowParamsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientPowParamsCall wrap *gomock.Call
@@ -180,37 +160,32 @@ type MockPoetClientPowParamsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientPowParamsCall) Return(arg0 *PoetPowParams, arg1 error) *MockPoetClientPowParamsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientPowParamsCall) Do(f func(context.Context) (*PoetPowParams, error)) *MockPoetClientPowParamsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientPowParamsCall) DoAndReturn(f func(context.Context) (*PoetPowParams, error)) *MockPoetClientPowParamsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Proof mocks base method.
 func (m *MockPoetClient) Proof(ctx context.Context, roundID string) (*types.PoetProofMessage, []types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Proof", ctx, roundID)
-	ret0, _ := ret[0].(*types.PoetProofMessage)
-	ret1, _ := ret[1].([]types.Hash32)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // Proof indicates an expected call of Proof.
 func (mr *MockPoetClientMockRecorder) Proof(ctx, roundID any) *MockPoetClientProofCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Proof", reflect.TypeOf((*MockPoetClient)(nil).Proof), ctx, roundID)
-	return &MockPoetClientProofCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientProofCall wrap *gomock.Call
@@ -220,36 +195,32 @@ type MockPoetClientProofCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientProofCall) Return(arg0 *types.PoetProofMessage, arg1 []types.Hash32, arg2 error) *MockPoetClientProofCall {
-	c.Call = c.Call.Return(arg0, arg1, arg2)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientProofCall) Do(f func(context.Context, string) (*types.PoetProofMessage, []types.Hash32, error)) *MockPoetClientProofCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientProofCall) DoAndReturn(f func(context.Context, string) (*types.PoetProofMessage, []types.Hash32, error)) *MockPoetClientProofCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Submit mocks base method.
 func (m *MockPoetClient) Submit(ctx context.Context, deadline time.Time, prefix, challenge []byte, signature types.EdSignature, nodeID types.NodeID, auth PoetAuth) (*types.PoetRound, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Submit", ctx, deadline, prefix, challenge, signature, nodeID, auth)
-	ret0, _ := ret[0].(*types.PoetRound)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Submit indicates an expected call of Submit.
 func (mr *MockPoetClientMockRecorder) Submit(ctx, deadline, prefix, challenge, signature, nodeID, auth any) *MockPoetClientSubmitCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Submit", reflect.TypeOf((*MockPoetClient)(nil).Submit), ctx, deadline, prefix, challenge, signature, nodeID, auth)
-	return &MockPoetClientSubmitCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPoetClientSubmitCall wrap *gomock.Call
@@ -259,18 +230,18 @@ type MockPoetClientSubmitCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPoetClientSubmitCall) Return(arg0 *types.PoetRound, arg1 error) *MockPoetClientSubmitCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPoetClientSubmitCall) Do(f func(context.Context, time.Time, []byte, []byte, types.EdSignature, types.NodeID, PoetAuth) (*types.PoetRound, error)) *MockPoetClientSubmitCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPoetClientSubmitCall) DoAndReturn(f func(context.Context, time.Time, []byte, []byte, types.EdSignature, types.NodeID, PoetAuth) (*types.PoetRound, error)) *MockPoetClientSubmitCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

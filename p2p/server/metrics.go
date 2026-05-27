@@ -64,24 +64,7 @@ var (
 	)
 )
 
-func newTracker(protocol string) *tracker {
-	return &tracker{
-		targetQueue:          targetQueue.WithLabelValues(protocol),
-		queue:                queue.WithLabelValues(protocol),
-		targetRps:            targetRps.WithLabelValues(protocol),
-		completed:            requests.WithLabelValues(protocol, "completed"),
-		failed:               requests.WithLabelValues(protocol, "failed"),
-		accepted:             requests.WithLabelValues(protocol, "accepted"),
-		dropped:              requests.WithLabelValues(protocol, "dropped"),
-		clientSucceeded:      clientRequests.WithLabelValues(protocol, "succeeded"),
-		clientFailed:         clientRequests.WithLabelValues(protocol, "failed"),
-		clientServerError:    clientRequests.WithLabelValues(protocol, "server_error"),
-		inQueueLatency:       inQueueLatency.WithLabelValues(protocol),
-		serverLatency:        serverLatency.WithLabelValues(protocol),
-		clientLatency:        clientLatency.WithLabelValues(protocol, "success"),
-		clientLatencyFailure: clientLatency.WithLabelValues(protocol, "failure"),
-	}
-}
+func newTracker(protocol string) *tracker { _ = "STUB: not implemented"; return nil }
 
 type tracker struct {
 	targetQueue                         prometheus.Gauge

@@ -2,25 +2,14 @@ package malsync
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"maps"
-	"math"
 	"time"
 
 	"github.com/jonboulle/clockwork"
 	"go.uber.org/zap"
-	"golang.org/x/sync/errgroup"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/fetch"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/p2p"
-	"github.com/spacemeshos/go-spacemesh/p2p/pubsub"
 	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/identities"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
-	"github.com/spacemeshos/go-spacemesh/sql/malsync"
 )
 
 type counter interface {
@@ -29,39 +18,17 @@ type counter interface {
 
 type noCounter struct{}
 
-func (noCounter) Inc() {}
+func (noCounter) Inc() { _ = "STUB: not implemented"; return }
 
 type Opt func(*Syncer)
 
-func WithLogger(logger *zap.Logger) Opt {
-	return func(s *Syncer) {
-		s.logger = logger
-	}
-}
+func WithLogger(logger *zap.Logger) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithPeerErrMetric(counter counter) Opt {
-	return func(s *Syncer) {
-		s.peerErrMetric = counter
-	}
-}
+func WithPeerErrMetric(counter counter) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func withClock(clock clockwork.Clock) Opt {
-	return func(s *Syncer) {
-		s.clock = clock
-	}
-}
+func withClock(clock clockwork.Clock) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func DefaultConfig() Config {
-	return Config{
-		IDRequestInterval:  30 * time.Minute,
-		MalfeasanceIDPeers: 3,
-		MinSyncPeers:       3,
-		MaxEpochFraction:   0.25,
-		MaxBatchSize:       1000,
-		RequestsLimit:      20,
-		RetryInterval:      time.Minute,
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 type Config struct {
 	// IDRequestInterval specifies the interval for malfeasance proof id requests to the network.
@@ -91,25 +58,15 @@ type Config struct {
 	RetryInterval time.Duration `mapstructure:"retry-interval"`
 }
 
-func WithConfig(cfg Config) Opt {
-	return func(s *Syncer) {
-		s.cfg = cfg
-	}
-}
+func WithConfig(cfg Config) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 type syncPeerSet map[p2p.Peer]struct{}
 
-func (sps syncPeerSet) add(peer p2p.Peer) {
-	sps[peer] = struct{}{}
-}
+func (sps syncPeerSet) add(peer p2p.Peer) { _ = "STUB: not implemented"; return }
 
-func (sps syncPeerSet) clear() {
-	clear(sps)
-}
+func (sps syncPeerSet) clear() { _ = "STUB: not implemented"; return }
 
-func (sps syncPeerSet) updateFrom(other syncPeerSet) {
-	maps.Copy(sps, other)
-}
+func (sps syncPeerSet) updateFrom(other syncPeerSet) { _ = "STUB: not implemented"; return }
 
 // syncState stores malfeasance sync state.
 type syncState struct {
@@ -120,90 +77,38 @@ type syncState struct {
 	syncedPeers  syncPeerSet
 }
 
-func newSyncState(limit int, initial bool) *syncState {
-	return &syncState{
-		limit:        limit,
-		initial:      initial,
-		state:        make(map[types.NodeID]int),
-		syncedPeers:  make(syncPeerSet),
-		syncingPeers: make(syncPeerSet),
-	}
-}
+func newSyncState(limit int, initial bool) *syncState { _ = "STUB: not implemented"; return nil }
 
-func (sst *syncState) done() {
-	if sst.initial {
-		sst.syncedPeers.updateFrom(sst.syncingPeers)
-		sst.syncingPeers.clear()
-	}
-	clear(sst.state)
-}
+func (sst *syncState) done() { _ = "STUB: not implemented"; return }
 
-func (sst *syncState) numSyncedPeers() int {
-	return len(sst.syncedPeers)
-}
+func (sst *syncState) numSyncedPeers() int { _ = "STUB: not implemented"; return 0 }
 
-func (sst *syncState) update(update malUpdate) {
-	if sst.initial {
-		sst.syncingPeers.add(update.peer)
-	}
-	for _, id := range update.nodeIDs {
-		if _, found := sst.state[id]; !found {
-			sst.state[id] = 0
-		}
-	}
-}
+func (sst *syncState) update(update malUpdate) { _ = "STUB: not implemented"; return }
 
-func (sst *syncState) has(nodeID types.NodeID) bool {
-	_, found := sst.state[nodeID]
-	return found
-}
+func (sst *syncState) has(nodeID types.NodeID) bool { _ = "STUB: not implemented"; return false }
 
 func (sst *syncState) failed(nodeID types.NodeID) {
+	_ = "STUB: not implemented"
 	// possibly temporary failure, count failed attempt
-	n := sst.state[nodeID]
-	if n >= 0 {
-		sst.state[nodeID] = n + 1
-	}
+	return
 }
 
 func (sst *syncState) rejected(nodeID types.NodeID) {
+	_ = "STUB: not implemented"
 	// malfeasance proof didn't pass validation, no sense in requesting it anymore
-	n := sst.state[nodeID]
-	if n >= 0 {
-		sst.state[nodeID] = sst.limit
-	}
+	return
 }
 
-func (sst *syncState) downloaded(nodeID types.NodeID) {
-	sst.state[nodeID] = -1
-}
+func (sst *syncState) downloaded(nodeID types.NodeID) { _ = "STUB: not implemented"; return }
 
 func (sst *syncState) missing(max int, has func(nodeID types.NodeID) (bool, error)) ([]types.NodeID, error) {
-	r := make([]types.NodeID, 0, max)
-	for nodeID, count := range sst.state {
-		if count < 0 {
-			continue // already downloaded
-		}
-		exists, err := has(nodeID)
-		if err != nil {
-			return nil, err
-		}
-		if exists {
-			sst.downloaded(nodeID)
-			continue
-		}
-		if count >= sst.limit {
-			// unsuccessfully requested too many times
-			delete(sst.state, nodeID)
-			continue
-		}
-		r = append(r, nodeID)
-		if len(r) == cap(r) {
-			break
-		}
-	}
-	return r, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// already downloaded
+
+// unsuccessfully requested too many times
 
 type Syncer struct {
 	logger        *zap.Logger
@@ -217,475 +122,88 @@ type Syncer struct {
 }
 
 func New(fetcher fetcher, db sql.Executor, localDB sql.LocalDatabase, layerClock layerClock, opts ...Opt) *Syncer {
-	s := &Syncer{
-		logger:        zap.NewNop(),
-		cfg:           DefaultConfig(),
-		fetcher:       fetcher,
-		db:            db,
-		localDB:       localDB,
-		clock:         clockwork.NewRealClock(),
-		layerClock:    layerClock,
-		peerErrMetric: noCounter{},
-	}
-	for _, opt := range opts {
-		opt(s)
-	}
-	return s
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Syncer) shouldSyncLegacy(epochStart, epochEnd time.Time) (bool, error) {
-	timestamp, err := malsync.LegacySyncState(s.localDB)
-	if err != nil {
-		return false, fmt.Errorf("error getting malfeasance sync state: %w", err)
-	}
-	if timestamp.Before(epochStart) {
-		return true, nil
-	}
-	cutoff := epochEnd.Sub(epochStart).Seconds() * s.cfg.MaxEpochFraction
-	return s.clock.Now().Sub(timestamp).Seconds() > cutoff, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (s *Syncer) shouldSync(epochStart, epochEnd time.Time) (bool, error) {
-	timestamp, err := malsync.SyncState(s.localDB)
-	if err != nil {
-		return false, fmt.Errorf("error getting malfeasance sync state: %w", err)
-	}
-	if timestamp.Before(epochStart) {
-		return true, nil
-	}
-	cutoff := epochEnd.Sub(epochStart).Seconds() * s.cfg.MaxEpochFraction
-	return s.clock.Now().Sub(timestamp).Seconds() > cutoff, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (s *Syncer) downloadLegacy(parent context.Context, initial bool) error {
-	s.logger.Info("starting legacy malfeasance proof sync", log.ZContext(parent))
-	defer s.logger.Debug("legacy malfeasance proof sync terminated", log.ZContext(parent))
-	ctx, cancel := context.WithCancel(parent)
-	eg, ctx := errgroup.WithContext(ctx)
-	updates := make(chan malUpdate, s.cfg.MalfeasanceIDPeers)
-	eg.Go(func() error {
-		return s.downloadLegacyNodeIDs(ctx, initial, updates)
-	})
-	eg.Go(func() error {
-		defer cancel()
-		return s.downloadLegacyMalfeasanceProofs(ctx, initial, updates)
-	})
-	if err := eg.Wait(); err != nil {
-		return err
-	}
-	return parent.Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Syncer) download(parent context.Context, initial bool) error {
-	s.logger.Info("starting malfeasance proof sync", log.ZContext(parent))
-	defer s.logger.Debug("malfeasance proof sync terminated", log.ZContext(parent))
-	ctx, cancel := context.WithCancel(parent)
-	eg, ctx := errgroup.WithContext(ctx)
-	updates := make(chan malUpdate, s.cfg.MalfeasanceIDPeers)
-	eg.Go(func() error {
-		return s.downloadNodeIDs(ctx, initial, updates)
-	})
-	eg.Go(func() error {
-		defer cancel()
-		return s.downloadMalfeasanceProofs(ctx, initial, updates)
-	})
-	if err := eg.Wait(); err != nil {
-		return err
-	}
-	return parent.Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Syncer) downloadLegacyNodeIDs(ctx context.Context, initial bool, updates chan<- malUpdate) error {
-	interval := s.cfg.IDRequestInterval
-	if initial {
-		interval = 0
-	}
-	for {
-		if interval != 0 {
-			s.logger.Debug(
-				"pausing between legacy malicious node ID requests",
-				zap.Duration("duration", interval),
-			)
-			select {
-			case <-ctx.Done():
-				return nil
-				// TODO(ivan4th) this has to be randomized in a followup
-				// when sync will be scheduled in advance, in order to smooth out request rate across the network
-			case <-s.clock.After(interval):
-			}
-		}
-
-		peers := s.fetcher.SelectBestShuffled(s.cfg.MalfeasanceIDPeers)
-		if len(peers) == 0 {
-			s.logger.Debug(
-				"don't have enough peers for legacy malfeasance sync",
-				zap.Int("nPeers", s.cfg.MalfeasanceIDPeers),
-			)
-			if interval == 0 {
-				interval = s.cfg.RetryInterval
-			}
-			continue
-		}
-
-		var eg errgroup.Group
-		for _, peer := range peers {
-			eg.Go(func() error {
-				malIDs, err := s.fetcher.LegacyMaliciousIDs(ctx, peer)
-				if err != nil {
-					if errors.Is(err, context.Canceled) {
-						return nil
-					}
-					s.peerErrMetric.Inc()
-					s.logger.Warn("failed to download legacy malicious node IDs",
-						log.ZContext(ctx),
-						zap.String("peer", peer.String()),
-						zap.Error(err),
-					)
-					return nil
-				}
-				s.logger.Debug("downloaded legacy malicious node IDs",
-					log.ZContext(ctx),
-					zap.String("peer", peer.String()),
-					zap.Int("ids", len(malIDs)),
-				)
-				select {
-				case <-ctx.Done():
-					return ctx.Err()
-				case updates <- malUpdate{peer: peer, nodeIDs: malIDs}:
-				}
-				return nil
-			})
-		}
-
-		if err := eg.Wait(); err != nil {
-			return err
-		}
-
-		if interval == 0 {
-			interval = s.cfg.RetryInterval
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// TODO(ivan4th) this has to be randomized in a followup
+// when sync will be scheduled in advance, in order to smooth out request rate across the network
 
 func (s *Syncer) downloadNodeIDs(ctx context.Context, initial bool, updates chan<- malUpdate) error {
-	interval := s.cfg.IDRequestInterval
-	if initial {
-		interval = 0
-	}
-	for {
-		if interval != 0 {
-			s.logger.Debug(
-				"pausing between malicious node ID requests",
-				zap.Duration("duration", interval),
-			)
-			select {
-			case <-ctx.Done():
-				return nil
-				// TODO(ivan4th) this has to be randomized in a followup
-				// when sync will be scheduled in advance, in order to smooth out request rate across the network
-			case <-s.clock.After(interval):
-			}
-		}
-
-		peers := s.fetcher.SelectBestShuffled(s.cfg.MalfeasanceIDPeers)
-		if len(peers) == 0 {
-			s.logger.Debug(
-				"don't have enough peers for malfeasance sync",
-				zap.Int("nPeers", s.cfg.MalfeasanceIDPeers),
-			)
-			if interval == 0 {
-				interval = s.cfg.RetryInterval
-			}
-			continue
-		}
-
-		var eg errgroup.Group
-		for _, peer := range peers {
-			eg.Go(func() error {
-				malIDs, err := s.fetcher.MaliciousIDs(ctx, peer)
-				if err != nil {
-					if errors.Is(err, context.Canceled) {
-						return nil
-					}
-					s.peerErrMetric.Inc()
-					s.logger.Warn("failed to download malicious node IDs",
-						log.ZContext(ctx),
-						zap.String("peer", peer.String()),
-						zap.Error(err),
-					)
-					return nil
-				}
-				s.logger.Debug("downloaded malicious node IDs",
-					log.ZContext(ctx),
-					zap.String("peer", peer.String()),
-					zap.Int("ids", len(malIDs)),
-				)
-				select {
-				case <-ctx.Done():
-					return ctx.Err()
-				case updates <- malUpdate{peer: peer, nodeIDs: malIDs}:
-				}
-				return nil
-			})
-		}
-
-		if err := eg.Wait(); err != nil {
-			return err
-		}
-
-		if interval == 0 {
-			interval = s.cfg.RetryInterval
-		}
-	}
-}
-
-func (s *Syncer) updateLegacyState() error {
-	if err := s.localDB.WithTxImmediate(func(tx sql.Transaction) error {
-		return malsync.UpdateLegacySyncState(tx, s.clock.Now())
-	}); err != nil {
-		return fmt.Errorf("error updating legacy malsync state: %w", err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (s *Syncer) updateState() error {
-	if err := s.localDB.WithTxImmediate(func(tx sql.Transaction) error {
-		return malsync.UpdateSyncState(tx, s.clock.Now())
-	}); err != nil {
-		return fmt.Errorf("error updating malsync state: %w", err)
-	}
+// TODO(ivan4th) this has to be randomized in a followup
+// when sync will be scheduled in advance, in order to smooth out request rate across the network
 
-	return nil
-}
+func (s *Syncer) updateLegacyState() error { _ = "STUB: not implemented"; return nil }
+
+func (s *Syncer) updateState() error { _ = "STUB: not implemented"; return nil }
 
 func (s *Syncer) downloadLegacyMalfeasanceProofs(ctx context.Context, initial bool, updates <-chan malUpdate) error {
-	var (
-		update            malUpdate
-		sst               = newSyncState(s.cfg.RequestsLimit, initial)
-		nothingToDownload = true
-		gotUpdate         = false
-	)
-	for {
-		if nothingToDownload {
-			sst.done()
-			if initial && sst.numSyncedPeers() >= s.cfg.MinSyncPeers {
-				if err := s.updateLegacyState(); err != nil {
-					return err
-				}
-				s.logger.Info("initial sync of legacy malfeasance proofs completed", log.ZContext(ctx))
-				return nil
-			} else if !initial && gotUpdate {
-				if err := s.updateLegacyState(); err != nil {
-					return err
-				}
-			}
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case update = <-updates:
-				s.logger.Debug("legacy malfeasance sync update",
-					log.ZContext(ctx),
-					zap.Int("count", len(update.nodeIDs)),
-				)
-				sst.update(update)
-				gotUpdate = true
-			}
-		} else {
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case update = <-updates:
-				s.logger.Debug("legacy malfeasance sync update",
-					log.ZContext(ctx),
-					zap.Int("count", len(update.nodeIDs)),
-				)
-				sst.update(update)
-				gotUpdate = true
-			default:
-				// If we have some hashes to fetch already, don't wait for
-				// another update
-			}
-		}
-		batch, err := sst.missing(s.cfg.MaxBatchSize, func(nodeID types.NodeID) (bool, error) {
-			// TODO(ivan4th): check multiple node IDs at once in a single SQL query
-			isMalicious, err := identities.IsMalicious(s.db, nodeID)
-			if err != nil && errors.Is(err, sql.ErrNotFound) {
-				return false, nil
-			}
-			return isMalicious, err
-		})
-		if err != nil {
-			return fmt.Errorf("error checking legacy malicious node IDs: %w", err)
-		}
-
-		nothingToDownload = len(batch) == 0
-		if len(batch) == 0 {
-			s.logger.Debug("no new legacy malicious identities", log.ZContext(ctx))
-			continue
-		}
-
-		s.logger.Debug("retrieving legacy malicious identities",
-			log.ZContext(ctx),
-			zap.Int("count", len(batch)),
-		)
-		batchError := &fetch.BatchError{}
-		err = s.fetcher.LegacyMalfeasanceProofs(ctx, batch)
-		switch {
-		case errors.Is(err, context.Canceled):
-			return ctx.Err()
-		case errors.As(err, &batchError):
-			for hash, err := range batchError.Errors {
-				nodeID := types.NodeID(hash)
-				switch {
-				case !sst.has(nodeID):
-					continue
-				case errors.Is(err, pubsub.ErrValidationReject):
-					sst.rejected(nodeID)
-				default:
-					sst.failed(nodeID)
-				}
-			}
-		case err != nil:
-			s.logger.Debug("failed to download malfeasance proofs",
-				log.ZContext(ctx),
-				log.NiceZapError(err),
-			)
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// If we have some hashes to fetch already, don't wait for
+// another update
+
+// TODO(ivan4th): check multiple node IDs at once in a single SQL query
 
 func (s *Syncer) downloadMalfeasanceProofs(ctx context.Context, initial bool, updates <-chan malUpdate) error {
-	var (
-		update            malUpdate
-		sst               = newSyncState(s.cfg.RequestsLimit, initial)
-		nothingToDownload = true
-		gotUpdate         = false
-	)
-	for {
-		if nothingToDownload {
-			sst.done()
-			if initial && sst.numSyncedPeers() >= s.cfg.MinSyncPeers {
-				if err := s.updateState(); err != nil {
-					return err
-				}
-				s.logger.Info("initial sync of malfeasance proofs completed", log.ZContext(ctx))
-				return nil
-			} else if !initial && gotUpdate {
-				if err := s.updateState(); err != nil {
-					return err
-				}
-			}
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case update = <-updates:
-				s.logger.Debug("malfeasance sync update",
-					log.ZContext(ctx),
-					zap.Int("count", len(update.nodeIDs)),
-				)
-				sst.update(update)
-				gotUpdate = true
-			}
-		} else {
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case update = <-updates:
-				s.logger.Debug("malfeasance sync update",
-					log.ZContext(ctx),
-					zap.Int("count", len(update.nodeIDs)),
-				)
-				sst.update(update)
-				gotUpdate = true
-			default:
-				// If we have some hashes to fetch already, don't wait for
-				// another update
-			}
-		}
-		batch, err := sst.missing(s.cfg.MaxBatchSize, func(nodeID types.NodeID) (bool, error) {
-			// TODO(mafa): check multiple node IDs at once in a single SQL query
-			isMalicious, err := malfeasance.IsMalicious(s.db, nodeID)
-			if err != nil && errors.Is(err, sql.ErrNotFound) {
-				return false, nil
-			}
-			return isMalicious, err
-		})
-		if err != nil {
-			return fmt.Errorf("error checking malicious node IDs: %w", err)
-		}
-
-		nothingToDownload = len(batch) == 0
-		if len(batch) == 0 {
-			s.logger.Debug("no new malicious identities", log.ZContext(ctx))
-			continue
-		}
-
-		s.logger.Debug("retrieving malicious identities",
-			log.ZContext(ctx),
-			zap.Int("count", len(batch)),
-		)
-		batchError := &fetch.BatchError{}
-		err = s.fetcher.MalfeasanceProofs(ctx, batch)
-		switch {
-		case errors.Is(err, context.Canceled):
-			return ctx.Err()
-		case errors.As(err, &batchError):
-			for hash, err := range batchError.Errors {
-				nodeID := types.NodeID(hash)
-				switch {
-				case !sst.has(nodeID):
-					continue
-				case errors.Is(err, pubsub.ErrValidationReject):
-					sst.rejected(nodeID)
-				default:
-					sst.failed(nodeID)
-				}
-			}
-		case err != nil:
-			s.logger.Debug("failed to download malfeasance proofs",
-				log.ZContext(ctx),
-				log.NiceZapError(err),
-			)
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// If we have some hashes to fetch already, don't wait for
+// another update
+
+// TODO(mafa): check multiple node IDs at once in a single SQL query
+
 func (s *Syncer) EnsureLegacyInSync(ctx context.Context, epochStart, epochEnd time.Time) error {
-	if shouldSync, err := s.shouldSyncLegacy(epochStart, epochEnd); err != nil {
-		return err
-	} else if !shouldSync {
-		return nil
-	}
-	return s.downloadLegacy(ctx, true)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Syncer) EnsureInSync(ctx context.Context, epochStart, epochEnd time.Time) error {
-	if shouldSync, err := s.shouldSync(epochStart, epochEnd); err != nil {
-		return err
-	} else if !shouldSync {
-		return nil
-	}
-	return s.download(ctx, true)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Syncer) DownloadLoop(parent context.Context, malSyncStart types.EpochID) error {
-	eg, ctx := errgroup.WithContext(parent)
-	eg.Go(func() error {
-		return s.downloadLegacy(ctx, false)
-	})
-	if malSyncStart == math.MaxUint32 { // if we don't have a malSyncStart epoch, just start legacy sync
-		return eg.Wait()
-	}
-	eg.Go(func() error {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-s.layerClock.AwaitLayer(malSyncStart.FirstLayer()): // wait until first mal2 epoch
-		}
-		return s.download(ctx, false)
-	})
-	return eg.Wait()
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// if we don't have a malSyncStart epoch, just start legacy sync
+
+// wait until first mal2 epoch
 
 type malUpdate struct {
 	peer    p2p.Peer

@@ -1,11 +1,5 @@
 package wire
 
-import (
-	"fmt"
-
-	"github.com/spacemeshos/go-spacemesh/codec"
-)
-
 //go:generate scalegen
 
 // MerkleTreeIndex is the index of the leaf containing the given field in the merkle tree.
@@ -100,14 +94,4 @@ type ATXProof struct {
 	Proof []byte `scale:"max=1048576"` // max size of proof is 1MiB
 }
 
-func (p *ATXProof) Decode() (Proof, error) {
-	newProof, ok := proofTypes[p.ProofType]
-	if !ok {
-		return nil, fmt.Errorf("unknown ATX malfeasance proof type: 0x%x", p.ProofType)
-	}
-	rst := newProof()
-	if err := codec.Decode(p.Proof, rst); err != nil {
-		return nil, fmt.Errorf("decoding ATX malfeasance proof of type 0x%x: %w", p.ProofType, err)
-	}
-	return rst, nil
-}
+func (p *ATXProof) Decode() (Proof, error) { _ = "STUB: not implemented"; return *new(Proof), nil }

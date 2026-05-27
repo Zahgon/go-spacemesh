@@ -8,60 +8,21 @@ import (
 )
 
 func (t *SpawnArguments) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := scale.EncodeByteArray(enc, t.PublicKey[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *SpawnArguments) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := scale.DecodeByteArray(dec, t.PublicKey[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *SpendArguments) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := scale.EncodeByteArray(enc, t.Destination[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeCompact64(enc, uint64(t.Amount))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *SpendArguments) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := scale.DecodeByteArray(dec, t.Destination[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		field, n, err := scale.DecodeCompact64(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.Amount = uint64(field)
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

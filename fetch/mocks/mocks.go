@@ -11,7 +11,6 @@ package mocks
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	p2p "github.com/spacemeshos/go-spacemesh/p2p"
@@ -33,35 +32,27 @@ type MockrequesterMockRecorder struct {
 
 // NewMockrequester creates a new mock instance.
 func NewMockrequester(ctrl *gomock.Controller) *Mockrequester {
-	mock := &Mockrequester{ctrl: ctrl}
-	mock.recorder = &MockrequesterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockrequester) EXPECT() *MockrequesterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Request mocks base method.
+	return nil
 }
 
-// Request mocks base method.
 func (m *Mockrequester) Request(arg0 context.Context, arg1 p2p.Peer, arg2 []byte, arg3 ...string) ([]byte, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1, arg2}
-	for _, a := range arg3 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Request", varargs...)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Request indicates an expected call of Request.
 func (mr *MockrequesterMockRecorder) Request(arg0, arg1, arg2 any, arg3 ...any) *MockrequesterRequestCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1, arg2}, arg3...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Request", reflect.TypeOf((*Mockrequester)(nil).Request), varargs...)
-	return &MockrequesterRequestCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockrequesterRequestCall wrap *gomock.Call
@@ -71,35 +62,29 @@ type MockrequesterRequestCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockrequesterRequestCall) Return(arg0 []byte, arg1 error) *MockrequesterRequestCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockrequesterRequestCall) Do(f func(context.Context, p2p.Peer, []byte, ...string) ([]byte, error)) *MockrequesterRequestCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockrequesterRequestCall) DoAndReturn(f func(context.Context, p2p.Peer, []byte, ...string) ([]byte, error)) *MockrequesterRequestCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Run mocks base method.
-func (m *Mockrequester) Run(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Run", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Mockrequester) Run(arg0 context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Run indicates an expected call of Run.
 func (mr *MockrequesterMockRecorder) Run(arg0 any) *MockrequesterRunCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Run", reflect.TypeOf((*Mockrequester)(nil).Run), arg0)
-	return &MockrequesterRunCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockrequesterRunCall wrap *gomock.Call
@@ -109,40 +94,32 @@ type MockrequesterRunCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockrequesterRunCall) Return(arg0 error) *MockrequesterRunCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockrequesterRunCall) Do(f func(context.Context) error) *MockrequesterRunCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockrequesterRunCall) DoAndReturn(f func(context.Context) error) *MockrequesterRunCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StreamRequest mocks base method.
 func (m *Mockrequester) StreamRequest(arg0 context.Context, arg1 p2p.Peer, arg2 []byte, arg3 server.StreamRequestCallback, arg4 ...string) error {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1, arg2, arg3}
-	for _, a := range arg4 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "StreamRequest", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StreamRequest indicates an expected call of StreamRequest.
 func (mr *MockrequesterMockRecorder) StreamRequest(arg0, arg1, arg2, arg3 any, arg4 ...any) *MockrequesterStreamRequestCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1, arg2, arg3}, arg4...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StreamRequest", reflect.TypeOf((*Mockrequester)(nil).StreamRequest), varargs...)
-	return &MockrequesterStreamRequestCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockrequesterStreamRequestCall wrap *gomock.Call
@@ -152,20 +129,20 @@ type MockrequesterStreamRequestCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockrequesterStreamRequestCall) Return(arg0 error) *MockrequesterStreamRequestCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockrequesterStreamRequestCall) Do(f func(context.Context, p2p.Peer, []byte, server.StreamRequestCallback, ...string) error) *MockrequesterStreamRequestCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockrequesterStreamRequestCall) DoAndReturn(f func(context.Context, p2p.Peer, []byte, server.StreamRequestCallback, ...string) error) *MockrequesterStreamRequestCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockSyncValidator is a mock of SyncValidator interface.
@@ -182,29 +159,27 @@ type MockSyncValidatorMockRecorder struct {
 
 // NewMockSyncValidator creates a new mock instance.
 func NewMockSyncValidator(ctrl *gomock.Controller) *MockSyncValidator {
-	mock := &MockSyncValidator{ctrl: ctrl}
-	mock.recorder = &MockSyncValidatorMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockSyncValidator) EXPECT() *MockSyncValidatorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// HandleMessage mocks base method.
+	return nil
 }
 
-// HandleMessage mocks base method.
 func (m *MockSyncValidator) HandleMessage(arg0 context.Context, arg1 types.Hash32, arg2 p2p.Peer, arg3 []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HandleMessage", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HandleMessage indicates an expected call of HandleMessage.
 func (mr *MockSyncValidatorMockRecorder) HandleMessage(arg0, arg1, arg2, arg3 any) *MockSyncValidatorHandleMessageCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandleMessage", reflect.TypeOf((*MockSyncValidator)(nil).HandleMessage), arg0, arg1, arg2, arg3)
-	return &MockSyncValidatorHandleMessageCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockSyncValidatorHandleMessageCall wrap *gomock.Call
@@ -214,20 +189,20 @@ type MockSyncValidatorHandleMessageCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockSyncValidatorHandleMessageCall) Return(arg0 error) *MockSyncValidatorHandleMessageCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockSyncValidatorHandleMessageCall) Do(f func(context.Context, types.Hash32, p2p.Peer, []byte) error) *MockSyncValidatorHandleMessageCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockSyncValidatorHandleMessageCall) DoAndReturn(f func(context.Context, types.Hash32, p2p.Peer, []byte) error) *MockSyncValidatorHandleMessageCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mockhost is a mock of host interface.
@@ -243,31 +218,20 @@ type MockhostMockRecorder struct {
 }
 
 // NewMockhost creates a new mock instance.
-func NewMockhost(ctrl *gomock.Controller) *Mockhost {
-	mock := &Mockhost{ctrl: ctrl}
-	mock.recorder = &MockhostMockRecorder{mock}
-	return mock
-}
+func NewMockhost(ctrl *gomock.Controller) *Mockhost { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockhost) EXPECT() *MockhostMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ID mocks base method.
+	return nil
 }
 
-// ID mocks base method.
-func (m *Mockhost) ID() p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ID")
-	ret0, _ := ret[0].(p2p.Peer)
-	return ret0
-}
+func (m *Mockhost) ID() p2p.Peer { _ = "STUB: not implemented"; return *new(p2p.Peer) }
 
 // ID indicates an expected call of ID.
-func (mr *MockhostMockRecorder) ID() *MockhostIDCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*Mockhost)(nil).ID))
-	return &MockhostIDCall{Call: call}
-}
+func (mr *MockhostMockRecorder) ID() *MockhostIDCall { _ = "STUB: not implemented"; return nil }
 
 // MockhostIDCall wrap *gomock.Call
 type MockhostIDCall struct {
@@ -276,18 +240,18 @@ type MockhostIDCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockhostIDCall) Return(arg0 p2p.Peer) *MockhostIDCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockhostIDCall) Do(f func() p2p.Peer) *MockhostIDCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockhostIDCall) DoAndReturn(f func() p2p.Peer) *MockhostIDCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

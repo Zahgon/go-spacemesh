@@ -2,9 +2,7 @@
 package config
 
 import (
-	"fmt"
 	"io"
-	"math"
 	"os"
 	"path/filepath"
 	"time"
@@ -78,9 +76,7 @@ type Config struct {
 
 // DataDir returns the absolute path to use for the node's data. This is the tilde-expanded path given in the config
 // with a subfolder named after the network ID.
-func (cfg *Config) DataDir() string {
-	return filepath.Clean(cfg.DataDirParent)
-}
+func (cfg *Config) DataDir() string { _ = "STUB: not implemented"; return "" }
 
 // BaseConfig defines the default configuration options for spacemesh app.
 type BaseConfig struct {
@@ -178,85 +174,15 @@ type SmeshingConfig struct {
 }
 
 // DefaultConfig returns the default configuration for a spacemesh node.
-func DefaultConfig() Config {
-	return Config{
-		BaseConfig:      DefaultBaseConfig(),
-		Genesis:         DefaultGenesisConfig(),
-		Tortoise:        tortoise.DefaultConfig(),
-		P2P:             p2p.DefaultConfig(),
-		API:             grpcserver.DefaultConfig(),
-		HARE3:           hare3.DefaultConfig(),
-		HARE4:           hare4.DefaultConfig(), // DEFAULT HARE4 IS DISABLED
-		HareEligibility: eligibility.DefaultConfig(),
-		Beacon:          beacon.DefaultConfig(),
-		TIME:            timeConfig.DefaultConfig(),
-		VM:              vm.DefaultConfig(),
-		POST:            activation.DefaultPostConfig(),
-		POSTService:     activation.DefaultPostServiceConfig(),
-		POET:            activation.DefaultPoetConfig(),
-		SMESHING:        DefaultSmeshingConfig(),
-		FETCH:           fetch.DefaultConfig(),
-		LOGGING:         DefaultLoggingConfig(),
-		Bootstrap:       bootstrap.DefaultConfig(),
-		Sync:            syncer.DefaultConfig(),
-		Recovery:        checkpoint.DefaultConfig(),
-		Cache:           datastore.DefaultConfig(),
-		ActiveSet:       miner.DefaultActiveSetPreparation(),
-		Certifier:       activation.DefaultCertifierConfig(),
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
+
+// DEFAULT HARE4 IS DISABLED
 
 // DefaultBaseConfig returns a default configuration for spacemesh.
-func DefaultBaseConfig() BaseConfig {
-	return BaseConfig{
-		DataDirParent:                defaultDataDir,
-		FileLock:                     filepath.Join(os.TempDir(), "spacemesh.lock"),
-		CollectMetrics:               false,
-		MetricsPort:                  1010,
-		ProfilerName:                 "go-spacemesh",
-		LayerDuration:                30 * time.Second,
-		LayerAvgSize:                 5,
-		LayersPerEpoch:               3,
-		TxsPerProposal:               100,
-		BlockGasLimit:                math.MaxUint64,
-		OptFilterThreshold:           90,
-		TickSize:                     100,
-		DatabaseConnections:          32,
-		DatabaseSizeMeteringInterval: 10 * time.Minute,
-		DatabasePruneInterval:        30 * time.Minute,
-		DatabaseQueryCacheSizes: DatabaseQueryCacheSizes{
-			EpochATXs:     20,
-			ATXBlob:       10000,
-			ActiveSetBlob: 200,
-		},
-		DatabaseConnIdleTimeout: 10 * time.Millisecond,
-		NetworkHRP:              "sm",
-		ATXGradeDelay:           10 * time.Second,
-		PostValidDelay:          12 * time.Hour,
-
-		PprofHTTPServerListener: "localhost:6060",
-	}
-}
+func DefaultBaseConfig() BaseConfig { _ = "STUB: not implemented"; return *new(BaseConfig) }
 
 // DefaultSmeshingConfig returns the node's default smeshing configuration.
-func DefaultSmeshingConfig() SmeshingConfig {
-	return SmeshingConfig{
-		Start:           false,
-		CoinbaseAccount: "",
-		Opts:            activation.DefaultPostSetupOpts(),
-		ProvingOpts:     activation.DefaultPostProvingOpts(),
-		VerifyingOpts:   activation.DefaultPostVerifyingOpts(),
-	}
-}
+func DefaultSmeshingConfig() SmeshingConfig { _ = "STUB: not implemented"; return *new(SmeshingConfig) }
 
 // LoadConfig load the config file.
-func LoadConfig(src io.Reader, vip *viper.Viper) error {
-	if src == nil {
-		return nil
-	}
-	vip.SetConfigType("json")
-	if err := vip.ReadConfig(src); err != nil {
-		return fmt.Errorf("can't load config: %w", err)
-	}
-	return nil
-}
+func LoadConfig(src io.Reader, vip *viper.Viper) error { _ = "STUB: not implemented"; return nil }

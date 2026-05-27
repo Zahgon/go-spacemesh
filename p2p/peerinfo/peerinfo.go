@@ -11,7 +11,6 @@ import (
 	"github.com/libp2p/go-libp2p/core/protocol"
 	"github.com/libp2p/go-libp2p/p2p/protocol/holepunch"
 	ma "github.com/multiformats/go-multiaddr"
-	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -41,37 +40,18 @@ type PeerRequestStats struct {
 	duration     time.Duration
 }
 
-func (ps *PeerRequestStats) SuccessCount() int {
-	ps.mtx.Lock()
-	defer ps.mtx.Unlock()
-	return ps.successCount
-}
+func (ps *PeerRequestStats) SuccessCount() int { _ = "STUB: not implemented"; return 0 }
 
-func (ps *PeerRequestStats) FailureCount() int {
-	ps.mtx.Lock()
-	defer ps.mtx.Unlock()
-	return ps.failureCount
-}
+func (ps *PeerRequestStats) FailureCount() int { _ = "STUB: not implemented"; return 0 }
 
 func (ps *PeerRequestStats) Latency() time.Duration {
-	ps.mtx.Lock()
-	defer ps.mtx.Unlock()
-	count := ps.successCount + ps.failureCount
-	if count == 0 {
-		return 0
-	}
-	return ps.duration / time.Duration(count)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 func (ps *PeerRequestStats) RequestDone(took time.Duration, success bool) {
-	ps.mtx.Lock()
-	defer ps.mtx.Unlock()
-	if success {
-		ps.successCount++
-	} else {
-		ps.failureCount++
-	}
-	ps.duration += took
+	_ = "STUB: not implemented"
+	return
 }
 
 type DataStats struct {
@@ -86,72 +66,23 @@ type DataStats struct {
 	sendRate [2]int64
 }
 
-func rateIndex(which int) int {
-	switch which {
-	case 1, 2:
-		return which - 1
-	default:
-		panic("bad rate index")
-	}
-}
+func rateIndex(which int) int { _ = "STUB: not implemented"; return 0 }
 
-func bpsInterval(which int) time.Duration {
-	switch which {
-	case 1:
-		return bpsInterval1
-	case 2:
-		return bpsInterval2
-	default:
-		panic("bad rate index")
-	}
-}
+func bpsInterval(which int) time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
-func (ds *DataStats) Tick(which int) {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	interval := bpsInterval(which)
-	idx := rateIndex(which)
-	ds.recvRate[idx] = int64(float64(ds.bytesReceived[0]-ds.bytesReceived[which]) / interval.Seconds())
-	ds.sendRate[idx] = int64(float64(ds.bytesSent[0]-ds.bytesSent[which]) / interval.Seconds())
-	ds.bytesSent[which] = ds.bytesSent[0]
-	ds.bytesReceived[which] = ds.bytesReceived[0]
-}
+func (ds *DataStats) Tick(which int) { _ = "STUB: not implemented"; return }
 
-func (ds *DataStats) RecvRate(which int) int64 {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	return ds.recvRate[rateIndex(which)]
-}
+func (ds *DataStats) RecvRate(which int) int64 { _ = "STUB: not implemented"; return 0 }
 
-func (ds *DataStats) SendRate(which int) int64 {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	return ds.sendRate[rateIndex(which)]
-}
+func (ds *DataStats) SendRate(which int) int64 { _ = "STUB: not implemented"; return 0 }
 
-func (ds *DataStats) RecordSent(n int64) {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	ds.bytesSent[0] += n
-}
+func (ds *DataStats) RecordSent(n int64) { _ = "STUB: not implemented"; return }
 
-func (ds *DataStats) RecordReceived(n int64) {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	ds.bytesReceived[0] += n
-}
+func (ds *DataStats) RecordReceived(n int64) { _ = "STUB: not implemented"; return }
 
-func (ds *DataStats) BytesSent() int64 {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	return ds.bytesSent[0]
-}
+func (ds *DataStats) BytesSent() int64 { _ = "STUB: not implemented"; return 0 }
 
-func (ds *DataStats) BytesReceived() int64 {
-	ds.mtx.Lock()
-	defer ds.mtx.Unlock()
-	return ds.bytesReceived[0]
-}
+func (ds *DataStats) BytesReceived() int64 { _ = "STUB: not implemented"; return 0 }
 
 type Info struct {
 	DataStats
@@ -160,17 +91,9 @@ type Info struct {
 	ServerStats PeerRequestStats
 }
 
-func (i *Info) Kind(c network.Conn) Kind {
-	k, ok := i.connKinds.Load(c.ID())
-	if !ok {
-		return KindUknown
-	}
-	return k.(Kind)
-}
+func (i *Info) Kind(c network.Conn) Kind { _ = "STUB: not implemented"; return *new(Kind) }
 
-func (i *Info) SetKind(c network.Conn, k Kind) {
-	i.connKinds.Store(c.ID(), k)
-}
+func (i *Info) SetKind(c network.Conn, k Kind) { _ = "STUB: not implemented"; return }
 
 //go:generate mockgen -typed -package=peerinfo -destination=./mocks/mocks.go -source=./peerinfo.go
 
@@ -205,152 +128,63 @@ type PeerInfoTracker struct {
 
 type Opt func(t *PeerInfoTracker)
 
-func withClock(clock clockwork.Clock) Opt {
-	return func(t *PeerInfoTracker) {
-		t.clock = clock
-	}
-}
+func withClock(clock clockwork.Clock) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 var _ network.Notifiee = &PeerInfoTracker{}
 
-func NewPeerInfoTracker(opts ...Opt) *PeerInfoTracker {
-	t := &PeerInfoTracker{
-		info:       make(map[peer.ID]*Info),
-		protoStats: make(map[protocol.ID]*DataStats),
-		clock:      clockwork.NewRealClock(),
-	}
-	for _, opt := range opts {
-		opt(t)
-	}
-	return t
-}
+func NewPeerInfoTracker(opts ...Opt) *PeerInfoTracker { _ = "STUB: not implemented"; return nil }
 
-func (t *PeerInfoTracker) Start(p2pNet network.Network) {
-	t.syncOnce.Do(func() {
-		var ctx context.Context
-		ctx, t.stop = context.WithCancel(context.Background())
-		t1 := t.clock.NewTicker(bpsInterval1)
-		t2 := t.clock.NewTicker(bpsInterval2)
-		p2pNet.Notify(t)
-		t.eg.Go(func() error {
-			defer t1.Stop()
-			defer t2.Stop()
-			for {
-				select {
-				case <-ctx.Done():
-					return nil
-				case <-t1.Chan():
-					t.tick(1)
-				case <-t2.Chan():
-					t.tick(2)
-				}
-			}
-		})
-	})
-}
+func (t *PeerInfoTracker) Start(p2pNet network.Network) { _ = "STUB: not implemented"; return }
 
-func (t *PeerInfoTracker) Stop() {
-	if t.stop == nil {
-		panic("Stop without Start")
-	}
-	t.stop()
-	t.eg.Wait()
-}
+func (t *PeerInfoTracker) Stop() { _ = "STUB: not implemented"; return }
 
-func (t *PeerInfoTracker) tick(which int) {
-	t.mtx.Lock()
-	defer t.mtx.Unlock()
-	for _, ds := range t.protoStats {
-		ds.Tick(which)
-	}
-	for _, i := range t.info {
-		i.Tick(which)
-	}
-}
+func (t *PeerInfoTracker) tick(which int) { _ = "STUB: not implemented"; return }
 
 // Connected implements network.Notifiee.
 func (t *PeerInfoTracker) Connected(_ network.Network, c network.Conn) {
-	kind := KindUknown
-	_, err := c.RemoteMultiaddr().ValueForProtocol(ma.P_CIRCUIT)
-	isRelay := err == nil
-	switch c.Stat().Direction {
-	case network.DirInbound:
-		if isRelay {
-			kind = KindRelayInbound
-		} else {
-			kind = KindInbound
-		}
-	case network.DirOutbound:
-		if isRelay {
-			kind = KindRelayOutbound
-		} else {
-			kind = KindOutbound
-		}
-	}
-	t.EnsurePeerInfo(c.RemotePeer()).SetKind(c, kind)
+	_ = "STUB: not implemented"
+	return
 }
 
 // Disconnected implements network.Notifiee.
 func (t *PeerInfoTracker) Disconnected(n network.Network, c network.Conn) {
-	t.mtx.Lock()
-	defer t.mtx.Unlock()
-	for _, cur := range n.ConnsToPeer(c.RemotePeer()) {
-		if c.ID() != cur.ID() {
-			// other connections exist
-			return
-		}
-	}
-	delete(t.info, c.RemotePeer())
+	_ = "STUB: not implemented"
+	return
 }
+
+// other connections exist
 
 // Listen implements network.Notifiee.
-func (*PeerInfoTracker) Listen(network.Network, ma.Multiaddr) {}
+func (*PeerInfoTracker) Listen(network.Network, ma.Multiaddr) {
+	_ = "STUB: not implemented"
 
-// ListenClose implements network.Notifiee.
-func (*PeerInfoTracker) ListenClose(network.Network, ma.Multiaddr) {}
-
-func (t *PeerInfoTracker) EnsurePeerInfo(p peer.ID) *Info {
-	t.mtx.Lock()
-	defer t.mtx.Unlock()
-	info, found := t.info[p]
-	if !found {
-		info = &Info{}
-		t.info[p] = info
-	}
-	return info
+	// ListenClose implements network.Notifiee.
+	return
 }
 
+func (*PeerInfoTracker) ListenClose(network.Network, ma.Multiaddr) {
+	_ = "STUB: not implemented"
+	return
+}
+
+func (t *PeerInfoTracker) EnsurePeerInfo(p peer.ID) *Info { _ = "STUB: not implemented"; return nil }
+
 func (t *PeerInfoTracker) EnsureProtoStats(proto protocol.ID) *DataStats {
-	t.mtx.Lock()
-	defer t.mtx.Unlock()
-	if proto == "" {
-		proto = otherProto
-	}
-	ds, found := t.protoStats[proto]
-	if !found {
-		ds = &DataStats{}
-		t.protoStats[proto] = ds
-	}
-	return ds
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (t *PeerInfoTracker) RecordReceived(n int64, proto protocol.ID, p peer.ID) {
-	t.EnsureProtoStats(proto).RecordReceived(n)
-	t.EnsureProtoStats(totalProto).RecordReceived(n)
-	t.EnsurePeerInfo(p).RecordReceived(n)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (t *PeerInfoTracker) RecordSent(n int64, proto protocol.ID, p peer.ID) {
-	t.EnsureProtoStats(proto).RecordSent(n)
-	t.EnsureProtoStats(totalProto).RecordSent(n)
-	t.EnsurePeerInfo(p).RecordSent(n)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (t *PeerInfoTracker) Protocols() []protocol.ID {
-	t.mtx.Lock()
-	defer t.mtx.Unlock()
-	return maps.Keys(t.protoStats)
-}
+func (t *PeerInfoTracker) Protocols() []protocol.ID { _ = "STUB: not implemented"; return nil }
 
 type HolePunchTracer struct {
 	pi   PeerInfo
@@ -360,13 +194,12 @@ type HolePunchTracer struct {
 var _ holepunch.MetricsTracer = &HolePunchTracer{}
 
 func NewHolePunchTracer(pi PeerInfo, next holepunch.MetricsTracer) *HolePunchTracer {
-	return &HolePunchTracer{pi: pi, next: next}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DirectDialFinished implements holepunch.MetricsTracer.
-func (h *HolePunchTracer) DirectDialFinished(success bool) {
-	h.next.DirectDialFinished(success)
-}
+func (h *HolePunchTracer) DirectDialFinished(success bool) { _ = "STUB: not implemented"; return }
 
 // HolePunchFinished implements holepunch.MetricsTracer.
 func (h *HolePunchTracer) HolePunchFinished(
@@ -375,17 +208,6 @@ func (h *HolePunchTracer) HolePunchFinished(
 	theirAddrs, ourAddr []ma.Multiaddr,
 	directConn network.ConnMultiaddrs,
 ) {
-	h.next.HolePunchFinished(side, attemptNum, theirAddrs, ourAddr, directConn)
-	if h.pi == nil || directConn == nil {
-		return
-	}
-	kind := KindHolePunchUnknown
-	switch side {
-	case "initiator":
-		kind = KindHolePunchOutbound
-	case "receiver":
-		kind = KindHolePunchInbound
-	}
-	c := directConn.(network.Conn)
-	h.pi.EnsurePeerInfo(c.RemotePeer()).SetKind(c, kind)
+	_ = "STUB: not implemented"
+	return
 }

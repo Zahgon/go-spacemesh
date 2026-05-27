@@ -11,7 +11,6 @@ package v2beta1
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
@@ -30,29 +29,24 @@ type MocknodePeerCounterMockRecorder struct {
 
 // NewMocknodePeerCounter creates a new mock instance.
 func NewMocknodePeerCounter(ctrl *gomock.Controller) *MocknodePeerCounter {
-	mock := &MocknodePeerCounter{ctrl: ctrl}
-	mock.recorder = &MocknodePeerCounterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocknodePeerCounter) EXPECT() *MocknodePeerCounterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// PeerCount mocks base method.
+	return nil
 }
 
-// PeerCount mocks base method.
-func (m *MocknodePeerCounter) PeerCount() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerCount")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MocknodePeerCounter) PeerCount() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // PeerCount indicates an expected call of PeerCount.
 func (mr *MocknodePeerCounterMockRecorder) PeerCount() *MocknodePeerCounterPeerCountCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerCount", reflect.TypeOf((*MocknodePeerCounter)(nil).PeerCount))
-	return &MocknodePeerCounterPeerCountCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodePeerCounterPeerCountCall wrap *gomock.Call
@@ -62,20 +56,20 @@ type MocknodePeerCounterPeerCountCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknodePeerCounterPeerCountCall) Return(arg0 uint64) *MocknodePeerCounterPeerCountCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknodePeerCounterPeerCountCall) Do(f func() uint64) *MocknodePeerCounterPeerCountCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknodePeerCounterPeerCountCall) DoAndReturn(f func() uint64) *MocknodePeerCounterPeerCountCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeMeshAPI is a mock of nodeMeshAPI interface.
@@ -91,29 +85,27 @@ type MocknodeMeshAPIMockRecorder struct {
 
 // NewMocknodeMeshAPI creates a new mock instance.
 func NewMocknodeMeshAPI(ctrl *gomock.Controller) *MocknodeMeshAPI {
-	mock := &MocknodeMeshAPI{ctrl: ctrl}
-	mock.recorder = &MocknodeMeshAPIMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocknodeMeshAPI) EXPECT() *MocknodeMeshAPIMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// LatestLayer mocks base method.
+	return nil
 }
 
-// LatestLayer mocks base method.
 func (m *MocknodeMeshAPI) LatestLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LatestLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // LatestLayer indicates an expected call of LatestLayer.
 func (mr *MocknodeMeshAPIMockRecorder) LatestLayer() *MocknodeMeshAPILatestLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LatestLayer", reflect.TypeOf((*MocknodeMeshAPI)(nil).LatestLayer))
-	return &MocknodeMeshAPILatestLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeMeshAPILatestLayerCall wrap *gomock.Call
@@ -123,35 +115,32 @@ type MocknodeMeshAPILatestLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknodeMeshAPILatestLayerCall) Return(arg0 types.LayerID) *MocknodeMeshAPILatestLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknodeMeshAPILatestLayerCall) Do(f func() types.LayerID) *MocknodeMeshAPILatestLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknodeMeshAPILatestLayerCall) DoAndReturn(f func() types.LayerID) *MocknodeMeshAPILatestLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LatestLayerInState mocks base method.
 func (m *MocknodeMeshAPI) LatestLayerInState() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LatestLayerInState")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // LatestLayerInState indicates an expected call of LatestLayerInState.
 func (mr *MocknodeMeshAPIMockRecorder) LatestLayerInState() *MocknodeMeshAPILatestLayerInStateCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LatestLayerInState", reflect.TypeOf((*MocknodeMeshAPI)(nil).LatestLayerInState))
-	return &MocknodeMeshAPILatestLayerInStateCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeMeshAPILatestLayerInStateCall wrap *gomock.Call
@@ -161,35 +150,32 @@ type MocknodeMeshAPILatestLayerInStateCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknodeMeshAPILatestLayerInStateCall) Return(arg0 types.LayerID) *MocknodeMeshAPILatestLayerInStateCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknodeMeshAPILatestLayerInStateCall) Do(f func() types.LayerID) *MocknodeMeshAPILatestLayerInStateCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknodeMeshAPILatestLayerInStateCall) DoAndReturn(f func() types.LayerID) *MocknodeMeshAPILatestLayerInStateCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ProcessedLayer mocks base method.
 func (m *MocknodeMeshAPI) ProcessedLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ProcessedLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // ProcessedLayer indicates an expected call of ProcessedLayer.
 func (mr *MocknodeMeshAPIMockRecorder) ProcessedLayer() *MocknodeMeshAPIProcessedLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProcessedLayer", reflect.TypeOf((*MocknodeMeshAPI)(nil).ProcessedLayer))
-	return &MocknodeMeshAPIProcessedLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeMeshAPIProcessedLayerCall wrap *gomock.Call
@@ -199,20 +185,20 @@ type MocknodeMeshAPIProcessedLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknodeMeshAPIProcessedLayerCall) Return(arg0 types.LayerID) *MocknodeMeshAPIProcessedLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknodeMeshAPIProcessedLayerCall) Do(f func() types.LayerID) *MocknodeMeshAPIProcessedLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknodeMeshAPIProcessedLayerCall) DoAndReturn(f func() types.LayerID) *MocknodeMeshAPIProcessedLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeSyncer is a mock of nodeSyncer interface.
@@ -228,29 +214,27 @@ type MocknodeSyncerMockRecorder struct {
 
 // NewMocknodeSyncer creates a new mock instance.
 func NewMocknodeSyncer(ctrl *gomock.Controller) *MocknodeSyncer {
-	mock := &MocknodeSyncer{ctrl: ctrl}
-	mock.recorder = &MocknodeSyncerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocknodeSyncer) EXPECT() *MocknodeSyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// IsSynced mocks base method.
+	return nil
 }
 
-// IsSynced mocks base method.
 func (m *MocknodeSyncer) IsSynced(arg0 context.Context) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsSynced", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // IsSynced indicates an expected call of IsSynced.
 func (mr *MocknodeSyncerMockRecorder) IsSynced(arg0 any) *MocknodeSyncerIsSyncedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsSynced", reflect.TypeOf((*MocknodeSyncer)(nil).IsSynced), arg0)
-	return &MocknodeSyncerIsSyncedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknodeSyncerIsSyncedCall wrap *gomock.Call
@@ -260,18 +244,18 @@ type MocknodeSyncerIsSyncedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknodeSyncerIsSyncedCall) Return(arg0 bool) *MocknodeSyncerIsSyncedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknodeSyncerIsSyncedCall) Do(f func(context.Context) bool) *MocknodeSyncerIsSyncedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknodeSyncerIsSyncedCall) DoAndReturn(f func(context.Context) bool) *MocknodeSyncerIsSyncedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

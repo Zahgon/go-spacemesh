@@ -3,23 +3,13 @@ package fetch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
-	"sync"
 
 	"github.com/spacemeshos/go-scale"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"golang.org/x/sync/errgroup"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/datastore"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/p2p"
-	"github.com/spacemeshos/go-spacemesh/p2p/pubsub"
-	"github.com/spacemeshos/go-spacemesh/p2p/server"
-	"github.com/spacemeshos/go-spacemesh/sql"
 	"github.com/spacemeshos/go-spacemesh/system"
 )
 
@@ -27,48 +17,19 @@ var errBadRequest = errors.New("invalid request")
 
 // GetAtxs gets the data for given atx IDs and validates them. Returns an error if at least one ATX cannot be fetched.
 func (f *Fetch) GetAtxs(ctx context.Context, ids []types.ATXID, opts ...system.GetAtxOpt) error {
-	if len(ids) == 0 {
-		return nil
-	}
-
-	var options system.GetAtxOpts
-	for _, opt := range opts {
-		opt(&options)
-	}
-
-	f.logger.Debug("requesting atxs from peer",
-		log.ZContext(ctx),
-		zap.Int("num_atxs", len(ids)),
-		zap.Bool("limiting", !options.LimitingOff),
-	)
-	hashes := types.ATXIDsToHashes(ids)
-	handler := f.validators.atx.HandleMessage
-	var ghOpts []getHashesOpt
-	if !options.LimitingOff {
-		ghOpts = append(ghOpts, withLimiter(f.getAtxsLimiter))
-	}
-	if options.Callback != nil {
-		ghOpts = append(ghOpts, withHashCallback(func(hash types.Hash32, err error) {
-			options.Callback(types.ATXID(hash), err)
-		}))
-	}
-	return f.getHashes(ctx, hashes, datastore.ATXDB, handler, ghOpts...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type dataReceiver func(context.Context, types.Hash32, p2p.Peer, []byte) error
 
 type getHashesOpt func(*getHashesOpts)
 
-func withLimiter(l limiter) getHashesOpt {
-	return func(o *getHashesOpts) {
-		o.limiter = l
-	}
-}
+func withLimiter(l limiter) getHashesOpt { _ = "STUB: not implemented"; return *new(getHashesOpt) }
 
 func withHashCallback(callback func(types.Hash32, error)) getHashesOpt {
-	return func(o *getHashesOpts) {
-		o.callback = callback
-	}
+	_ = "STUB: not implemented"
+	return *new(getHashesOpt)
 }
 
 func (f *Fetch) getHashes(
@@ -78,385 +39,123 @@ func (f *Fetch) getHashes(
 	receiver dataReceiver,
 	opts ...getHashesOpt,
 ) error {
-	options := getHashesOpts{
-		limiter:  noLimit{},
-		callback: func(types.Hash32, error) {},
-	}
-	for _, opt := range opts {
-		opt(&options)
-	}
-
-	pendingMetric := pendingHashReqs.WithLabelValues(string(hint))
-	pendingMetric.Add(float64(len(hashes)))
-
-	var (
-		eg       errgroup.Group
-		mu       sync.Mutex
-		bfailure = BatchError{Errors: map[types.Hash32]error{}}
-	)
-	for i, hash := range hashes {
-		if err := options.limiter.Acquire(ctx, 1); err != nil {
-			pendingMetric.Add(float64(i - len(hashes)))
-			err = fmt.Errorf("acquiring slot to get hash: %w", err)
-			for _, h := range hashes[i:] {
-				options.callback(h, err)
-			}
-			return err
-		}
-		p, err := f.getHash(ctx, hash, hint, receiver)
-		if err != nil {
-			options.limiter.Release(1)
-			pendingMetric.Add(float64(i - len(hashes)))
-			for _, h := range hashes[i:] {
-				options.callback(h, err)
-			}
-			return err
-		}
-		if p == nil {
-			// data is available locally
-			options.limiter.Release(1)
-			pendingMetric.Add(-1)
-			options.callback(hash, nil)
-			continue
-		}
-
-		eg.Go(func() error {
-			select {
-			case <-ctx.Done():
-				options.limiter.Release(1)
-				pendingMetric.Add(-1)
-				options.callback(hash, ctx.Err())
-				return ctx.Err()
-			case <-p.completed:
-				options.limiter.Release(1)
-				pendingMetric.Add(-1)
-				if p.err != nil {
-					f.logger.With().Debug("failed to get hash",
-						zap.String("hint", string(hint)),
-						zap.Stringer("hash", hash),
-						zap.Error(p.err),
-					)
-
-					mu.Lock()
-					bfailure.Add(hash, p.err)
-					mu.Unlock()
-				}
-				options.callback(hash, p.err)
-				return nil
-			}
-		})
-	}
-
-	eg.Wait()
-	if !bfailure.Empty() {
-		return &bfailure
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// data is available locally
+
 // GetActiveSet downloads activeset.
 func (f *Fetch) GetActiveSet(ctx context.Context, set types.Hash32) error {
-	f.logger.Debug("request active set", log.ZContext(ctx), log.ZShortStringer("id", set))
-	return f.getHashes(ctx, []types.Hash32{set}, datastore.ActiveSet, f.validators.activeset.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LegacyMalfeasanceProofs gets legacy malfeasance proofs (v1) for the specified NodeIDs and validates them.
 func (f *Fetch) LegacyMalfeasanceProofs(ctx context.Context, ids []types.NodeID) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	f.logger.Debug("requesting legacy malfeasance proofs from peers",
-		log.ZContext(ctx),
-		zap.Int("num_proofs", len(ids)),
-	)
-	hashes := types.NodeIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.LegacyMalfeasance, f.validators.legacyMalfeasance.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MalfeasanceProofs gets malfeasance proofs (v2) for the specified NodeIDs and validates them.
 func (f *Fetch) MalfeasanceProofs(ctx context.Context, ids []types.NodeID) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	f.logger.Debug("requesting malfeasance proofs from peers",
-		log.ZContext(ctx),
-		zap.Int("num_proofs", len(ids)),
-	)
-	hashes := types.NodeIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.Malfeasance, f.validators.malfeasance.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBallots gets data for the specified BallotIDs and validates them.
 func (f *Fetch) GetBallots(ctx context.Context, ids []types.BallotID) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	f.logger.Debug("requesting ballots from peer", log.ZContext(ctx), zap.Int("num_ballots", len(ids)))
-	hashes := types.BallotIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.BallotDB, f.validators.ballot.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetProposals gets the data for given proposal IDs from peers.
 func (f *Fetch) GetProposals(ctx context.Context, ids []types.ProposalID) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	f.logger.Debug("requesting proposals from peer", log.ZContext(ctx), zap.Int("num_proposals", len(ids)))
-	hashes := types.ProposalIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.ProposalDB, f.validators.proposal.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks gets the data for given block IDs from peers.
 func (f *Fetch) GetBlocks(ctx context.Context, ids []types.BlockID) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	f.logger.Debug("requesting blocks from peer", log.ZContext(ctx), zap.Int("num_blocks", len(ids)))
-	hashes := types.BlockIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.BlockDB, f.validators.block.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetProposalTxs fetches the txs provided as IDs and validates them, returns an error if one TX failed to be fetched.
 func (f *Fetch) GetProposalTxs(ctx context.Context, ids []types.TransactionID) error {
-	f.logger.Debug("requesting proposal txs from peer",
-		log.ZContext(ctx),
-		zap.Int("num_txs", len(ids)),
-		zap.Array("txs", zapcore.ArrayMarshalerFunc(func(enc zapcore.ArrayEncoder) error {
-			for _, id := range ids {
-				enc.AppendString(id.ShortString())
-			}
-			return nil
-		})),
-	)
-	return f.getTxs(ctx, ids, f.validators.txProposal.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlockTxs fetches the txs provided as IDs and saves them, they will be validated
 // before block is applied.
 func (f *Fetch) GetBlockTxs(ctx context.Context, ids []types.TransactionID) error {
-	f.logger.Debug("requesting block txs from peer",
-		log.ZContext(ctx),
-		zap.Int("num_txs", len(ids)),
-		zap.Array("txs", zapcore.ArrayMarshalerFunc(func(enc zapcore.ArrayEncoder) error {
-			for _, id := range ids {
-				enc.AppendString(id.ShortString())
-			}
-			return nil
-		})),
-	)
-	return f.getTxs(ctx, ids, f.validators.txBlock.HandleMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (f *Fetch) getTxs(ctx context.Context, ids []types.TransactionID, receiver dataReceiver) error {
-	if len(ids) == 0 {
-		return nil
-	}
-	hashes := types.TransactionIDsToHashes(ids)
-	return f.getHashes(ctx, hashes, datastore.TXDB, receiver)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetPoetProof gets poet proof from remote peer.
 func (f *Fetch) GetPoetProof(ctx context.Context, id types.Hash32) error {
-	f.logger.Debug("getting poet proof", log.ZContext(ctx), zap.Stringer("hash", id))
-	pm, err := f.getHash(ctx, id, datastore.POETDB, f.validators.poet.HandleMessage)
-	if err != nil {
-		return err
-	}
-	if pm == nil {
-		// data is available locally
-		return nil
-	}
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	case <-pm.completed:
-	}
-	switch {
-	case pm.err == nil:
-		return nil
-	case errors.Is(pm.err, sql.ErrObjectExists):
-		// PoET proofs are concurrently stored in DB in two places:
-		// fetcher and nipost builder. Hence, it might happen that
-		// a proof had been inserted into the DB while the fetcher
-		// was fetching.
-		return nil
-	default:
-		f.logger.Warn("failed to get hash",
-			log.ZContext(ctx),
-			zap.String("hint", string(datastore.POETDB)),
-			zap.Stringer("hash", id),
-			zap.Error(pm.err),
-		)
-		return pm.err
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// data is available locally
+
+// PoET proofs are concurrently stored in DB in two places:
+// fetcher and nipost builder. Hence, it might happen that
+// a proof had been inserted into the DB while the fetcher
+// was fetching.
 
 // LegacyMaliciousIDs gets the malicious IDs from the specified peer. Proofs for those IDs can be fetched via the
 // legacy malfeasance proofs protocol (see also LegacyMalfeasanceProofs).
 func (f *Fetch) LegacyMaliciousIDs(ctx context.Context, peer p2p.Peer) ([]types.NodeID, error) {
-	var malIDs MaliciousIDs
-	if !f.cfg.Streaming {
-		data, err := f.meteredRequest(ctx, legacyMalProtocol, peer, []byte{})
-		if err != nil {
-			return nil, err
-		}
-		if err := codec.Decode(data, &malIDs); err != nil {
-			return nil, err
-		}
-		f.RegisterPeerHashes(peer, types.NodeIDsToHashes(malIDs.NodeIDs))
-		return malIDs.NodeIDs, nil
-	}
-
-	err := f.meteredStreamRequest(ctx, legacyMalProtocol, peer, []byte{},
-		func(ctx context.Context, s io.ReadWriter) (int, error) {
-			total, err := readIDSlice(s, &malIDs.NodeIDs, maxMaliciousIDs)
-			if ctx.Err() != nil {
-				return total, ctx.Err()
-			}
-			return total, err
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	f.RegisterPeerHashes(peer, types.NodeIDsToHashes(malIDs.NodeIDs))
-	return malIDs.NodeIDs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MaliciousIDs gets the malicious IDs from the specified peer. Proofs for those IDs can be fetched via the malfeasance
 // proof protocol (see also MalfeasanceProofs).
 func (f *Fetch) MaliciousIDs(ctx context.Context, peer p2p.Peer) ([]types.NodeID, error) {
-	var malIDs MaliciousIDs
-	if !f.cfg.Streaming {
-		data, err := f.meteredRequest(ctx, malProtocol, peer, []byte{})
-		if err != nil {
-			return nil, err
-		}
-		if err := codec.Decode(data, &malIDs); err != nil {
-			return nil, err
-		}
-		f.RegisterPeerHashes(peer, types.NodeIDsToHashes(malIDs.NodeIDs))
-		return malIDs.NodeIDs, nil
-	}
-
-	err := f.meteredStreamRequest(ctx, malProtocol, peer, []byte{},
-		func(ctx context.Context, s io.ReadWriter) (int, error) {
-			total, err := readIDSlice(s, &malIDs.NodeIDs, maxMaliciousIDs)
-			if ctx.Err() != nil {
-				return total, ctx.Err()
-			}
-			return total, err
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	f.RegisterPeerHashes(peer, types.NodeIDsToHashes(malIDs.NodeIDs))
-	return malIDs.NodeIDs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerData get layer data from peers.
 func (f *Fetch) GetLayerData(ctx context.Context, peer p2p.Peer, lid types.LayerID) ([]byte, error) {
-	lidBytes := codec.MustEncode(&lid)
-	return f.meteredRequest(ctx, lyrDataProtocol, peer, lidBytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *Fetch) GetLayerOpinions(ctx context.Context, peer p2p.Peer, lid types.LayerID) ([]byte, error) {
-	reqData := codec.MustEncode(&OpinionRequest{
-		Layer: lid,
-	})
-	return f.meteredRequest(ctx, OpnProtocol, peer, reqData)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *Fetch) peerEpochInfoStreamed(ctx context.Context, peer p2p.Peer, epochBytes []byte) (*EpochData, error) {
-	var ed EpochData
-	if err := f.meteredStreamRequest(
-		ctx, atxProtocol, peer, epochBytes,
-		func(ctx context.Context, s io.ReadWriter) (int, error) {
-			total, err := readIDSlice(s, &ed.AtxIDs, maxEpochDataAtxIDs)
-			if ctx.Err() != nil {
-				return total, ctx.Err()
-			}
-			return total, err
-		},
-	); err != nil {
-		return nil, err
-	}
-	return &ed, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerEpochInfo get the epoch info published in the given epoch from the specified peer.
 func (f *Fetch) PeerEpochInfo(ctx context.Context, peer p2p.Peer, epoch types.EpochID) (*EpochData, error) {
-	f.logger.Debug("requesting epoch info from peer",
-		log.ZContext(ctx),
-		zap.Stringer("peer", peer),
-		zap.Stringer("epoch", epoch),
-	)
-	epochBytes := codec.MustEncode(epoch)
-
-	var (
-		ed  *EpochData
-		err error
-	)
-	if f.cfg.Streaming {
-		ed, err = f.peerEpochInfoStreamed(ctx, peer, epochBytes)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		data, err := f.meteredRequest(ctx, atxProtocol, peer, epochBytes)
-		if err != nil {
-			return nil, err
-		}
-
-		ed = &EpochData{}
-		if err := codec.Decode(data, ed); err != nil {
-			return nil, fmt.Errorf("decoding epoch data: %w", err)
-		}
-	}
-	return ed, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *Fetch) peerMeshHashesStreamed(ctx context.Context, peer p2p.Peer, reqBytes []byte) (*MeshHashes, error) {
-	var mh MeshHashes
-	if err := f.meteredStreamRequest(
-		ctx, meshHashProtocol, peer, reqBytes,
-		func(ctx context.Context, s io.ReadWriter) (int, error) {
-			return readIDSlice(s, &mh.Hashes, maxMeshHashes)
-		},
-	); err != nil {
-		return nil, err
-	}
-	return &mh, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *Fetch) PeerMeshHashes(ctx context.Context, peer p2p.Peer, req *MeshHashRequest) (*MeshHashes, error) {
-	f.logger.Debug("requesting mesh hashes from peer",
-		log.ZContext(ctx),
-		zap.Stringer("peer", peer),
-		zap.Object("req", req),
-	)
-
-	reqData, err := codec.Encode(req)
-	if err != nil {
-		f.logger.With().Fatal("failed to encode mesh hash request", zap.Error(err))
-	}
-
-	if f.cfg.Streaming {
-		return f.peerMeshHashesStreamed(ctx, peer, reqData)
-	}
-
-	data, err := f.meteredRequest(ctx, meshHashProtocol, peer, reqData)
-	if err != nil {
-		return nil, err
-	}
-	hashes, err := codec.DecodeSlice[types.Hash32](data)
-	if err != nil {
-		return nil, fmt.Errorf("decoding hashes response: %w", err)
-	}
-	return &MeshHashes{
-		Hashes: hashes,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *Fetch) GetCert(
@@ -465,46 +164,15 @@ func (f *Fetch) GetCert(
 	bid types.BlockID,
 	peers []p2p.Peer,
 ) (*types.Certificate, error) {
-	f.logger.Debug("requesting block certificate from peers",
-		log.ZContext(ctx),
-		zap.Uint32("layer", lid.Uint32()),
-		zap.Stringer("block", bid),
-		zap.Int("num peer", len(peers)),
-	)
-	req := &OpinionRequest{
-		Layer: lid,
-		Block: &bid,
-	}
-	reqData := codec.MustEncode(req)
-
-	for _, peer := range peers {
-		data, err := f.meteredRequest(ctx, OpnProtocol, peer, reqData)
-		if err != nil {
-			f.logger.With().Debug("failed to get cert", zap.Stringer("peer", peer), zap.Error(err))
-			continue
-		}
-		var peerCert types.Certificate
-		if err = codec.Decode(data, &peerCert); err != nil {
-			f.logger.With().Debug("failed to decode cert", zap.Stringer("peer", peer), zap.Error(err))
-			continue
-		}
-		// for generic data fetches by hash (ID for atx/block/proposal/ballot/tx), the check on whether the returned
-		// data matching the hash was done on the data handlers' path. for block certificate, there is no ID associated
-		// with it, hence the check here.
-		// however, certificate doesn't go through that path. it's requested by a separate protocol because a block
-		// certificate doesn't have an ID.
-		if peerCert.BlockID != bid {
-			f.logger.With().Debug(
-				"peer served wrong cert",
-				zap.Stringer("want", bid),
-				zap.Stringer("got", peerCert.BlockID),
-				zap.Stringer("peer", peer),
-			)
-		}
-		return &peerCert, nil
-	}
-	return nil, fmt.Errorf("failed to get cert %v/%s from %d peers: %w", lid, bid.String(), len(peers), ctx.Err())
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// for generic data fetches by hash (ID for atx/block/proposal/ballot/tx), the check on whether the returned
+// data matching the hash was done on the data handlers' path. for block certificate, there is no ID associated
+// with it, hence the check here.
+// however, certificate doesn't go through that path. it's requested by a separate protocol because a block
+// certificate doesn't have an ID.
 
 var ErrIgnore = errors.New("fetch: ignore")
 
@@ -513,75 +181,19 @@ type BatchError struct {
 	first  types.Hash32
 }
 
-func (b *BatchError) Empty() bool {
-	return len(b.Errors) == 0
-}
+func (b *BatchError) Empty() bool { _ = "STUB: not implemented"; return false }
 
-func (b *BatchError) Is(target error) bool {
-	for _, err := range b.Errors {
-		if errors.Is(err, target) {
-			return true
-		}
-	}
-	return false
-}
+func (b *BatchError) Is(target error) bool { _ = "STUB: not implemented"; return false }
 
-func (b *BatchError) Add(id types.Hash32, err error) {
-	if b.Errors == nil {
-		b.Errors = map[types.Hash32]error{}
-	}
-	if b.Empty() {
-		b.first = id
-	}
-	b.Errors[id] = err
-}
+func (b *BatchError) Add(id types.Hash32, err error) { _ = "STUB: not implemented"; return }
 
-func (b *BatchError) Error() string {
-	if len(b.Errors) == 0 {
-		return ""
-	}
-	return fmt.Sprintf("batch failed, first failure: %s: %v", b.first.ShortString(), b.Errors[b.first])
-}
+func (b *BatchError) Error() string { _ = "STUB: not implemented"; return "" }
 
-func (b *BatchError) Ignore() bool {
-	for hash := range b.Errors {
-		if !b.IsIgnored(hash) {
-			return false
-		}
-	}
-	return true
-}
+func (b *BatchError) Ignore() bool { _ = "STUB: not implemented"; return false }
 
-func (b *BatchError) IsIgnored(hash types.Hash32) bool {
-	err := b.Errors[hash]
-	if err == nil {
-		return false
-	}
-	nested := &BatchError{}
-	if errors.As(err, &nested) && nested.Ignore() {
-		return true
-	}
-	return errors.Is(err, pubsub.ErrValidationReject) || errors.Is(err, ErrIgnore)
-}
+func (b *BatchError) IsIgnored(hash types.Hash32) bool { _ = "STUB: not implemented"; return false }
 
 func readIDSlice[V any, H scale.DecodablePtr[V]](r io.Reader, slice *[]V, limit uint32) (int, error) {
-	return server.ReadResponse(r, func(respLen uint32) (int, error) {
-		d := scale.NewDecoder(r)
-		length, total, err := scale.DecodeLen(d, limit)
-		if err != nil {
-			return total, err
-		}
-		if int(length*types.Hash32Length)+total != int(respLen) {
-			return total, errors.New("bad slice length")
-		}
-		*slice = make([]V, length)
-		for i := uint32(0); i < length; i++ {
-			n, err := H(&(*slice)[i]).DecodeScale(d)
-			total += n
-			if err != nil {
-				return total, err
-			}
-		}
-		return total, err
-	})
+	_ = "STUB: not implemented"
+	return 0, nil
 }

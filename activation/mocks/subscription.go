@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,29 +28,27 @@ type MockpostStatesGetterMockRecorder struct {
 
 // NewMockpostStatesGetter creates a new mock instance.
 func NewMockpostStatesGetter(ctrl *gomock.Controller) *MockpostStatesGetter {
-	mock := &MockpostStatesGetter{ctrl: ctrl}
-	mock.recorder = &MockpostStatesGetterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockpostStatesGetter) EXPECT() *MockpostStatesGetterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Get mocks base method.
+	return nil
 }
 
-// Get mocks base method.
 func (m *MockpostStatesGetter) Get() map[types.NodeID]types.PostState {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get")
-	ret0, _ := ret[0].(map[types.NodeID]types.PostState)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Get indicates an expected call of Get.
 func (mr *MockpostStatesGetterMockRecorder) Get() *MockpostStatesGetterGetCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockpostStatesGetter)(nil).Get))
-	return &MockpostStatesGetterGetCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostStatesGetterGetCall wrap *gomock.Call
@@ -62,20 +58,20 @@ type MockpostStatesGetterGetCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostStatesGetterGetCall) Return(arg0 map[types.NodeID]types.PostState) *MockpostStatesGetterGetCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostStatesGetterGetCall) Do(f func() map[types.NodeID]types.PostState) *MockpostStatesGetterGetCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostStatesGetterGetCall) DoAndReturn(f func() map[types.NodeID]types.PostState) *MockpostStatesGetterGetCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mocksubscription is a mock of subscription interface.
@@ -92,27 +88,24 @@ type MocksubscriptionMockRecorder[T any] struct {
 
 // NewMocksubscription creates a new mock instance.
 func NewMocksubscription[T any](ctrl *gomock.Controller) *Mocksubscription[T] {
-	mock := &Mocksubscription[T]{ctrl: ctrl}
-	mock.recorder = &MocksubscriptionMockRecorder[T]{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mocksubscription[T]) EXPECT() *MocksubscriptionMockRecorder[T] {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Close mocks base method.
+	return nil
 }
 
-// Close mocks base method.
-func (m *Mocksubscription[T]) Close() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Close")
-}
+func (m *Mocksubscription[T]) Close() { _ = "STUB: not implemented"; return }
 
 // Close indicates an expected call of Close.
 func (mr *MocksubscriptionMockRecorder[T]) Close() *MocksubscriptionCloseCall[T] {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*Mocksubscription[T])(nil).Close))
-	return &MocksubscriptionCloseCall[T]{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocksubscriptionCloseCall wrap *gomock.Call
@@ -122,35 +115,29 @@ type MocksubscriptionCloseCall[T any] struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocksubscriptionCloseCall[T]) Return() *MocksubscriptionCloseCall[T] {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocksubscriptionCloseCall[T]) Do(f func()) *MocksubscriptionCloseCall[T] {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocksubscriptionCloseCall[T]) DoAndReturn(f func()) *MocksubscriptionCloseCall[T] {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Full mocks base method.
-func (m *Mocksubscription[T]) Full() <-chan struct{} {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Full")
-	ret0, _ := ret[0].(<-chan struct{})
-	return ret0
-}
+func (m *Mocksubscription[T]) Full() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 // Full indicates an expected call of Full.
 func (mr *MocksubscriptionMockRecorder[T]) Full() *MocksubscriptionFullCall[T] {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Full", reflect.TypeOf((*Mocksubscription[T])(nil).Full))
-	return &MocksubscriptionFullCall[T]{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocksubscriptionFullCall wrap *gomock.Call
@@ -160,35 +147,29 @@ type MocksubscriptionFullCall[T any] struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocksubscriptionFullCall[T]) Return(arg0 <-chan struct{}) *MocksubscriptionFullCall[T] {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocksubscriptionFullCall[T]) Do(f func() <-chan struct{}) *MocksubscriptionFullCall[T] {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocksubscriptionFullCall[T]) DoAndReturn(f func() <-chan struct{}) *MocksubscriptionFullCall[T] {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Out mocks base method.
-func (m *Mocksubscription[T]) Out() <-chan T {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Out")
-	ret0, _ := ret[0].(<-chan T)
-	return ret0
-}
+func (m *Mocksubscription[T]) Out() <-chan T { _ = "STUB: not implemented"; return nil }
 
 // Out indicates an expected call of Out.
 func (mr *MocksubscriptionMockRecorder[T]) Out() *MocksubscriptionOutCall[T] {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Out", reflect.TypeOf((*Mocksubscription[T])(nil).Out))
-	return &MocksubscriptionOutCall[T]{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocksubscriptionOutCall wrap *gomock.Call
@@ -198,18 +179,18 @@ type MocksubscriptionOutCall[T any] struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocksubscriptionOutCall[T]) Return(arg0 <-chan T) *MocksubscriptionOutCall[T] {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocksubscriptionOutCall[T]) Do(f func() <-chan T) *MocksubscriptionOutCall[T] {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocksubscriptionOutCall[T]) DoAndReturn(f func() <-chan T) *MocksubscriptionOutCall[T] {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

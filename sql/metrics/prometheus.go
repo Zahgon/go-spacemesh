@@ -2,14 +2,12 @@ package metrics
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/spacemeshos/go-spacemesh/metrics"
 	"github.com/spacemeshos/go-spacemesh/sql"
 )
 
@@ -39,118 +37,25 @@ func NewDBMetricsCollector(
 	logger *zap.Logger,
 	checkInterval time.Duration,
 ) *DBMetricsCollector {
-	ctx, cancel := context.WithCancel(ctx)
-	collector := &DBMetricsCollector{
-		checkInterval: checkInterval,
-		logger:        logger.Named("db_metrics"),
-		db:            db,
-		cancel:        cancel,
-		tableSize:     metrics.NewGauge("table_size", subsystem, "Size of table in bytes", []string{"name"}),
-		indexSize:     metrics.NewGauge("index_size", subsystem, "Size of index in bytes", []string{"name"}),
-		totalSize:     metrics.NewGauge("total_size", subsystem, "Total size of db in bytes", nil),
-	}
-	statEnabled, err := collector.checkCompiledWithDBStat()
-	if err != nil {
-		collector.logger.Error("error check compile options", zap.Error(err))
-		return nil
-	}
-	if !statEnabled {
-		collector.logger.Info("sqlite compiled without `SQLITE_ENABLE_DBSTAT_VTAB`. Metrics will not collected")
-		return nil
-	}
-
-	collector.tablesList, err = collector.getListOfTables()
-	if err != nil {
-		collector.logger.Error("error get list of tables", zap.Error(err))
-		return nil
-	}
-	collector.logger.Info("start collect stat")
-	collector.eg.Go(func() error {
-		collector.CollectMetrics(ctx)
-		return nil
-	})
-	return collector
-}
-
-// Close closes DBMetricsCollector.
-func (d *DBMetricsCollector) Close() {
-	d.cancel()
-	if err := d.eg.Wait(); err != nil {
-		d.logger.Error("received error waiting for db metrics collector", zap.Error(err))
-	}
-}
-
-// CollectMetrics collects metrics from db.
-func (d *DBMetricsCollector) CollectMetrics(ctx context.Context) {
-	ticker := time.NewTicker(d.checkInterval)
-	defer ticker.Stop()
-	for {
-		select {
-		case <-ticker.C:
-			d.logger.Debug("collect stats from db")
-			if err := d.collect(); err != nil {
-				d.logger.Error("error collecting db metrics", zap.Error(err))
-			}
-		case <-ctx.Done():
-			return
-		}
-	}
-}
-
-func (d *DBMetricsCollector) collect() error {
-	sizes := make(map[string]int64, 30)
-	_, err := d.db.Exec(
-		"SELECT name, sum(pgsize) as sum FROM dbstat GROUP BY name",
-		nil,
-		func(stmt *sql.Statement) bool {
-			sizes[stmt.ColumnText(0)] = stmt.ColumnInt64(1)
-			return true
-		},
-	)
-	if err != nil {
-		return fmt.Errorf("error execute stat metrics: %w", err)
-	}
-	var totalSize int64
-	for name, size := range sizes {
-		totalSize += size
-		_, ok := d.tablesList[name]
-		if ok {
-			d.tableSize.WithLabelValues(name).Set(float64(size))
-			continue
-		}
-		d.indexSize.WithLabelValues(name).Set(float64(size))
-	}
-	d.totalSize.WithLabelValues().Set(float64(totalSize))
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (d *DBMetricsCollector) checkCompiledWithDBStat() (bool, error) {
-	var options []string
-	_, err := d.db.Exec("PRAGMA compile_options", nil, func(stmt *sql.Statement) bool {
-		options = append(options, stmt.ColumnText(0))
-		return true
-	})
-	if err != nil {
-		return false, fmt.Errorf("error check db compiler options: %w", err)
-	}
-	for _, option := range options {
-		if option == enabledDBStat {
-			return true, nil
-		}
-	}
+// Close closes DBMetricsCollector.
+func (d *DBMetricsCollector) Close() { _ = "STUB: not implemented"; return }
 
+// CollectMetrics collects metrics from db.
+func (d *DBMetricsCollector) CollectMetrics(ctx context.Context) { _ = "STUB: not implemented"; return }
+
+func (d *DBMetricsCollector) collect() error { _ = "STUB: not implemented"; return nil }
+
+func (d *DBMetricsCollector) checkCompiledWithDBStat() (bool, error) {
+	_ = "STUB: not implemented"
 	return false, nil
 }
 
 // getListOfTables returns list of tables in db. Need to separate size indexes and tables.
 func (d *DBMetricsCollector) getListOfTables() (map[string]struct{}, error) {
-	tables := make(map[string]struct{})
-	_, err := d.db.Exec("SELECT name FROM sqlite_master WHERE type='table'", nil, func(stmt *sql.Statement) bool {
-		tables[stmt.ColumnText(0)] = struct{}{}
-		return true
-	})
-	if err != nil {
-		return nil, fmt.Errorf("error get list of tables: %w", err)
-	}
-	return tables, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

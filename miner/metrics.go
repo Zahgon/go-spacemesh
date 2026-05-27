@@ -29,20 +29,13 @@ type latencyTracker struct {
 }
 
 func (lt *latencyTracker) total() time.Duration {
-	return lt.end.Sub(lt.start)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 func (lt *latencyTracker) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddDuration("data", lt.data)
-	encoder.AddDuration("tortoise", lt.tortoise)
-	encoder.AddDuration("hash", lt.hash)
-	encoder.AddDuration("txs", lt.txs)
-	encoder.AddDuration("publish", lt.publish)
-	total := lt.total()
-	encoder.AddDuration("total", total)
-	// arbitrary threshold that we want to highlight as a problem
-	if total > 10*time.Second {
-		encoder.AddBool("LATE PROPOSAL", true)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// arbitrary threshold that we want to highlight as a problem

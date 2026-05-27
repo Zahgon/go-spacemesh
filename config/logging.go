@@ -53,41 +53,4 @@ type LoggerConfig struct {
 	BootstrapLoggerLevel       string `mapstructure:"bootstrap"`
 }
 
-func DefaultLoggingConfig() LoggerConfig {
-	return LoggerConfig{
-		Encoder:                    ConsoleLogEncoder,
-		AppLoggerLevel:             defaultLoggingLevel.String(),
-		GrpcLoggerLevel:            zapcore.WarnLevel.String(),
-		P2PLoggerLevel:             zapcore.ErrorLevel.String(),
-		PostLoggerLevel:            defaultLoggingLevel.String(),
-		StateDbLoggerLevel:         defaultLoggingLevel.String(),
-		AtxHandlerLevel:            defaultLoggingLevel.String(),
-		AtxBuilderLoggerLevel:      defaultLoggingLevel.String(),
-		BeaconLoggerLevel:          defaultLoggingLevel.String(),
-		PoetDbLoggerLevel:          defaultLoggingLevel.String(),
-		TrtlLoggerLevel:            defaultLoggingLevel.String(),
-		MeshLoggerLevel:            defaultLoggingLevel.String(),
-		SyncLoggerLevel:            defaultLoggingLevel.String(),
-		FetcherLoggerLevel:         defaultLoggingLevel.String(),
-		HareOracleLoggerLevel:      defaultLoggingLevel.String(),
-		HareLoggerLevel:            defaultLoggingLevel.String(),
-		NipostBuilderLoggerLevel:   defaultLoggingLevel.String(),
-		TimeSyncLoggerLevel:        defaultLoggingLevel.String(),
-		VMLogLevel:                 defaultLoggingLevel.String(),
-		ProposalListenerLevel:      defaultLoggingLevel.String(),
-		ExecutorLoggerLevel:        defaultLoggingLevel.String(),
-		BlockHandlerLoggerLevel:    defaultLoggingLevel.String(),
-		BlockGenLoggerLevel:        defaultLoggingLevel.String(),
-		BlockCertLoggerLevel:       defaultLoggingLevel.String(),
-		TxHandlerLoggerLevel:       defaultLoggingLevel.String(),
-		ProposalBuilderLoggerLevel: defaultLoggingLevel.String(),
-		NipostValidatorLoggerLevel: defaultLoggingLevel.String(),
-		CachedDBLoggerLevel:        defaultLoggingLevel.String(),
-		ClockLoggerLevel:           defaultLoggingLevel.String(),
-		PostServiceLoggerLevel:     defaultLoggingLevel.String(),
-		ConStateLoggerLevel:        defaultLoggingLevel.String(),
-		MalfeasanceLoggerLevel:     defaultLoggingLevel.String(),
-		Malfeasance2LoggerLevel:    defaultLoggingLevel.String(),
-		BootstrapLoggerLevel:       defaultLoggingLevel.String(),
-	}
-}
+func DefaultLoggingConfig() LoggerConfig { _ = "STUB: not implemented"; return *new(LoggerConfig) }

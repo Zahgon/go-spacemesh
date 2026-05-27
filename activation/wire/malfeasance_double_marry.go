@@ -2,11 +2,8 @@ package wire
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/signing"
 	"github.com/spacemeshos/go-spacemesh/sql"
 )
 
@@ -42,79 +39,22 @@ type ProofDoubleMarry struct {
 	Proof2 MarryProof
 }
 
-func (p ProofDoubleMarry) AllowNoRefATXs() bool {
-	return false
-}
+func (p ProofDoubleMarry) AllowNoRefATXs() bool { _ = "STUB: not implemented"; return false }
 
-func (p ProofDoubleMarry) TypeName() string {
-	return "DoubleMarryProof"
-}
+func (p ProofDoubleMarry) TypeName() string { _ = "STUB: not implemented"; return "" }
 
-func (p ProofDoubleMarry) Type() ProofType {
-	return DoubleMarry
-}
+func (p ProofDoubleMarry) Type() ProofType { _ = "STUB: not implemented"; return *new(ProofType) }
 
-func (p ProofDoubleMarry) Info() map[string]string {
-	return map[string]string{
-		"node_id":     p.NodeID.String(),
-		"atx1":        p.ATXID1.String(),
-		"smesher_id1": p.SmesherID1.String(),
-		"atx2":        p.ATXID2.String(),
-		"smesher_id2": p.SmesherID2.String(),
-	}
-}
+func (p ProofDoubleMarry) Info() map[string]string { _ = "STUB: not implemented"; return nil }
 
 var _ Proof = &ProofDoubleMarry{}
 
 func NewDoubleMarryProof(db sql.Executor, atx1, atx2 *ActivationTxV2, nodeID types.NodeID) (*ProofDoubleMarry, error) {
-	if atx1.ID() == atx2.ID() {
-		return nil, errors.New("ATXs have the same ID")
-	}
-
-	proof1, err := createMarryProof(db, atx1, nodeID)
-	if err != nil {
-		return nil, fmt.Errorf("proof for atx1: %w", err)
-	}
-	proof2, err := createMarryProof(db, atx2, nodeID)
-	if err != nil {
-		return nil, fmt.Errorf("proof for atx2: %w", err)
-	}
-
-	return &ProofDoubleMarry{
-		NodeID: nodeID,
-
-		ATXID1:     atx1.ID(),
-		SmesherID1: atx1.SmesherID,
-		Signature1: atx1.Signature,
-		Proof1:     proof1,
-
-		ATXID2:     atx2.ID(),
-		SmesherID2: atx2.SmesherID,
-		Signature2: atx2.Signature,
-		Proof2:     proof2,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (p ProofDoubleMarry) Valid(_ context.Context, malValidator MalfeasanceValidator) (types.NodeID, error) {
-	if p.ATXID1 == p.ATXID2 {
-		return types.EmptyNodeID, errors.New("proofs have the same ATX ID")
-	}
-	if !malValidator.Signature(signing.ATX, p.SmesherID1, p.ATXID1.Bytes(), p.Signature1) {
-		return types.EmptyNodeID, errors.New("invalid signature for ATX1")
-	}
-	if !malValidator.Signature(signing.ATX, p.SmesherID2, p.ATXID2.Bytes(), p.Signature2) {
-		return types.EmptyNodeID, errors.New("invalid signature for ATX2")
-	}
-	if err := p.Proof1.Valid(malValidator, p.ATXID1, p.SmesherID1, p.NodeID); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("proof 1 is invalid: %w", err)
-	}
-	if err := p.Proof2.Valid(malValidator, p.ATXID2, p.SmesherID2, p.NodeID); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("proof 2 is invalid: %w", err)
-	}
-	if ok, err := malValidator.IdentityExists(p.NodeID); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("checking identity: %w", err)
-	} else if !ok {
-		return types.EmptyNodeID, ErrUnknownIdentity
-	}
-	return p.NodeID, nil
+	_ = "STUB: not implemented"
+	return *new(types.NodeID), nil
 }

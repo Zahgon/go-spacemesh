@@ -2,23 +2,12 @@ package malfeasance2
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"time"
 
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"golang.org/x/exp/maps"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/events"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/p2p/pubsub"
 	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/atxs"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
-	"github.com/spacemeshos/go-spacemesh/sql/marriage"
 )
 
 type Publisher struct {
@@ -36,161 +25,42 @@ func NewPublisher(
 	tortoise tortoise,
 	publisher pubsub.Publisher,
 ) *Publisher {
-	return &Publisher{
-		logger:    logger,
-		db:        db,
-		sync:      sync,
-		tortoise:  tortoise,
-		publisher: publisher,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *Publisher) PublishATXProof(ctx context.Context, nodeID types.NodeID, proof []byte, allowNoRefATXs bool) error {
-	publish := false // whether to publish the proof
-	var set []types.NodeID
-	var refATXs []types.ATXID
-
-	// Persisting the proof in the DB has to be done within a transaction to ensure consistency. The ATX handler could
-	// update the (or merge multiple) marriage set in parallel, so we need to make sure data is consistent while we
-	// update the malfeasance table.
-	err := p.db.WithTxImmediate(func(tx sql.Transaction) error {
-		marriageID, err := marriage.FindIDByNodeID(tx, nodeID)
-		switch {
-		case errors.Is(err, sql.ErrNotFound): // smesher is not married
-			malicious, err := malfeasance.IsMalicious(tx, nodeID)
-			if err != nil {
-				return fmt.Errorf("check if smesher is malicious: %w", err)
-			}
-			if malicious {
-				p.logger.Debug("smesher is already marked as malicious", zap.String("smesher_id", nodeID.ShortString()))
-				return nil
-			}
-			if err := malfeasance.AddProof(tx, nodeID, nil, proof, int(InvalidActivation), time.Now()); err != nil {
-				return fmt.Errorf("setting malfeasance proof: %w", err)
-			}
-			atxID, err := atxs.GetFirstIDByNodeID(tx, nodeID)
-			switch {
-			case errors.Is(err, sql.ErrNotFound) && allowNoRefATXs:
-				// no ATXs found for this node, but we allow it
-			case err != nil:
-				return fmt.Errorf("getting atx id: %w", err)
-			default: // ATX found
-				refATXs = []types.ATXID{atxID}
-			}
-			publish = true
-			set = []types.NodeID{nodeID}
-			return nil
-		case err != nil:
-			return fmt.Errorf("getting equivocation set: %w", err)
-		default: // smesher is married
-		}
-
-		// Combine IDs from the present equivocation set for atx.SmesherID and IDs in atx.Marriages.
-		set, err = marriage.NodeIDsByID(tx, marriageID)
-		if err != nil {
-			return fmt.Errorf("getting equivocation set: %w", err)
-		}
-
-		malicious, err := malfeasance.IsMalicious(tx, nodeID)
-		if err != nil {
-			return fmt.Errorf("check if smesher is malicious: %w", err)
-		}
-		if !malicious {
-			err := malfeasance.AddProof(tx, nodeID, &marriageID, proof, int(InvalidActivation), time.Now())
-			if err != nil {
-				return fmt.Errorf("setting malfeasance proof: %w", err)
-			}
-			publish = true
-		} else {
-			p.logger.Debug("smesher is already marked as malicious", zap.String("smesher_id", nodeID.ShortString()))
-		}
-
-		mATXs := make(map[types.ATXID]struct{})
-		for _, id := range set {
-			info, err := marriage.FindByNodeID(tx, id)
-			if err != nil {
-				return fmt.Errorf("getting marriage info: %w", err)
-			}
-			mATXs[info.ATX] = struct{}{}
-			if id == nodeID {
-				// already handled
-				continue
-			}
-			malicious, err := malfeasance.IsMalicious(tx, id)
-			if err != nil {
-				return fmt.Errorf("check if smesher is malicious: %w", err)
-			}
-			if malicious {
-				p.logger.Debug("smesher is already marked as malicious", zap.String("smesher_id", id.ShortString()))
-				continue
-			}
-			publish = true
-			if err := malfeasance.SetMalicious(tx, id, marriageID, time.Now()); err != nil {
-				return fmt.Errorf("setting malicious: %w", err)
-			}
-		}
-		refATXs = maps.Keys(mATXs)
-		return nil
-	})
-	if err != nil {
-		p.logger.Error("failed to persist malfeasance proof",
-			zap.Error(err),
-			log.ZShortStringer("node_id", nodeID),
-		)
-		return err
-	}
-	p.logger.Debug("persisted malfeasance proof", log.ZShortStringer("node_id", nodeID))
-	if !publish {
-		// all smeshers were already marked as malicious - no gossip to void spamming the network
-		return nil
-	}
-	for _, nodeID := range set {
-		p.tortoise.OnMalfeasance(nodeID)
-		events.ReportMalfeasance(nodeID)
-	}
-	return p.publish(ctx, set, refATXs, proof, ProofDomain(InvalidActivation))
+	_ = "STUB: not implemented"
+	// whether to publish the proof
+	return nil
 }
+
+// Persisting the proof in the DB has to be done within a transaction to ensure consistency. The ATX handler could
+// update the (or merge multiple) marriage set in parallel, so we need to make sure data is consistent while we
+// update the malfeasance table.
+
+// smesher is not married
+
+// no ATXs found for this node, but we allow it
+
+// ATX found
+
+// smesher is married
+
+// Combine IDs from the present equivocation set for atx.SmesherID and IDs in atx.Marriages.
+
+// already handled
+
+// all smeshers were already marked as malicious - no gossip to void spamming the network
 
 func (p *Publisher) Regossip(ctx context.Context, nodeID types.NodeID) error {
-	tx, err := p.db.TxImmediate()
-	if err != nil {
-		return fmt.Errorf("starting transaction: %w", err)
-	}
-	defer tx.Release()
-	marriageID, err := marriage.FindIDByNodeID(tx, nodeID)
-	switch {
-	case errors.Is(err, sql.ErrNotFound): // smesher is not married
-		proof, domain, err := malfeasance.NodeIDProof(tx, nodeID)
-		if err != nil {
-			return fmt.Errorf("getting malfeasance proof: %w", err)
-		}
-		atxID, err := atxs.GetFirstIDByNodeID(tx, nodeID)
-		if err != nil {
-			return fmt.Errorf("getting first atx of identity %s: %w", nodeID.ShortString(), err)
-		}
-		return p.publish(ctx, []types.NodeID{nodeID}, []types.ATXID{atxID}, proof, ProofDomain(domain))
-	case err != nil:
-		return fmt.Errorf("getting equivocation set: %w", err)
-	default: // smesher is married
-	}
-
-	proof, domain, err := malfeasance.MarriageProof(tx, marriageID)
-	if err != nil {
-		return fmt.Errorf("getting malfeasance proof: %w", err)
-	}
-
-	nodeIDs, err := marriage.NodeIDsByID(tx, marriageID)
-	if err != nil {
-		return fmt.Errorf("getting equivocation set: %w", err)
-	}
-
-	atxs, err := marriage.MarriageATXs(tx, marriageID)
-	if err != nil {
-		return fmt.Errorf("getting equivocation info: %w", err)
-	}
-
-	return p.publish(ctx, nodeIDs, atxs, proof, ProofDomain(domain))
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// smesher is not married
+
+// smesher is married
 
 func (p *Publisher) publish(
 	ctx context.Context,
@@ -199,83 +69,16 @@ func (p *Publisher) publish(
 	proof []byte,
 	domain ProofDomain,
 ) error {
+	_ = "STUB: not implemented"
 	// Only gossip the proof if we are synced (to not spam the network with proofs others probably already have).
-	if !p.sync.ListenToATXGossip() {
-		p.logger.Debug("not in sync, not broadcasting malfeasance proof",
-			zap.Array("smesher_ids", zapcore.ArrayMarshalerFunc(func(enc zapcore.ArrayEncoder) error {
-				for _, nodeID := range nodeID {
-					enc.AppendString(nodeID.ShortString())
-				}
-				return nil
-			})),
-		)
-		return nil
-	}
-
-	malfeasanceProof := &MalfeasanceProof{
-		Version: 0,
-		RefATXs: refATXs,
-		Domain:  domain,
-		Proof:   proof,
-	}
-	if err := p.publisher.Publish(ctx, pubsub.MalfeasanceProof2, codec.MustEncode(malfeasanceProof)); err != nil {
-		p.logger.Error("failed to broadcast malfeasance proof", zap.Error(err))
-		return fmt.Errorf("broadcast atx malfeasance proof: %w", err)
-	}
-	p.logger.Debug("broadcast malfeasance proof",
-		zap.Array("smesher_ids", zapcore.ArrayMarshalerFunc(func(enc zapcore.ArrayEncoder) error {
-			for _, nodeID := range nodeID {
-				enc.AppendString(nodeID.ShortString())
-			}
-			return nil
-		})),
-	)
 	return nil
 }
 
 func (p *Publisher) ProofByID(ctx context.Context, nodeID types.NodeID) ([]byte, error) {
-	tx, err := p.db.TxImmediate()
-	if err != nil {
-		return nil, fmt.Errorf("starting transaction: %w", err)
-	}
-	defer tx.Release()
-	mID, err := marriage.FindIDByNodeID(tx, nodeID)
-	switch {
-	case errors.Is(err, sql.ErrNotFound): // smesher is not married
-		proof, domain, err := malfeasance.NodeIDProof(tx, nodeID)
-		if err != nil {
-			return nil, fmt.Errorf("getting malfeasance proof: %w", err)
-		}
-		atxID, err := atxs.GetFirstIDByNodeID(tx, nodeID)
-		if err != nil {
-			return nil, fmt.Errorf("getting first atx of identity %s: %w", nodeID.ShortString(), err)
-		}
-		malfeasanceProof := &MalfeasanceProof{
-			Version: 0,
-			RefATXs: []types.ATXID{atxID},
-			Domain:  ProofDomain(domain),
-			Proof:   proof,
-		}
-		return codec.MustEncode(malfeasanceProof), nil
-	case err != nil:
-		return nil, fmt.Errorf("getting equivocation set: %w", err)
-	default: // smesher is married
-	}
-
-	atxs, err := marriage.MarriageATXs(tx, mID)
-	if err != nil {
-		return nil, fmt.Errorf("getting equivocation info: %w", err)
-	}
-
-	proof, domain, err := malfeasance.MarriageProof(tx, mID)
-	if err != nil {
-		return nil, fmt.Errorf("getting malfeasance proof: %w", err)
-	}
-	malfeasanceProof := &MalfeasanceProof{
-		Version: 0,
-		RefATXs: atxs,
-		Domain:  ProofDomain(domain),
-		Proof:   proof,
-	}
-	return codec.MustEncode(malfeasanceProof), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// smesher is not married
+
+// smesher is married

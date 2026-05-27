@@ -1,11 +1,5 @@
 package rangesync
 
-import (
-	"bytes"
-	"crypto/rand"
-	"encoding/hex"
-)
-
 const (
 	// FingerprintSize is the size of a fingerprint in bytes.
 	FingerprintSize = 12
@@ -16,67 +10,41 @@ const (
 type Fingerprint [FingerprintSize]byte
 
 // String implements log.ShortString.
-func (fp Fingerprint) ShortString() string {
-	return hex.EncodeToString(fp[:5])
-}
+func (fp Fingerprint) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // Compare compares two fingerprints.
-func (fp Fingerprint) Compare(other Fingerprint) int {
-	return bytes.Compare(fp[:], other[:])
-}
+func (fp Fingerprint) Compare(other Fingerprint) int { _ = "STUB: not implemented"; return 0 }
 
 // String implements fmt.Stringer.
-func (fp Fingerprint) String() string {
-	return hex.EncodeToString(fp[:])
-}
+func (fp Fingerprint) String() string { _ = "STUB: not implemented"; return "" }
 
 // Update includes the byte slice in the fingerprint.
-func (fp *Fingerprint) Update(h []byte) {
-	for n := range *fp {
-		(*fp)[n] ^= h[n]
-	}
-}
+func (fp *Fingerprint) Update(h []byte) { _ = "STUB: not implemented"; return }
 
 // BitFromLeft returns the n-th bit from the left in the fingerprint.
-func (fp *Fingerprint) BitFromLeft(i int) bool {
-	bi := i / 8
-	if bi > FingerprintSize {
-		panic("BUG: bad fingerprint bit index")
-	}
-	return fp[bi]&(0x1<<uint(7-i%8)) != 0
-}
+func (fp *Fingerprint) BitFromLeft(i int) bool { _ = "STUB: not implemented"; return false }
 
 // CombineFingerprints combines two fingerprints into one.
 func CombineFingerprints(a, b Fingerprint) Fingerprint {
-	a.Update(b[:])
-	return a
+	_ = "STUB: not implemented"
+	return *
+
+	// RandomFingerprint generates a random fingerprint.
+	new(Fingerprint)
 }
 
-// RandomFingerprint generates a random fingerprint.
-func RandomFingerprint() Fingerprint {
-	var fp Fingerprint
-	_, err := rand.Read(fp[:])
-	if err != nil {
-		panic("failed to generate random fingerprint: " + err.Error())
-	}
-	return fp
-}
+func RandomFingerprint() Fingerprint { _ = "STUB: not implemented"; return *new(Fingerprint) }
 
 // EmptyFingerprint returns an empty fingerprint.
 func EmptyFingerprint() Fingerprint {
-	return Fingerprint{}
+	_ = "STUB: not implemented"
+	return *
+
+	// MustParseHexFingerprint converts a hex string to Fingerprint.
+	new(Fingerprint)
 }
 
-// MustParseHexFingerprint converts a hex string to Fingerprint.
 func MustParseHexFingerprint(s string) Fingerprint {
-	b, err := hex.DecodeString(s)
-	if err != nil {
-		panic("bad hex fingerprint: " + err.Error())
-	}
-	var fp Fingerprint
-	if len(b) != len(fp) {
-		panic("bad hex fingerprint")
-	}
-	copy(fp[:], b)
-	return fp
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
 }

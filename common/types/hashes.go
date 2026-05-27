@@ -1,14 +1,10 @@
 package types
 
 import (
-	"encoding/hex"
 	"fmt"
 	"reflect"
 
 	"github.com/spacemeshos/go-scale"
-
-	"github.com/spacemeshos/go-spacemesh/common/util"
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 const (
@@ -31,192 +27,130 @@ type Hash32 [Hash32Length]byte
 type Hash20 [Hash20Length]byte
 
 // Bytes gets the byte representation of the underlying hash.
-func (h Hash20) Bytes() []byte { return h[:] }
+func (h Hash20) Bytes() []byte {
+	_ = "STUB: not implemented"
 
-// String implements the stringer interface and is used also by the logger when
-// doing full logging into a file.
-func (h Hash20) String() string {
-	return hex.EncodeToString(h[:])
+	// String implements the stringer interface and is used also by the logger when
+	// doing full logging into a file.
+	return nil
 }
+
+func (h Hash20) String() string { _ = "STUB: not implemented"; return "" }
 
 // ShortString returns a the first 5 hex-encoded bytes of the hash, for logging purposes.
-func (h Hash20) ShortString() string {
-	return hex.EncodeToString(h[:5])
-}
+func (h Hash20) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // Format implements fmt.Formatter, forcing the byte slice to be formatted as is,
 // without going through the stringer interface used for logging.
-func (h Hash20) Format(s fmt.State, c rune) {
-	fmt.Fprintf(s, "%"+string(c), h[:])
-}
+func (h Hash20) Format(s fmt.State, c rune) { _ = "STUB: not implemented"; return }
 
 // UnmarshalText parses a hash in hex syntax.
-func (h *Hash20) UnmarshalText(input []byte) error {
-	if err := util.UnmarshalFixedText("Hash", input, h[:]); err != nil {
-		return fmt.Errorf("unmarshal text: %w", err)
-	}
-	return nil
-}
+func (h *Hash20) UnmarshalText(input []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalJSON parses a hash in hex syntax.
-func (h *Hash20) UnmarshalJSON(input []byte) error {
-	if err := util.UnmarshalFixedJSON(hash20T, input, h[:]); err != nil {
-		return fmt.Errorf("unmarshal JSON: %w", err)
-	}
-
-	return nil
-}
+func (h *Hash20) UnmarshalJSON(input []byte) error { _ = "STUB: not implemented"; return nil }
 
 // MarshalText returns the hex representation of h.
-func (h Hash20) MarshalText() ([]byte, error) {
-	result := make([]byte, len(h)*2+2)
-	copy(result, `0x`)
-	hex.Encode(result[2:], h[:])
-	return result, nil
-}
+func (h Hash20) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // SetBytes sets the hash to the value of b.
 // If b is larger than len(h), b will be cropped from the left.
-func (h *Hash20) SetBytes(b []byte) {
-	if len(b) > len(h) {
-		b = b[len(b)-20:]
-	}
-
-	copy(h[20-len(b):], b)
-}
+func (h *Hash20) SetBytes(b []byte) { _ = "STUB: not implemented"; return }
 
 // ToHash32 returns a Hash32 whose first 20 bytes are the bytes of this Hash20, it is right-padded with zeros.
-func (h Hash20) ToHash32() (h32 Hash32) {
-	copy(h32[:], h[:])
-	return
-}
+func (h Hash20) ToHash32() (h32 Hash32) { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // CalcProposalsHash32 returns the 32-byte blake3 sum of the IDs, sorted in lexicographic order. The pre-image is
 // prefixed with additionalBytes.
 func CalcProposalsHash32(view []ProposalID, additionalBytes []byte) Hash32 {
-	sortedView := make([]ProposalID, len(view))
-	copy(sortedView, view)
-	SortProposalIDs(sortedView)
-	return CalcProposalHash32Presorted(sortedView, additionalBytes)
+	_ = "STUB: not implemented"
+	return *new(Hash32)
 }
 
 // CalcProposalHash32Presorted returns the 32-byte blake3 sum of the IDs, in the order given. The pre-image is
 // prefixed with additionalBytes.
 func CalcProposalHash32Presorted(sortedView []ProposalID, additionalBytes []byte) Hash32 {
-	hasher := hash.GetHasher()
-	defer hash.PutHasher(hasher)
-	hasher.Write(additionalBytes)
-	for _, id := range sortedView {
-		hasher.Write(id.Bytes()) // this never returns an error: https://golang.org/pkg/hash/#Hash
-	}
-	var res Hash32
-	hasher.Sum(res[:0])
-	return res
+	_ = "STUB: not implemented"
+	return *new(Hash32)
 }
+
+// this never returns an error: https://golang.org/pkg/hash/#Hash
 
 // CalcBlockHash32Presorted returns the 32-byte blake3 sum of the IDs, in the order given. The pre-image is
 // prefixed with additionalBytes.
 func CalcBlockHash32Presorted(sortedView []BlockID, additionalBytes []byte) Hash32 {
-	hash := hash.New()
-	hash.Write(additionalBytes)
-	for _, id := range sortedView {
-		hash.Write(id.Bytes()) // this never returns an error: https://golang.org/pkg/hash/#Hash
-	}
-	var res Hash32
-	hash.Sum(res[:0])
-	return res
+	_ = "STUB: not implemented"
+	return *new(Hash32)
 }
+
+// this never returns an error: https://golang.org/pkg/hash/#Hash
 
 // CalcHash20 returns the 20-byte blake3 sum of the given data.
 func CalcHash20(data []byte) Hash20 {
-	return hash.Sum20(data)
+	_ = "STUB: not implemented"
+	return *
+
+	// CalcHash32 returns the 32-byte blake3 sum of the given data.
+	new(Hash20)
 }
 
-// CalcHash32 returns the 32-byte blake3 sum of the given data.
 func CalcHash32(data []byte) Hash32 {
-	return hash.Sum(data)
+	_ = "STUB: not implemented"
+	return *
+
+	// BytesToHash sets b to hash.
+	// If b is larger than len(h), b will be cropped from the left.
+	new(Hash32)
 }
 
-// BytesToHash sets b to hash.
-// If b is larger than len(h), b will be cropped from the left.
-func BytesToHash(b []byte) Hash32 {
-	var h Hash32
-	h.SetBytes(b)
-	return h
-}
+func BytesToHash(b []byte) Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // HexToHash32 sets byte representation of s to hash.
 // If b is larger than len(h), b will be cropped from the left.
-func HexToHash32(s string) Hash32 { return BytesToHash(util.FromHex(s)) }
+func HexToHash32(s string) Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // Bytes gets the byte representation of the underlying hash.
-func (h Hash32) Bytes() []byte { return h[:] }
+func (h Hash32) Bytes() []byte {
+	_ = "STUB: not implemented"
 
-// String implements the stringer interface and is used also by the logger when
-// doing full logging into a file.
-func (h Hash32) String() string {
-	return hex.EncodeToString(h[:])
+	// String implements the stringer interface and is used also by the logger when
+	// doing full logging into a file.
+	return nil
 }
+
+func (h Hash32) String() string { _ = "STUB: not implemented"; return "" }
 
 // ShortString returns the first 5 hex-encoded bytes of the hash, for logging purposes.
-func (h Hash32) ShortString() string {
-	return hex.EncodeToString(h[:5])
-}
+func (h Hash32) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // Format implements fmt.Formatter, forcing the byte slice to be formatted as is,
 // without going through the stringer interface used for logging.
-func (h Hash32) Format(s fmt.State, c rune) {
-	fmt.Fprintf(s, "%"+string(c), h[:])
-}
+func (h Hash32) Format(s fmt.State, c rune) { _ = "STUB: not implemented"; return }
 
 // UnmarshalText parses a hash in hex syntax.
-func (h *Hash32) UnmarshalText(input []byte) error {
-	if err := util.UnmarshalFixedText("Hash", input, h[:]); err != nil {
-		return fmt.Errorf("unmarshal text: %w", err)
-	}
-
-	return nil
-}
+func (h *Hash32) UnmarshalText(input []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalJSON parses a hash in hex syntax.
-func (h *Hash32) UnmarshalJSON(input []byte) error {
-	if err := util.UnmarshalFixedJSON(hash32T, input, h[:]); err != nil {
-		return fmt.Errorf("unmarshal JSON: %w", err)
-	}
-
-	return nil
-}
+func (h *Hash32) UnmarshalJSON(input []byte) error { _ = "STUB: not implemented"; return nil }
 
 // MarshalText returns the hex representation of h.
-func (h Hash32) MarshalText() ([]byte, error) {
-	result := make([]byte, len(h)*2+2)
-	copy(result, `0x`)
-	hex.Encode(result[2:], h[:])
-	return result, nil
-}
+func (h Hash32) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // SetBytes sets the hash to the value of b.
 // If b is larger than len(h), b will be cropped from the left.
-func (h *Hash32) SetBytes(b []byte) {
-	if len(b) > len(h) {
-		b = b[len(b)-32:]
-	}
-
-	copy(h[32-len(b):], b)
-}
+func (h *Hash32) SetBytes(b []byte) { _ = "STUB: not implemented"; return }
 
 // ToHash20 returns a Hash20, whose the 20-byte prefix of this Hash32.
-func (h Hash32) ToHash20() (h20 Hash20) {
-	copy(h20[:], h[:])
-	return
-}
+func (h Hash32) ToHash20() (h20 Hash20) { _ = "STUB: not implemented"; return *new(Hash20) }
 
 // EncodeScale implements scale codec interface.
 func (h *Hash32) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, h[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (h *Hash32) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, h[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }

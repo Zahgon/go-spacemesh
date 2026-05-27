@@ -2,7 +2,6 @@ package rangesync
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"sync"
 
@@ -25,12 +24,7 @@ type Dispatcher struct {
 }
 
 // NewDispatcher creates a new Dispatcher.
-func NewDispatcher(logger *zap.Logger) *Dispatcher {
-	return &Dispatcher{
-		logger:   logger,
-		handlers: make(map[string]Handler),
-	}
-}
+func NewDispatcher(logger *zap.Logger) *Dispatcher { _ = "STUB: not implemented"; return nil }
 
 // SetupServer creates a new P2P Server for the Dispatcher.
 func (d *Dispatcher) SetupServer(
@@ -38,16 +32,12 @@ func (d *Dispatcher) SetupServer(
 	proto string,
 	opts ...server.Opt,
 ) *server.Server {
-	d.Server = server.New(host, proto, d.Dispatch, opts...)
-	return d.Server
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Register registers a handler with a Dispatcher.
-func (d *Dispatcher) Register(name string, h Handler) {
-	d.mtx.Lock()
-	defer d.mtx.Unlock()
-	d.handlers[name] = h
-}
+func (d *Dispatcher) Register(name string, h Handler) { _ = "STUB: not implemented"; return }
 
 // Dispatch dispatches a request to a handler.
 func (d *Dispatcher) Dispatch(
@@ -56,16 +46,6 @@ func (d *Dispatcher) Dispatch(
 	req []byte,
 	stream io.ReadWriter,
 ) (err error) {
-	name := string(req)
-	d.mtx.Lock()
-	h, ok := d.handlers[name]
-	d.mtx.Unlock()
-	if !ok {
-		return fmt.Errorf("no handler named %q", name)
-	}
-	d.logger.Debug("dispatch", zap.String("handler", name))
-	if err := h(ctx, peer, stream); err != nil {
-		return fmt.Errorf("handler %q: %w", name, err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

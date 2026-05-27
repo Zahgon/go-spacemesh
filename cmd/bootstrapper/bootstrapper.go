@@ -4,23 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
-	"net/url"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
 	"time"
 
-	"cloud.google.com/go/storage"
-	pb "github.com/spacemeshos/api/release/go/spacemesh/v1"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
 )
@@ -147,109 +140,22 @@ var cmd = &cobra.Command{
 }
 
 func upload(ctx context.Context, filename, gsBucket, gsPath string) error {
-	r, err := os.Open(filename)
-	if err != nil {
-		return fmt.Errorf("open generated file %v: %w", filename, err)
-	}
-	defer r.Close()
-	if err = os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", creds); err != nil {
-		return fmt.Errorf("set env for credential: %w", err)
-	}
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return fmt.Errorf("create gs client: %w", err)
-	}
-	objPath := fmt.Sprintf("%s/%s", gsPath, filepath.Base(filename))
-	w := client.Bucket(gsBucket).Object(objPath).NewWriter(ctx)
-	if _, err = io.Copy(w, r); err != nil {
-		return fmt.Errorf("copy to gs object (%v): %w", out, err)
-	}
-	if err = w.Close(); err != nil {
-		return fmt.Errorf("complete upload (%v): %w", out, err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func parseToGsBucket(gsPath string) (bucket, path string, err error) {
-	parsed, err := url.Parse(gsPath)
-	if err != nil {
-		return "", "", err
-	}
-	if parsed.Scheme != "gs" {
-		return "", "", fmt.Errorf("path %s must have 'gs' scheme", gsPath)
-	}
-	if parsed.Host == "" {
-		return "", "", fmt.Errorf("path %s must have bucket", gsPath)
-	}
-	if parsed.Path == "" {
-		return parsed.Host, "", nil
-	}
-	// remove leading "/" in URL path
-	return parsed.Host, parsed.Path[1:], nil
+	_ = "STUB: not implemented"
+	return "", "", nil
 }
 
-func runServer(ctx context.Context, srv *Server) error {
-	var (
-		params *NetworkParam
-		err    error
-	)
-	for i := 0; i < retries; i++ {
-		params, err = queryNetworkParams(ctx, spacemeshEndpoint)
-		if err != nil {
-			select {
-			case <-time.After(retryInterval):
-				continue
-			case <-ctx.Done():
-				return ctx.Err()
-			}
-		}
-		break
-	}
-	if err != nil {
-		return fmt.Errorf("query network params %v: %w", spacemeshEndpoint, err)
-	}
-	ch := make(chan error, 100)
-	srv.Start(ctx, ch, params)
-	select {
-	case err = <-ch:
-	case <-ctx.Done():
-	}
+// remove leading "/" in URL path
 
-	shutdownCxt, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer shutdownCancel()
-	srv.Stop(shutdownCxt)
-	return err
-}
+func runServer(ctx context.Context, srv *Server) error { _ = "STUB: not implemented"; return nil }
 
 func queryNetworkParams(ctx context.Context, endpoint string) (*NetworkParam, error) {
-	conn, err := grpc.NewClient(
-		endpoint,
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("dial grpc endpoint %v: %w", endpoint, err)
-	}
-	defer conn.Close()
-
-	svc := pb.NewMeshServiceClient(conn)
-	genResp, err := svc.GenesisTime(ctx, &pb.GenesisTimeRequest{})
-	if err != nil {
-		return nil, fmt.Errorf("query genesis time from %v: %w", endpoint, err)
-	}
-	lyrResp, err := svc.EpochNumLayers(ctx, &pb.EpochNumLayersRequest{})
-	if err != nil {
-		return nil, fmt.Errorf("query layers per epoch from %v: %w", endpoint, err)
-	}
-	durResp, err := svc.LayerDuration(ctx, &pb.LayerDurationRequest{})
-	if err != nil {
-		return nil, fmt.Errorf("query layers duration from %v: %w", endpoint, err)
-	}
-	return &NetworkParam{
-		Genesis:      time.Unix(int64(genResp.Unixtime.Value), 0),
-		LyrsPerEpoch: lyrResp.Numlayers.Number,
-		LyrDuration:  time.Second * time.Duration(durResp.Duration.Value),
-		Offset:       epochOffset,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func main() {

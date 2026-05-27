@@ -2,97 +2,45 @@
 package node
 
 import (
-	"bytes"
 	"context"
-	"errors"
-	"fmt"
 	"io"
-	"io/fs"
-	"net"
 	"net/http"
-	"net/url"
-	"os"
-	"os/signal"
-	"path/filepath"
-	"runtime"
-	"slices"
-	"sort"
-	"syscall"
-	"time"
 
-	"github.com/go-viper/mapstructure/v2"
 	"github.com/gofrs/flock"
 	pyroscope "github.com/grafana/pyroscope-go"
 	grpc_logsettable "github.com/grpc-ecosystem/go-grpc-middleware/logging/settable"
-	grpczap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	"github.com/spacemeshos/poet/server"
-	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/keepalive"
 
 	"github.com/spacemeshos/go-spacemesh/activation"
 	"github.com/spacemeshos/go-spacemesh/api/grpcserver"
-	v1 "github.com/spacemeshos/go-spacemesh/api/grpcserver/v1"
-	"github.com/spacemeshos/go-spacemesh/api/grpcserver/v2alpha1"
-	"github.com/spacemeshos/go-spacemesh/api/grpcserver/v2beta1"
 	"github.com/spacemeshos/go-spacemesh/atxsdata"
 	"github.com/spacemeshos/go-spacemesh/beacon"
 	"github.com/spacemeshos/go-spacemesh/blocks"
 	"github.com/spacemeshos/go-spacemesh/bootstrap"
 	"github.com/spacemeshos/go-spacemesh/checkpoint"
-	"github.com/spacemeshos/go-spacemesh/cmd"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/config"
-	"github.com/spacemeshos/go-spacemesh/config/presets"
 	"github.com/spacemeshos/go-spacemesh/datastore"
-	"github.com/spacemeshos/go-spacemesh/events"
 	"github.com/spacemeshos/go-spacemesh/fetch"
-	"github.com/spacemeshos/go-spacemesh/fetch/peers"
-	vm "github.com/spacemeshos/go-spacemesh/genvm"
 	"github.com/spacemeshos/go-spacemesh/hare3"
-	"github.com/spacemeshos/go-spacemesh/hare3/compat"
 	"github.com/spacemeshos/go-spacemesh/hare3/eligibility"
 	"github.com/spacemeshos/go-spacemesh/hare4"
-	"github.com/spacemeshos/go-spacemesh/hash"
-	"github.com/spacemeshos/go-spacemesh/layerpatrol"
 	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/malfeasance"
 	"github.com/spacemeshos/go-spacemesh/malfeasance2"
 	"github.com/spacemeshos/go-spacemesh/mesh"
-	"github.com/spacemeshos/go-spacemesh/metrics"
-	"github.com/spacemeshos/go-spacemesh/metrics/public"
 	"github.com/spacemeshos/go-spacemesh/miner"
-	"github.com/spacemeshos/go-spacemesh/node/mapstructureutil"
 	"github.com/spacemeshos/go-spacemesh/p2p"
-	"github.com/spacemeshos/go-spacemesh/p2p/handshake"
-	"github.com/spacemeshos/go-spacemesh/p2p/pubsub"
-	"github.com/spacemeshos/go-spacemesh/proposals"
-	"github.com/spacemeshos/go-spacemesh/proposals/store"
-	"github.com/spacemeshos/go-spacemesh/prune"
 	"github.com/spacemeshos/go-spacemesh/signing"
 	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/activesets"
-	"github.com/spacemeshos/go-spacemesh/sql/atxs"
-	"github.com/spacemeshos/go-spacemesh/sql/layers"
-	"github.com/spacemeshos/go-spacemesh/sql/localsql"
-	localmigrations "github.com/spacemeshos/go-spacemesh/sql/localsql/migrations"
 	dbmetrics "github.com/spacemeshos/go-spacemesh/sql/metrics"
-	"github.com/spacemeshos/go-spacemesh/sql/statesql"
-	statemigrations "github.com/spacemeshos/go-spacemesh/sql/statesql/migrations"
 	"github.com/spacemeshos/go-spacemesh/syncer"
-	"github.com/spacemeshos/go-spacemesh/syncer/atxsync"
-	"github.com/spacemeshos/go-spacemesh/syncer/blockssync"
-	"github.com/spacemeshos/go-spacemesh/syncer/malsync"
 	"github.com/spacemeshos/go-spacemesh/system"
 	"github.com/spacemeshos/go-spacemesh/timesync"
 	"github.com/spacemeshos/go-spacemesh/timesync/peersync"
-	"github.com/spacemeshos/go-spacemesh/tortoise"
 	"github.com/spacemeshos/go-spacemesh/txs"
 )
 
@@ -143,250 +91,81 @@ const (
 	BootstrapLogger        = "bootstrap"
 )
 
-func GetCommand() *cobra.Command {
-	conf := config.MainnetConfig()
-	var configPath *string
-	c := &cobra.Command{
-		Use:   "node",
-		Short: "start node",
-		RunE: func(c *cobra.Command, args []string) error {
-			if err := configure(c, *configPath, &conf); err != nil {
-				return err
-			}
+func GetCommand() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-			// NOTE(dshulyak) this needs to be max level so that child logger can can be current level or below.
-			// otherwise it will fail later when child logger will try to increase level.
-			encoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
-			if conf.LOGGING.Encoder == config.JSONLogEncoder {
-				encoder = zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig())
-			}
-			lg := log.NewWithLevel("node", zap.NewAtomicLevelAt(zap.DebugLevel), encoder, events.EventHook())
+// NOTE(dshulyak) this needs to be max level so that child logger can can be current level or below.
+// otherwise it will fail later when child logger will try to increase level.
 
-			app := New(WithConfig(&conf), WithLog(lg))
+// os.Interrupt for all systems, especially windows, syscall.SIGTERM is mainly for docker.
 
-			// os.Interrupt for all systems, especially windows, syscall.SIGTERM is mainly for docker.
-			ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-			defer cancel()
+// ensure all data folders exist
 
-			types.SetLayersPerEpoch(app.Config.LayersPerEpoch)
-			// ensure all data folders exist
-			if err := os.MkdirAll(app.Config.DataDir(), 0o700); err != nil {
-				return fmt.Errorf("ensure folders exist: %w", err)
-			}
+// Don't print usage on error from this point forward
 
-			if err := app.Lock(); err != nil {
-				return fmt.Errorf("getting exclusive file lock: %w", err)
-			}
-			defer app.Unlock()
+// This blocks until the context is finished or until an error is produced
 
-			if err := app.Initialize(); err != nil {
-				return fmt.Errorf("initializing app: %w", err)
-			}
+// FIXME: per https://github.com/spacemeshos/go-spacemesh/issues/3830
 
-			err := app.LoadIdentities()
-			switch {
-			case errors.Is(err, fs.ErrNotExist):
-				app.log.Info("Identity file not found. Creating new identity...")
-				if err := app.NewIdentity(); err != nil {
-					return fmt.Errorf("creating new identity: %w", err)
-				}
-			case err != nil:
-				return fmt.Errorf("loading identities: %w", err)
-			}
-
-			// Don't print usage on error from this point forward
-			c.SilenceUsage = true
-
-			// This blocks until the context is finished or until an error is produced
-			err = app.Start(ctx)
-			if err != nil {
-				app.log.With().Error("app failed", log.Err(err))
-			} else {
-				app.log.With().Info("app stopped", log.Err(ctx.Err()))
-			}
-
-			cleanupCtx, cleanupCancel := context.WithTimeout(
-				context.Background(),
-				30*time.Second,
-			)
-			defer cleanupCancel()
-			done := make(chan struct{}, 1)
-			// FIXME: per https://github.com/spacemeshos/go-spacemesh/issues/3830
-			go func() {
-				app.Cleanup(cleanupCtx)
-				close(done)
-			}()
-			select {
-			case <-done:
-			case <-cleanupCtx.Done():
-				app.log.Error("app failed to clean up in time")
-			}
-			return err
-		},
-	}
-
-	configPath = cmd.AddFlags(c.PersistentFlags(), &conf)
-
-	// versionCmd returns the current version of spacemesh.
-	versionCmd := &cobra.Command{
-		Use:   "version",
-		Short: "Show version info",
-		Run: func(c *cobra.Command, args []string) {
-			fmt.Print(cmd.Version)
-			fmt.Println()
-		},
-	}
-	c.AddCommand(versionCmd)
-
-	relayCmd := cobra.Command{
-		Use:          "relay",
-		Short:        "Run relay server",
-		SilenceUsage: true,
-		RunE: func(c *cobra.Command, args []string) error {
-			if err := configure(c, *configPath, &conf); err != nil {
-				return err
-			}
-			return runRelay(c.Context(), &conf)
-		},
-	}
-	c.AddCommand(&relayCmd)
-
-	return c
-}
+// versionCmd returns the current version of spacemesh.
 
 func configure(c *cobra.Command, configPath string, conf *config.Config) error {
-	f, err := os.Open(configPath)
-	if err != nil {
-		return fmt.Errorf("opening config file: %w", err)
-	}
-	defer f.Close()
-	if err := LoadConfig(conf, conf.Preset, f); err != nil {
-		return fmt.Errorf("loading config: %w", err)
-	}
-	if err := f.Close(); err != nil {
-		return fmt.Errorf("closing config file: %w", err)
-	}
-	// apply CLI args to config
-	if err := c.ParseFlags(os.Args[1:]); err != nil {
-		return fmt.Errorf("parsing flags: %w", err)
-	}
-	if cmd.NoMainNet && onMainNet(conf) && !conf.NoMainOverride {
-		return errors.New("this is a testnet-only build not intended for mainnet")
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// apply CLI args to config
 
 var grpcLog = grpc_logsettable.ReplaceGrpcLoggerV2()
 
 // LoadConfig loads config and preset (if provided) into the provided config.
 // It first loads the preset and then overrides it with values from the config file.
 func LoadConfig(cfg *config.Config, preset string, src io.Reader) error {
-	v := viper.New()
+	_ = "STUB: not implemented"
+
 	// read in config from src
-	if src != nil {
-		v.SetConfigType("json")
-		if err := v.ReadConfig(src); err != nil {
-			return fmt.Errorf("can't load config: %w", err)
-		}
-	}
-
-	// override default config with preset if provided
-	if len(preset) == 0 && v.IsSet("preset") {
-		preset = v.GetString("preset")
-	}
-	if len(preset) > 0 {
-		p, err := presets.Get(preset)
-		if err != nil {
-			return err
-		}
-		*cfg = p
-	}
-
-	// Unmarshal config file into config struct
-	hook := mapstructure.ComposeDecodeHookFunc(
-		mapstructure.StringToTimeDurationHookFunc(),
-		mapstructure.StringToSliceHookFunc(","),
-		mapstructureutil.AddressListDecodeFunc(),
-		mapstructureutil.BigRatDecodeFunc(),
-		mapstructureutil.PostProviderIDDecodeFunc(),
-		mapstructureutil.DeprecatedHook(),
-		mapstructureutil.AtxVersionsDecodeFunc(),
-		mapstructure.TextUnmarshallerHookFunc(),
-	)
-	opts := []viper.DecoderConfigOption{
-		viper.DecodeHook(hook),
-		WithZeroFields(),
-		// Disabled because it was broken for some time with `github.com/spf13/viper` `v1.19.0` and now
-		// previously untagged fields are used in existing configs.
-		// Instead of now tagging all untagged fields we will just allow them and disable fields explicitly that
-		// must not be configurable.
-		// WithIgnoreUntagged(),
-		WithErrorUnused(),
-	}
-	if err := v.Unmarshal(cfg, opts...); err != nil {
-		return fmt.Errorf("unmarshal config: %w", err)
-	}
 	return nil
 }
 
+// override default config with preset if provided
+
+// Unmarshal config file into config struct
+
+// Disabled because it was broken for some time with `github.com/spf13/viper` `v1.19.0` and now
+// previously untagged fields are used in existing configs.
+// Instead of now tagging all untagged fields we will just allow them and disable fields explicitly that
+// must not be configurable.
+// WithIgnoreUntagged(),
+
 func WithZeroFields() viper.DecoderConfigOption {
-	return func(cfg *mapstructure.DecoderConfig) {
-		cfg.ZeroFields = true
-	}
+	_ = "STUB: not implemented"
+	return *new(viper.DecoderConfigOption)
 }
 
 func WithIgnoreUntagged() viper.DecoderConfigOption {
-	return func(cfg *mapstructure.DecoderConfig) {
-		cfg.IgnoreUntaggedFields = true
-	}
+	_ = "STUB: not implemented"
+	return *new(viper.DecoderConfigOption)
 }
 
 func WithErrorUnused() viper.DecoderConfigOption {
-	return func(cfg *mapstructure.DecoderConfig) {
-		cfg.ErrorUnused = true
-	}
+	_ = "STUB: not implemented"
+	return *new(viper.DecoderConfigOption)
 }
 
 // Option to modify an App instance.
 type Option func(app *App)
 
 // WithLog enables logger for an App.
-func WithLog(logger log.Log) Option {
-	return func(app *App) {
-		app.log = logger
-	}
-}
+func WithLog(logger log.Log) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConfig overwrites default App config.
-func WithConfig(conf *config.Config) Option {
-	return func(app *App) {
-		app.Config = conf
-	}
-}
+func WithConfig(conf *config.Config) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // New creates an instance of the spacemesh app.
-func New(opts ...Option) *App {
-	defaultConfig := config.DefaultConfig()
-	app := &App{
-		Config:       &defaultConfig,
-		log:          log.NewNop(),
-		loggers:      make(map[string]*zap.AtomicLevel),
-		grpcServices: make(map[grpcserver.Service]grpcserver.ServiceAPI),
-		started:      make(chan struct{}),
-		eg:           &errgroup.Group{},
-	}
-	for _, opt := range opts {
-		opt(app)
-	}
-	// TODO(mafa): this is a hack to suppress debugging logs on 0000.defaultLogger
-	// to fix this we should get rid of the global logger and pass app.log to all
-	// components that need it
-	lvl := zap.NewAtomicLevelAt(zap.InfoLevel)
-	log.SetupGlobal(app.log.SetLevel(&lvl))
+func New(opts ...Option) *App { _ = "STUB: not implemented"; return nil }
 
-	types.SetNetworkHRP(app.Config.NetworkHRP)
-	return app
-}
+// TODO(mafa): this is a hack to suppress debugging logs on 0000.defaultLogger
+// to fix this we should get rid of the global logger and pass app.log to all
+// components that need it
 
 // App is the cli app singleton.
 type App struct {
@@ -445,121 +224,32 @@ type App struct {
 }
 
 func (app *App) loadCheckpoint(ctx context.Context) (*checkpoint.PreservedData, error) {
-	nodeIDs := make([]types.NodeID, 0, len(app.signers))
-	if app.Config.Recovery.PreserveOwnAtx {
-		for _, sig := range app.signers {
-			nodeIDs = append(nodeIDs, sig.NodeID())
-		}
-	}
-	cfg := &checkpoint.RecoverConfig{
-		GoldenAtx:   types.ATXID(app.Config.Genesis.GoldenATX()),
-		DataDir:     app.Config.DataDir(),
-		DbFile:      dbFile,
-		LocalDbFile: localDbFile,
-		NodeIDs:     nodeIDs,
-		Uri:         app.Config.Recovery.Uri,
-		Restore:     types.LayerID(app.Config.Recovery.Restore),
-	}
-
-	return checkpoint.Recover(ctx, app.log.Zap(), afero.NewOsFs(), cfg)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (app *App) Started() <-chan struct{} {
-	return app.started
-}
+	_ = "STUB: not implemented"
 
-// Lock locks the app for exclusive use. It returns an error if the app is already locked.
-func (app *App) Lock() error {
-	lockDir := filepath.Dir(app.Config.FileLock)
-	if _, err := os.Stat(lockDir); errors.Is(err, fs.ErrNotExist) {
-		err := os.Mkdir(lockDir, os.ModePerm)
-		if err != nil {
-			return fmt.Errorf("creating dir %s for lock %s: %w", lockDir, app.Config.FileLock, err)
-		}
-	}
-	fl := flock.New(app.Config.FileLock)
-	locked, err := fl.TryLock()
-	if err != nil {
-		return fmt.Errorf("flock %s: %w", app.Config.FileLock, err)
-	} else if !locked {
-		return fmt.Errorf("only one spacemesh instance should be running (locking file %s)", fl.Path())
-	}
-	app.fileLock = fl
+	// Lock locks the app for exclusive use. It returns an error if the app is already locked.
 	return nil
 }
+
+func (app *App) Lock() error { _ = "STUB: not implemented"; return nil }
 
 // Unlock unlocks the app. It is a no-op if the app is not locked.
-func (app *App) Unlock() {
-	if app.fileLock == nil {
-		return
-	}
-	if err := app.fileLock.Unlock(); err != nil {
-		app.log.With().Error("failed to unlock file",
-			log.String("path", app.fileLock.Path()),
-			log.Err(err),
-		)
-	}
-}
+func (app *App) Unlock() { _ = "STUB: not implemented"; return }
 
 // Initialize parses and validates the node configuration and sets up logging.
-func (app *App) Initialize() error {
-	gpath := filepath.Join(app.Config.DataDir(), genesisFileName)
-	var existing config.GenesisConfig
-	if err := existing.LoadFromFile(gpath); err != nil {
-		if !errors.Is(err, fs.ErrNotExist) {
-			return fmt.Errorf("failed to load genesis config at %s: %w", gpath, err)
-		}
-		if err := app.Config.Genesis.Validate(); err != nil {
-			return err
-		}
-		if err := app.Config.Genesis.WriteToFile(gpath); err != nil {
-			return fmt.Errorf("failed to write genesis config to %s: %w", gpath, err)
-		}
-	} else {
-		diff := existing.Diff(&app.Config.Genesis)
-		if len(diff) > 0 {
-			app.log.Error("genesis config updated after node initialization, if this update is required delete config"+
-				" at %s.\ndiff:\n%s", gpath, diff,
-			)
-			return errors.New("genesis config updated after node initialization")
-		}
-	}
-
-	app.setupLogging()
-	app.log.Info("Welcome to Spacemesh. Spacemesh full node is starting...")
-
-	public.Version.WithLabelValues(cmd.Version).Set(1)
-	public.SmeshingOptsProvingNonces.Set(float64(app.Config.SMESHING.ProvingOpts.Nonces))
-	public.SmeshingOptsProvingThreads.Set(float64(app.Config.SMESHING.ProvingOpts.Threads))
-	return nil
-}
+func (app *App) Initialize() error { _ = "STUB: not implemented"; return nil }
 
 // setupLogging configured the app logging system.
-func (app *App) setupLogging() {
-	app.log.Info("%s", app.getAppInfo())
-	events.InitializeReporter()
-}
+func (app *App) setupLogging() { _ = "STUB: not implemented"; return }
 
-func (app *App) getAppInfo() string {
-	return fmt.Sprintf(
-		"App version: %s. Git: %s - %s . Go Version: %s. OS: %s-%s . Genesis %s",
-		cmd.Version,
-		cmd.Branch,
-		cmd.Commit,
-		runtime.Version(),
-		runtime.GOOS,
-		runtime.GOARCH,
-		app.Config.Genesis.GenesisID().String(),
-	)
-}
+func (app *App) getAppInfo() string { _ = "STUB: not implemented"; return "" }
 
 // Cleanup stops all app services.
-func (app *App) Cleanup(ctx context.Context) {
-	app.log.Info("app cleanup starting...")
-	app.stopServices(ctx)
-	app.eg.Wait()
-	app.log.Info("app cleanup completed")
-}
+func (app *App) Cleanup(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // Wrap the top-level logger to add context info and set the level for a
 // specific module. Calling this method and will create a new logger every time
@@ -567,1844 +257,122 @@ func (app *App) Cleanup(ctx context.Context) {
 //
 // This method is not safe to be called concurrently.
 func (app *App) addLogger(name string, logger log.Log) log.Log {
-	lvl, err := decodeLoggerLevel(app.Config, name)
-	if err != nil {
-		app.log.With().Panic("unable to decode loggers into map[string]string", log.Err(err))
-	}
-	if logger.Check(lvl.Level()) {
-		app.loggers[name] = &lvl
-		logger = logger.SetLevel(&lvl)
-	}
-	return logger.WithName(name)
+	_ = "STUB: not implemented"
+	return *new(log.Log)
 }
 
 // SetLogLevel updates the log level of an existing logger.
-func (app *App) SetLogLevel(name, loglevel string) error {
-	lvl, ok := app.loggers[name]
-	if !ok {
-		return fmt.Errorf("cannot find logger %v", name)
-	}
+func (app *App) SetLogLevel(name, loglevel string) error { _ = "STUB: not implemented"; return nil }
 
-	if err := lvl.UnmarshalText([]byte(loglevel)); err != nil {
-		return fmt.Errorf("unmarshal text: %w", err)
-	}
+func (app *App) initServices(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	return nil
-}
+// TODO(dshulyak) this needs to be improved, but dependency graph is a bit complicated
 
-func (app *App) initServices(ctx context.Context) error {
-	layerSize := app.Config.LayerAvgSize
-	layersPerEpoch := types.GetLayersPerEpoch()
-	lg := app.log
+// should be removed after hare4 transition is complete
 
-	poetDb, err := activation.NewPoetDb(
-		app.db,
-		app.addLogger(PoetDbLogger, lg).Zap(),
-		activation.WithCacheSize(app.Config.POET.PoetProofsCache),
-	)
-	if err != nil {
-		return fmt.Errorf("creating poet db: %w", err)
-	}
-	postStates := activation.NewPostStates(app.addLogger(PostLogger, lg).Zap())
-	opts := []activation.PostVerifierOpt{
-		activation.WithVerifyingOpts(app.Config.SMESHING.VerifyingOpts),
-		activation.WithAutoscaling(postStates),
-	}
-	for _, sig := range app.signers {
-		opts = append(opts, activation.WithPrioritizedID(sig.NodeID()))
-	}
+// TODO(dshulyak) makes no sense. how we ended using it?
 
-	verifier, err := activation.NewPostVerifier(
-		app.Config.POST,
-		app.addLogger(NipostValidatorLogger, lg).Zap(),
-		opts...,
-	)
-	if err != nil {
-		return fmt.Errorf("creating post verifier: %w", err)
-	}
-	app.postVerifier = verifier
+// in a remote setup we register eagerly so the atxBuilder can warn about missing connections asap.
+// Any setup with more than one signer is considered a remote setup. If there is only one signer it
+// is considered a remote setup if the key for the signer has not been sourced from `supervisedIDKeyFileName`.
+//
+// In a supervised setup the postSetupManager will register at the atxBuilder when
+// it finished initializing, to avoid warning about a missing connection when the supervised post
+// service isn't ready yet.
 
-	validator := activation.NewValidator(
-		app.db,
-		poetDb,
-		app.Config.POST,
-		app.Config.SMESHING.Opts.Scrypt,
-		app.postVerifier,
-	)
-	app.validator = validator
+func (app *App) launchStandalone(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	cfg := vm.DefaultConfig()
-	cfg.GasLimit = app.Config.BlockGasLimit
-	cfg.GenesisID = app.Config.Genesis.GenesisID()
-	state := vm.New(app.db,
-		vm.WithConfig(cfg),
-		vm.WithLogger(app.addLogger(VMLogger, lg).Zap()))
-	app.conState = txs.NewConservativeState(state, app.db,
-		txs.WithCSConfig(txs.CSConfig{
-			BlockGasLimit:     app.Config.BlockGasLimit,
-			NumTXsPerProposal: app.Config.TxsPerProposal,
-		}),
-		txs.WithLogger(app.addLogger(ConStateLogger, lg).Zap()))
+func (app *App) listenToUpdates(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	genesisAccts := app.Config.Genesis.ToAccounts()
-	if len(genesisAccts) > 0 {
-		exists, err := state.AccountExists(genesisAccts[0].Address)
-		if err != nil {
-			return fmt.Errorf(
-				"failed to check genesis account %v: %w",
-				genesisAccts[0].Address,
-				err,
-			)
-		}
-		if !exists {
-			if err = state.ApplyGenesis(genesisAccts); err != nil {
-				return fmt.Errorf("setup genesis: %w", err)
-			}
-		}
-	}
-
-	goldenATXID := types.ATXID(app.Config.Genesis.GoldenATX())
-	if goldenATXID == types.EmptyATXID {
-		return errors.New("invalid golden atx id")
-	}
-
-	app.edVerifier = signing.NewEdVerifier(
-		signing.WithVerifierPrefix(app.Config.Genesis.GenesisID().Bytes()),
-	)
-
-	vrfVerifier := signing.NewVRFVerifier()
-	beaconProtocol := beacon.New(
-		app.host,
-		app.edVerifier,
-		vrfVerifier,
-		app.cachedDB,
-		app.clock,
-		beacon.WithConfig(app.Config.Beacon),
-		beacon.WithLogger(app.addLogger(BeaconLogger, lg).Zap()),
-	)
-	for _, sig := range app.signers {
-		beaconProtocol.Register(sig)
-	}
-
-	trtlCfg := app.Config.Tortoise
-	trtlCfg.LayerSize = layerSize
-	if trtlCfg.BadBeaconVoteDelayLayers == 0 {
-		trtlCfg.BadBeaconVoteDelayLayers = app.Config.LayersPerEpoch
-	}
-	trtlopts := []tortoise.Opt{
-		tortoise.WithLogger(app.addLogger(TrtlLogger, lg).Zap()),
-		tortoise.WithConfig(trtlCfg),
-	}
-	if trtlCfg.EnableTracer {
-		app.log.With().Info("tortoise will trace execution")
-		trtlopts = append(trtlopts, tortoise.WithTracer())
-	}
-	app.log.Info("initializing tortoise")
-	start := time.Now()
-	trtl, err := tortoise.Recover(
-		ctx,
-		app.db,
-		app.atxsdata,
-		app.clock.CurrentLayer(), trtlopts...,
-	)
-	if err != nil {
-		return fmt.Errorf("can't recover tortoise state: %w", err)
-	}
-	app.log.With().Info("tortoise initialized", log.Duration("duration", time.Since(start)))
-	app.eg.Go(func() error {
-		for rst := range beaconProtocol.Results() {
-			events.EmitBeacon(rst.Epoch, rst.Beacon)
-			trtl.OnBeacon(rst.Epoch, rst.Beacon)
-		}
-		app.log.Debug("beacon results watcher exited")
-		return nil
-	})
-
-	executor := mesh.NewExecutor(
-		app.db,
-		app.atxsdata,
-		state,
-		app.conState,
-		app.addLogger(ExecutorLogger, lg).Zap(),
-	)
-	mlog := app.addLogger(MeshLogger, lg).Zap()
-	msh, err := mesh.NewMesh(app.db, app.atxsdata, trtl, executor, app.conState, mlog)
-	if err != nil {
-		return fmt.Errorf("create mesh: %w", err)
-	}
-
-	app.eg.Go(func() error {
-		msh.Start(ctx)
-		return nil
-	})
-
-	pruner := prune.New(app.db, app.Config.Tortoise.Hdist, app.Config.PruneActivesetsFrom, prune.WithLogger(mlog))
-	if err := pruner.Prune(app.clock.CurrentLayer()); err != nil {
-		return fmt.Errorf("pruner %w", err)
-	}
-	app.eg.Go(func() error {
-		prune.Run(ctx, pruner, app.clock, app.Config.DatabasePruneInterval)
-		return nil
-	})
-
-	proposalsStore := store.New(
-		store.WithEvictedLayer(app.clock.CurrentLayer()),
-		store.WithLogger(app.addLogger(ProposalStoreLogger, lg).Zap()),
-		store.WithCapacity(app.Config.Tortoise.Zdist+1),
-	)
-
-	peerCache := peers.New()
-	flog := app.addLogger(Fetcher, lg).Zap()
-	fetcher, err := fetch.NewFetch(
-		app.db,
-		proposalsStore,
-		app.host,
-		peerCache,
-		fetch.WithContext(ctx),
-		fetch.WithConfig(app.Config.FETCH),
-		fetch.WithLogger(flog),
-	)
-	if err != nil {
-		return fmt.Errorf("create fetcher: %w", err)
-	}
-	app.eg.Go(func() error {
-		return blockssync.Sync(ctx, flog, msh.MissingBlocks(), fetcher)
-	})
-
-	hOracle, err := eligibility.New(
-		beaconProtocol,
-		app.db,
-		app.atxsdata,
-		vrfVerifier,
-		app.Config.LayersPerEpoch,
-		eligibility.WithConfig(app.Config.HareEligibility),
-		eligibility.WithLogger(app.addLogger(HareOracleLogger, lg).Zap()),
-	)
-	if err != nil {
-		return fmt.Errorf("create hare oracle: %w", err)
-	}
-
-	if app.Config.Certificate.CommitteeSize == 0 {
-		app.log.With().Debug("certificate committee size is not set, defaulting to hare committee size",
-			log.Uint16("size", app.Config.HARE3.Committee),
-		)
-		app.Config.Certificate.CommitteeSize = int(app.Config.HARE3.Committee)
-	}
-	app.Config.Certificate.CertifyThreshold = app.Config.Certificate.CommitteeSize/2 + 1
-	app.Config.Certificate.LayerBuffer = app.Config.Tortoise.Zdist
-	app.Config.Certificate.NumLayersToKeep = app.Config.Tortoise.Zdist * 2
-	certifier := blocks.NewCertifier(
-		app.db,
-		hOracle,
-		app.edVerifier,
-		app.host,
-		app.clock,
-		beaconProtocol,
-		trtl,
-		blocks.WithCertConfig(app.Config.Certificate),
-		blocks.WithCertifierLogger(app.addLogger(BlockCertLogger, lg).Zap()),
-	)
-	for _, sig := range app.signers {
-		certifier.Register(sig)
-	}
-
-	patrol := layerpatrol.New()
-	syncerConf := app.Config.Sync
-	syncerConf.HareDelayLayers = app.Config.Tortoise.Zdist
-	syncerConf.SyncCertDistance = app.Config.Tortoise.Hdist
-	syncerConf.Standalone = app.Config.Standalone
-
-	if app.Config.P2P.MinPeers < app.Config.Sync.MalSync.MinSyncPeers {
-		app.Config.Sync.MalSync.MinSyncPeers = max(1, app.Config.P2P.MinPeers)
-	}
-	app.syncLogger = app.addLogger(SyncLogger, lg)
-	syncer, err := syncer.NewSyncer(
-		app.cachedDB,
-		app.clock,
-		msh,
-		trtl,
-		fetcher,
-		peerCache,
-		app.host,
-		patrol,
-		certifier,
-		atxsync.New(fetcher, app.db, app.localDB,
-			atxsync.WithConfig(app.Config.Sync.AtxSync),
-			atxsync.WithLogger(app.syncLogger.Zap()),
-		),
-		malsync.New(fetcher, app.db, app.localDB, app.clock,
-			malsync.WithConfig(app.Config.Sync.MalSync),
-			malsync.WithLogger(app.syncLogger.Zap()),
-			malsync.WithPeerErrMetric(syncer.MalPeerError),
-		),
-		syncer.WithConfig(syncerConf),
-		syncer.WithLogger(app.syncLogger.Zap()),
-		syncer.WithAtxVersions(app.Config.AtxVersions),
-	)
-	if err != nil {
-		return fmt.Errorf("create syncer: %w", err)
-	}
-	// TODO(dshulyak) this needs to be improved, but dependency graph is a bit complicated
-	beaconProtocol.SetSyncState(syncer)
-	hOracle.SetSync(syncer)
-
-	legacyMalfeasanceLogger := app.addLogger(MalfeasanceLogger, lg).Zap()
-	legacyMalPublisher := malfeasance.NewPublisher(
-		legacyMalfeasanceLogger,
-		app.cachedDB,
-		syncer,
-		trtl,
-		app.host,
-	)
-
-	malfeasanceLogger := app.addLogger(Malfeasance2Logger, lg).Zap()
-	malfeasancePublisher := malfeasance2.NewPublisher(
-		malfeasanceLogger,
-		app.db,
-		syncer,
-		trtl,
-		app.host,
-	)
-	atxMalHandler := activation.NewMalfeasanceHandlerV2(
-		malfeasanceLogger,
-		app.db,
-		malfeasancePublisher,
-		app.edVerifier,
-		validator,
-	)
-	for _, sig := range app.signers {
-		atxMalHandler.Register(sig)
-	}
-	atxHandler := activation.NewHandler(
-		app.host.ID(),
-		app.cachedDB,
-		app.atxsdata,
-		app.edVerifier,
-		app.clock,
-		fetcher,
-		goldenATXID,
-		validator,
-		atxMalHandler,
-		legacyMalPublisher,
-		beaconProtocol,
-		trtl,
-		app.addLogger(ATXHandlerLogger, lg).Zap(),
-		activation.WithTickSize(app.Config.TickSize),
-		activation.WithAtxVersions(app.Config.AtxVersions),
-	)
-
-	blockHandler := blocks.NewHandler(
-		fetcher,
-		app.db,
-		trtl,
-		msh,
-		blocks.WithLogger(app.addLogger(BlockHandlerLogger, lg).Zap()),
-	)
-
-	app.txHandler = txs.NewTxHandler(
-		app.conState,
-		app.host.ID(),
-		app.addLogger(TxHandlerLogger, lg).Zap(),
-	)
-
-	bscfg := app.Config.Bootstrap
-	bscfg.DataDir = app.Config.DataDir()
-	bscfg.Interval = app.Config.LayerDuration / 5
-	app.updater = bootstrap.New(
-		app.clock,
-		bootstrap.WithConfig(bscfg),
-		bootstrap.WithLogger(app.addLogger(BootstrapLogger, lg).Zap()),
-	)
-
-	err = app.Config.HARE3.Validate(time.Duration(app.Config.Tortoise.Zdist) * app.Config.LayerDuration)
-	if err != nil {
-		return err
-	}
-	logger := app.addLogger(HareLogger, lg).Zap()
-
-	// should be removed after hare4 transition is complete
-	app.hareResultsChan = make(chan hare4.ConsensusOutput, 32)
-	if app.Config.HARE3.Enable {
-		app.hare3 = hare3.New(
-			app.clock,
-			app.host,
-			app.db,
-			app.atxsdata,
-			proposalsStore,
-			app.edVerifier,
-			hOracle,
-			syncer,
-			patrol,
-			hare3.WithLogger(logger),
-			hare3.WithConfig(app.Config.HARE3),
-			hare3.WithResultsChan(app.hareResultsChan),
-		)
-		for _, sig := range app.signers {
-			app.hare3.Register(sig)
-		}
-		app.hare3.Start()
-		app.eg.Go(func() error {
-			compat.ReportWeakcoin(
-				ctx,
-				logger,
-				app.hare3.Coins(),
-				tortoiseWeakCoin{db: app.cachedDB, tortoise: trtl},
-			)
-			return nil
-		})
-	}
-
-	if app.Config.HARE4.Enable {
-		app.hare4 = hare4.New(
-			app.clock,
-			app.host,
-			app.db,
-			app.atxsdata,
-			proposalsStore,
-			app.edVerifier,
-			hOracle,
-			syncer,
-			patrol,
-			app.host,
-			hare4.WithLogger(logger),
-			hare4.WithConfig(app.Config.HARE4),
-			hare4.WithResultsChan(app.hareResultsChan),
-		)
-		for _, sig := range app.signers {
-			app.hare4.Register(sig)
-		}
-		app.hare4.Start()
-		app.eg.Go(func() error {
-			compat.ReportWeakcoin(
-				ctx,
-				logger,
-				app.hare4.Coins(),
-				tortoiseWeakCoin{db: app.cachedDB, tortoise: trtl},
-			)
-			return nil
-		})
-	}
-
-	propHare := &proposalConsumerHare{
-		hare3:          app.hare3,
-		h3DisableLayer: app.Config.HARE3.DisableLayer,
-		hare4:          app.hare4,
-	}
-
-	proposalListener := proposals.NewHandler(
-		app.db,
-		app.atxsdata,
-		propHare,
-		app.edVerifier,
-		app.host,
-		fetcher,
-		beaconProtocol,
-		msh,
-		trtl,
-		vrfVerifier,
-		app.clock,
-		proposals.WithLogger(app.addLogger(ProposalListenerLogger, lg).Zap()),
-		proposals.WithConfig(proposals.Config{
-			LayerSize:              layerSize,
-			LayersPerEpoch:         layersPerEpoch,
-			GoldenATXID:            goldenATXID,
-			MaxExceptions:          trtlCfg.MaxExceptions,
-			Hdist:                  trtlCfg.Hdist,
-			MinimalActiveSetWeight: trtlCfg.MinimalActiveSetWeight,
-		}),
-	)
-
-	app.blockGen = blocks.NewGenerator(
-		app.db,
-		app.atxsdata,
-		proposalsStore,
-		executor,
-		msh,
-		fetcher,
-		certifier,
-		patrol,
-		blocks.WithConfig(blocks.Config{
-			BlockGasLimit:      app.Config.BlockGasLimit,
-			OptFilterThreshold: app.Config.OptFilterThreshold,
-			GenBlockInterval:   500 * time.Millisecond,
-		}),
-		blocks.WithHareOutputChan(app.hareResultsChan),
-		blocks.WithGeneratorLogger(app.addLogger(BlockGenLogger, lg).Zap()),
-	)
-
-	minerGoodAtxPct := 90
-	if app.Config.MinerGoodAtxsPercent > 0 {
-		minerGoodAtxPct = app.Config.MinerGoodAtxsPercent
-	}
-	proposalBuilder := miner.New(
-		app.clock,
-		app.db,
-		app.localDB,
-		app.atxsdata,
-		app.host,
-		trtl,
-		syncer,
-		app.conState,
-		miner.WithLayerSize(layerSize),
-		miner.WithLayerPerEpoch(layersPerEpoch),
-		miner.WithMinimalActiveSetWeight(app.Config.Tortoise.MinimalActiveSetWeight),
-		miner.WithHdist(app.Config.Tortoise.Hdist),
-		miner.WithNetworkDelay(app.Config.ATXGradeDelay),
-		miner.WithMinGoodAtxPercent(minerGoodAtxPct),
-		miner.WithLogger(app.addLogger(ProposalBuilderLogger, lg).Zap()),
-		miner.WithActivesetPreparation(app.Config.ActiveSet),
-	)
-	for _, sig := range app.signers {
-		proposalBuilder.Register(sig)
-	}
-
-	postSetupMgr, err := activation.NewPostSetupManager(
-		app.Config.POST,
-		app.addLogger(PostLogger, lg).Zap(),
-		app.db,
-		app.atxsdata,
-		goldenATXID,
-		syncer,
-		app.validator,
-		activation.PostValidityDelay(app.Config.PostValidDelay),
-	)
-	if err != nil {
-		return fmt.Errorf("create post setup manager: %v", err)
-	}
-
-	grpcPostService, err := app.grpcService(grpcserver.Post, lg)
-	if err != nil {
-		return fmt.Errorf("init post grpc service: %w", err)
-	}
-
-	nipostLogger := app.addLogger(NipostBuilderLogger, lg).Zap()
-	client := activation.NewCertifierClient(
-		app.db,
-		app.localDB,
-		nipostLogger,
-		activation.WithCertifierClientConfig(app.Config.Certifier.Client),
-	)
-	poetCertifier := activation.NewCertifier(app.localDB, nipostLogger, client)
-
-	poetClients := make([]activation.PoetService, 0, len(app.Config.PoetServers))
-	for _, server := range app.Config.PoetServers {
-		client, err := activation.NewPoetService(
-			poetDb,
-			server,
-			app.Config.POET,
-			lg.Zap().Named("poet"),
-			app.Config.TickSize,
-			activation.WithCertifier(poetCertifier),
-		)
-		if err != nil {
-			app.log.Panic("failed to create poet client with address %v: %v", server.Address, err)
-		}
-		poetClients = append(poetClients, client)
-	}
-
-	nipostBuilder, err := activation.NewNIPostBuilder(
-		app.localDB,
-		grpcPostService.(*v1.PostService),
-		nipostLogger,
-		app.Config.POET,
-		app.clock,
-		app.validator,
-		activation.NipostbuilderWithPostStates(postStates),
-		activation.WithPoetServices(poetClients...),
-	)
-	if err != nil {
-		return fmt.Errorf("create nipost builder: %w", err)
-	}
-
-	builderConfig := activation.Config{
-		GoldenATXID:      goldenATXID,
-		RegossipInterval: app.Config.RegossipAtxInterval,
-	}
-	atxBuilder := activation.NewBuilder(
-		builderConfig,
-		app.db,
-		app.atxsdata,
-		app.localDB,
-		app.host,
-		nipostBuilder,
-		app.clock,
-		syncer,
-		app.addLogger(ATXBuilderLogger, lg).Zap(),
-		activation.WithPoetConfig(app.Config.POET),
-		// TODO(dshulyak) makes no sense. how we ended using it?
-		activation.WithPoetRetryInterval(app.Config.HARE3.PreroundDelay),
-		activation.WithValidator(app.validator),
-		activation.WithPostValidityDelay(app.Config.PostValidDelay),
-		activation.WithPostStates(postStates),
-		activation.WithPoets(poetClients...),
-		activation.BuilderAtxVersions(app.Config.AtxVersions),
-	)
-	if len(app.signers) > 1 || app.signers[0].Name() != supervisedIDKeyFileName {
-		// in a remote setup we register eagerly so the atxBuilder can warn about missing connections asap.
-		// Any setup with more than one signer is considered a remote setup. If there is only one signer it
-		// is considered a remote setup if the key for the signer has not been sourced from `supervisedIDKeyFileName`.
-		//
-		// In a supervised setup the postSetupManager will register at the atxBuilder when
-		// it finished initializing, to avoid warning about a missing connection when the supervised post
-		// service isn't ready yet.
-		for _, sig := range app.signers {
-			atxBuilder.Register(sig)
-		}
-	}
-	app.postSupervisor = activation.NewPostSupervisor(
-		app.log.Zap(),
-		app.Config.POST,
-		app.Config.SMESHING.ProvingOpts,
-		postSetupMgr,
-		atxBuilder,
-	)
-
-	activationMH := activation.NewMalfeasanceHandler(
-		app.cachedDB,
-		legacyMalfeasanceLogger,
-		app.edVerifier,
-	)
-	meshMH := mesh.NewMalfeasanceHandler(
-		app.cachedDB,
-		app.edVerifier,
-		mesh.WithMalfeasanceLogger(legacyMalfeasanceLogger),
-	)
-	hareMH := hare3.NewMalfeasanceHandler(
-		app.cachedDB,
-		app.edVerifier,
-		hare3.WithMalfeasanceLogger(legacyMalfeasanceLogger),
-	)
-	invalidPostMH := activation.NewInvalidPostIndexHandler(
-		app.cachedDB,
-		app.edVerifier,
-		validator,
-	)
-	invalidPrevMH := activation.NewInvalidPrevATXHandler(app.cachedDB, app.edVerifier)
-
-	nodeIDs := make([]types.NodeID, 0, len(app.signers))
-	for _, s := range app.signers {
-		nodeIDs = append(nodeIDs, s.NodeID())
-	}
-	malHandler := malfeasance.NewHandler(
-		app.cachedDB,
-		legacyMalfeasanceLogger,
-		app.host.ID(),
-		nodeIDs,
-		trtl,
-	)
-	malHandler.RegisterHandler(malfeasance.MultipleATXs, activationMH)
-	malHandler.RegisterHandler(malfeasance.MultipleBallots, meshMH)
-	malHandler.RegisterHandler(malfeasance.HareEquivocation, hareMH)
-	malHandler.RegisterHandler(malfeasance.InvalidPostIndex, invalidPostMH)
-	malHandler.RegisterHandler(malfeasance.InvalidPrevATX, invalidPrevMH)
-
-	malHandler2 := malfeasance2.NewHandler(
-		app.db,
-		malfeasanceLogger,
-		app.host.ID(),
-		nodeIDs,
-		fetcher,
-		trtl,
-	)
-	malHandler2.RegisterHandler(malfeasance2.InvalidActivation, atxMalHandler)
-
-	fetcher.SetMalfeasanceProvider(malfeasancePublisher)
-	fetcher.SetValidators(
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(atxHandler.HandleSyncedAtx, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(poetDb.ValidateAndStoreMsg, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(proposalListener.HandleSyncedBallot, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(proposalListener.HandleActiveSet, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(blockHandler.HandleSyncedBlock, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(proposalListener.HandleSyncedProposal, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(app.txHandler.HandleBlockTransaction, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(app.txHandler.HandleProposalTransaction, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(malHandler.HandleSynced, app.host, lg.Zap()),
-		),
-		fetch.ValidatorFunc(
-			pubsub.DropPeerOnSyncValidationReject(malHandler2.HandleSynced, app.host, lg.Zap()),
-		),
-	)
-
-	checkSynced := func(_ context.Context, _ p2p.Peer, _ []byte) error {
-		if syncer.ListenToGossip() {
-			return nil
-		}
-		return errors.New("not synced for gossip")
-	}
-	checkAtxSynced := func(_ context.Context, _ p2p.Peer, _ []byte) error {
-		if syncer.ListenToATXGossip() {
-			return nil
-		}
-		return errors.New("not synced for gossip")
-	}
-
-	if app.Config.Beacon.RoundsNumber > 0 {
-		app.host.Register(
-			pubsub.BeaconWeakCoinProtocol,
-			pubsub.ChainGossipHandler(checkSynced, beaconProtocol.HandleWeakCoinProposal),
-			pubsub.WithValidatorInline(true),
-		)
-		app.host.Register(
-			pubsub.BeaconProposalProtocol,
-			pubsub.ChainGossipHandler(checkSynced, beaconProtocol.HandleProposal),
-			pubsub.WithValidatorInline(true),
-		)
-		app.host.Register(
-			pubsub.BeaconFirstVotesProtocol,
-			pubsub.ChainGossipHandler(checkSynced, beaconProtocol.HandleFirstVotes),
-			pubsub.WithValidatorInline(true),
-		)
-		app.host.Register(
-			pubsub.BeaconFollowingVotesProtocol,
-			pubsub.ChainGossipHandler(checkSynced, beaconProtocol.HandleFollowingVotes),
-			pubsub.WithValidatorInline(true),
-		)
-	}
-	app.host.Register(
-		pubsub.ProposalProtocol,
-		pubsub.ChainGossipHandler(checkSynced, proposalListener.HandleProposal),
-	)
-	app.host.Register(
-		pubsub.AtxProtocol,
-		pubsub.ChainGossipHandler(checkAtxSynced, atxHandler.HandleGossipAtx),
-		pubsub.WithValidatorConcurrency(app.Config.P2P.GossipAtxValidationThrottle),
-	)
-	app.host.Register(
-		pubsub.TxProtocol,
-		pubsub.ChainGossipHandler(checkSynced, app.txHandler.HandleGossipTransaction),
-	)
-	app.host.Register(
-		pubsub.BlockCertify,
-		pubsub.ChainGossipHandler(checkSynced, certifier.HandleCertifyMessage),
-	)
-	app.host.Register(
-		pubsub.MalfeasanceProof,
-		pubsub.ChainGossipHandler(checkAtxSynced, malHandler.HandleGossip),
-	)
-	app.host.Register(
-		pubsub.MalfeasanceProof2,
-		pubsub.ChainGossipHandler(checkAtxSynced, malHandler2.HandleGossip),
-	)
-
-	app.proposalBuilder = proposalBuilder
-	app.mesh = msh
-	app.syncer = syncer
-	app.atxBuilder = atxBuilder
-	app.atxHandler = atxHandler
-	app.malfeasanceHandler = malHandler
-	app.malfeasance2Handler = malHandler2
-	app.poetDb = poetDb
-	app.fetcher = fetcher
-	app.beaconProtocol = beaconProtocol
-	app.hOracle = hOracle
-	app.certifier = certifier
-	if !app.Config.TIME.Peersync.Disable {
-		app.ptimesync = peersync.New(
-			app.host,
-			app.host,
-			peersync.WithLog(app.addLogger(TimeSyncLogger, lg).Zap()),
-			peersync.WithConfig(app.Config.TIME.Peersync),
-		)
-	}
-	if err := app.host.Start(); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (app *App) launchStandalone(ctx context.Context) error {
-	if !app.Config.Standalone {
-		return nil
-	}
-	if len(app.Config.PoetServers) != 1 {
-		return fmt.Errorf(
-			"to launch in a standalone mode provide single local address for poet: %v",
-			app.Config.PoetServers,
-		)
-	}
-	value := types.Beacon{}
-	genesis := app.Config.Genesis.GenesisID()
-	copy(value[:], genesis[:])
-	epoch := types.GetEffectiveGenesis().GetEpoch() + 1
-	app.log.With().Warning("using standalone mode for bootstrapping beacon",
-		log.Uint32("epoch", epoch.Uint32()),
-		log.Stringer("beacon", value),
-	)
-	if err := app.beaconProtocol.UpdateBeacon(epoch, value); err != nil {
-		return fmt.Errorf("update standalone beacon: %w", err)
-	}
-	cfg := server.DefaultConfig()
-	cfg.PoetDir = filepath.Join(app.Config.DataDir(), "poet")
-
-	parsed, err := url.Parse(app.Config.PoetServers[0].Address)
-	if err != nil {
-		return err
-	}
-
-	cfg.RawRESTListener = parsed.Host
-	cfg.RawRPCListener = parsed.Hostname() + ":0"
-	cfg.Genesis = server.Genesis(app.Config.Genesis.GenesisTime)
-	cfg.Round.EpochDuration = app.Config.LayerDuration * time.Duration(app.Config.LayersPerEpoch)
-	cfg.Round.CycleGap = app.Config.POET.CycleGap
-	cfg.Round.PhaseShift = app.Config.POET.PhaseShift
-	server.SetupConfig(cfg)
-
-	srv, err := server.New(ctx, *cfg)
-	if err != nil {
-		return fmt.Errorf("init poet server: %w", err)
-	}
-
-	app.Config.PoetServers[0].Pubkey = types.NewBase64Enc(srv.PublicKey())
-	app.log.With().Warning("launching poet in standalone mode", log.Any("config", cfg))
-	app.eg.Go(func() error {
-		if err := srv.Start(ctx); err != nil {
-			app.log.With().Error("poet server failed", log.Err(err))
-			return err
-		}
-		return srv.Close()
-	})
-	return nil
-}
-
-func (app *App) listenToUpdates(ctx context.Context) {
-	app.eg.Go(func() error {
-		ch, err := app.updater.Subscribe()
-		if err != nil {
-			app.errCh <- err
-			return nil
-		}
-		if err := app.updater.Start(); err != nil {
-			app.errCh <- err
-			return nil
-		}
-		for {
-			select {
-			case <-ctx.Done():
-				return nil
-			case update, ok := <-ch:
-				if !ok {
-					return nil
-				}
-				if update.Data.Beacon != types.EmptyBeacon {
-					if err := app.beaconProtocol.UpdateBeacon(update.Data.Epoch, update.Data.Beacon); err != nil {
-						app.errCh <- err
-						return nil
-					}
-				}
-				if len(update.Data.ActiveSet) > 0 {
-					epoch := update.Data.Epoch
-					set := update.Data.ActiveSet
-					sort.Slice(set, func(i, j int) bool {
-						return bytes.Compare(set[i].Bytes(), set[j].Bytes()) < 0
-					})
-					id := types.ATXIDList(set).Hash()
-					activeSet := &types.EpochActiveSet{
-						Epoch: epoch,
-						Set:   set,
-					}
-					err := activesets.Add(app.db, id, activeSet)
-					if err != nil && !errors.Is(err, sql.ErrObjectExists) {
-						app.errCh <- fmt.Errorf("error storing ActiveSet: %w", err)
-						return nil
-					}
-
-					app.hOracle.UpdateActiveSet(epoch, set)
-					app.proposalBuilder.UpdateActiveSet(epoch, set)
-
-					app.eg.Go(func() error {
-						select {
-						case <-app.syncer.RegisterForATXSynced():
-						case <-ctx.Done():
-							return nil
-						}
-						if err := atxsync.Download(
-							ctx,
-							10*time.Second,
-							app.syncLogger.Zap(),
-							app.db,
-							app.fetcher,
-							set,
-						); err != nil {
-							app.errCh <- err
-						}
-						return nil
-					})
-				}
-			}
-		}
-	})
-}
-
-func (app *App) startServices(ctx context.Context) error {
-	if err := app.fetcher.Start(); err != nil {
-		return fmt.Errorf("start fetcher: %w", err)
-	}
-	app.syncer.Start()
-	app.beaconProtocol.Start(ctx)
-
-	app.blockGen.Start(ctx)
-	app.certifier.Start(ctx)
-	app.eg.Go(func() error {
-		return app.proposalBuilder.Run(ctx)
-	})
-
-	if app.Config.SMESHING.CoinbaseAccount != "" {
-		coinbaseAddr, err := types.StringToAddress(app.Config.SMESHING.CoinbaseAccount)
-		if err != nil {
-			return fmt.Errorf(
-				"parse CoinbaseAccount address on start `%s`: %w",
-				app.Config.SMESHING.CoinbaseAccount,
-				err,
-			)
-		}
-		if err := app.atxBuilder.StartSmeshing(coinbaseAddr); err != nil {
-			return fmt.Errorf("start smeshing: %w", err)
-		}
-	}
-
-	if app.ptimesync != nil {
-		app.ptimesync.Start()
-	}
-
-	if app.updater != nil {
-		app.listenToUpdates(ctx)
-	}
-	return nil
-}
+func (app *App) startServices(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 func (app *App) grpcService(svc grpcserver.Service, lg log.Log) (grpcserver.ServiceAPI, error) {
-	if service, ok := app.grpcServices[svc]; ok {
-		return service, nil
-	}
-
-	switch svc {
-	case grpcserver.Debug:
-		service := v1.NewDebugService(app.db, app.conState, app.host, app.hOracle, app.loggers)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.GlobalState:
-		service := v1.NewGlobalStateService(app.mesh, app.conState)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Mesh:
-		service := v1.NewMeshService(
-			app.cachedDB,
-			app.mesh,
-			app.conState,
-			app.clock,
-			app.Config.LayersPerEpoch,
-			app.Config.Genesis.GenesisID(),
-			app.Config.LayerDuration,
-			app.Config.LayerAvgSize,
-			uint32(app.Config.TxsPerProposal),
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Node:
-		service := v1.NewNodeService(
-			app.host,
-			app.mesh,
-			app.clock,
-			app.syncer,
-			cmd.Version,
-			cmd.Commit,
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Admin:
-		service := v1.NewAdminService(app.db, app.Config.DataDir(), app.host)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Smesher:
-		var sig *signing.EdSigner
-		if len(app.signers) == 1 && app.signers[0].Name() == supervisedIDKeyFileName {
-			// StartSmeshing is only supported in a supervised setup (single signer)
-			sig = app.signers[0]
-		}
-		postService, err := app.grpcService(grpcserver.Post, lg)
-		if err != nil {
-			return nil, err
-		}
-		service := v1.NewSmesherService(
-			app.atxBuilder,
-			app.postSupervisor,
-			postService.(*v1.PostService),
-			app.Config.API.SmesherStreamInterval,
-			app.Config.SMESHING.Opts,
-			sig,
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Post:
-		service := v1.NewPostService(app.addLogger(PostServiceLogger, lg).Zap())
-		isCoinbaseSet := app.Config.SMESHING.CoinbaseAccount != ""
-		if !isCoinbaseSet {
-			lg.Warning("coinbase account is not set, connections from remote post services will be rejected")
-		}
-		service.AllowConnections(isCoinbaseSet)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.PostInfo:
-		service := v1.NewPostInfoService(app.atxBuilder)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Transaction:
-		service := v1.NewTransactionService(
-			app.db,
-			app.host,
-			app.mesh,
-			app.conState,
-			app.syncer,
-			app.txHandler,
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.Activation:
-		service := v1.NewActivationService(app.cachedDB, types.ATXID(app.Config.Genesis.GoldenATX()))
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.ActivationV2Alpha1:
-		service := v2alpha1.NewActivationService(app.apiDB, types.ATXID(app.Config.Genesis.GoldenATX()))
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.ActivationStreamV2Alpha1:
-		service := v2alpha1.NewActivationStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.RewardV2Alpha1:
-		service := v2alpha1.NewRewardService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.RewardStreamV2Alpha1:
-		service := v2alpha1.NewRewardStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.MalfeasanceV2Alpha1:
-		service := v2alpha1.NewMalfeasanceService(app.apiDB, app.malfeasance2Handler, app.malfeasanceHandler)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.MalfeasanceStreamV2Alpha1:
-		service := v2alpha1.NewMalfeasanceStreamService(app.apiDB, app.malfeasance2Handler, app.malfeasanceHandler)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.NetworkV2Alpha1:
-		service := v2alpha1.NewNetworkService(
-			app.clock.GenesisTime(),
-			app.Config.Genesis.GenesisID(),
-			app.Config.LayerDuration,
-			app.Config.POST.LabelsPerUnit,
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.NodeV2Alpha1:
-		service := v2alpha1.NewNodeService(app.host, app.mesh, app.clock, app.syncer)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.LayerV2Alpha1:
-		service := v2alpha1.NewLayerService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.LayerStreamV2Alpha1:
-		service := v2alpha1.NewLayerStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.TransactionV2Alpha1:
-		service := v2alpha1.NewTransactionService(app.apiDB, app.conState, app.syncer, app.txHandler, app.host)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.TransactionStreamV2Alpha1:
-		service := v2alpha1.NewTransactionStreamService()
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.AccountV2Alpha1:
-		service := v2alpha1.NewAccountService(app.apiDB, app.conState)
-		app.grpcServices[svc] = service
-		return service, nil
-	// v2beta1
-	case grpcserver.ActivationV2Beta1:
-		service := v2beta1.NewActivationService(app.apiDB, types.ATXID(app.Config.Genesis.GoldenATX()), app.atxsdata)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.ActivationStreamV2Beta1:
-		service := v2beta1.NewActivationStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.RewardV2Beta1:
-		service := v2beta1.NewRewardService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.RewardStreamV2Beta1:
-		service := v2beta1.NewRewardStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.MalfeasanceV2Beta1:
-		service := v2beta1.NewMalfeasanceService(app.apiDB, app.malfeasance2Handler, app.malfeasanceHandler)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.MalfeasanceStreamV2Beta1:
-		service := v2beta1.NewMalfeasanceStreamService(app.apiDB, app.malfeasance2Handler, app.malfeasanceHandler)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.NetworkV2Beta1:
-		service := v2beta1.NewNetworkService(
-			app.clock.GenesisTime(),
-			app.Config.Genesis.GenesisID(),
-			app.Config.LayerDuration,
-			app.Config.POST.LabelsPerUnit,
-		)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.NodeV2Beta1:
-		service := v2beta1.NewNodeService(app.host, app.mesh, app.clock, app.syncer)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.LayerV2Beta1:
-		service := v2beta1.NewLayerService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.LayerStreamV2Beta1:
-		service := v2beta1.NewLayerStreamService(app.apiDB)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.TransactionV2Beta1:
-		service := v2beta1.NewTransactionService(app.apiDB, app.conState, app.syncer, app.txHandler, app.host)
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.TransactionStreamV2Beta1:
-		service := v2beta1.NewTransactionStreamService()
-		app.grpcServices[svc] = service
-		return service, nil
-	case grpcserver.AccountV2Beta1:
-		service := v2beta1.NewAccountService(app.apiDB, app.conState)
-		app.grpcServices[svc] = service
-		return service, nil
-	}
-	return nil, fmt.Errorf("unknown service %s", svc)
+	_ = "STUB: not implemented"
+	return *new(grpcserver.ServiceAPI), nil
 }
 
-func (app *App) startAPIServices(ctx context.Context) error {
-	logger := app.addLogger(GRPCLogger, app.log)
-	grpczap.SetGrpcLoggerV2(grpcLog, logger.Zap())
+// StartSmeshing is only supported in a supervised setup (single signer)
 
-	var (
-		publicSvcs        = make(map[grpcserver.Service]grpcserver.ServiceAPI, len(app.Config.API.PublicServices))
-		privateSvcs       = make(map[grpcserver.Service]grpcserver.ServiceAPI, len(app.Config.API.PrivateServices))
-		postSvcs          = make(map[grpcserver.Service]grpcserver.ServiceAPI, len(app.Config.API.PostServices))
-		authenticatedSvcs = make(map[grpcserver.Service]grpcserver.ServiceAPI, len(app.Config.API.TLSServices))
-	)
+// v2beta1
 
-	// check services for uniques across all endpoints
-	for _, svc := range app.Config.API.PublicServices {
-		if _, exists := publicSvcs[svc]; exists {
-			return fmt.Errorf("can't start more than one %s on public grpc endpoint", svc)
-		}
-		gsvc, err := app.grpcService(svc, app.log)
-		if err != nil {
-			return err
-		}
-		logger.Info("registering public service %s", svc)
-		publicSvcs[svc] = gsvc
-	}
-	for _, svc := range app.Config.API.PrivateServices {
-		if _, exists := privateSvcs[svc]; exists {
-			return fmt.Errorf("can't start more than one %s on private grpc endpoint", svc)
-		}
-		gsvc, err := app.grpcService(svc, app.log)
-		if err != nil {
-			return err
-		}
-		logger.Info("registering private service %s", svc)
-		privateSvcs[svc] = gsvc
-	}
-	for _, svc := range app.Config.API.PostServices {
-		if _, exists := postSvcs[svc]; exists {
-			return fmt.Errorf("can't start more than one %s on post grpc endpoint", svc)
-		}
-		gsvc, err := app.grpcService(svc, app.log)
-		if err != nil {
-			return err
-		}
-		logger.Info("registering post service %s", svc)
-		postSvcs[svc] = gsvc
-	}
-	for _, svc := range app.Config.API.TLSServices {
-		if _, exists := authenticatedSvcs[svc]; exists {
-			return fmt.Errorf("can't start more than one %s on authenticated grpc endpoint", svc)
-		}
-		gsvc, err := app.grpcService(svc, app.log)
-		if err != nil {
-			return err
-		}
-		logger.Info("registering authenticated service %s", svc)
-		authenticatedSvcs[svc] = gsvc
-	}
+func (app *App) startAPIServices(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	// start servers if at least one endpoint is defined for them
-	if len(publicSvcs) > 0 {
-		var err error
-		app.grpcPublicServer, err = grpcserver.NewWithServices(
-			app.Config.API.PublicListener,
-			logger.Zap(),
-			app.Config.API,
-			maps.Values(publicSvcs),
-			// public server needs restriction on max connection age to prevent attacks
-			grpc.KeepaliveParams(keepalive.ServerParameters{
-				MaxConnectionIdle:     2 * time.Hour,
-				MaxConnectionAge:      3 * time.Hour,
-				MaxConnectionAgeGrace: 10 * time.Minute,
-				Time:                  time.Minute,
-				Timeout:               10 * time.Second,
-			}),
-		)
-		if err != nil {
-			return err
-		}
-		if err := app.grpcPublicServer.Start(); err != nil {
-			return err
-		}
-		logger.With().Info("public grpc service started",
-			log.String("address", app.Config.API.PublicListener),
-			log.Array("services", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-				services := maps.Keys(publicSvcs)
-				slices.Sort(services)
-				for _, svc := range services {
-					encoder.AppendString(svc)
-				}
-				return nil
-			})),
-		)
-	}
-	if len(privateSvcs) > 0 {
-		var err error
-		app.grpcPrivateServer, err = grpcserver.NewWithServices(
-			app.Config.API.PrivateListener,
-			logger.Zap(),
-			app.Config.API,
-			maps.Values(privateSvcs),
-		)
-		if err != nil {
-			return err
-		}
-		if err := app.grpcPrivateServer.Start(); err != nil {
-			return err
-		}
-		logger.With().Info("private grpc service started",
-			log.String("address", app.Config.API.PrivateListener),
-			log.Array("services", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-				services := maps.Keys(privateSvcs)
-				slices.Sort(services)
-				for _, svc := range services {
-					encoder.AppendString(svc)
-				}
-				return nil
-			})),
-		)
-	}
-	if len(postSvcs) > 0 && app.Config.API.PostListener != "" {
-		var err error
-		app.grpcPostServer, err = grpcserver.NewWithServices(
-			app.Config.API.PostListener,
-			logger.Zap(),
-			app.Config.API,
-			maps.Values(postSvcs),
-		)
-		if err != nil {
-			return err
-		}
-		if err := app.grpcPostServer.Start(); err != nil {
-			return err
-		}
-		logger.With().Info("post grpc service started",
-			log.String("address", app.Config.API.PostListener),
-			log.Array("services", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-				services := maps.Keys(postSvcs)
-				slices.Sort(services)
-				for _, svc := range services {
-					encoder.AppendString(svc)
-				}
-				return nil
-			})),
-		)
+// check services for uniques across all endpoints
 
-		host, port, err := net.SplitHostPort(app.grpcPostServer.BoundAddress)
-		if err != nil {
-			return fmt.Errorf("parse grpc-post-listener: %w", err)
-		}
-		ip := net.ParseIP(host)
-		if ip.IsUnspecified() { // 0.0.0.0 isn't a valid address to connect to on windows
-			host = "127.0.0.1"
-		}
-		app.Config.POSTService.NodeAddress = fmt.Sprintf("http://%s:%s", host, port)
-		svc, err := app.grpcService(grpcserver.Smesher, app.log)
-		if err != nil {
-			return err
-		}
-		svc.(*v1.SmesherService).SetPostServiceConfig(app.Config.POSTService)
-		if app.Config.SMESHING.Start {
-			if app.Config.SMESHING.CoinbaseAccount == "" {
-				return errors.New("smeshing enabled but no coinbase account provided")
-			}
-			if len(app.signers) > 1 || app.signers[0].Name() != supervisedIDKeyFileName {
-				app.log.Error("supervised smeshing cannot be started in a remote or multi-smeshing setup")
-				app.log.Error(
-					"if you run a supervised node ensure your key file is named %s and try again",
-					supervisedIDKeyFileName,
-				)
-				return errors.New("smeshing enabled in remote setup")
-			}
-			if err := app.postSupervisor.Start(
-				app.Config.POSTService,
-				app.Config.SMESHING.Opts,
-				app.signers[0],
-			); err != nil {
-				return fmt.Errorf("start post service: %w", err)
-			}
-		} else if len(app.signers) == 1 && app.signers[0].Name() == supervisedIDKeyFileName {
-			// supervised setup but not started
-			app.log.Info("smeshing not started, waiting to be triggered via smesher api")
-		}
-	}
+// start servers if at least one endpoint is defined for them
 
-	if len(authenticatedSvcs) > 0 && app.Config.API.TLSListener != "" {
-		var err error
-		app.grpcTLSServer, err = grpcserver.NewTLS(logger.Zap(), app.Config.API, maps.Values(authenticatedSvcs))
-		if err != nil {
-			return err
-		}
-		if err := app.grpcTLSServer.Start(); err != nil {
-			return err
-		}
-		logger.With().Info("authenticated grpc service started",
-			log.String("address", app.Config.API.TLSListener),
-			log.Array("services", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-				services := maps.Keys(authenticatedSvcs)
-				slices.Sort(services)
-				for _, svc := range services {
-					encoder.AppendString(svc)
-				}
-				return nil
-			})),
-		)
-	}
+// public server needs restriction on max connection age to prevent attacks
 
-	if len(app.Config.API.JSONListener) > 0 {
-		if len(publicSvcs) == 0 {
-			return errors.New("start json server without public services")
-		}
-		app.jsonAPIServer = grpcserver.NewJSONHTTPServer(
-			logger.Zap().Named("JSON"),
-			app.Config.API.JSONListener,
-			app.Config.API.JSONCorsAllowedOrigins,
-			app.Config.CollectMetrics,
-		)
+// 0.0.0.0 isn't a valid address to connect to on windows
 
-		if err := app.jsonAPIServer.StartService(maps.Values(publicSvcs)...); err != nil {
-			return fmt.Errorf("start listen server: %w", err)
-		}
-		logger.With().Info("json listener started",
-			log.String("address", app.Config.API.JSONListener),
-			log.Array("services", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-				services := maps.Keys(publicSvcs)
-				slices.Sort(services)
-				for _, svc := range services {
-					encoder.AppendString(svc)
-				}
-				return nil
-			})),
-		)
-	}
-	return nil
-}
+// supervised setup but not started
 
-func (app *App) stopServices(ctx context.Context) {
-	if app.jsonAPIServer != nil {
-		if err := app.jsonAPIServer.Shutdown(ctx); err != nil {
-			app.log.With().Error("error stopping json gateway server", log.Err(err))
-		}
-	}
+func (app *App) stopServices(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	if app.grpcPublicServer != nil {
-		app.log.Info("stopping public grpc service")
-		app.grpcPublicServer.Close() // err is always nil
-	}
-	if app.grpcPrivateServer != nil {
-		app.log.Info("stopping private grpc service")
-		app.grpcPrivateServer.Close() // err is always nil
-	}
-	if app.grpcPostServer != nil {
-		app.log.Info("stopping local grpc service")
-		app.grpcPostServer.Close() // err is always nil
-	}
-	if app.grpcTLSServer != nil {
-		app.log.Info("stopping tls grpc service")
-		app.grpcTLSServer.Close() // err is always nil
-	}
+// err is always nil
 
-	if app.updater != nil {
-		app.log.Info("stopping updater")
-		app.updater.Close()
-	}
+// err is always nil
 
-	if app.clock != nil {
-		app.clock.Close()
-	}
+// err is always nil
 
-	if app.beaconProtocol != nil {
-		app.beaconProtocol.Close()
-	}
+// err is always nil
 
-	if app.atxBuilder != nil {
-		app.atxBuilder.StopSmeshing(false)
-	}
-
-	if app.postVerifier != nil {
-		app.postVerifier.Close()
-	}
-
-	if app.hare3 != nil {
-		app.hare3.Stop()
-	}
-
-	if app.hare4 != nil {
-		app.hare4.Stop()
-	}
-
-	if app.hareResultsChan != nil {
-		close(app.hareResultsChan)
-	}
-
-	if app.blockGen != nil {
-		app.blockGen.Stop()
-	}
-
-	if app.certifier != nil {
-		app.certifier.Stop()
-	}
-
-	if app.fetcher != nil {
-		app.fetcher.Stop()
-	}
-
-	if app.syncer != nil {
-		app.syncer.Close()
-	}
-
-	if app.postSupervisor != nil {
-		if err := app.postSupervisor.Stop(false); err != nil {
-			app.log.With().Error("error stopping local post service", log.Err(err))
-		}
-	}
-
-	if app.ptimesync != nil {
-		app.ptimesync.Stop()
-		app.log.Debug("peer timesync stopped")
-	}
-
-	if app.host != nil {
-		if err := app.host.Stop(); err != nil {
-			app.log.With().Warning("p2p host exited with error", log.Err(err))
-		}
-	}
-	if app.db != nil {
-		if err := app.db.Close(); err != nil {
-			app.log.With().Warning("db exited with error", log.Err(err))
-		}
-	}
-	if app.apiDB != nil {
-		if err := app.apiDB.Close(); err != nil {
-			app.log.With().Warning("api db exited with error", log.Err(err))
-		}
-	}
-	if app.dbMetrics != nil {
-		app.dbMetrics.Close()
-	}
-	if app.localDB != nil {
-		if err := app.localDB.Close(); err != nil {
-			app.log.With().Warning("local db exited with error", log.Err(err))
-		}
-	}
-
-	if app.pprofService != nil {
-		if err := app.pprofService.Close(); err != nil {
-			app.log.With().Warning("pprof service exited with error", log.Err(err))
-		}
-	}
-	if app.profilerService != nil {
-		if err := app.profilerService.Stop(); err != nil {
-			app.log.With().Warning("profiler service exited with error", log.Err(err))
-		}
-	}
-
-	events.CloseEventReporter()
-	// SetGrpcLogger unfortunately is global
-	// this ensures that a test-logger isn't used after the app shuts down
-	// by e.g. a grpc connection to the node that is still open - like in TestSpacemeshApp_NodeService
-	grpczap.SetGrpcLoggerV2(grpcLog, log.NewNop().Zap())
-}
+// SetGrpcLogger unfortunately is global
+// this ensures that a test-logger isn't used after the app shuts down
+// by e.g. a grpc connection to the node that is still open - like in TestSpacemeshApp_NodeService
 
 func (app *App) setupDBs(ctx context.Context, lg log.Log) error {
-	dbPath := app.Config.DataDir()
-	if err := os.MkdirAll(dbPath, os.ModePerm); err != nil {
-		return fmt.Errorf("failed to create %s: %w", dbPath, err)
-	}
-	dbLog := app.addLogger(StateDbLogger, lg).Zap()
-	schema, err := statemigrations.SchemaWithInCodeMigrations(*app.Config)
-	if err != nil {
-		return fmt.Errorf("error loading db schema: %w", err)
-	}
-	if len(app.Config.DatabaseSkipMigrations) > 0 {
-		schema.SkipMigrations(app.Config.DatabaseSkipMigrations...)
-	}
-	dbopts := []sql.Opt{
-		sql.WithLogger(dbLog),
-		sql.WithDatabaseSchema(schema),
-		sql.WithConnections(app.Config.DatabaseConnections),
-		sql.WithLatencyMetering(app.Config.DatabaseLatencyMetering),
-		sql.WithVacuumState(app.Config.DatabaseVacuumState),
-		sql.WithAllowSchemaDrift(app.Config.DatabaseSchemaAllowDrift),
-		sql.WithQueryCache(app.Config.DatabaseQueryCache),
-		sql.WithQueryCacheSizes(map[sql.QueryCacheKind]int{
-			atxs.CacheKindEpochATXs:           app.Config.DatabaseQueryCacheSizes.EpochATXs,
-			atxs.CacheKindATXBlob:             app.Config.DatabaseQueryCacheSizes.ATXBlob,
-			activesets.CacheKindActiveSetBlob: app.Config.DatabaseQueryCacheSizes.ActiveSetBlob,
-		}),
-		sql.WithConnIdleTimeout(app.Config.DatabaseConnIdleTimeout),
-		sql.WithDBName("state"),
-	}
-	sqlDB, err := statesql.Open("file:"+filepath.Join(dbPath, dbFile), dbopts...)
-	if err != nil {
-		return fmt.Errorf("open sqlite db: %w", err)
-	}
-	app.db = sqlDB
-
-	apiDBLog := app.addLogger(ApiStateDBLogger, lg).Zap()
-	apiSqlDB, err := statesql.Open("file:"+filepath.Join(dbPath, dbFile),
-		sql.WithReadOnly(),
-		sql.WithLogger(apiDBLog),
-		sql.WithConnections(app.Config.API.DatabaseConnections),
-		sql.WithNoCheckSchemaDrift(), // already checked above
-		sql.WithMigrationsDisabled(),
-		sql.WithConnIdleTimeout(app.Config.DatabaseConnIdleTimeout),
-		sql.WithDBName("state-api"),
-	)
-	if err != nil {
-		return fmt.Errorf("open sqlite db: %w", err)
-	}
-	app.apiDB = apiSqlDB
-
-	if app.Config.CollectMetrics && app.Config.DatabaseSizeMeteringInterval != 0 {
-		app.dbMetrics = dbmetrics.NewDBMetricsCollector(
-			ctx,
-			app.db,
-			dbLog,
-			app.Config.DatabaseSizeMeteringInterval,
-		)
-	}
-	{
-		warmupLog := app.log.Zap().Named("warmup")
-		app.log.Info("starting cache warmup")
-		applied, err := layers.GetLastApplied(app.db)
-		if err != nil {
-			return err
-		}
-		start := time.Now()
-		data, err := atxsdata.Warm(
-			app.db,
-			app.Config.Tortoise.WindowSizeEpochs(applied),
-			warmupLog,
-			app.signers...,
-		)
-		if err != nil {
-			return err
-		}
-		app.atxsdata = data
-		app.log.With().Info("cache warmup", log.Duration("duration", time.Since(start)))
-	}
-	app.cachedDB = datastore.NewCachedDB(sqlDB, app.addLogger(CachedDBLogger, lg).Zap(),
-		datastore.WithConfig(app.Config.Cache),
-		datastore.WithConsensusCache(app.atxsdata),
-	)
-
-	lSchema, err := localmigrations.SchemaWithInCodeMigrations()
-	if err != nil {
-		return fmt.Errorf("error loading db schema: %w", err)
-	}
-	localDB, err := localsql.Open("file:"+filepath.Join(dbPath, localDbFile),
-		sql.WithLogger(dbLog),
-		sql.WithDatabaseSchema(lSchema),
-		sql.WithConnections(app.Config.DatabaseConnections),
-		sql.WithAllowSchemaDrift(app.Config.DatabaseSchemaAllowDrift),
-		sql.WithConnIdleTimeout(app.Config.DatabaseConnIdleTimeout),
-		sql.WithDBName("local"),
-	)
-	if err != nil {
-		return fmt.Errorf("open sqlite db: %w", err)
-	}
-	app.localDB = localDB
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// already checked above
 
 // Start starts the Spacemesh node and initializes all relevant services according to command line arguments provided.
-func (app *App) Start(ctx context.Context) error {
-	if err := app.verifyVersionUpgrades(); err != nil {
-		return fmt.Errorf("version upgrade verification failed: %w", err)
-	}
+func (app *App) Start(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	err := app.startSynchronous(ctx)
-	if err != nil {
-		app.log.With().Error("failed to start App", log.Err(err))
-		return err
-	}
-	defer events.ReportError(events.NodeError{
-		Msg:   "node is shutting down",
-		Level: zapcore.InfoLevel,
-	})
-	if app.ptimesync != nil {
-		app.eg.Go(func() error {
-			app.errCh <- app.ptimesync.Wait()
-			return nil
-		})
-	}
-
-	// app blocks until it receives a signal to exit
-	// this signal may come from the node or from sig-abort (ctrl-c)
-	select {
-	case <-ctx.Done():
-		return nil
-	case err = <-app.errCh:
-		return err
-	}
-}
+// app blocks until it receives a signal to exit
+// this signal may come from the node or from sig-abort (ctrl-c)
 
 func (app *App) startSynchronous(ctx context.Context) (err error) {
+	_ = "STUB: not implemented"
 	// notify anyone who might be listening that the app has finished starting.
 	// this can be used by, e.g., app tests.
-	defer close(app.started)
-
-	// Create a contextual logger for local usage (lower-level modules will create their own contextual loggers
-	// using context passed down to them)
-	logger := app.log.WithContext(ctx)
-
-	hostname, err := os.Hostname()
-	if err != nil {
-		return fmt.Errorf("error reading hostname: %w", err)
-	}
-
-	logger.With().Info("starting spacemesh",
-		log.String("data-dir", app.Config.DataDir()),
-		log.String("post-dir", app.Config.SMESHING.Opts.DataDir),
-		log.String("hostname", hostname),
-	)
-
-	if err := os.MkdirAll(app.Config.DataDir(), 0o700); err != nil {
-		return fmt.Errorf(
-			"data-dir %s not found or could not be created: %w",
-			app.Config.DataDir(),
-			err,
-		)
-	}
-
-	/* Setup monitoring */
-	app.errCh = make(chan error, 100)
-	if app.Config.PprofHTTPServer {
-		logger.With().Info("starting pprof server", log.String("address", app.Config.PprofHTTPServerListener))
-		app.pprofService = &http.Server{Addr: app.Config.PprofHTTPServerListener}
-		app.eg.Go(func() error {
-			if err := app.pprofService.ListenAndServe(); err != nil {
-				app.errCh <- fmt.Errorf("cannot start pprof http server: %w", err)
-			}
-			return nil
-		})
-		if app.Config.PprofMutexProfile {
-			// this will set the mutex profiling to sample a third of all lock events
-			runtime.SetMutexProfileFraction(3)
-		}
-		if app.Config.PprofBlockProfile {
-			// record block sample for every block event that takes more than 10 milliseconds
-			runtime.SetBlockProfileRate(int(10 * time.Millisecond))
-		}
-	}
-
-	if app.Config.ProfilerURL != "" {
-		app.profilerService, err = pyroscope.Start(pyroscope.Config{
-			ApplicationName: app.Config.ProfilerName,
-			// app.Config.ProfilerURL should be the pyroscope server address
-			// TODO: AuthToken? no need right now since server isn't public
-			ServerAddress: app.Config.ProfilerURL,
-			// by default all profilers are enabled,
-		})
-		if err != nil {
-			return fmt.Errorf("cannot start profiling client: %w", err)
-		}
-	}
-
-	var preserved *checkpoint.PreservedData
-	if app.Config.Recovery.Uri != "" {
-		preserved, err = app.loadCheckpoint(ctx)
-		if err != nil {
-			return fmt.Errorf("loading checkpoint: %w", err)
-		}
-	}
-
-	/* Initialize all protocol services */
-	app.clock, err = timesync.NewClock(
-		timesync.WithLayerDuration(app.Config.LayerDuration),
-		timesync.WithTickInterval(1*time.Second),
-		timesync.WithGenesisTime(app.Config.Genesis.GenesisTime.Time()),
-		timesync.WithLogger(app.addLogger(ClockLogger, logger).Zap()),
-	)
-	if err != nil {
-		return fmt.Errorf("cannot create clock: %w", err)
-	}
-
-	logger.Info("initializing p2p services")
-
-	cfg := app.Config.P2P
-	cfg.DataDir = filepath.Join(app.Config.DataDir(), "p2p")
-	p2plog := app.addLogger(P2PLogger, logger)
-	if lvl, exist := app.loggers[P2PLogger]; exist {
-		cfg.LogLevel = lvl.Level()
-	} else {
-		cfg.LogLevel = zapcore.InfoLevel
-	}
-	prologue := fmt.Sprintf("%x-%v",
-		app.Config.Genesis.GenesisID(),
-		types.GetEffectiveGenesis(),
-	)
-	// Prevent testnet nodes from working on the mainnet, but
-	// don't use the network cookie on mainnet as this technique
-	// may be replaced later
-	nc := handshake.NoNetworkCookie
-	if !onMainNet(app.Config) {
-		nc = handshake.NetworkCookie(prologue)
-	}
-	app.host, err = p2p.New(p2plog.Zap(), cfg, []byte(prologue), nc,
-		p2p.WithNodeReporter(events.ReportNodeStatusUpdate),
-	)
-	if err != nil {
-		return fmt.Errorf("initialize p2p host: %w", err)
-	}
-
-	if err := app.setupDBs(ctx, logger); err != nil {
-		return err
-	}
-
-	if err := app.initServices(ctx); err != nil {
-		return fmt.Errorf("init services: %w", err)
-	}
-
-	if app.Config.CollectMetrics {
-		metrics.StartMetricsServer(app.Config.MetricsPort)
-	}
-
-	if app.Config.PublicMetrics.MetricsURL != "" {
-		id := hash.Sum([]byte(app.host.ID()))
-		metrics.StartPushingMetrics(
-			app.Config.PublicMetrics.MetricsURL,
-			app.Config.PublicMetrics.MetricsPushUser,
-			app.Config.PublicMetrics.MetricsPushPass,
-			app.Config.PublicMetrics.MetricsPushHeader,
-			app.Config.PublicMetrics.MetricsPushPeriod,
-			types.Hash32(id).ShortString(), app.Config.Genesis.GenesisID().ShortString())
-	}
-
-	if err := app.startServices(ctx); err != nil {
-		return fmt.Errorf("start services: %w", err)
-	}
-
-	// need post verifying service to start first
-	if preserved != nil {
-		app.preserveAfterRecovery(ctx, *preserved)
-	} else {
-		app.log.Info("no need to preserve data after recovery")
-	}
-
-	if err := app.startAPIServices(ctx); err != nil {
-		return err
-	}
-
-	if err := app.launchStandalone(ctx); err != nil {
-		return err
-	}
-
-	events.SubscribeToLayers(app.clock)
-	app.log.Info("app started")
-
 	return nil
 }
 
+// Create a contextual logger for local usage (lower-level modules will create their own contextual loggers
+// using context passed down to them)
+
+/* Setup monitoring */
+
+// this will set the mutex profiling to sample a third of all lock events
+
+// record block sample for every block event that takes more than 10 milliseconds
+
+// app.Config.ProfilerURL should be the pyroscope server address
+// TODO: AuthToken? no need right now since server isn't public
+
+// by default all profilers are enabled,
+
+/* Initialize all protocol services */
+
+// Prevent testnet nodes from working on the mainnet, but
+// don't use the network cookie on mainnet as this technique
+// may be replaced later
+
+// need post verifying service to start first
+
 func (app *App) preserveAfterRecovery(ctx context.Context, preserved checkpoint.PreservedData) {
-	for i, poetProof := range preserved.Proofs {
-		ref, err := poetProof.Ref()
-		if err != nil {
-			app.log.With().Error("failed to calculated poet proof ref after checkpoint", log.Inline(poetProof))
-			continue
-		}
-
-		if err := app.poetDb.ValidateAndStore(ctx, poetProof); err != nil {
-			app.log.With().Error("failed to preserve poet proof after checkpoint",
-				log.Stringer("atx id", preserved.Deps[i].ID),
-				log.Stringer("poet proof ref", &ref),
-				log.Err(err),
-			)
-			continue
-		}
-		app.log.With().Info("preserved poet proof after checkpoint",
-			log.Stringer("atx id", preserved.Deps[i].ID),
-			log.Stringer("poet proof ref", &ref),
-		)
-	}
-	for _, atx := range preserved.Deps {
-		if err := app.atxHandler.HandleSyncedAtx(ctx, atx.ID.Hash32(), p2p.NoPeer, atx.Blob); err != nil {
-			app.log.With().Error(
-				"failed to preserve atx after checkpoint",
-				log.ShortStringer("id", atx.ID),
-				log.Err(err),
-			)
-			continue
-		}
-		app.log.With().Info("preserved atx after checkpoint", log.ShortStringer("id", atx.ID))
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func (app *App) Host() *p2p.Host {
-	return app.host
-}
+func (app *App) Host() *p2p.Host { _ = "STUB: not implemented"; return nil }
 
 func decodeLoggerLevel(cfg *config.Config, name string) (zap.AtomicLevel, error) {
-	lvl := zap.NewAtomicLevel()
-	loggers := map[string]string{}
-	if err := mapstructure.Decode(cfg.LOGGING, &loggers); err != nil {
-		return zap.AtomicLevel{}, fmt.Errorf("error decoding mapstructure: %w", err)
-	}
-
-	level, ok := loggers[name]
-	if ok {
-		if err := lvl.UnmarshalText([]byte(level)); err != nil {
-			return zap.AtomicLevel{}, fmt.Errorf("cannot parse logging for %v: %w", name, err)
-		}
-	} else {
-		lvl.SetLevel(zapcore.InfoLevel)
-	}
-
-	return lvl, nil
+	_ = "STUB: not implemented"
+	return *new(zap.AtomicLevel), nil
 }
 
 type tortoiseWeakCoin struct {
@@ -2413,16 +381,11 @@ type tortoiseWeakCoin struct {
 }
 
 func (w tortoiseWeakCoin) Set(lid types.LayerID, value bool) error {
-	if err := layers.SetWeakCoin(w.db, lid, value); err != nil {
-		return err
-	}
-	w.tortoise.OnWeakCoin(lid, value)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func onMainNet(conf *config.Config) bool {
-	return conf.Genesis.GenesisTime == config.MainnetConfig().Genesis.GenesisTime
-}
+func onMainNet(conf *config.Config) bool { _ = "STUB: not implemented"; return false }
 
 // proposalConsumerHare is used for the hare3->hare4 migration
 // to satisfy the proposals handler dependency on hare.
@@ -2433,15 +396,11 @@ type proposalConsumerHare struct {
 }
 
 func (p *proposalConsumerHare) IsKnown(layer types.LayerID, proposal types.ProposalID) bool {
-	if layer < p.h3DisableLayer {
-		return p.hare3.IsKnown(layer, proposal)
-	}
-	return p.hare4.IsKnown(layer, proposal)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (p *proposalConsumerHare) OnProposal(proposal *types.Proposal) error {
-	if proposal.Layer < p.h3DisableLayer {
-		return p.hare3.OnProposal(proposal)
-	}
-	return p.hare4.OnProposal(proposal)
+	_ = "STUB: not implemented"
+	return nil
 }

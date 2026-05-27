@@ -1,12 +1,7 @@
 package sim
 
 import (
-	"go.uber.org/zap"
-
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/proposals/util"
-	"github.com/spacemeshos/go-spacemesh/signing"
-	"github.com/spacemeshos/go-spacemesh/sql/beacons"
 )
 
 // DefaultNumBlocks is a number of blocks in a layer by default.
@@ -15,15 +10,7 @@ const DefaultNumBlocks = 5
 // NextOpt is for configuring layer generator.
 type NextOpt func(*nextConf)
 
-func nextConfDefaults() nextConf {
-	return nextConf{
-		VoteGen:          PerfectVoting,
-		Coinflip:         true,
-		LayerSize:        -1,
-		NumBlocks:        DefaultNumBlocks,
-		BlockTickHeights: make([]uint64, DefaultNumBlocks),
-	}
-}
+func nextConfDefaults() nextConf { _ = "STUB: not implemented"; return *new(nextConf) }
 
 type nextConf struct {
 	Reorder          uint32
@@ -45,199 +32,50 @@ type nextConf struct {
 // 1      3                        4      2
 //
 // So the Next layer with WithNextReorder will be delayed exactly by `delay` value.
-func WithNextReorder(delay uint32) NextOpt {
-	return func(c *nextConf) {
-		c.Reorder = delay
-	}
-}
+func WithNextReorder(delay uint32) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithoutHareOutput will prevent from saving hare output.
-func WithoutHareOutput() NextOpt {
-	return func(c *nextConf) {
-		c.FailHare = true
-	}
-}
+func WithoutHareOutput() NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithEmptyHareOutput will save an empty vector for hare output.
-func WithEmptyHareOutput() NextOpt {
-	return func(c *nextConf) {
-		c.EmptyHare = true
-	}
-}
+func WithEmptyHareOutput() NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithLayerSizeOverwrite overwrite expected layer size.
-func WithLayerSizeOverwrite(size int) NextOpt {
-	return func(c *nextConf) {
-		c.LayerSize = size
-	}
-}
+func WithLayerSizeOverwrite(size int) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithVoteGenerator declares vote generator for a layer.
-func WithVoteGenerator(gen VotesGenerator) NextOpt {
-	return func(c *nextConf) {
-		c.VoteGen = gen
-	}
-}
+func WithVoteGenerator(gen VotesGenerator) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithCoin is to setup weak coin for voting. By default coin will support blocks.
-func WithCoin(coin bool) NextOpt {
-	return func(c *nextConf) {
-		c.Coinflip = coin
-	}
-}
+func WithCoin(coin bool) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithBlockTickHeights updates height of the blocks.
 func WithBlockTickHeights(heights ...uint64) NextOpt {
-	return func(c *nextConf) {
-		c.BlockTickHeights = heights
-	}
+	_ = "STUB: not implemented"
+	return *new(NextOpt)
 }
 
 // WithNumBlocks sets number of the generated blocks.
-func WithNumBlocks(num int) NextOpt {
-	return func(c *nextConf) {
-		c.NumBlocks = num
-	}
-}
+func WithNumBlocks(num int) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // WithHareOutputIndex sets the index of the block that will be stored as a hare output.
-func WithHareOutputIndex(i int) NextOpt {
-	return func(c *nextConf) {
-		c.HareOutputIndex = i
-	}
-}
+func WithHareOutputIndex(i int) NextOpt { _ = "STUB: not implemented"; return *new(NextOpt) }
 
 // Next generates the next layer.
 func (g *Generator) Next(opts ...NextOpt) types.LayerID {
-	cfg := nextConfDefaults()
-	for _, opt := range opts {
-		opt(&cfg)
-	}
-	// TODO(dshulyak) we are not reordering already reordered layer
-	if lid, exist := g.reordered[g.nextLayer]; exist {
-		delete(g.reordered, g.nextLayer)
-		return lid
-	}
-	lid := g.genLayer(cfg)
-	if cfg.Reorder != 0 {
-		// Add(1) to account for generated layer at the end
-		g.reordered[lid.Add(cfg.Reorder).Add(1)] = lid
-		return g.genLayer(cfg)
-	}
-	return lid
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
-func (g *Generator) genBeacon() {
-	eid := g.nextLayer.Sub(1).GetEpoch()
-	beacon := types.Beacon{}
-	g.rng.Read(beacon[:])
-	for _, state := range g.states {
-		state.OnBeacon(eid, beacon)
-	}
-}
+// TODO(dshulyak) we are not reordering already reordered layer
 
-func (g *Generator) genTXIDs(n int) []types.TransactionID {
-	txIDs := make([]types.TransactionID, 0, n)
-	for i := 0; i < n; i++ {
-		txid := types.TransactionID{}
-		g.rng.Read(txid[:])
-		txIDs = append(txIDs, txid)
-	}
-	return txIDs
-}
+// Add(1) to account for generated layer at the end
+
+func (g *Generator) genBeacon() { _ = "STUB: not implemented"; return }
+
+func (g *Generator) genTXIDs(n int) []types.TransactionID { _ = "STUB: not implemented"; return nil }
 
 func (g *Generator) genLayer(cfg nextConf) types.LayerID {
-	if g.nextLayer.Sub(1).GetEpoch() < g.nextLayer.GetEpoch() {
-		g.generateAtxs()
-		g.genBeacon()
-	}
-
-	layer := types.NewLayer(g.nextLayer)
-	size := int(g.conf.LayerSize)
-	if cfg.LayerSize >= 0 {
-		size = cfg.LayerSize
-	}
-	var total uint64
-	for _, atx := range g.activations {
-		total += atx.Weight
-	}
-
-	miners := make([]uint32, len(g.activations))
-	for i := 0; i < size; i++ {
-		miner := i % len(g.activations)
-		miners[miner]++
-	}
-	for miner, maxj := range miners {
-		if maxj == 0 {
-			continue
-		}
-		voting := cfg.VoteGen(g.rng, g.layers, miner)
-		atx := g.activations[miner]
-		signer := g.keys[miner]
-		proofs := []types.VotingEligibility{}
-		for j := uint32(0); j < maxj; j++ {
-			proofs = append(proofs, types.VotingEligibility{J: j})
-		}
-		beacon, err := beacons.Get(g.states[0].DB, g.nextLayer.GetEpoch())
-		if err != nil {
-			g.logger.Panic("failed to get a beacon", zap.Error(err))
-		}
-		n, err := util.GetNumEligibleSlots(atx.Weight, 0, total, g.conf.LayerSize, g.conf.LayersPerEpoch)
-		if err != nil {
-			g.logger.Panic("eligible slots", zap.Error(err))
-		}
-		ballot := &types.Ballot{
-			InnerBallot: types.InnerBallot{
-				Layer: g.nextLayer,
-				AtxID: atx.ID(),
-				EpochData: &types.EpochData{
-					EligibilityCount: n,
-					ActiveSetHash:    types.Hash32{1, 2, 3},
-					Beacon:           beacon,
-				},
-			},
-			Votes:             voting,
-			EligibilityProofs: proofs,
-		}
-		ballot.Signature = signer.Sign(signing.BALLOT, ballot.SignedBytes())
-		ballot.SmesherID = signer.NodeID()
-		if err := ballot.Initialize(); err != nil {
-			g.logger.Panic("failed to init ballot", zap.Error(err))
-		}
-		for _, state := range g.states {
-			state.OnBallot(ballot)
-		}
-		layer.AddBallot(ballot)
-	}
-	if len(cfg.BlockTickHeights) < cfg.NumBlocks {
-		g.logger.Panic("BlockTickHeights should be at least NumBlocks",
-			zap.Int("num blocks", cfg.NumBlocks),
-		)
-	}
-	for i := 0; i < cfg.NumBlocks; i++ {
-		block := &types.Block{}
-		block.LayerIndex = g.nextLayer
-		block.TxIDs = g.genTXIDs(3)
-		block.TickHeight = cfg.BlockTickHeights[i]
-		block.Initialize()
-		for _, state := range g.states {
-			state.OnBlock(block)
-		}
-		layer.AddBlock(block)
-	}
-	if !cfg.FailHare {
-		hareOutput := types.EmptyBlockID
-		if !cfg.EmptyHare && len(layer.BlocksIDs()) > 0 {
-			hareOutput = layer.BlocksIDs()[cfg.HareOutputIndex]
-		}
-		for _, state := range g.states {
-			state.OnHareOutput(layer.Index(), hareOutput)
-		}
-	}
-	for _, state := range g.states {
-		state.OnCoinflip(layer.Index(), cfg.Coinflip)
-	}
-	g.layers = append(g.layers, layer)
-	g.nextLayer = g.nextLayer.Add(1)
-	return layer.Index()
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }

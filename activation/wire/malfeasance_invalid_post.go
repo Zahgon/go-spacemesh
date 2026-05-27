@@ -2,13 +2,8 @@ package wire
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"slices"
-	"strconv"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/signing"
 	"github.com/spacemeshos/go-spacemesh/sql"
 )
 
@@ -39,26 +34,13 @@ type ProofInvalidPost struct {
 	InvalidPostProof InvalidPostProof
 }
 
-func (p ProofInvalidPost) AllowNoRefATXs() bool {
-	return true
-}
+func (p ProofInvalidPost) AllowNoRefATXs() bool { _ = "STUB: not implemented"; return false }
 
-func (p ProofInvalidPost) TypeName() string {
-	return "InvalidPoSTProof"
-}
+func (p ProofInvalidPost) TypeName() string { _ = "STUB: not implemented"; return "" }
 
-func (p ProofInvalidPost) Type() ProofType {
-	return InvalidPost
-}
+func (p ProofInvalidPost) Type() ProofType { _ = "STUB: not implemented"; return *new(ProofType) }
 
-func (p ProofInvalidPost) Info() map[string]string {
-	return map[string]string{
-		"atx":          p.ATXID.String(),
-		"index":        strconv.FormatUint(uint64(p.InvalidPostProof.InvalidPostIndex), 10),
-		"post_node_id": p.NodeID.String(),
-		"smesher_id":   p.SmesherID.String(),
-	}
-}
+func (p ProofInvalidPost) Info() map[string]string { _ = "STUB: not implemented"; return nil }
 
 var _ Proof = &ProofInvalidPost{}
 
@@ -71,83 +53,13 @@ func NewInvalidPostProof(
 	invalidPostIndex uint32,
 	validPostIndex uint32,
 ) (*ProofInvalidPost, error) {
-	if atx.SmesherID != nodeID && atx.MarriageATX == nil {
-		return nil, errors.New("ATX is not a merged ATX, but NodeID is different from SmesherID")
-	}
-
-	if nipostIndex < 0 || nipostIndex >= len(atx.NIPosts) {
-		return nil, errors.New("invalid NIPoST index")
-	}
-
-	postIndex := 0
-	var marriageProof *MarriageProof
-	if atx.SmesherID != nodeID {
-		proof, err := createMarriageProof(db, atx, nodeID)
-		if err != nil {
-			return nil, fmt.Errorf("marriage proof: %w", err)
-		}
-		marriageProof = &proof
-		postIndex = slices.IndexFunc(atx.NIPosts[nipostIndex].Posts, func(post SubPostV2) bool {
-			return post.MarriageIndex == proof.NodeIDMarryProof.CertificateIndex
-		})
-		if postIndex == -1 {
-			return nil, fmt.Errorf("no PoST from %s in ATX", nodeID.ShortString())
-		}
-	}
-
-	invalidPostProof, err := createInvalidPostProof(
-		atx,
-		commitmentATX,
-		nipostIndex,
-		postIndex,
-		invalidPostIndex,
-		validPostIndex,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("invalid post proof: %w", err)
-	}
-
-	return &ProofInvalidPost{
-		ATXID:     atx.ID(),
-		SmesherID: atx.SmesherID,
-		Signature: atx.Signature,
-
-		NodeID: nodeID,
-
-		MarriageProof: marriageProof,
-
-		InvalidPostProof: invalidPostProof,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (p ProofInvalidPost) Valid(ctx context.Context, malValidator MalfeasanceValidator) (types.NodeID, error) {
-	if !malValidator.Signature(signing.ATX, p.SmesherID, p.ATXID.Bytes(), p.Signature) {
-		return types.EmptyNodeID, errors.New("invalid signature")
-	}
-
-	if p.NodeID != p.SmesherID && p.MarriageProof == nil {
-		return types.EmptyNodeID, errors.New("missing marriage proof")
-	}
-
-	var marriageIndex *uint32
-	if p.MarriageProof != nil {
-		if err := p.MarriageProof.Valid(malValidator, p.ATXID, p.NodeID, p.SmesherID); err != nil {
-			return types.EmptyNodeID, fmt.Errorf("invalid marriage proof: %w", err)
-		}
-		marriageIndex = &p.MarriageProof.NodeIDMarryProof.CertificateIndex
-	}
-
-	if err := p.InvalidPostProof.Valid(
-		ctx,
-		malValidator,
-		p.ATXID,
-		p.NodeID,
-		marriageIndex,
-	); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("invalid invalid post proof: %w", err)
-	}
-
-	return p.NodeID, nil
+	_ = "STUB: not implemented"
+	return *new(types.NodeID), nil
 }
 
 // InvalidPostProof is a proof for an invalid PoST in an ATX. It contains the PoST and the merkle proofs to verify the
@@ -208,44 +120,8 @@ func createInvalidPostProof(
 	invalidPostIndex uint32,
 	validPostIndex uint32,
 ) (InvalidPostProof, error) {
-	if nipostIndex < 0 || nipostIndex >= len(atx.NIPosts) {
-		return InvalidPostProof{}, errors.New("invalid NIPoST index")
-	}
-	if postIndex < 0 || postIndex >= len(atx.NIPosts[nipostIndex].Posts) {
-		return InvalidPostProof{}, errors.New("invalid PoST index")
-	}
-
-	return InvalidPostProof{
-		NIPostsRoot:      atx.NIPosts.Root(atx.PreviousATXs),
-		NIPostsRootProof: atx.NIPostsRootProof(),
-
-		NIPostRoot:      atx.NIPosts[nipostIndex].Root(atx.PreviousATXs),
-		NIPostRootProof: atx.NIPosts.Proof(int(nipostIndex), atx.PreviousATXs),
-		NIPostIndex:     uint16(nipostIndex),
-
-		Challenge:      atx.NIPosts[nipostIndex].Challenge,
-		ChallengeProof: atx.NIPosts[nipostIndex].ChallengeProof(atx.PreviousATXs),
-
-		SubPostsRoot:      atx.NIPosts[nipostIndex].Posts.Root(atx.PreviousATXs),
-		SubPostsRootProof: atx.NIPosts[nipostIndex].PostsRootProof(atx.PreviousATXs),
-
-		SubPostRoot:      atx.NIPosts[nipostIndex].Posts[postIndex].Root(atx.PreviousATXs),
-		SubPostRootProof: atx.NIPosts[nipostIndex].Posts.Proof(postIndex, atx.PreviousATXs),
-		SubPostRootIndex: uint16(postIndex),
-
-		MarriageIndexProof: atx.NIPosts[nipostIndex].Posts[postIndex].MarriageIndexProof(atx.PreviousATXs),
-
-		Post:      atx.NIPosts[nipostIndex].Posts[postIndex].Post,
-		PostProof: atx.NIPosts[nipostIndex].Posts[postIndex].PostProof(atx.PreviousATXs),
-
-		NumUnits:      atx.NIPosts[nipostIndex].Posts[postIndex].NumUnits,
-		NumUnitsProof: atx.NIPosts[nipostIndex].Posts[postIndex].NumUnitsProof(atx.PreviousATXs),
-
-		CommitmentATX: commitmentATX,
-
-		InvalidPostIndex: invalidPostIndex,
-		ValidPostIndex:   validPostIndex,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(InvalidPostProof), nil
 }
 
 // Valid returns no error if the proof is valid. It verifies that the signature is valid, that the merkle proofs are
@@ -257,55 +133,6 @@ func (p InvalidPostProof) Valid(
 	nodeID types.NodeID,
 	marriageIndex *uint32,
 ) error {
-	if !p.NIPostsRootProof.Valid(atxID, p.NIPostsRoot) {
-		return errors.New("invalid NIPosts root proof")
-	}
-	if !p.NIPostRootProof.Valid(p.NIPostsRoot, int(p.NIPostIndex), p.NIPostRoot) {
-		return errors.New("invalid NIPoST root proof")
-	}
-	if !p.ChallengeProof.Valid(p.NIPostRoot, p.Challenge) {
-		return errors.New("invalid challenge proof")
-	}
-	if !p.SubPostsRootProof.Valid(p.NIPostRoot, p.SubPostsRoot) {
-		return errors.New("invalid sub PoSTs root proof")
-	}
-	if !p.SubPostRootProof.Valid(p.SubPostsRoot, int(p.SubPostRootIndex), p.SubPostRoot) {
-		return errors.New("invalid sub PoST root proof")
-	}
-	if marriageIndex != nil {
-		if !p.MarriageIndexProof.Valid(p.SubPostRoot, *marriageIndex) {
-			return errors.New("invalid marriage index proof")
-		}
-	}
-	if !p.PostProof.Valid(p.SubPostRoot, p.Post.Root()) {
-		return errors.New("invalid PoST proof")
-	}
-	if !p.NumUnitsProof.Valid(p.SubPostRoot, p.NumUnits) {
-		return errors.New("invalid num units proof")
-	}
-
-	if err := malValidator.PostIndex(
-		ctx,
-		nodeID,
-		p.CommitmentATX,
-		PostFromWireV1(&p.Post),
-		p.Challenge.Bytes(),
-		p.NumUnits,
-		int(p.ValidPostIndex),
-	); err != nil {
-		return errors.New("commitment ATX is not valid")
-	}
-
-	if err := malValidator.PostIndex(
-		ctx,
-		nodeID,
-		p.CommitmentATX,
-		PostFromWireV1(&p.Post),
-		p.Challenge.Bytes(),
-		p.NumUnits,
-		int(p.InvalidPostIndex),
-	); err != nil {
-		return nil
-	}
-	return errors.New("PoST is valid")
+	_ = "STUB: not implemented"
+	return nil
 }

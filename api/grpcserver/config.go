@@ -75,54 +75,19 @@ const (
 )
 
 // DefaultConfig defines the default configuration options for api.
-func DefaultConfig() Config {
-	return Config{
-		PublicServices: []Service{
-			// v1
-			GlobalState, Mesh, Transaction, Node, Activation,
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
-			// v2alpha1
-			ActivationV2Alpha1, RewardV2Alpha1, NetworkV2Alpha1, NodeV2Alpha1,
-			LayerV2Alpha1, TransactionV2Alpha1, AccountV2Alpha1, MalfeasanceV2Alpha1,
+// v1
 
-			// v2beta1
-			ActivationV2Beta1, RewardV2Beta1, NetworkV2Beta1, NodeV2Beta1,
-			LayerV2Beta1, TransactionV2Beta1, AccountV2Beta1, MalfeasanceV2Beta1,
-		},
-		PublicListener: "0.0.0.0:9092",
-		PrivateServices: []Service{
-			// v1
-			Admin, Smesher, Debug,
+// v2alpha1
 
-			// v2alpha1
-			ActivationStreamV2Alpha1, RewardStreamV2Alpha1, LayerStreamV2Alpha1,
-			TransactionStreamV2Alpha1, MalfeasanceStreamV2Alpha1,
+// v2beta1
 
-			// v2beta1
-			ActivationStreamV2Beta1, RewardStreamV2Beta1, LayerStreamV2Beta1,
-			TransactionStreamV2Beta1, MalfeasanceStreamV2Beta1,
-		},
-		PrivateListener:        "127.0.0.1:9093",
-		PostServices:           []Service{Post, PostInfo},
-		PostListener:           "127.0.0.1:0",
-		TLSServices:            []Service{Post, PostInfo},
-		TLSListener:            "",
-		JSONListener:           "",
-		JSONCorsAllowedOrigins: []string{""},
-		GrpcSendMsgSize:        1024 * 1024 * 10,
-		GrpcRecvMsgSize:        1024 * 1024 * 10,
-		SmesherStreamInterval:  time.Second,
-		DatabaseConnections:    16,
-	}
-}
+// v1
+
+// v2alpha1
+
+// v2beta1
 
 // DefaultTestConfig returns the default config for tests.
-func DefaultTestConfig(tb testing.TB) Config {
-	conf := DefaultConfig()
-	conf.PublicListener = "127.0.0.1:0"
-	conf.PrivateListener = "127.0.0.1:0"
-	conf.PostListener = "127.0.0.1:0"
-	conf.JSONListener = ""
-	conf.TLSListener = ""
-	return conf
-}
+func DefaultTestConfig(tb testing.TB) Config { _ = "STUB: not implemented"; return *new(Config) }

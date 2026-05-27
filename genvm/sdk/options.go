@@ -11,9 +11,7 @@ import (
 type Opt func(*Options)
 
 // Defaults returns default Options.
-func Defaults() *Options {
-	return &Options{GasPrice: 1}
-}
+func Defaults() *Options { _ = "STUB: not implemented"; return nil }
 
 // Options to modify common transaction fields.
 type Options struct {
@@ -22,18 +20,10 @@ type Options struct {
 }
 
 // WithGasPrice modifies GasPrice.
-func WithGasPrice(price uint64) Opt {
-	return func(opts *Options) {
-		opts.GasPrice = price
-	}
-}
+func WithGasPrice(price uint64) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithGenesisID updates genesis id that will be used to prefix tx hash.
-func WithGenesisID(id types.Hash20) Opt {
-	return func(opts *Options) {
-		opts.GenesisID = id
-	}
-}
+func WithGenesisID(id types.Hash20) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 var (
 	// TxVersion is the only version supported at genesis.

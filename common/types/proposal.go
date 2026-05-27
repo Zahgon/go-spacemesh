@@ -1,16 +1,8 @@
 package types
 
 import (
-	"bytes"
-	"errors"
-	"sort"
-
-	"github.com/google/go-cmp/cmp"
 	"github.com/spacemeshos/go-scale"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/codec"
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 const (
@@ -32,22 +24,26 @@ type CompactProposalID [4]byte
 
 // EncodeScale implements scale codec interface.
 func (id *CompactProposalID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *CompactProposalID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // EncodeScale implements scale codec interface.
 func (id *ProposalID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *ProposalID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Proposal contains the smesher's signed content proposal for a given layer and vote on the mesh history.
@@ -65,9 +61,7 @@ type Proposal struct {
 	beacon Beacon
 }
 
-func (p Proposal) Equal(other Proposal) bool {
-	return cmp.Equal(p.InnerProposal, other.InnerProposal) && p.Signature == other.Signature
-}
+func (p Proposal) Equal(other Proposal) bool { _ = "STUB: not implemented"; return false }
 
 // InnerProposal contains a smesher's content proposal for layer and its votes on the mesh history.
 // This structure is serialized and signed to produce the signature in Proposal.
@@ -86,108 +80,58 @@ type InnerProposal struct {
 
 // Initialize calculates and sets the Proposal's cached proposalID.
 // This should be called once all the other fields of the Proposal are set.
-func (p *Proposal) Initialize() error {
-	if p.proposalID != EmptyProposalID {
-		return errors.New("proposal already initialized")
-	}
-	if err := p.Ballot.Initialize(); err != nil {
-		return err
-	}
+func (p *Proposal) Initialize() error { _ = "STUB: not implemented"; return nil }
 
-	h := hash.Sum(p.SignedBytes())
-	p.proposalID = ProposalID(Hash32(h).ToHash20())
-	return nil
-}
-
-func (p *Proposal) MustInitialize() {
-	if err := p.Initialize(); err != nil {
-		panic(err)
-	}
-}
+func (p *Proposal) MustInitialize() { _ = "STUB: not implemented"; return }
 
 // SignedBytes returns the serialization of the InnerProposal.
-func (p *Proposal) SignedBytes() []byte {
-	return codec.MustEncode(&BallotMetadata{
-		Layer:   p.Layer,
-		MsgHash: BytesToHash(p.HashInnerProposal()),
-	})
-}
+func (p *Proposal) SignedBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // HashInnerProposal returns the hash of the InnerProposal.
-func (p *Proposal) HashInnerProposal() []byte {
-	h := hash.GetHasher()
-	defer hash.PutHasher(h)
-	codec.MustEncodeTo(h, &p.InnerProposal)
-	return h.Sum(nil)
-}
+func (p *Proposal) HashInnerProposal() []byte { _ = "STUB: not implemented"; return nil }
 
 // ID returns the ProposalID.
 func (p *Proposal) ID() ProposalID {
-	return p.proposalID
+	_ = "STUB: not implemented"
+	return *
+
+	// SetID set the ProposalID.
+	new(ProposalID)
 }
 
-// SetID set the ProposalID.
-func (p *Proposal) SetID(pid ProposalID) {
-	p.proposalID = pid
-}
+func (p *Proposal) SetID(pid ProposalID) { _ = "STUB: not implemented"; return }
 
-func (p *Proposal) Beacon() Beacon {
-	return p.beacon
-}
+func (p *Proposal) Beacon() Beacon { _ = "STUB: not implemented"; return *new(Beacon) }
 
 func (p *Proposal) SetBeacon(beacon Beacon) {
-	p.beacon = beacon
+	_ = "STUB: not implemented"
+
+	// MarshalLogObject implements logging interface.
+	return
 }
 
-// MarshalLogObject implements logging interface.
 func (p *Proposal) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("proposal_id", p.ID().String())
-	encoder.AddInt("transactions", len(p.TxIDs))
-	encoder.AddString("mesh_hash", p.MeshHash.ShortString())
-	p.Ballot.MarshalLogObject(encoder)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // String returns a short prefix of the hex representation of the ID.
-func (id ProposalID) String() string {
-	return id.AsHash32().ShortString()
-}
+func (id ProposalID) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the ProposalID as a byte slice.
-func (id ProposalID) Bytes() []byte {
-	return id.AsHash32().Bytes()
-}
+func (id ProposalID) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // AsHash32 returns a Hash32 whose first 20 bytes are the bytes of this ProposalID, it is right-padded with zeros.
-func (id ProposalID) AsHash32() Hash32 {
-	return Hash20(id).ToHash32()
-}
+func (id ProposalID) AsHash32() Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // Compare returns true if other (the given ProposalID) is less than this ProposalID, by lexicographic comparison.
-func (id ProposalID) Compare(other ProposalID) bool {
-	return bytes.Compare(id.Bytes(), other.Bytes()) < 0
-}
+func (id ProposalID) Compare(other ProposalID) bool { _ = "STUB: not implemented"; return false }
 
 // ToProposalIDs returns a slice of ProposalID corresponding to the given proposals.
-func ToProposalIDs(proposals []*Proposal) []ProposalID {
-	ids := make([]ProposalID, 0, len(proposals))
-	for _, p := range proposals {
-		ids = append(ids, p.ID())
-	}
-	return ids
-}
+func ToProposalIDs(proposals []*Proposal) []ProposalID { _ = "STUB: not implemented"; return nil }
 
 // SortProposalIDs sorts a list of ProposalID in lexicographic order, in-place.
-func SortProposalIDs(ids []ProposalID) []ProposalID {
-	sort.Slice(ids, func(i, j int) bool { return ids[i].Compare(ids[j]) })
-	return ids
-}
+func SortProposalIDs(ids []ProposalID) []ProposalID { _ = "STUB: not implemented"; return nil }
 
 // ProposalIDsToHashes turns a list of ProposalID into their Hash32 representation.
-func ProposalIDsToHashes(ids []ProposalID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, id.AsHash32())
-	}
-	return hashes
-}
+func ProposalIDsToHashes(ids []ProposalID) []Hash32 { _ = "STUB: not implemented"; return nil }

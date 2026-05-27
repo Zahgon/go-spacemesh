@@ -2,13 +2,9 @@ package wire
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/signing"
 	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/atxs"
 )
 
 //go:generate scalegen
@@ -59,146 +55,31 @@ type ProofDoubleMerge struct {
 	SmesherID2MarryProof MarryProof
 }
 
-func (p ProofDoubleMerge) AllowNoRefATXs() bool {
-	return false
-}
+func (p ProofDoubleMerge) AllowNoRefATXs() bool { _ = "STUB: not implemented"; return false }
 
-func (p ProofDoubleMerge) TypeName() string {
-	return "DoubleMergeProof"
-}
+func (p ProofDoubleMerge) TypeName() string { _ = "STUB: not implemented"; return "" }
 
-func (p ProofDoubleMerge) Type() ProofType {
-	return DoubleMerge
-}
+func (p ProofDoubleMerge) Type() ProofType { _ = "STUB: not implemented"; return *new(ProofType) }
 
-func (p ProofDoubleMerge) Info() map[string]string {
-	return map[string]string{
-		"publish_epoch": p.PublishEpoch.String(),
-		"marriage_atx":  p.MarriageATX.String(),
-		"atx1":          p.ATXID1.String(),
-		"smesher_id1":   p.SmesherID1.String(),
-		"atx2":          p.ATXID2.String(),
-		"smesher_id2":   p.SmesherID2.String(),
-	}
-}
+func (p ProofDoubleMerge) Info() map[string]string { _ = "STUB: not implemented"; return nil }
 
 var _ Proof = &ProofDoubleMerge{}
 
 func NewDoubleMergeProof(db sql.Executor, atx1, atx2 *ActivationTxV2) (*ProofDoubleMerge, error) {
-	if atx1.ID() == atx2.ID() {
-		return nil, errors.New("ATXs have the same ID")
-	}
-	if atx1.SmesherID == atx2.SmesherID {
-		return nil, errors.New("ATXs have the same smesher ID")
-	}
-	if atx1.PublishEpoch != atx2.PublishEpoch {
-		return nil, fmt.Errorf("ATXs have different publish epoch (%v != %v)", atx1.PublishEpoch, atx2.PublishEpoch)
-	}
-	if atx1.MarriageATX == nil {
-		return nil, errors.New("ATX 1 have no marriage ATX")
-	}
-	if atx2.MarriageATX == nil {
-		return nil, errors.New("ATX 2 have no marriage ATX")
-	}
-	if *atx1.MarriageATX != *atx2.MarriageATX {
-		return nil, errors.New("ATXs have different marriage ATXs")
-	}
-
-	var blob sql.Blob
-	v, err := atxs.LoadBlob(context.Background(), db, atx1.MarriageATX.Bytes(), &blob)
-	if err != nil {
-		return nil, fmt.Errorf("get marriage ATX: %w", err)
-	}
-	if v != types.AtxV2 {
-		return nil, errors.New("invalid ATX version for marriage ATX")
-	}
-	marriageATX, err := DecodeAtxV2(blob.Bytes)
-	if err != nil {
-		return nil, fmt.Errorf("decode marriage ATX: %w", err)
-	}
-
-	marriageProof1, err := createMarryProof(db, marriageATX, atx1.SmesherID)
-	if err != nil {
-		return nil, fmt.Errorf("NodeID marriage proof: %w", err)
-	}
-	marriageProof2, err := createMarryProof(db, marriageATX, atx2.SmesherID)
-	if err != nil {
-		return nil, fmt.Errorf("SmesherID marriage proof: %w", err)
-	}
-
-	proof := ProofDoubleMerge{
-		PublishEpoch:         atx1.PublishEpoch,
-		MarriageATX:          marriageATX.ID(),
-		MarriageATXSmesherID: marriageATX.SmesherID,
-
-		ATXID1:               atx1.ID(),
-		SmesherID1:           atx1.SmesherID,
-		Signature1:           atx1.Signature,
-		PublishEpochProof1:   atx1.PublishEpochProof(),
-		MarriageATXProof1:    atx1.MarriageATXProof(),
-		SmesherID1MarryProof: marriageProof1,
-
-		ATXID2:               atx2.ID(),
-		SmesherID2:           atx2.SmesherID,
-		Signature2:           atx2.Signature,
-		PublishEpochProof2:   atx2.PublishEpochProof(),
-		MarriageATXProof2:    atx2.MarriageATXProof(),
-		SmesherID2MarryProof: marriageProof2,
-	}
-
-	return &proof, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (p *ProofDoubleMerge) Valid(_ context.Context, malValidator MalfeasanceValidator) (types.NodeID, error) {
+	_ = "STUB: not implemented"
 	// 1. The ATXs have different IDs.
-	if p.ATXID1 == p.ATXID2 {
-		return types.EmptyNodeID, errors.New("ATXs have the same ID")
-	}
-
-	// 2. Both ATXs have a valid signature.
-	if !malValidator.Signature(signing.ATX, p.SmesherID1, p.ATXID1.Bytes(), p.Signature1) {
-		return types.EmptyNodeID, errors.New("ATX 1 invalid signature")
-	}
-	if !malValidator.Signature(signing.ATX, p.SmesherID2, p.ATXID2.Bytes(), p.Signature2) {
-		return types.EmptyNodeID, errors.New("ATX 2 invalid signature")
-	}
-
-	// 3. and 4. publish epoch is contained in the ATXs
-	if !p.PublishEpochProof1.Valid(p.ATXID1, p.PublishEpoch) {
-		return types.EmptyNodeID, errors.New("ATX 1 invalid publish epoch proof")
-	}
-	if !p.PublishEpochProof2.Valid(p.ATXID2, p.PublishEpoch) {
-		return types.EmptyNodeID, errors.New("ATX 2 invalid publish epoch proof")
-	}
-
-	// 5. signers are married
-	if !p.MarriageATXProof1.Valid(p.ATXID1, p.MarriageATX) {
-		return types.EmptyNodeID, errors.New("ATX 1 invalid marriage ATX proof")
-	}
-	err := p.SmesherID1MarryProof.Valid(malValidator, p.MarriageATX, p.MarriageATXSmesherID, p.SmesherID1)
-	if err != nil {
-		return types.EmptyNodeID, errors.New("ATX 1 invalid marriage ATX proof")
-	}
-	if !p.MarriageATXProof2.Valid(p.ATXID2, p.MarriageATX) {
-		return types.EmptyNodeID, errors.New("ATX 2 invalid marriage ATX proof")
-	}
-	err = p.SmesherID2MarryProof.Valid(malValidator, p.MarriageATX, p.MarriageATXSmesherID, p.SmesherID2)
-	if err != nil {
-		return types.EmptyNodeID, errors.New("ATX 2 invalid marriage ATX proof")
-	}
-
-	// 6. smeshers have published valid ATXs before
-	if ok, err := malValidator.IdentityExists(p.SmesherID1); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("checking identity: %w", err)
-	} else if !ok {
-		return types.EmptyNodeID, ErrUnknownIdentity
-	}
-
-	if ok, err := malValidator.IdentityExists(p.SmesherID2); err != nil {
-		return types.EmptyNodeID, fmt.Errorf("checking identity: %w", err)
-	} else if !ok {
-		return types.EmptyNodeID, ErrUnknownIdentity
-	}
-
-	return p.SmesherID1, nil
+	return *new(types.NodeID), nil
 }
+
+// 2. Both ATXs have a valid signature.
+
+// 3. and 4. publish epoch is contained in the ATXs
+
+// 5. signers are married
+
+// 6. smeshers have published valid ATXs before

@@ -8,23 +8,11 @@ import (
 )
 
 func (t *Wallet) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := scale.EncodeByteArray(enc, t.PublicKey[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *Wallet) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := scale.DecodeByteArray(dec, t.PublicKey[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

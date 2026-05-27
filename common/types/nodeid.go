@@ -1,18 +1,11 @@
 package types
 
 import (
-	"encoding/hex"
-
 	"github.com/spacemeshos/go-scale"
-
-	"github.com/spacemeshos/go-spacemesh/common/util"
 )
 
 // BytesToNodeID is a helper to copy buffer into a NodeID.
-func BytesToNodeID(buf []byte) (id NodeID) {
-	copy(id[:], buf)
-	return id
-}
+func BytesToNodeID(buf []byte) (id NodeID) { _ = "STUB: not implemented"; return *new(NodeID) }
 
 // NodeID contains a miner's public key.
 type NodeID Hash32
@@ -24,46 +17,36 @@ const (
 
 // String returns a string representation of the NodeID, for logging purposes.
 // It implements the Stringer interface.
-func (id NodeID) String() string {
-	return hex.EncodeToString(id.Bytes())
-}
+func (id NodeID) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the byte representation of the Edwards public key.
 func (id NodeID) Bytes() []byte {
-	return id[:]
+	_ = "STUB: not implemented"
+
+	// ShortString returns a the first 3 hex-encoded bytes of the ID, for logging purposes.
+	return nil
 }
 
-// ShortString returns a the first 3 hex-encoded bytes of the ID, for logging purposes.
-func (id NodeID) ShortString() string {
-	return hex.EncodeToString(id[:3])
-}
+func (id NodeID) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // EmptyNodeID is a canonical empty NodeID.
 var EmptyNodeID NodeID
 
 // EncodeScale implements scale codec interface.
 func (id *NodeID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *NodeID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (id NodeID) MarshalText() ([]byte, error) {
-	return util.Base64Encode(id[:]), nil
-}
+func (id NodeID) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (id *NodeID) UnmarshalText(buf []byte) error {
-	return util.Base64Decode(id[:], buf)
-}
+func (id *NodeID) UnmarshalText(buf []byte) error { _ = "STUB: not implemented"; return nil }
 
 // NodeIDsToHashes turns a list of NodeID into their Hash32 representation.
-func NodeIDsToHashes(ids []NodeID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, Hash32(id))
-	}
-	return hashes
-}
+func NodeIDsToHashes(ids []NodeID) []Hash32 { _ = "STUB: not implemented"; return nil }

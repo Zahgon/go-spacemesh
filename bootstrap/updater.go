@@ -14,26 +14,17 @@ package bootstrap
 
 import (
 	"context"
-	"encoding/hex"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"io"
 	"net/http"
 	"net/url"
-	"os"
-	"path/filepath"
-	"strconv"
 	"sync"
 	"time"
 
-	"github.com/santhosh-tekuri/jsonschema/v5"
 	"github.com/spf13/afero"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/log"
 )
 
 const (
@@ -61,14 +52,7 @@ type Config struct {
 	Interval time.Duration `mapstructure:"-"` // not configurable, overwritten by BaseConfig.LayerDuration / 5
 }
 
-func DefaultConfig() Config {
-	return Config{
-		URL:      DefaultURL,
-		Version:  "https://spacemesh.io/bootstrap.schema.json.1.0",
-		DataDir:  os.TempDir(),
-		Interval: 30 * time.Second,
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 type Updater struct {
 	cfg    Config
@@ -87,184 +71,48 @@ type Updater struct {
 
 type Opt func(*Updater)
 
-func WithConfig(cfg Config) Opt {
-	return func(u *Updater) {
-		u.cfg = cfg
-	}
-}
+func WithConfig(cfg Config) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithLogger(logger *zap.Logger) Opt {
-	return func(u *Updater) {
-		u.logger = logger
-	}
-}
+func WithLogger(logger *zap.Logger) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithFilesystem(fs afero.Fs) Opt {
-	return func(u *Updater) {
-		u.fs = fs
-	}
-}
+func WithFilesystem(fs afero.Fs) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithHttpClient(c *http.Client) Opt {
-	return func(u *Updater) {
-		u.client = c
-	}
-}
+func WithHttpClient(c *http.Client) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func New(clock layerClock, opts ...Opt) *Updater {
-	u := &Updater{
-		cfg:     DefaultConfig(),
-		logger:  zap.NewNop(),
-		clock:   clock,
-		fs:      afero.NewOsFs(),
-		client:  &http.Client{},
-		stop:    make(chan struct{}),
-		updates: map[types.EpochID]map[string]struct{}{},
-	}
-	for _, opt := range opts {
-		opt(u)
-	}
-	return u
-}
+func New(clock layerClock, opts ...Opt) *Updater { _ = "STUB: not implemented"; return nil }
 
 func (u *Updater) Subscribe() (<-chan *VerifiedUpdate, error) {
-	select {
-	case <-u.stop: // prevent subscribing after closing
-		return nil, errors.New("updater has been closed")
-	default:
-	}
+	_ = "STUB: not implemented"
+	return nil,
 
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	ch := make(chan *VerifiedUpdate, 10)
-	u.subscribers = append(u.subscribers, ch)
-	return ch, nil
+		// prevent subscribing after closing
+		nil
 }
 
-func (u *Updater) Load(ctx context.Context) error {
-	loaded, err := load(u.fs, u.cfg, u.clock.CurrentLayer().GetEpoch())
-	if err != nil {
-		return err
-	}
-	for _, verified := range loaded {
-		if err = u.updateAndNotify(ctx, verified); err != nil {
-			return err
-		}
-		u.logger.Info("loaded bootstrap file", zap.Inline(verified))
-		u.addUpdate(verified.Data.Epoch, verified.Persisted[len(verified.Persisted)-suffixLen:])
-	}
-	return nil
-}
+func (u *Updater) Load(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (u *Updater) Start() error {
-	if len(u.cfg.DataDir) == 0 {
-		return fmt.Errorf("data dir not set %s", u.cfg.DataDir)
-	}
-	u.once.Do(func() {
-		u.eg.Go(func() error {
-			ctx := log.WithNewSessionID(context.Background())
-			if err := u.Load(ctx); err != nil {
-				return err
-			}
-			u.logger.Info("start listening to update",
-				zap.String("source", u.cfg.URL),
-				zap.Duration("interval", u.cfg.Interval),
-			)
-			for {
-				if err := u.DoIt(ctx); err != nil {
-					updateFailureCount.Add(1)
-					u.logger.Debug("failed to get bootstrap update", zap.Error(err))
-				}
-				select {
-				case <-u.stop:
-					return nil
-				case <-time.After(u.cfg.Interval):
-				}
-			}
-		})
-	})
-	return nil
-}
+func (u *Updater) Start() error { _ = "STUB: not implemented"; return nil }
 
-func (u *Updater) Close() error {
-	u.mu.Lock()
-	select {
-	case <-u.stop: // prevent closing the channel twice
-	default:
-		close(u.stop)
-	}
-	u.mu.Unlock()
+func (u *Updater) Close() error { _ = "STUB: not implemented"; return nil }
 
-	err := u.eg.Wait()
+// prevent closing the channel twice
 
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	for _, ch := range u.subscribers {
-		close(ch)
-	}
-	u.subscribers = nil
-	return err
-}
-
-func (u *Updater) addUpdate(epoch types.EpochID, suffix string) {
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	switch suffix {
-	case SuffixActiveSet, SuffixBeacon, SuffixBootstrap:
-	default:
-		return
-	}
-	if _, ok := u.updates[epoch]; !ok {
-		u.updates[epoch] = map[string]struct{}{}
-	}
-	u.updates[epoch][suffix] = struct{}{}
-}
+func (u *Updater) addUpdate(epoch types.EpochID, suffix string) { _ = "STUB: not implemented"; return }
 
 func (u *Updater) Downloaded(epoch types.EpochID, suffix string) bool {
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	if _, ok := u.updates[epoch]; ok {
-		_, ok2 := u.updates[epoch][suffix]
-		return ok2
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
-func (u *Updater) DoIt(ctx context.Context) error {
-	current := u.clock.CurrentLayer().GetEpoch()
-	defer func() {
-		if err := u.prune(current); err != nil {
-			u.logger.Error("failed to prune",
-				log.ZContext(ctx),
-				zap.Uint32("current epoch", current.Uint32()),
-				zap.Error(err),
-			)
-		}
-	}()
-	for _, epoch := range requiredEpochs(current) {
-		verified, cached, err := u.checkEpochUpdate(ctx, epoch, SuffixBootstrap)
-		if err != nil {
-			return err
-		}
-		if verified != nil || cached {
-			// if we have the bootstrap update, no need to look for others
-			continue
-		}
-		for _, suffix := range []string{SuffixBeacon, SuffixActiveSet} {
-			if _, _, err = u.checkEpochUpdate(ctx, epoch, suffix); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
+func (u *Updater) DoIt(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func UpdateName(epoch types.EpochID, suffix string) string {
-	return fmt.Sprintf("epoch-%d-update-%s", epoch, suffix)
-}
+// if we have the bootstrap update, no need to look for others
+
+func UpdateName(epoch types.EpochID, suffix string) string { _ = "STUB: not implemented"; return "" }
 
 func makeUri(url string, epoch types.EpochID, suffix string) string {
-	return fmt.Sprintf("%s/%s", url, UpdateName(epoch, suffix))
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (u *Updater) checkEpochUpdate(
@@ -272,244 +120,59 @@ func (u *Updater) checkEpochUpdate(
 	epoch types.EpochID,
 	suffix string,
 ) (*VerifiedUpdate, bool, error) {
-	uri := makeUri(u.cfg.URL, epoch, suffix)
-	if u.Downloaded(epoch, suffix) {
-		return nil, true, nil
-	}
-	verified, data, err := u.get(ctx, uri)
-	if err != nil {
-		return nil, false, err
-	}
-	if verified == nil { // update doesn't exist
-		return nil, false, nil
-	}
-	u.addUpdate(epoch, suffix)
-	filename := PersistFilename(u.cfg.DataDir, epoch, filepath.Base(uri))
-	if err = u.fs.MkdirAll(filepath.Dir(filename), 0o700); err != nil {
-		return nil, false, fmt.Errorf("%w: create bootstrap data dir: %s", err, filename)
-	}
-	if err = afero.WriteFile(u.fs, filename, data, 0o400); err != nil {
-		return nil, false, fmt.Errorf("persist bootstrap %s: %w", filename, err)
-	}
-	verified.Persisted = filename
-	u.logger.Info("new bootstrap file", log.ZContext(ctx), zap.Inline(verified))
-	if err = u.updateAndNotify(ctx, verified); err != nil {
-		return verified, false, err
-	}
-	updateOkCount.Add(1)
-	return verified, false, nil
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
 
+// update doesn't exist
+
 func (u *Updater) updateAndNotify(ctx context.Context, verified *VerifiedUpdate) error {
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	notifyCtx, cancel := context.WithTimeout(ctx, notifyTimeout)
-	defer cancel()
-	for _, ch := range u.subscribers {
-		select {
-		case ch <- verified:
-		case <-notifyCtx.Done():
-			return fmt.Errorf("notify subscriber: %w", notifyCtx.Err())
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (u *Updater) get(ctx context.Context, uri string) (*VerifiedUpdate, []byte, error) {
-	resource, err := url.Parse(uri)
-	if err != nil {
-		return nil, nil, fmt.Errorf("parse bootstrap uri: %w", err)
-	}
-	if resource.Scheme != "https" && resource.Scheme != "http" {
-		return nil, nil, fmt.Errorf("scheme not supported %v", resource.Scheme)
-	}
-
-	t0 := time.Now()
-	data, err := query(ctx, u.client, resource)
-	if err != nil {
-		queryFailureCount.Add(1)
-		return nil, nil, err
-	}
-	queryDuration.WithLabelValues(labelQuery).Observe(float64(time.Since(t0)))
-	queryOkCount.Add(1)
-	if len(data) == 0 { // no update data
-		return nil, nil, nil
-	}
-	received.Add(float64(len(data)))
-	verified, err := validate(u.cfg, resource.String(), data)
-	if err != nil {
-		return nil, nil, err
-	}
-	return verified, data, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
+// no update data
+
 func query(ctx context.Context, client *http.Client, resource *url.URL) ([]byte, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, resource.String(), nil)
-	if err != nil {
-		return nil, fmt.Errorf("create http request: %w", err)
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("http get bootstrap file: %w", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, nil
-	}
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("bootstrap read resonse: %w", err)
-	}
-	return data, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func validate(cfg Config, source string, data []byte) (*VerifiedUpdate, error) {
-	if err := ValidateSchema(data); err != nil {
-		return nil, err
-	}
-
-	update := &Update{}
-	if err := json.Unmarshal(data, update); err != nil {
-		return nil, fmt.Errorf("unmarshal %s: %w", source, err)
-	}
-
-	verified, err := validateData(cfg, update)
-	if err != nil {
-		return nil, err
-	}
-	return verified, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func ValidateSchema(data []byte) error {
-	sch, err := jsonschema.CompileString(schemaFile, Schema)
-	if err != nil {
-		return fmt.Errorf("compile bootstrap json schema: %w", err)
-	}
-	var v any
-	if err = json.Unmarshal(data, &v); err != nil {
-		return fmt.Errorf("unmarshal bootstrap data: %w", err)
-	}
-	if err = sch.Validate(v); err != nil {
-		return fmt.Errorf("validate bootstrap data: %w", err)
-	}
-	return nil
-}
+func ValidateSchema(data []byte) error { _ = "STUB: not implemented"; return nil }
 
 func validateData(cfg Config, update *Update) (*VerifiedUpdate, error) {
-	if update.Version != cfg.Version {
-		return nil, fmt.Errorf("%w: expected %v, got %v", ErrWrongVersion, cfg.Version, update.Version)
-	}
-	verified := &VerifiedUpdate{
-		Data: &EpochOverride{
-			Epoch: types.EpochID(update.Data.Epoch.ID),
-		},
-	}
-	beaconByte, err := hex.DecodeString(update.Data.Epoch.Beacon)
-	if err != nil || len(beaconByte) < types.BeaconSize {
-		return nil, fmt.Errorf("%w: %v", ErrInvalidBeacon, update.Data.Epoch.Beacon)
-	}
-	verified.Data.Beacon = types.BytesToBeacon(beaconByte)
-
-	if len(update.Data.Epoch.ActiveSet) > 0 {
-		// json schema guarantees the active set has unique members
-		activeSet := make([]types.ATXID, 0, len(update.Data.Epoch.ActiveSet))
-		for _, atx := range update.Data.Epoch.ActiveSet {
-			activeSet = append(activeSet, types.ATXID(types.HexToHash32(atx)))
-		}
-		verified.Data.ActiveSet = activeSet
-	}
-	return verified, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// json schema guarantees the active set has unique members
 
 func load(fs afero.Fs, cfg Config, current types.EpochID) ([]*VerifiedUpdate, error) {
-	dir := bootstrapDir(cfg.DataDir)
-	_, err := fs.Stat(dir)
-	if errors.Is(err, os.ErrNotExist) {
-		return nil, nil
-	} else if err != nil {
-		return nil, fmt.Errorf("read bootstrap dir %v: %w", dir, err)
-	}
-	var loaded []*VerifiedUpdate
-	for _, epoch := range requiredEpochs(current) {
-		edir := epochDir(cfg.DataDir, epoch)
-		files, err := afero.ReadDir(fs, edir)
-		if errors.Is(err, os.ErrNotExist) {
-			continue
-		} else if err != nil {
-			return nil, fmt.Errorf("read epoch dir %v: %w", dir, err)
-		}
-		for _, f := range files {
-			persisted := filepath.Join(edir, f.Name())
-			data, err := afero.ReadFile(fs, persisted)
-			if err != nil {
-				return nil, fmt.Errorf("read bootstrap file %v: %w", persisted, err)
-			}
-			verified, err := validate(cfg, persisted, data)
-			if err != nil {
-				return nil, err
-			}
-			verified.Persisted = persisted
-			loaded = append(loaded, verified)
-		}
-	}
-	return loaded, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func requiredEpochs(current types.EpochID) []types.EpochID {
-	switch current {
-	case 0:
-		return nil
-	case 1:
-		return []types.EpochID{2}
-	case 2:
-		return []types.EpochID{2, 3}
-	case types.GetEffectiveGenesis().GetEpoch():
-		// when a checkpoint happens in the middle of the epoch, bootstrap data is needed for the epoch
-		return []types.EpochID{current, current + 1}
-	default:
-		return []types.EpochID{current - 1, current, current + 1}
-	}
-}
+func requiredEpochs(current types.EpochID) []types.EpochID { _ = "STUB: not implemented"; return nil }
 
-func (u *Updater) prune(current types.EpochID) error {
-	toKeep := map[string]struct{}{}
-	required := requiredEpochs(current)
-	for _, epoch := range required {
-		toKeep[strconv.Itoa(int(epoch))] = struct{}{}
-	}
-	dir := bootstrapDir(u.cfg.DataDir)
-	files, err := afero.ReadDir(u.fs, dir)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("list bootstrap dir %s: %w", dir, err)
-	}
-	for _, f := range files {
-		if f.IsDir() {
-			if _, ok := toKeep[f.Name()]; ok {
-				continue
-			}
-		}
-		if err = u.fs.RemoveAll(filepath.Join(dir, f.Name())); err != nil {
-			return err
-		}
-	}
-	u.mu.Lock()
-	defer u.mu.Unlock()
-	for epoch := range u.updates {
-		if epoch < required[0] {
-			delete(u.updates, epoch)
-		}
-	}
-	return nil
-}
+// when a checkpoint happens in the middle of the epoch, bootstrap data is needed for the epoch
 
-func bootstrapDir(dataDir string) string {
-	return filepath.Join(dataDir, DirName)
-}
+func (u *Updater) prune(current types.EpochID) error { _ = "STUB: not implemented"; return nil }
 
-func epochDir(dataDir string, epoch types.EpochID) string {
-	return filepath.Join(bootstrapDir(dataDir), strconv.Itoa(int(epoch)))
-}
+func bootstrapDir(dataDir string) string { _ = "STUB: not implemented"; return "" }
+
+func epochDir(dataDir string, epoch types.EpochID) string { _ = "STUB: not implemented"; return "" }
 
 func PersistFilename(dataDir string, epoch types.EpochID, basename string) string {
-	return filepath.Join(epochDir(dataDir, epoch), basename)
+	_ = "STUB: not implemented"
+	return ""
 }

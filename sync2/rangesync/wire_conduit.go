@@ -3,7 +3,6 @@ package rangesync
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"sync/atomic"
 
@@ -55,168 +54,55 @@ var _ Conduit = &wireConduit{}
 
 // startWireConduit sets up a new wireConduit using the given context, stream and options.
 func startWireConduit(ctx context.Context, s io.ReadWriter, cfg RangeSetReconcilerConfig) *wireConduit {
-	c := &wireConduit{
-		stream: s,
-		cfg:    cfg,
-		sendCh: make(chan SyncMessage, sendQueueSize),
-		stopCh: make(chan struct{}),
-	}
-	c.eg.Go(func() error {
-		defer close(c.stopCh)
-		for {
-			select {
-			case <-ctx.Done():
-				c.closeStream()
-				return ctx.Err()
-			case m, ok := <-c.sendCh:
-				if !ok {
-					return nil
-				}
-				n, err := writeMessage(c.stream, m)
-				c.nBytesSent.Add(int64(n))
-				c.nMsgsSent.Add(1)
-				if err == nil {
-					err = c.checkLimits()
-				}
-				if err != nil {
-					c.closeStream()
-					return err
-				}
-			}
-		}
-	})
-	return c
-}
-
-func (c *wireConduit) closeStream() {
-	if closer, ok := c.stream.(io.Closer); ok {
-		closer.Close()
-	}
-}
-
-// Stop stops the wireConduit's background sender, but doesn't wait for it to finish
-// sending pending messages.
-func (c *wireConduit) Stop() {
-	if c.stream == nil {
-		return
-	}
-	// if there was in error, there's no point in waiting for the send
-	// goroutine to finish, so we interrupt it by closing the stream
-	c.closeStream()
-	c.End()
-}
-
-// End stops the wireConduit's background sender, waiting for it to finish sending pending
-// messages.
-func (c *wireConduit) End() {
-	if c.stream == nil {
-		return
-	}
-	close(c.sendCh)
-	c.eg.Wait()
-	c.stream = nil
-}
-
-// checkLimits checks if the traffic or message limits have been exceeded.
-func (c *wireConduit) checkLimits() error {
-	if c.cfg.TrafficLimit > 0 && c.bytesSent()+c.bytesReceived() > c.cfg.TrafficLimit {
-		return ErrTrafficLimitExceeded
-	}
-	if c.cfg.MessageLimit > 0 && c.messagesSent()+c.messagesReceived() > c.cfg.MessageLimit {
-		return ErrMessageLimitExceeded
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (c *wireConduit) closeStream() { _ = "STUB: not implemented"; return }
+
+// Stop stops the wireConduit's background sender, but doesn't wait for it to finish
+// sending pending messages.
+func (c *wireConduit) Stop() { _ = "STUB: not implemented"; return }
+
+// if there was in error, there's no point in waiting for the send
+// goroutine to finish, so we interrupt it by closing the stream
+
+// End stops the wireConduit's background sender, waiting for it to finish sending pending
+// messages.
+func (c *wireConduit) End() { _ = "STUB: not implemented"; return }
+
+// checkLimits checks if the traffic or message limits have been exceeded.
+func (c *wireConduit) checkLimits() error { _ = "STUB: not implemented"; return nil }
+
 // NextMessage implements Conduit.
 func (c *wireConduit) NextMessage() (SyncMessage, error) {
-	msg, n, err := c.nextMessage()
-	c.nBytesRecv.Add(int64(n))
-	c.nMsgsRecv.Add(1)
-	if err != nil {
-		return nil, fmt.Errorf("receive message: %w", err)
-	}
-	if err = c.checkLimits(); err != nil {
-		return nil, err
-	}
-	return msg, nil
+	_ = "STUB: not implemented"
+	return *new(SyncMessage), nil
 }
 
 func (c *wireConduit) nextMessage() (SyncMessage, int, error) {
-	var b [1]byte
-	if n, err := io.ReadFull(c.stream, b[:]); err != nil {
-		if !errors.Is(err, io.EOF) {
-			return nil, n, err
-		}
-		return nil, n, nil
-	}
-	mtype := MessageType(b[0])
-	switch mtype {
-	case MessageTypeDone:
-		return &DoneMessage{}, 1, nil
-	case MessageTypeEndRound:
-		return &EndRoundMessage{}, 1, nil
-	case MessageTypeItemBatch:
-		return decodeMessage[ItemBatchMessage](c.stream)
-	case MessageTypeEmptySet:
-		return &EmptySetMessage{}, 1, nil
-	case MessageTypeEmptyRange:
-		return decodeMessage[EmptyRangeMessage](c.stream)
-	case MessageTypeFingerprint:
-		return decodeMessage[FingerprintMessage](c.stream)
-	case MessageTypeRangeContents:
-		return decodeMessage[RangeContentsMessage](c.stream)
-	case MessageTypeProbe:
-		return decodeMessage[ProbeMessage](c.stream)
-	case MessageTypeSample:
-		return decodeMessage[SampleMessage](c.stream)
-	case MessageTypeRecent:
-		return decodeMessage[RecentMessage](c.stream)
-	default:
-		return nil, 1, fmt.Errorf("invalid message code %02x", b[0])
-	}
+	_ = "STUB: not implemented"
+	return *new(SyncMessage), 0, nil
 }
 
 // Send implements Conduit.
-func (c *wireConduit) Send(m SyncMessage) error {
-	select {
-	case <-c.stopCh:
-		return errors.New("conduit closed")
-	case c.sendCh <- m:
-		return nil
-	}
-}
+func (c *wireConduit) Send(m SyncMessage) error { _ = "STUB: not implemented"; return nil }
 
 // bytesSent returns the total number of bytes sent.
-func (c *wireConduit) bytesSent() int {
-	return int(c.nBytesSent.Load())
-}
+func (c *wireConduit) bytesSent() int { _ = "STUB: not implemented"; return 0 }
 
 // bytesReceived returns the total number of bytes received.
-func (c *wireConduit) bytesReceived() int {
-	return int(c.nBytesRecv.Load())
-}
+func (c *wireConduit) bytesReceived() int { _ = "STUB: not implemented"; return 0 }
 
 // messagesSent returns the total number of messages sent.
-func (c *wireConduit) messagesSent() int {
-	return int(c.nMsgsSent.Load())
-}
+func (c *wireConduit) messagesSent() int { _ = "STUB: not implemented"; return 0 }
 
 // messagesReceived returns the total number of messages received.
-func (c *wireConduit) messagesReceived() int {
-	return int(c.nMsgsRecv.Load())
-}
+func (c *wireConduit) messagesReceived() int { _ = "STUB: not implemented"; return 0 }
 
 func writeMessage(w io.Writer, m SyncMessage) (int, error) {
-	b := []byte{byte(m.Type())}
-	if n, err := w.Write(b); err != nil {
-		return n, err
-	}
-	if enc, ok := m.(codec.Encodable); ok {
-		n, err := codec.EncodeTo(w, enc)
-		return n + 1, err
-	}
-	return 1, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func decodeMessage[T any, PT interface {
@@ -224,10 +110,6 @@ func decodeMessage[T any, PT interface {
 	codec.Decodable
 	*T
 }](r io.Reader) (SyncMessage, int, error) {
-	v := PT(new(T))
-	n, err := codec.DecodeFrom(r, v)
-	if err != nil {
-		return nil, n, err
-	}
-	return v, n, nil
+	_ = "STUB: not implemented"
+	return *new(SyncMessage), 0, nil
 }

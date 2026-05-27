@@ -17,11 +17,6 @@
 package util
 
 import (
-	"encoding/base64"
-	"encoding/hex"
-	"encoding/json"
-	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -29,96 +24,37 @@ import (
 // determines the required input length. This function is commonly used to implement the
 // UnmarshalJSON method for fixed-size types.
 func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
-	if len(input) < 2 || input[0] != '"' || input[len(input)-1] != '"' { // check for quoted string
-		return &json.UnmarshalTypeError{Value: "non-string", Type: typ}
-	}
-	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// check for quoted string
 
 // UnmarshalFixedText decodes the input as a string with 0x prefix. The length of out
 // determines the required input length. This function is commonly used to implement the
 // UnmarshalText method for fixed-size types.
 func UnmarshalFixedText(typename string, input, out []byte) error {
-	raw, err := checkText(input, true)
-	if err != nil {
-		return err
-	}
-	if len(raw)/2 != len(out) {
-		return fmt.Errorf("hex string has length %d, want %d for %s", len(raw), len(out)*2, typename)
-	}
-	// Pre-verify syntax before modifying out.
-	for _, b := range raw {
-		if decodeNibble(b) == badNibble {
-			return errSyntax
-		}
-	}
-	hex.Decode(out, raw)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func bytesHave0xPrefix(input []byte) bool {
-	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
-}
+// Pre-verify syntax before modifying out.
+
+func bytesHave0xPrefix(input []byte) bool { _ = "STUB: not implemented"; return false }
 
 func checkText(input []byte, wantPrefix bool) ([]byte, error) {
-	if len(input) == 0 {
-		return nil, nil // empty strings are allowed
-	}
-	if bytesHave0xPrefix(input) {
-		input = input[2:]
-	} else if wantPrefix {
-		return nil, errMissingPrefix
-	}
-	if len(input)%2 != 0 {
-		return nil, errOddLength
-	}
-	return input, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func wrapTypeError(err error, typ reflect.Type) error {
-	switch {
-	case errors.Is(err, errSyntax):
-		return &json.UnmarshalTypeError{Value: err.Error(), Type: typ}
-	case errors.Is(err, errMissingPrefix):
-		return &json.UnmarshalTypeError{Value: err.Error(), Type: typ}
-	case errors.Is(err, errOddLength):
-		return &json.UnmarshalTypeError{Value: err.Error(), Type: typ}
-	case errors.Is(err, errUint64Range):
-		return &json.UnmarshalTypeError{Value: err.Error(), Type: typ}
-	default:
-		return err
-	}
-}
+// empty strings are allowed
+
+func wrapTypeError(err error, typ reflect.Type) error { _ = "STUB: not implemented"; return nil }
 
 const badNibble = ^uint64(0)
 
-func decodeNibble(in byte) uint64 {
-	switch {
-	case in >= '0' && in <= '9':
-		return uint64(in - '0')
-	case in >= 'A' && in <= 'F':
-		return uint64(in - 'A' + 10)
-	case in >= 'a' && in <= 'f':
-		return uint64(in - 'a' + 10)
-	default:
-		return badNibble
-	}
-}
+func decodeNibble(in byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
-func Base64Encode(src []byte) []byte {
-	n := base64.StdEncoding.EncodedLen(len(src))
-	dst := make([]byte, n)
-	base64.StdEncoding.Encode(dst, src)
-	return dst
-}
+func Base64Encode(src []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-func Base64Decode(dst, src []byte) error {
-	n, err := base64.StdEncoding.Decode(dst, src)
-	if err != nil {
-		return err
-	}
-	if n != len(dst) {
-		return fmt.Errorf("incomplete decoding: %d != %d", n, len(src))
-	}
-	return err
-}
+func Base64Decode(dst, src []byte) error { _ = "STUB: not implemented"; return nil }

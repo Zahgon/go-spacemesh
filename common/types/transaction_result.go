@@ -17,15 +17,7 @@ const (
 )
 
 // String implements human readable representation of the status.
-func (t TransactionStatus) String() string {
-	switch t {
-	case 0:
-		return "success"
-	case 1:
-		return "failure"
-	}
-	panic("unknown status")
-}
+func (t TransactionStatus) String() string { _ = "STUB: not implemented"; return "" }
 
 // TransactionResult is created after consuming transaction.
 type TransactionResult struct {
@@ -41,20 +33,7 @@ type TransactionResult struct {
 
 // MarshalLogObject implements encoding for the tx result.
 func (h *TransactionResult) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("status", h.Status.String())
-	if h.Status > 0 {
-		encoder.AddString("message", h.Message)
-	}
-	encoder.AddUint64("gas", h.Gas)
-	encoder.AddUint64("fee", h.Fee)
-	encoder.AddString("block", h.Block.String())
-	encoder.AddUint32("layer", h.Layer.Uint32())
-	encoder.AddArray("addresses", zapcore.ArrayMarshalerFunc(func(arrayEncoder zapcore.ArrayEncoder) error {
-		for i := range h.Addresses {
-			arrayEncoder.AppendString((&h.Addresses[i]).String())
-		}
-		return nil
-	}))
+	_ = "STUB: not implemented"
 	return nil
 }
 

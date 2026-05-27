@@ -2,21 +2,11 @@ package checkpoint
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"path/filepath"
 
-	pb "github.com/spacemeshos/api/release/go/spacemesh/v1"
 	"github.com/spf13/afero"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/accounts"
-	"github.com/spacemeshos/go-spacemesh/sql/atxs"
-	"github.com/spacemeshos/go-spacemesh/sql/builder"
-	"github.com/spacemeshos/go-spacemesh/sql/identities"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
-	"github.com/spacemeshos/go-spacemesh/sql/marriage"
 )
 
 const (
@@ -35,154 +25,11 @@ func checkpointDB(
 	snapshot types.LayerID,
 	numAtxs int,
 ) (*types.Checkpoint, error) {
-	request, err := json.Marshal(&pb.CheckpointStreamRequest{
-		SnapshotLayer: uint32(snapshot),
-		NumAtxs:       uint32(numAtxs),
-	})
-	if err != nil {
-		return nil, fmt.Errorf("marshal request: %w", err)
-	}
-
-	checkpoint := &types.Checkpoint{
-		Command: fmt.Sprintf(CommandString, request),
-		Version: SchemaVersion,
-		Data: types.InnerData{
-			CheckpointId: fmt.Sprintf("snapshot-%d", snapshot),
-			Marriages:    make(map[int][]types.MarriageSnapshot),
-		},
-	}
-
-	tx, err := db.Tx()
-	if err != nil {
-		return nil, fmt.Errorf("create db tx: %w", err)
-	}
-	defer tx.Release()
-
-	atxSnapshot, err := atxs.LatestN(tx, numAtxs)
-	if err != nil {
-		return nil, fmt.Errorf("atxs snapshot: %w", err)
-	}
-	malicious := map[types.NodeID]bool{}
-	for i, catx := range atxSnapshot {
-		if _, ok := malicious[catx.SmesherID]; !ok {
-			mal, err := identities.IsMalicious(tx, catx.SmesherID)
-			if err != nil {
-				return nil, fmt.Errorf("atxs snapshot check identity: %w", err)
-			}
-			mal2, err := malfeasance.IsMalicious(tx, catx.SmesherID)
-			if err != nil {
-				return nil, fmt.Errorf("atxs snapshot check malfeasance: %w", err)
-			}
-			malicious[catx.SmesherID] = mal || mal2
-		}
-		commitmentAtx, err := atxs.CommitmentATX(tx, catx.SmesherID)
-		if err != nil {
-			return nil, fmt.Errorf("atxs snapshot commitment: %w", err)
-		}
-		atxSnapshot[i].CommitmentATX = commitmentAtx
-	}
-	for _, catx := range atxSnapshot {
-		if mal, ok := malicious[catx.SmesherID]; ok && mal {
-			continue
-		}
-		var marriageAtx []byte
-		if catx.MarriageATX != nil {
-			marriageAtx = catx.MarriageATX.Bytes()
-		}
-		checkpoint.Data.Atxs = append(checkpoint.Data.Atxs, types.AtxSnapshot{
-			ID:             catx.ID.Bytes(),
-			Epoch:          catx.Epoch.Uint32(),
-			CommitmentAtx:  catx.CommitmentATX.Bytes(),
-			MarriageAtx:    marriageAtx,
-			VrfNonce:       uint64(catx.VRFNonce),
-			NumUnits:       catx.NumUnits,
-			BaseTickHeight: catx.BaseTickHeight,
-			TickCount:      catx.TickCount,
-			PublicKey:      catx.SmesherID.Bytes(),
-			Sequence:       catx.Sequence,
-			Coinbase:       catx.Coinbase.Bytes(),
-			Units:          catx.Units,
-		})
-	}
-
-	acctSnapshot, err := accounts.Snapshot(tx, snapshot)
-	if err != nil {
-		return nil, fmt.Errorf("accounts snapshot: %w", err)
-	}
-	for _, acct := range acctSnapshot {
-		a := types.AccountSnapshot{
-			Address: acct.Address.Bytes(),
-			Balance: acct.Balance,
-			Nonce:   acct.NextNonce,
-		}
-		if acct.TemplateAddress != nil {
-			a.Template = acct.TemplateAddress.Bytes()
-		}
-		if acct.State != nil {
-			a.State = acct.State
-		}
-		checkpoint.Data.Accounts = append(checkpoint.Data.Accounts, a)
-	}
-	err = marriage.IterateOps(tx, builder.Operations{}, func(info marriage.Info) bool {
-		snapshot := types.MarriageSnapshot{
-			ATX:       info.ATX.Bytes(),
-			Index:     info.MarriageIndex,
-			Signer:    info.NodeID.Bytes(),
-			MarriedTo: info.Target.Bytes(),
-			Signature: info.Signature.Bytes(),
-		}
-		checkpoint.Data.Marriages[int(info.ID)] = append(checkpoint.Data.Marriages[int(info.ID)], snapshot)
-		return true
-	})
-	if err != nil {
-		return nil, fmt.Errorf("collecting marriages: %w", err)
-	}
-
-	// collect marriage ATXs
-	marriageATXs := make(map[types.ATXID]struct{})
-	for id := range checkpoint.Data.Marriages {
-		for _, m := range checkpoint.Data.Marriages[id] {
-			marriageATXs[types.ATXID(m.ATX)] = struct{}{}
-		}
-	}
-
-	for id := range marriageATXs {
-		atx, err := atxs.Get(tx, id)
-		if err != nil {
-			return nil, fmt.Errorf("getting marriage atx: %w", err)
-		}
-		snapshot := types.AtxSnapshot{
-			ID:             id.Bytes(),
-			Epoch:          atx.PublishEpoch.Uint32(),
-			VrfNonce:       uint64(atx.VRFNonce),
-			NumUnits:       atx.NumUnits,
-			BaseTickHeight: atx.BaseTickHeight,
-			TickCount:      atx.TickCount,
-			PublicKey:      atx.SmesherID.Bytes(),
-			Sequence:       atx.Sequence,
-			Coinbase:       atx.Coinbase.Bytes(),
-		}
-
-		snapshot.Units, err = atxs.AllUnits(tx, id)
-		if err != nil {
-			return nil, fmt.Errorf("getting units for ATX %s: %w", id, err)
-		}
-
-		if atx.CommitmentATX != nil {
-			snapshot.CommitmentAtx = atx.CommitmentATX.Bytes()
-		} else {
-			commitment, err := atxs.CommitmentATX(tx, atx.SmesherID)
-			if err != nil {
-				return nil, fmt.Errorf("getting commitment for smesher %s: %w", atx.SmesherID, err)
-			}
-			snapshot.CommitmentAtx = commitment.Bytes()
-		}
-
-		checkpoint.Data.Atxs = append(checkpoint.Data.Atxs, snapshot)
-	}
-
-	return checkpoint, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// collect marriage ATXs
 
 func Generate(
 	ctx context.Context,
@@ -192,24 +39,13 @@ func Generate(
 	snapshot types.LayerID,
 	numAtxs int,
 ) error {
-	checkpoint, err := checkpointDB(ctx, db, snapshot, numAtxs)
-	if err != nil {
-		return err
-	}
-	rf, err := NewRecoveryFile(fs, SelfCheckpointFilename(dataDir, snapshot))
-	if err != nil {
-		return fmt.Errorf("new recovery file: %w", err)
-	}
-	// one writer persist the checkpoint data, one returning result to caller.
-	if err = json.NewEncoder(rf.fwriter).Encode(checkpoint); err != nil {
-		return fmt.Errorf("marshal checkpoint json: %w", err)
-	}
-	if err = rf.Save(fs); err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// one writer persist the checkpoint data, one returning result to caller.
+
 func SelfCheckpointFilename(dataDir string, snapshot types.LayerID) string {
-	return filepath.Join(filepath.Join(dataDir, checkpointDir), fmt.Sprintf("snapshot-%d", snapshot))
+	_ = "STUB: not implemented"
+	return ""
 }

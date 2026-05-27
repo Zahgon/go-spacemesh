@@ -34,11 +34,7 @@ type GetAtxOpts struct {
 type GetAtxOpt func(*GetAtxOpts)
 
 // WithoutLimiting disables rate limiting when downloading ATXs.
-func WithoutLimiting() GetAtxOpt {
-	return func(opts *GetAtxOpts) {
-		opts.LimitingOff = true
-	}
-}
+func WithoutLimiting() GetAtxOpt { _ = "STUB: not implemented"; return *new(GetAtxOpt) }
 
 // WithATXCallback sets a callback function to be called after each ATX is downloaded,
 // found locally or failed to download.
@@ -47,9 +43,8 @@ func WithoutLimiting() GetAtxOpt {
 // The callback may be called concurrently from multiple goroutines.
 // A non-nil error is passed in case the ATX cannot be found locally and failed to download.
 func WithATXCallback(callback func(types.ATXID, error)) GetAtxOpt {
-	return func(opts *GetAtxOpts) {
-		opts.Callback = callback
-	}
+	_ = "STUB: not implemented"
+	return *new(GetAtxOpt)
 }
 
 // AtxFetcher defines an interface for fetching ATXs from remote peers.

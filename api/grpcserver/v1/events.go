@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/libp2p/go-libp2p/core/event"
-
-	"github.com/spacemeshos/go-spacemesh/log"
 )
 
 const subscriptionChanBufSize = 1 << 16
@@ -25,35 +23,8 @@ func consumeEvents[T any](
 	ctx context.Context,
 	subscription event.Subscription,
 ) (out <-chan T, bufFull <-chan struct{}) {
-	outCh := make(chan T, subscriptionChanBufSize)
-	bufFullCh := make(chan struct{})
-
-	go func() {
-		defer closeSubscription(subscription)
-
-		for e := range subscription.Out() {
-			event, ok := e.(T)
-			if !ok {
-				log.With().Warning("received invalid event type - dropping")
-				continue
-			}
-			select {
-			case <-ctx.Done():
-				return
-			case outCh <- event:
-			default:
-				log.With().Debug("subscriber's event buffer is full")
-				close(bufFullCh)
-				return
-			}
-		}
-	}()
-
-	return outCh, bufFullCh
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func closeSubscription(accountSubscription event.Subscription) {
-	if err := accountSubscription.Close(); err != nil {
-		log.With().Panic("Failed to close account subscription", log.Err(err))
-	}
-}
+func closeSubscription(accountSubscription event.Subscription) { _ = "STUB: not implemented"; return }

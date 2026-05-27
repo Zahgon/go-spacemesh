@@ -1,24 +1,17 @@
 package types
 
 import (
-	"encoding/hex"
-	"strconv"
 	"time"
 
 	"github.com/spacemeshos/go-scale"
 	"github.com/spacemeshos/post/shared"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/common/util"
 )
 
 //go:generate scalegen -types ATXMetadata,MerkleProof,EpochActiveSet
 
 // BytesToATXID is a helper to copy buffer into a ATXID.
-func BytesToATXID(buf []byte) (id ATXID) {
-	copy(id[:], buf)
-	return id
-}
+func BytesToATXID(buf []byte) (id ATXID) { _ = "STUB: not implemented"; return *new(ATXID) }
 
 type Validity int
 
@@ -37,42 +30,36 @@ const (
 )
 
 // String implements stringer interface.
-func (t ATXID) String() string {
-	return t.ShortString()
-}
+func (t ATXID) String() string { _ = "STUB: not implemented"; return "" }
 
 // ShortString returns the first few characters of the ID, for logging purposes.
-func (t ATXID) ShortString() string {
-	return t.Hash32().ShortString()
-}
+func (t ATXID) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // Hash32 returns the ATXID as a Hash32.
 func (t ATXID) Hash32() Hash32 {
-	return Hash32(t)
+	_ = "STUB: not implemented"
+
+	// Bytes returns the ATXID as a byte slice.
+	return *new(Hash32)
 }
 
-// Bytes returns the ATXID as a byte slice.
-func (t ATXID) Bytes() []byte {
-	return Hash32(t).Bytes()
-}
+func (t ATXID) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // EncodeScale implements scale codec interface.
 func (t *ATXID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, t[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (t *ATXID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, t[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (t ATXID) MarshalText() ([]byte, error) {
-	return util.Base64Encode(t[:]), nil
-}
+func (t ATXID) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (t *ATXID) UnmarshalText(buf []byte) error {
-	return util.Base64Decode(t[:], buf)
-}
+func (t *ATXID) UnmarshalText(buf []byte) error { _ = "STUB: not implemented"; return nil }
 
 // EmptyATXID is a canonical empty ATXID.
 var EmptyATXID = ATXID{}
@@ -81,9 +68,7 @@ type ATXIDs []ATXID
 
 // impl zap's ArrayMarshaler interface.
 func (ids ATXIDs) MarshalLogArray(enc zapcore.ArrayEncoder) error {
-	for _, id := range ids {
-		enc.AppendString(id.String())
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -105,25 +90,15 @@ type NIPostChallenge struct {
 }
 
 func (c *NIPostChallenge) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if c == nil {
-		return nil
-	}
-	encoder.AddUint32("PublishEpoch", c.PublishEpoch.Uint32())
-	encoder.AddUint64("Sequence", c.Sequence)
-	encoder.AddString("PrevATXID", c.PrevATXID.String())
-	encoder.AddUint32("PublishEpoch", c.PublishEpoch.Uint32())
-	encoder.AddString("PositioningATX", c.PositioningATX.String())
-	if c.CommitmentATX != nil {
-		encoder.AddString("CommitmentATX", c.CommitmentATX.String())
-	}
-	encoder.AddObject("InitialPost", c.InitialPost)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // TargetEpoch returns the target epoch of the NIPostChallenge. This is the epoch in which the miner is eligible
 // to participate thanks to the ATX.
 func (challenge *NIPostChallenge) TargetEpoch() EpochID {
-	return challenge.PublishEpoch + 1
+	_ = "STUB: not implemented"
+	return *new(EpochID)
 }
 
 // ATXMetadata is the data of ActivationTx that is signed.
@@ -134,8 +109,7 @@ type ATXMetadata struct {
 }
 
 func (m *ATXMetadata) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("epoch", uint32(m.PublishEpoch))
-	encoder.AddString("hash", m.MsgHash.ShortString())
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -147,16 +121,7 @@ const (
 	AtxVMAX AtxVersion = AtxV2
 )
 
-func (v AtxVersion) String() string {
-	switch v {
-	case AtxV1:
-		return "V1"
-	case AtxV2:
-		return "V2"
-	default:
-		return strconv.Itoa(int(v))
-	}
-}
+func (v AtxVersion) String() string { _ = "STUB: not implemented"; return "" }
 
 type AtxBlob struct {
 	Blob    []byte
@@ -198,80 +163,52 @@ type ActivationTx struct {
 
 // TargetEpoch returns the target epoch of the ATX. This is the epoch in which the miner is eligible
 // to participate thanks to the ATX.
-func (atx *ActivationTx) TargetEpoch() EpochID {
-	return atx.PublishEpoch + 1
-}
+func (atx *ActivationTx) TargetEpoch() EpochID { _ = "STUB: not implemented"; return *new(EpochID) }
 
 // Golden returns true if atx is from a checkpoint snapshot.
 // A golden ATX is not verifiable, and is only allowed to be prev atx or positioning atx.
 func (atx *ActivationTx) Golden() bool {
-	return atx.golden
+	_ = "STUB: not implemented"
+
+	// SetGolden set atx to golden.
+	return false
 }
 
-// SetGolden set atx to golden.
 func (atx *ActivationTx) SetGolden() {
-	atx.golden = true
+	_ = "STUB: not implemented"
+
+	// TickHeight returns a sum of base tick height and tick count.
+	return
 }
 
-// TickHeight returns a sum of base tick height and tick count.
-func (atx *ActivationTx) TickHeight() uint64 {
-	return atx.BaseTickHeight + atx.TickCount
-}
+func (atx *ActivationTx) TickHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalLogObject implements logging interface.
 func (atx *ActivationTx) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("atx_id", atx.id.String())
-	encoder.AddString("smesher", atx.SmesherID.String())
-	encoder.AddUint32("publish_epoch", atx.PublishEpoch.Uint32())
-
-	if atx.CommitmentATX != nil {
-		encoder.AddString("commitment_atx_id", atx.CommitmentATX.String())
-	}
-	if atx.MarriageATX != nil {
-		encoder.AddString("marriage_atx_id", atx.MarriageATX.String())
-	}
-	encoder.AddUint64("vrf_nonce", uint64(atx.VRFNonce))
-	encoder.AddString("coinbase", atx.Coinbase.String())
-	encoder.AddUint32("epoch", atx.PublishEpoch.Uint32())
-	encoder.AddUint64("num_units", uint64(atx.NumUnits))
-	encoder.AddUint64("sequence_number", atx.Sequence)
-	encoder.AddUint64("base_tick_height", atx.BaseTickHeight)
-	encoder.AddUint64("tick_count", atx.TickCount)
-	encoder.AddUint64("weight", atx.Weight)
-	encoder.AddUint64("height", atx.TickHeight())
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // ShortString returns the first 5 characters of the ID, for logging purposes.
-func (atx *ActivationTx) ShortString() string {
-	return atx.ID().ShortString()
-}
+func (atx *ActivationTx) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // ID returns the ATX's ID.
 func (atx *ActivationTx) ID() ATXID {
-	return atx.id
+	_ = "STUB: not implemented"
+
+	// SetID sets the ATXID in this ATX's cache.
+	return *new(ATXID)
 }
 
-// SetID sets the ATXID in this ATX's cache.
-func (atx *ActivationTx) SetID(id ATXID) {
-	atx.id = id
-}
+func (atx *ActivationTx) SetID(id ATXID) { _ = "STUB: not implemented"; return }
 
-func (atx *ActivationTx) SetReceived(received time.Time) {
-	atx.received = received
-}
+func (atx *ActivationTx) SetReceived(received time.Time) { _ = "STUB: not implemented"; return }
 
-func (atx *ActivationTx) Received() time.Time {
-	return atx.received
-}
+func (atx *ActivationTx) Received() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (atx *ActivationTx) Validity() Validity {
-	return atx.validity
-}
+func (atx *ActivationTx) Validity() Validity { _ = "STUB: not implemented"; return *new(Validity) }
 
-func (atx *ActivationTx) SetValidity(validity Validity) {
-	atx.validity = validity
-}
+func (atx *ActivationTx) SetValidity(validity Validity) { _ = "STUB: not implemented"; return }
 
 // Merkle proof proving that a given leaf is included in the root of merkle tree.
 type MerkleProof struct {
@@ -316,11 +253,7 @@ type VRFPostIndex uint64
 type Post shared.Proof
 
 func (p *Post) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if p == nil {
-		return nil
-	}
-	encoder.AddUint32("nonce", p.Nonce)
-	encoder.AddString("indices", hex.EncodeToString(p.Indices))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -332,31 +265,15 @@ type PostMetadata struct {
 }
 
 func (m *PostMetadata) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if m == nil {
-		return nil
-	}
-	encoder.AddString("Challenge", hex.EncodeToString(m.Challenge))
-	encoder.AddUint64("LabelsPerUnit", m.LabelsPerUnit)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // ToATXIDs returns a slice of ATXID corresponding to the given activation tx.
-func ToATXIDs(atxs []*ActivationTx) []ATXID {
-	ids := make([]ATXID, 0, len(atxs))
-	for _, atx := range atxs {
-		ids = append(ids, atx.ID())
-	}
-	return ids
-}
+func ToATXIDs(atxs []*ActivationTx) []ATXID { _ = "STUB: not implemented"; return nil }
 
 // ATXIDsToHashes turns a list of ATXID into their Hash32 representation.
-func ATXIDsToHashes(ids []ATXID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, id.Hash32())
-	}
-	return hashes
-}
+func ATXIDsToHashes(ids []ATXID) []Hash32 { _ = "STUB: not implemented"; return nil }
 
 type EpochActiveSet struct {
 	Epoch EpochID

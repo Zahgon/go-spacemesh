@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	scale "github.com/spacemeshos/go-scale"
 	core "github.com/spacemeshos/go-spacemesh/genvm/core"
 	gomock "go.uber.org/mock/gomock"
@@ -30,30 +28,22 @@ type MockTemplateMockRecorder struct {
 }
 
 // NewMockTemplate creates a new mock instance.
-func NewMockTemplate(ctrl *gomock.Controller) *MockTemplate {
-	mock := &MockTemplate{ctrl: ctrl}
-	mock.recorder = &MockTemplateMockRecorder{mock}
-	return mock
-}
+func NewMockTemplate(ctrl *gomock.Controller) *MockTemplate { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockTemplate) EXPECT() *MockTemplateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// BaseGas mocks base method.
+	return nil
 }
 
-// BaseGas mocks base method.
-func (m *MockTemplate) BaseGas(arg0 uint8) uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BaseGas", arg0)
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockTemplate) BaseGas(arg0 uint8) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // BaseGas indicates an expected call of BaseGas.
 func (mr *MockTemplateMockRecorder) BaseGas(arg0 any) *MockTemplateBaseGasCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BaseGas", reflect.TypeOf((*MockTemplate)(nil).BaseGas), arg0)
-	return &MockTemplateBaseGasCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateBaseGasCall wrap *gomock.Call
@@ -63,36 +53,32 @@ type MockTemplateBaseGasCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateBaseGasCall) Return(arg0 uint64) *MockTemplateBaseGasCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateBaseGasCall) Do(f func(uint8) uint64) *MockTemplateBaseGasCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateBaseGasCall) DoAndReturn(f func(uint8) uint64) *MockTemplateBaseGasCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EncodeScale mocks base method.
 func (m *MockTemplate) EncodeScale(enc *scale.Encoder) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EncodeScale", enc)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // EncodeScale indicates an expected call of EncodeScale.
 func (mr *MockTemplateMockRecorder) EncodeScale(enc any) *MockTemplateEncodeScaleCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncodeScale", reflect.TypeOf((*MockTemplate)(nil).EncodeScale), enc)
-	return &MockTemplateEncodeScaleCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateEncodeScaleCall wrap *gomock.Call
@@ -102,35 +88,29 @@ type MockTemplateEncodeScaleCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateEncodeScaleCall) Return(arg0 int, arg1 error) *MockTemplateEncodeScaleCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateEncodeScaleCall) Do(f func(*scale.Encoder) (int, error)) *MockTemplateEncodeScaleCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateEncodeScaleCall) DoAndReturn(f func(*scale.Encoder) (int, error)) *MockTemplateEncodeScaleCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ExecGas mocks base method.
-func (m *MockTemplate) ExecGas(arg0 uint8) uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ExecGas", arg0)
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockTemplate) ExecGas(arg0 uint8) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // ExecGas indicates an expected call of ExecGas.
 func (mr *MockTemplateMockRecorder) ExecGas(arg0 any) *MockTemplateExecGasCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExecGas", reflect.TypeOf((*MockTemplate)(nil).ExecGas), arg0)
-	return &MockTemplateExecGasCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateExecGasCall wrap *gomock.Call
@@ -140,35 +120,29 @@ type MockTemplateExecGasCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateExecGasCall) Return(arg0 uint64) *MockTemplateExecGasCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateExecGasCall) Do(f func(uint8) uint64) *MockTemplateExecGasCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateExecGasCall) DoAndReturn(f func(uint8) uint64) *MockTemplateExecGasCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LoadGas mocks base method.
-func (m *MockTemplate) LoadGas() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LoadGas")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockTemplate) LoadGas() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // LoadGas indicates an expected call of LoadGas.
 func (mr *MockTemplateMockRecorder) LoadGas() *MockTemplateLoadGasCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoadGas", reflect.TypeOf((*MockTemplate)(nil).LoadGas))
-	return &MockTemplateLoadGasCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateLoadGasCall wrap *gomock.Call
@@ -178,36 +152,32 @@ type MockTemplateLoadGasCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateLoadGasCall) Return(arg0 uint64) *MockTemplateLoadGasCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateLoadGasCall) Do(f func() uint64) *MockTemplateLoadGasCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateLoadGasCall) DoAndReturn(f func() uint64) *MockTemplateLoadGasCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MaxSpend mocks base method.
 func (m *MockTemplate) MaxSpend(arg0 uint8, arg1 any) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MaxSpend", arg0, arg1)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // MaxSpend indicates an expected call of MaxSpend.
 func (mr *MockTemplateMockRecorder) MaxSpend(arg0, arg1 any) *MockTemplateMaxSpendCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxSpend", reflect.TypeOf((*MockTemplate)(nil).MaxSpend), arg0, arg1)
-	return &MockTemplateMaxSpendCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateMaxSpendCall wrap *gomock.Call
@@ -217,35 +187,32 @@ type MockTemplateMaxSpendCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateMaxSpendCall) Return(arg0 uint64, arg1 error) *MockTemplateMaxSpendCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateMaxSpendCall) Do(f func(uint8, any) (uint64, error)) *MockTemplateMaxSpendCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateMaxSpendCall) DoAndReturn(f func(uint8, any) (uint64, error)) *MockTemplateMaxSpendCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Verify mocks base method.
 func (m *MockTemplate) Verify(arg0 core.Host, arg1 []byte, arg2 *scale.Decoder) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify", arg0, arg1, arg2)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Verify indicates an expected call of Verify.
 func (mr *MockTemplateMockRecorder) Verify(arg0, arg1, arg2 any) *MockTemplateVerifyCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockTemplate)(nil).Verify), arg0, arg1, arg2)
-	return &MockTemplateVerifyCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockTemplateVerifyCall wrap *gomock.Call
@@ -255,18 +222,18 @@ type MockTemplateVerifyCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTemplateVerifyCall) Return(arg0 bool) *MockTemplateVerifyCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTemplateVerifyCall) Do(f func(core.Host, []byte, *scale.Decoder) bool) *MockTemplateVerifyCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTemplateVerifyCall) DoAndReturn(f func(core.Host, []byte, *scale.Decoder) bool) *MockTemplateVerifyCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

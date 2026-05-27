@@ -1,17 +1,10 @@
 package types
 
 import (
-	"bytes"
-	"fmt"
 	"math/big"
-	"sort"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/spacemeshos/go-scale"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/codec"
-	"github.com/spacemeshos/go-spacemesh/common/util"
 )
 
 const (
@@ -30,31 +23,25 @@ type BlockID Hash20
 var EmptyBlockID = BlockID{}
 
 // NewExistingBlock creates a block from existing data.
-func NewExistingBlock(id BlockID, inner InnerBlock) *Block {
-	return &Block{blockID: id, InnerBlock: inner}
-}
+func NewExistingBlock(id BlockID, inner InnerBlock) *Block { _ = "STUB: not implemented"; return nil }
 
 // EncodeScale implements scale codec interface.
 func (id *BlockID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *BlockID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (id *BlockID) IsEmpty() bool {
-	return *id == EmptyBlockID
-}
+func (id *BlockID) IsEmpty() bool { _ = "STUB: not implemented"; return false }
 
-func (id *BlockID) MarshalText() ([]byte, error) {
-	return util.Base64Encode(id[:]), nil
-}
+func (id *BlockID) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (id *BlockID) UnmarshalText(buf []byte) error {
-	return util.Base64Decode(id[:], buf)
-}
+func (id *BlockID) UnmarshalText(buf []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Block contains the content of a layer on the mesh history.
 type Block struct {
@@ -63,9 +50,7 @@ type Block struct {
 	blockID BlockID
 }
 
-func (b Block) Equal(other Block) bool {
-	return cmp.Equal(b.InnerBlock, other.InnerBlock)
-}
+func (b Block) Equal(other Block) bool { _ = "STUB: not implemented"; return false }
 
 // InnerBlock contains the transactions and rewards of a block.
 type InnerBlock struct {
@@ -97,21 +82,12 @@ type RatNum struct {
 }
 
 // String implements fmt.Stringer interface for RatNum.
-func (r *RatNum) String() string {
-	return fmt.Sprintf("%d/%d", r.Num, r.Denom)
-}
+func (r *RatNum) String() string { _ = "STUB: not implemented"; return "" }
 
 // ToBigRat creates big.Rat instance.
-func (r *RatNum) ToBigRat() *big.Rat {
-	return new(big.Rat).SetFrac(
-		new(big.Int).SetUint64(r.Num),
-		new(big.Int).SetUint64(r.Denom),
-	)
-}
+func (r *RatNum) ToBigRat() *big.Rat { _ = "STUB: not implemented"; return nil }
 
-func RatNumFromBigRat(r *big.Rat) RatNum {
-	return RatNum{Num: r.Num().Uint64(), Denom: r.Denom().Uint64()}
-}
+func RatNumFromBigRat(r *big.Rat) RatNum { _ = "STUB: not implemented"; return *new(RatNum) }
 
 // AnyReward contains the reward information by ATXID.
 type AnyReward struct {
@@ -127,87 +103,54 @@ type CoinbaseReward struct {
 }
 
 // Initialize calculates and sets the Block's cached blockID.
-func (b *Block) Initialize() {
-	b.blockID = BlockID(CalcHash20(b.Bytes()))
-}
+func (b *Block) Initialize() { _ = "STUB: not implemented"; return }
 
 // Bytes returns the serialization of the InnerBlock.
-func (b *Block) Bytes() []byte {
-	return codec.MustEncode(&b.InnerBlock)
-}
+func (b *Block) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // ID returns the BlockID.
 func (b *Block) ID() BlockID {
-	return b.blockID
+	_ = "STUB: not implemented"
+
+	// ToVote creates Vote struct from block.
+	return *new(BlockID)
 }
 
-// ToVote creates Vote struct from block.
-func (b *Block) ToVote() Vote {
-	return Vote{ID: b.ID(), LayerID: b.LayerIndex, Height: b.TickHeight}
-}
+func (b *Block) ToVote() Vote { _ = "STUB: not implemented"; return *new(Vote) }
 
 // MarshalLogObject implements logging encoder for Block.
 func (b *Block) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("block_id", b.ID().String())
-	encoder.AddUint32("layer_id", b.LayerIndex.Uint32())
-	encoder.AddUint64("tick_height", b.TickHeight)
-	encoder.AddInt("num_tx", len(b.TxIDs))
-	encoder.AddInt("num_rewards", len(b.Rewards))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Bytes returns the BlockID as a byte slice.
-func (id BlockID) Bytes() []byte {
-	return id.AsHash32().Bytes()
-}
+func (id BlockID) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // AsHash32 returns a Hash32 whose first 20 bytes are the bytes of this BlockID, it is right-padded with zeros.
-func (id BlockID) AsHash32() Hash32 {
-	return Hash20(id).ToHash32()
-}
+func (id BlockID) AsHash32() Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // String implements the Stringer interface.
-func (id BlockID) String() string {
-	return Hash20(id).ShortString()
-}
+func (id BlockID) String() string { _ = "STUB: not implemented"; return "" }
 
 // Compare returns true if other (the given BlockID) is less than this BlockID, by lexicographic comparison.
-func (id BlockID) Compare(other BlockID) bool {
-	return bytes.Compare(id.Bytes(), other.Bytes()) < 0
-}
+func (id BlockID) Compare(other BlockID) bool { _ = "STUB: not implemented"; return false }
 
 // BlockIDsToHashes turns a list of BlockID into their Hash32 representation.
-func BlockIDsToHashes(ids []BlockID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, id.AsHash32())
-	}
-	return hashes
-}
+func BlockIDsToHashes(ids []BlockID) []Hash32 { _ = "STUB: not implemented"; return nil }
 
 type blockIDs []BlockID
 
 func (ids blockIDs) MarshalLogArray(encoder zapcore.ArrayEncoder) error {
-	for i := range ids {
-		encoder.AppendString(ids[i].String())
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // SortBlockIDs sorts a list of BlockID in lexicographic order, in-place.
-func SortBlockIDs(ids blockIDs) []BlockID {
-	sort.Slice(ids, func(i, j int) bool { return ids[i].Compare(ids[j]) })
-	return ids
-}
+func SortBlockIDs(ids blockIDs) []BlockID { _ = "STUB: not implemented"; return nil }
 
 // ToBlockIDs returns a slice of BlockID corresponding to the given list of Block.
-func ToBlockIDs(blocks []*Block) []BlockID {
-	ids := make([]BlockID, 0, len(blocks))
-	for _, b := range blocks {
-		ids = append(ids, b.ID())
-	}
-	return ids
-}
+func ToBlockIDs(blocks []*Block) []BlockID { _ = "STUB: not implemented"; return nil }
 
 // BlockContextualValidity represents the contextual validity of a block.
 type BlockContextualValidity struct {
@@ -241,6 +184,4 @@ type CertifyContent struct {
 }
 
 // Bytes returns the actual data being signed in a CertifyMessage.
-func (cm *CertifyMessage) Bytes() []byte {
-	return codec.MustEncode(&cm.CertifyContent)
-}
+func (cm *CertifyMessage) Bytes() []byte { _ = "STUB: not implemented"; return nil }

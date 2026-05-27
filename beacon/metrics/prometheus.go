@@ -39,94 +39,39 @@ type BeaconMetricsCollector struct {
 
 var nameCalculatedWeight = prometheus.BuildFQName(metrics.Namespace, subsystem, "beacon_calculated_weight")
 
-func MetricNameCalculatedWeight() string {
-	return nameCalculatedWeight
-}
+func MetricNameCalculatedWeight() string { _ = "STUB: not implemented"; return "" }
 
 // NewBeaconMetricsCollector creates a prometheus Collector for beacons.
 func NewBeaconMetricsCollector(cb GatherCB, logger *zap.Logger) *BeaconMetricsCollector {
-	bmc := &BeaconMetricsCollector{
-		gather: cb,
-		logger: logger,
-		observedBeaconCount: prometheus.NewDesc(
-			prometheus.BuildFQName(metrics.Namespace, subsystem, "beacon_observed_total"),
-			"Number of beacons collected from blocks for each epoch and value",
-			[]string{labelEpoch, labelBeacon}, nil),
-		observedBeaconWeight: prometheus.NewDesc(
-			prometheus.BuildFQName(metrics.Namespace, subsystem, "beacon_observed_weight"),
-			"Weight of beacons collected from blocks for each epoch and value",
-			[]string{labelEpoch, labelBeacon}, nil),
-		calculatedBeaconWeight: prometheus.NewDesc(
-			nameCalculatedWeight,
-			"Weight of the beacon calculated by the node for each epoch",
-			[]string{labelEpoch, labelBeacon}, nil),
-	}
-	return bmc
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Start registers the Collector with specified prometheus registry and starts the metrics collection.
 func (bmc *BeaconMetricsCollector) Start(registry *prometheus.Registry) {
-	if registry != nil {
-		registry.MustRegister(bmc)
-	} else {
-		// use Register instead of MustRegister because during app test, multiple instances
-		// will register the same set of metrics with the default registry and panic
-		if err := prometheus.Register(bmc); err != nil {
-			bmc.logger.Error("failed to register beacon metrics Collector", zap.Error(err))
-		}
-	}
-	bmc.registry = registry
+	_ = "STUB: not implemented"
+	return
 }
 
+// use Register instead of MustRegister because during app test, multiple instances
+// will register the same set of metrics with the default registry and panic
+
 // Stop unregisters the Collector with specified prometheus registry and stops the metrics collection.
-func (bmc *BeaconMetricsCollector) Stop() {
-	if bmc.registry != nil {
-		bmc.registry.Unregister(bmc)
-	} else {
-		prometheus.Unregister(bmc)
-	}
-}
+func (bmc *BeaconMetricsCollector) Stop() { _ = "STUB: not implemented"; return }
 
 // Describe implements Collector.
 func (bmc *BeaconMetricsCollector) Describe(ch chan<- *prometheus.Desc) {
-	ch <- bmc.observedBeaconCount
-	ch <- bmc.observedBeaconWeight
-	ch <- bmc.calculatedBeaconWeight
+	_ = "STUB: not implemented"
+	return
 }
 
 // Collect implements Collector.
 func (bmc *BeaconMetricsCollector) Collect(ch chan<- prometheus.Metric) {
-	observed, calculated := bmc.gather()
-	for _, ob := range observed {
-		epochStr := ob.Epoch.String()
-		ch <- prometheus.MustNewConstMetric(
-			bmc.observedBeaconCount,
-			prometheus.CounterValue,
-			float64(ob.WeightUnit),
-			epochStr,
-			ob.Beacon,
-		)
-		ch <- prometheus.MustNewConstMetric(
-			bmc.observedBeaconWeight,
-			prometheus.CounterValue,
-			ob.Weight.Float(),
-			epochStr,
-			ob.Beacon,
-		)
-	}
-
-	if calculated == nil {
-		return
-	}
-	// export the calculated beacon for the target epoch for ease of monitoring along with the observed beacons
-	ch <- prometheus.MustNewConstMetric(
-		bmc.calculatedBeaconWeight,
-		prometheus.CounterValue,
-		float64(0),
-		calculated.Epoch.String(),
-		calculated.Beacon,
-	)
+	_ = "STUB: not implemented"
+	return
 }
+
+// export the calculated beacon for the target epoch for ease of monitoring along with the observed beacons
 
 var NumMaliciousProps = metrics.NewCounter(
 	"malicious_proposals",

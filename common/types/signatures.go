@@ -1,8 +1,6 @@
 package types
 
 import (
-	"encoding/hex"
-
 	"github.com/spacemeshos/go-scale"
 )
 
@@ -18,27 +16,22 @@ var EmptyEdSignature EdSignature
 
 // EncodeScale implements scale codec interface.
 func (s *EdSignature) EncodeScale(encoder *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(encoder, s[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (s *EdSignature) DecodeScale(decoder *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(decoder, s[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // String returns a string representation of the Signature, for logging purposes.
 // It implements the Stringer interface.
-func (s EdSignature) String() string {
-	return hex.EncodeToString(s.Bytes())
-}
+func (s EdSignature) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the byte representation of the Signature.
-func (s *EdSignature) Bytes() []byte {
-	if s == nil {
-		return nil
-	}
-	return s[:]
-}
+func (s *EdSignature) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type VrfSignature [VrfSignatureSize]byte
 
@@ -47,17 +40,10 @@ var EmptyVrfSignature VrfSignature
 
 // String returns a string representation of the Signature, for logging purposes.
 // It implements the Stringer interface.
-func (s VrfSignature) String() string {
-	return hex.EncodeToString(s.Bytes())
-}
+func (s VrfSignature) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the byte representation of the Signature.
-func (s *VrfSignature) Bytes() []byte {
-	if s == nil {
-		return nil
-	}
-	return s[:]
-}
+func (s *VrfSignature) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // Cmp compares s and x and returns:
 //
@@ -67,24 +53,9 @@ func (s *VrfSignature) Bytes() []byte {
 //
 // The comparison is done in little endian order.
 // Additionally, if x is nil, -1 is returned.
-func (s *VrfSignature) Cmp(x *VrfSignature) int {
-	if x == nil {
-		return -1
-	}
+func (s *VrfSignature) Cmp(x *VrfSignature) int { _ = "STUB: not implemented"; return 0 }
 
-	// VRF signatures are little endian, so we need to compare in reverse order.
-	for i := len(s) - 1; i >= 0; i-- {
-		if s[i] < x[i] {
-			return -1
-		}
-		if s[i] > x[i] {
-			return 1
-		}
-	}
-	return 0
-}
+// VRF signatures are little endian, so we need to compare in reverse order.
 
 // LSB returns the least significant bit of the signature, so either 0 or 1.
-func (s *VrfSignature) LSB() byte {
-	return s[0] & 1
-}
+func (s *VrfSignature) LSB() byte { _ = "STUB: not implemented"; return 0 }

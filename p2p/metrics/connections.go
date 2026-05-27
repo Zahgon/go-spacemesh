@@ -1,14 +1,10 @@
 package metrics
 
 import (
-	"strings"
-	"time"
-
 	"github.com/libp2p/go-libp2p/core/network"
 	ma "github.com/multiformats/go-multiaddr"
 
 	"github.com/spacemeshos/go-spacemesh/metrics"
-	"github.com/spacemeshos/go-spacemesh/metrics/public"
 )
 
 var (
@@ -43,39 +39,44 @@ var (
 type ConnectionsMeeter struct{}
 
 // NewConnectionsMeeter returns a new ConnectionsMeeter.
-func NewConnectionsMeeter() *ConnectionsMeeter {
-	return &ConnectionsMeeter{}
-}
+func NewConnectionsMeeter() *ConnectionsMeeter { _ = "STUB: not implemented"; return nil }
 
 // Listen called when network starts listening on an addr.
-func (c *ConnectionsMeeter) Listen(network.Network, ma.Multiaddr) {}
+func (c *ConnectionsMeeter) Listen(network.Network, ma.Multiaddr) {
+	_ = "STUB: not implemented"
 
-// ListenClose called when network stops listening on an addr.
-func (c *ConnectionsMeeter) ListenClose(network.Network, ma.Multiaddr) {}
+	// ListenClose called when network stops listening on an addr.
+	return
+}
 
-// Connected called when a connection opened.
+func (c *ConnectionsMeeter) ListenClose(network.Network, ma.Multiaddr) {
+	_ = "STUB: not implemented"
+
+	// Connected called when a connection opened.
+	return
+}
+
 func (c *ConnectionsMeeter) Connected(_ network.Network, conn network.Conn) {
-	public.Connections.WithLabelValues(strings.ToLower(conn.Stat().Direction.String())).Inc()
-	connections.WithLabelValues().Inc()
+	_ = "STUB: not implemented"
+	return
 }
 
 // Disconnected called when a connection closed.
 func (c *ConnectionsMeeter) Disconnected(_ network.Network, conn network.Conn) {
-	public.Connections.WithLabelValues(strings.ToLower(conn.Stat().Direction.String())).Dec()
-	connections.WithLabelValues().Dec()
+	_ = "STUB: not implemented"
+	return
 }
 
 // OpenedStream called when a stream opened.
 func (c *ConnectionsMeeter) OpenedStream(_ network.Network, str network.Stream) {
-	streamsPerProtocol.WithLabelValues(string(str.Protocol())).Inc()
+	_ = "STUB: not implemented"
+	return
 }
 
 // ClosedStream called when a stream closed.
 func (c *ConnectionsMeeter) ClosedStream(_ network.Network, str network.Stream) {
-	protocolID := string(str.Protocol())
-	streamsPerProtocol.WithLabelValues(protocolID).Dec()
-
-	// log stream duration
-	duration := time.Since(str.Stat().Opened)
-	durationHistogram.WithLabelValues(protocolID).Observe(duration.Seconds())
+	_ = "STUB: not implemented"
+	return
 }
+
+// log stream duration

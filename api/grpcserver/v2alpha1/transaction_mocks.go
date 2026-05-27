@@ -11,7 +11,6 @@ package v2alpha1
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	system "github.com/spacemeshos/go-spacemesh/system"
@@ -32,30 +31,27 @@ type MocktransactionConStateMockRecorder struct {
 
 // NewMocktransactionConState creates a new mock instance.
 func NewMocktransactionConState(ctrl *gomock.Controller) *MocktransactionConState {
-	mock := &MocktransactionConState{ctrl: ctrl}
-	mock.recorder = &MocktransactionConStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocktransactionConState) EXPECT() *MocktransactionConStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// HasEvicted mocks base method.
+	return nil
 }
 
-// HasEvicted mocks base method.
 func (m *MocktransactionConState) HasEvicted(tid types.TransactionID) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HasEvicted", tid)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // HasEvicted indicates an expected call of HasEvicted.
 func (mr *MocktransactionConStateMockRecorder) HasEvicted(tid any) *MocktransactionConStateHasEvictedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasEvicted", reflect.TypeOf((*MocktransactionConState)(nil).HasEvicted), tid)
-	return &MocktransactionConStateHasEvictedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionConStateHasEvictedCall wrap *gomock.Call
@@ -65,35 +61,32 @@ type MocktransactionConStateHasEvictedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktransactionConStateHasEvictedCall) Return(arg0 bool, arg1 error) *MocktransactionConStateHasEvictedCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktransactionConStateHasEvictedCall) Do(f func(types.TransactionID) (bool, error)) *MocktransactionConStateHasEvictedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktransactionConStateHasEvictedCall) DoAndReturn(f func(types.TransactionID) (bool, error)) *MocktransactionConStateHasEvictedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validation mocks base method.
 func (m *MocktransactionConState) Validation(raw types.RawTx) system.ValidationRequest {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validation", raw)
-	ret0, _ := ret[0].(system.ValidationRequest)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(system.ValidationRequest)
 }
 
 // Validation indicates an expected call of Validation.
 func (mr *MocktransactionConStateMockRecorder) Validation(raw any) *MocktransactionConStateValidationCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validation", reflect.TypeOf((*MocktransactionConState)(nil).Validation), raw)
-	return &MocktransactionConStateValidationCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionConStateValidationCall wrap *gomock.Call
@@ -103,20 +96,20 @@ type MocktransactionConStateValidationCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktransactionConStateValidationCall) Return(arg0 system.ValidationRequest) *MocktransactionConStateValidationCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktransactionConStateValidationCall) Do(f func(types.RawTx) system.ValidationRequest) *MocktransactionConStateValidationCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktransactionConStateValidationCall) DoAndReturn(f func(types.RawTx) system.ValidationRequest) *MocktransactionConStateValidationCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionSyncer is a mock of transactionSyncer interface.
@@ -133,29 +126,27 @@ type MocktransactionSyncerMockRecorder struct {
 
 // NewMocktransactionSyncer creates a new mock instance.
 func NewMocktransactionSyncer(ctrl *gomock.Controller) *MocktransactionSyncer {
-	mock := &MocktransactionSyncer{ctrl: ctrl}
-	mock.recorder = &MocktransactionSyncerMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocktransactionSyncer) EXPECT() *MocktransactionSyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// IsSynced mocks base method.
+	return nil
 }
 
-// IsSynced mocks base method.
 func (m *MocktransactionSyncer) IsSynced(arg0 context.Context) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsSynced", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // IsSynced indicates an expected call of IsSynced.
 func (mr *MocktransactionSyncerMockRecorder) IsSynced(arg0 any) *MocktransactionSyncerIsSyncedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsSynced", reflect.TypeOf((*MocktransactionSyncer)(nil).IsSynced), arg0)
-	return &MocktransactionSyncerIsSyncedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionSyncerIsSyncedCall wrap *gomock.Call
@@ -165,20 +156,20 @@ type MocktransactionSyncerIsSyncedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktransactionSyncerIsSyncedCall) Return(arg0 bool) *MocktransactionSyncerIsSyncedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktransactionSyncerIsSyncedCall) Do(f func(context.Context) bool) *MocktransactionSyncerIsSyncedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktransactionSyncerIsSyncedCall) DoAndReturn(f func(context.Context) bool) *MocktransactionSyncerIsSyncedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionValidator is a mock of transactionValidator interface.
@@ -195,29 +186,27 @@ type MocktransactionValidatorMockRecorder struct {
 
 // NewMocktransactionValidator creates a new mock instance.
 func NewMocktransactionValidator(ctrl *gomock.Controller) *MocktransactionValidator {
-	mock := &MocktransactionValidator{ctrl: ctrl}
-	mock.recorder = &MocktransactionValidatorMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocktransactionValidator) EXPECT() *MocktransactionValidatorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// VerifyAndCacheTx mocks base method.
+	return nil
 }
 
-// VerifyAndCacheTx mocks base method.
 func (m *MocktransactionValidator) VerifyAndCacheTx(arg0 context.Context, arg1 []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyAndCacheTx", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyAndCacheTx indicates an expected call of VerifyAndCacheTx.
 func (mr *MocktransactionValidatorMockRecorder) VerifyAndCacheTx(arg0, arg1 any) *MocktransactionValidatorVerifyAndCacheTxCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyAndCacheTx", reflect.TypeOf((*MocktransactionValidator)(nil).VerifyAndCacheTx), arg0, arg1)
-	return &MocktransactionValidatorVerifyAndCacheTxCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktransactionValidatorVerifyAndCacheTxCall wrap *gomock.Call
@@ -227,18 +216,18 @@ type MocktransactionValidatorVerifyAndCacheTxCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktransactionValidatorVerifyAndCacheTxCall) Return(arg0 error) *MocktransactionValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktransactionValidatorVerifyAndCacheTxCall) Do(f func(context.Context, []byte) error) *MocktransactionValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktransactionValidatorVerifyAndCacheTxCall) DoAndReturn(f func(context.Context, []byte) error) *MocktransactionValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

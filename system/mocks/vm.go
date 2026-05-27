@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,30 +28,27 @@ type MockValidationRequestMockRecorder struct {
 
 // NewMockValidationRequest creates a new mock instance.
 func NewMockValidationRequest(ctrl *gomock.Controller) *MockValidationRequest {
-	mock := &MockValidationRequest{ctrl: ctrl}
-	mock.recorder = &MockValidationRequestMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockValidationRequest) EXPECT() *MockValidationRequestMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Parse mocks base method.
+	return nil
 }
 
-// Parse mocks base method.
 func (m *MockValidationRequest) Parse() (*types.TxHeader, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Parse")
-	ret0, _ := ret[0].(*types.TxHeader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Parse indicates an expected call of Parse.
 func (mr *MockValidationRequestMockRecorder) Parse() *MockValidationRequestParseCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse", reflect.TypeOf((*MockValidationRequest)(nil).Parse))
-	return &MockValidationRequestParseCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockValidationRequestParseCall wrap *gomock.Call
@@ -63,35 +58,29 @@ type MockValidationRequestParseCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockValidationRequestParseCall) Return(arg0 *types.TxHeader, arg1 error) *MockValidationRequestParseCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockValidationRequestParseCall) Do(f func() (*types.TxHeader, error)) *MockValidationRequestParseCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockValidationRequestParseCall) DoAndReturn(f func() (*types.TxHeader, error)) *MockValidationRequestParseCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Verify mocks base method.
-func (m *MockValidationRequest) Verify() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockValidationRequest) Verify() bool { _ = "STUB: not implemented"; return false }
 
 // Verify indicates an expected call of Verify.
 func (mr *MockValidationRequestMockRecorder) Verify() *MockValidationRequestVerifyCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockValidationRequest)(nil).Verify))
-	return &MockValidationRequestVerifyCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockValidationRequestVerifyCall wrap *gomock.Call
@@ -101,18 +90,18 @@ type MockValidationRequestVerifyCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockValidationRequestVerifyCall) Return(arg0 bool) *MockValidationRequestVerifyCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockValidationRequestVerifyCall) Do(f func() bool) *MockValidationRequestVerifyCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockValidationRequestVerifyCall) DoAndReturn(f func() bool) *MockValidationRequestVerifyCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

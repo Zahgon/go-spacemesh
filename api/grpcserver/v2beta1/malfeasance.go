@@ -1,36 +1,21 @@
 package v2beta1
 
 import (
-	"bytes"
 	"context"
-	"errors"
-	"io"
-	"slices"
-	"strconv"
-	"time"
 
-	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	spacemeshv2beta1 "github.com/spacemeshos/api/release/go/spacemesh/v2beta1"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/events"
 	"github.com/spacemeshos/go-spacemesh/sql"
 	"github.com/spacemeshos/go-spacemesh/sql/builder"
-	"github.com/spacemeshos/go-spacemesh/sql/identities"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
 )
 
 func NewMalfeasanceService(db sql.StateDatabase, malHandler, legacyHandler malfeasanceInfo) *MalfeasanceService {
-	return &MalfeasanceService{
-		db:         db,
-		info:       malHandler,
-		infoLegacy: legacyHandler,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type MalfeasanceService struct {
@@ -40,86 +25,45 @@ type MalfeasanceService struct {
 }
 
 func (s *MalfeasanceService) RegisterService(server *grpc.Server) {
-	spacemeshv2beta1.RegisterMalfeasanceServiceServer(server, s)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *MalfeasanceService) RegisterHandlerService(mux *runtime.ServeMux) error {
-	return spacemeshv2beta1.RegisterMalfeasanceServiceHandlerServer(context.Background(), mux, s)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *MalfeasanceService) String() string {
-	return "MalfeasanceService"
-}
+func (s *MalfeasanceService) String() string { _ = "STUB: not implemented"; return "" }
 
 func (s *MalfeasanceService) List(
 	ctx context.Context,
 	request *spacemeshv2beta1.MalfeasanceRequest,
 ) (*spacemeshv2beta1.MalfeasanceList, error) {
-	switch {
-	case request.Limit > 100:
-		return nil, status.Error(codes.InvalidArgument, "limit is capped at 100")
-	case request.Limit == 0:
-		return nil, status.Error(codes.InvalidArgument, "limit must be set to <= 100")
-	}
-
-	result := &spacemeshv2beta1.MalfeasanceList{}
-	err := s.db.WithTx(func(tx sql.Transaction) error {
-		legacyCount, err := identities.CountMalicious(tx)
-		if err != nil {
-			return status.Error(codes.Internal, err.Error())
-		}
-
-		switch {
-		case request.Offset+request.Limit < legacyCount: // only legacy proofs
-			proofs, err := fetchLegacyFromDB(ctx, tx, s.infoLegacy, request)
-			if err != nil {
-				return err
-			}
-			result.Proofs = proofs
-			return nil
-		case request.Offset >= legacyCount: // only new proofs
-			request.Offset -= legacyCount
-			proofs, err := fetchFromDB(ctx, tx, s.info, request)
-			if err != nil {
-				return err
-			}
-			result.Proofs = proofs
-			return nil
-		default: // both legacy and new proofs
-			legacyProofs, err := fetchLegacyFromDB(ctx, tx, s.infoLegacy, request)
-			if err != nil {
-				return err
-			}
-			request.Limit -= uint64(len(legacyProofs))
-			proofs, err := fetchFromDB(ctx, tx, s.info, request)
-			if err != nil {
-				return err
-			}
-			result.Proofs = append(legacyProofs, proofs...)
-			return nil
-		}
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// only legacy proofs
+
+// only new proofs
+
+// both legacy and new proofs
 
 type defaultEventProvider struct{}
 
 func (defaultEventProvider) SubscribeMatched(
 	request *spacemeshv2beta1.MalfeasanceStreamRequest,
 ) (subscription, error) {
-	matcher := malfeasanceMatcher{request}
-	return events.SubscribeMatched(matcher.match)
+	_ = "STUB: not implemented"
+	return *new(subscription), nil
 }
 
 type malStreamOpts func(*MalfeasanceStreamService)
 
 func withEventProvider(provider eventProvider) malStreamOpts {
-	return func(s *MalfeasanceStreamService) {
-		s.events = provider
-	}
+	_ = "STUB: not implemented"
+	return *new(malStreamOpts)
 }
 
 func NewMalfeasanceStreamService(
@@ -128,16 +72,8 @@ func NewMalfeasanceStreamService(
 	legacyHandler malfeasanceInfo,
 	opts ...malStreamOpts,
 ) *MalfeasanceStreamService {
-	service := &MalfeasanceStreamService{
-		db:         db,
-		info:       malfeasanceHandler,
-		infoLegacy: legacyHandler,
-		events:     defaultEventProvider{},
-	}
-	for _, opt := range opts {
-		opt(service)
-	}
-	return service
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type MalfeasanceStreamService struct {
@@ -148,165 +84,38 @@ type MalfeasanceStreamService struct {
 }
 
 func (s *MalfeasanceStreamService) RegisterService(server *grpc.Server) {
-	spacemeshv2beta1.RegisterMalfeasanceStreamServiceServer(server, s)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *MalfeasanceStreamService) RegisterHandlerService(mux *runtime.ServeMux) error {
-	return spacemeshv2beta1.RegisterMalfeasanceStreamServiceHandlerServer(context.Background(), mux, s)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *MalfeasanceStreamService) String() string {
-	return "MalfeasanceStreamService"
-}
+func (s *MalfeasanceStreamService) String() string { _ = "STUB: not implemented"; return "" }
 
 func (s *MalfeasanceStreamService) Stream(
 	request *spacemeshv2beta1.MalfeasanceStreamRequest,
 	stream spacemeshv2beta1.MalfeasanceStreamService_StreamServer,
 ) error {
-	var sub subscription
-	if request.Watch {
-		var err error
-		sub, err = s.events.SubscribeMatched(request)
-		if err != nil {
-			return status.Error(codes.Internal, err.Error())
-		}
-		defer sub.Close()
-	}
-
-	legacyProofs, err := fetchLegacyFromDB(
-		stream.Context(),
-		s.db,
-		s.infoLegacy,
-		&spacemeshv2beta1.MalfeasanceRequest{SmesherId: request.SmesherId},
-	)
-	if err != nil {
-		return err
-	}
-	for _, rst := range legacyProofs {
-		err := stream.Send(rst)
-		switch {
-		case errors.Is(err, io.EOF):
-			return nil
-		case err != nil:
-			return err
-		}
-	}
-
-	proofs, err := fetchFromDB(
-		stream.Context(),
-		s.db,
-		s.info,
-		&spacemeshv2beta1.MalfeasanceRequest{SmesherId: request.SmesherId},
-	)
-	if err != nil {
-		return err
-	}
-	for _, rst := range proofs {
-		err := stream.Send(rst)
-		switch {
-		case errors.Is(err, io.EOF):
-			return nil
-		case err != nil:
-			return err
-		}
-	}
-
-	if sub == nil {
-		return nil
-	}
-
-	eventsOut := sub.Out()
-	eventsFull := sub.Full()
-
-	for {
-		select {
-		// process pending events first
-		case rst := <-eventsOut:
-			proof := fetchMetaData(stream.Context(), s.infoLegacy, rst.Smesher)
-			if proof == nil {
-				// try again with the new handler
-				proof = fetchMetaData(stream.Context(), s.info, rst.Smesher)
-				if proof == nil {
-					ctxzap.Debug(stream.Context(), "failed to get malfeasance info",
-						zap.String("smesher", rst.Smesher.String()),
-						zap.Error(err),
-					)
-					continue
-				}
-			}
-			err := stream.Send(proof)
-			switch {
-			case errors.Is(err, io.EOF):
-				return nil
-			case err != nil:
-				return err
-			}
-		default:
-			select {
-			case rst := <-eventsOut:
-				proof := fetchMetaData(stream.Context(), s.infoLegacy, rst.Smesher)
-				if proof == nil {
-					// try again with the new handler
-					proof = fetchMetaData(stream.Context(), s.info, rst.Smesher)
-					if proof == nil {
-						ctxzap.Debug(stream.Context(), "failed to get malfeasance info",
-							zap.String("smesher", rst.Smesher.String()),
-							zap.Error(err),
-						)
-						continue
-					}
-				}
-				err := stream.Send(proof)
-				switch {
-				case errors.Is(err, io.EOF):
-					return nil
-				case err != nil:
-					return err
-				}
-			case <-eventsFull:
-				return status.Error(codes.Canceled, "buffer overflow")
-			case <-stream.Context().Done():
-				return nil
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// process pending events first
+
+// try again with the new handler
+
+// try again with the new handler
 
 func fetchMetaData(
 	ctx context.Context,
 	info malfeasanceInfo,
 	id types.NodeID,
 ) *spacemeshv2beta1.MalfeasanceProof {
-	properties, err := info.Info(ctx, id)
-	if err != nil {
-		return nil
-	}
-	domain, err := strconv.ParseUint(properties["domain"], 10, 64)
-	if err != nil {
-		ctxzap.Debug(ctx, "failed to parse proof domain",
-			zap.String("smesher", id.String()),
-			zap.String("domain", properties["domain"]),
-			zap.Error(err),
-		)
-		return nil
-	}
-	delete(properties, "domain")
-	proofType, err := strconv.ParseUint(properties["type"], 10, 32)
-	if err != nil {
-		ctxzap.Debug(ctx, "failed to parse proof type",
-			zap.String("smesher", id.String()),
-			zap.String("type", properties["type"]),
-			zap.Error(err),
-		)
-	} else {
-		delete(properties, "type")
-	}
-	return &spacemeshv2beta1.MalfeasanceProof{
-		Smesher:    id.Bytes(),
-		Domain:     spacemeshv2beta1.MalfeasanceProof_MalfeasanceDomain(domain),
-		Type:       uint32(proofType),
-		Properties: properties,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func fetchFromDB(
@@ -315,26 +124,8 @@ func fetchFromDB(
 	info malfeasanceInfo,
 	request *spacemeshv2beta1.MalfeasanceRequest,
 ) ([]*spacemeshv2beta1.MalfeasanceProof, error) {
-	ops, err := toMalfeasanceOps(request)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-	ids := make([]types.NodeID, 0, request.Limit)
-	if err := malfeasance.IterateOps(db, ops, func(id types.NodeID, _ []byte, _ int, _ time.Time) bool {
-		ids = append(ids, id)
-		return true
-	}); err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-	proofs := make([]*spacemeshv2beta1.MalfeasanceProof, 0, len(ids))
-	for _, id := range ids {
-		rst := fetchMetaData(ctx, info, id)
-		if rst == nil {
-			continue
-		}
-		proofs = append(proofs, rst)
-	}
-	return proofs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func fetchLegacyFromDB(
@@ -343,61 +134,13 @@ func fetchLegacyFromDB(
 	info malfeasanceInfo,
 	request *spacemeshv2beta1.MalfeasanceRequest,
 ) ([]*spacemeshv2beta1.MalfeasanceProof, error) {
-	ops, err := toMalfeasanceOps(request)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-	ids := make([]types.NodeID, 0, request.Limit)
-	if err := identities.IterateOps(db, ops, func(id types.NodeID, _ []byte, _ time.Time) bool {
-		ids = append(ids, id)
-		return true
-	}); err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-	proofs := make([]*spacemeshv2beta1.MalfeasanceProof, 0, len(ids))
-	for _, id := range ids {
-		rst := fetchMetaData(ctx, info, id)
-		if rst == nil {
-			continue
-		}
-		proofs = append(proofs, rst)
-	}
-	return proofs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func toMalfeasanceOps(filter *spacemeshv2beta1.MalfeasanceRequest) (builder.Operations, error) {
-	ops := builder.Operations{}
-	ops.Modifiers = append(ops.Modifiers, builder.Modifier{
-		Key:   builder.OrderBy,
-		Value: builder.Smesher,
-	})
-
-	if filter == nil {
-		return ops, nil
-	}
-
-	if len(filter.SmesherId) > 0 {
-		ops.Filter = append(ops.Filter, builder.Op{
-			Field: builder.Smesher,
-			Token: builder.In,
-			Value: filter.SmesherId,
-		})
-	}
-
-	if filter.Limit != 0 {
-		ops.Modifiers = append(ops.Modifiers, builder.Modifier{
-			Key:   builder.Limit,
-			Value: int64(filter.Limit),
-		})
-	}
-	if filter.Offset != 0 {
-		ops.Modifiers = append(ops.Modifiers, builder.Modifier{
-			Key:   builder.Offset,
-			Value: int64(filter.Offset),
-		})
-	}
-
-	return ops, nil
+	_ = "STUB: not implemented"
+	return *new(builder.Operations), nil
 }
 
 type malfeasanceMatcher struct {
@@ -405,11 +148,6 @@ type malfeasanceMatcher struct {
 }
 
 func (m *malfeasanceMatcher) match(event *events.EventMalfeasance) bool {
-	if len(m.SmesherId) > 0 {
-		idx := slices.IndexFunc(m.SmesherId, func(id []byte) bool { return bytes.Equal(id, event.Smesher.Bytes()) })
-		if idx == -1 {
-			return false
-		}
-	}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }

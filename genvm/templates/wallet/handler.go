@@ -1,9 +1,6 @@
 package wallet
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/spacemeshos/go-scale"
 
 	"github.com/spacemeshos/go-spacemesh/genvm/core"
@@ -15,9 +12,7 @@ func init() {
 }
 
 // Register Wallet template.
-func Register(registry *registry.Registry) {
-	registry.Register(TemplateAddress, &handler{})
-}
+func Register(registry *registry.Registry) { _ = "STUB: not implemented"; return }
 
 var (
 	_ core.Handler = (*handler)(nil)
@@ -29,55 +24,27 @@ type handler struct{}
 
 // Parse header and arguments.
 func (*handler) Parse(method uint8, decoder *scale.Decoder) (output core.ParseOutput, err error) {
-	var p core.Payload
-	if _, err = p.DecodeScale(decoder); err != nil {
-		err = fmt.Errorf("%w: %w", core.ErrMalformed, err)
-		return
-	}
-	output.GasPrice = p.GasPrice
-	output.Nonce = p.Nonce
-	return output, nil
+	_ = "STUB: not implemented"
+	return *new(core.ParseOutput), nil
 }
 
 // New instatiates single sig wallet with spawn arguments.
 func (*handler) New(args any) (core.Template, error) {
-	return New(args.(*SpawnArguments)), nil
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
 
 // Load single sig wallet from stored state.
 func (*handler) Load(state []byte) (core.Template, error) {
-	decoder := scale.NewDecoder(bytes.NewReader(state))
-	var wallet Wallet
-	if _, err := wallet.DecodeScale(decoder); err != nil {
-		return nil, fmt.Errorf("%w: malformed state %w", core.ErrInternal, err)
-	}
-	return &wallet, nil
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
 
 // Exec spawn or spend based on the method selector.
 func (*handler) Exec(host core.Host, method uint8, args scale.Encodable) error {
-	switch method {
-	case core.MethodSpawn:
-		if err := host.Spawn(args); err != nil {
-			return err
-		}
-	case core.MethodSpend:
-		if err := host.Template().(*Wallet).Spend(host, args.(*SpendArguments)); err != nil {
-			return err
-		}
-	default:
-		return fmt.Errorf("%w: unknown method %d", core.ErrMalformed, method)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Args ...
-func (h *handler) Args(method uint8) scale.Type {
-	switch method {
-	case core.MethodSpawn:
-		return &SpawnArguments{}
-	case core.MethodSpend:
-		return &SpendArguments{}
-	}
-	return nil
-}
+func (h *handler) Args(method uint8) scale.Type { _ = "STUB: not implemented"; return *new(scale.Type) }

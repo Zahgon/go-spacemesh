@@ -11,7 +11,6 @@ package blockssync
 
 import (
 	context "context"
-	reflect "reflect"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
@@ -31,29 +30,27 @@ type MockblockFetcherMockRecorder struct {
 
 // NewMockblockFetcher creates a new mock instance.
 func NewMockblockFetcher(ctrl *gomock.Controller) *MockblockFetcher {
-	mock := &MockblockFetcher{ctrl: ctrl}
-	mock.recorder = &MockblockFetcherMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockblockFetcher) EXPECT() *MockblockFetcherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetBlocks mocks base method.
+	return nil
 }
 
-// GetBlocks mocks base method.
 func (m *MockblockFetcher) GetBlocks(arg0 context.Context, arg1 []types.BlockID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlocks", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocks indicates an expected call of GetBlocks.
 func (mr *MockblockFetcherMockRecorder) GetBlocks(arg0, arg1 any) *MockblockFetcherGetBlocksCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlocks", reflect.TypeOf((*MockblockFetcher)(nil).GetBlocks), arg0, arg1)
-	return &MockblockFetcherGetBlocksCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockblockFetcherGetBlocksCall wrap *gomock.Call
@@ -63,18 +60,18 @@ type MockblockFetcherGetBlocksCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockblockFetcherGetBlocksCall) Return(arg0 error) *MockblockFetcherGetBlocksCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockblockFetcherGetBlocksCall) Do(f func(context.Context, []types.BlockID) error) *MockblockFetcherGetBlocksCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockblockFetcherGetBlocksCall) DoAndReturn(f func(context.Context, []types.BlockID) error) *MockblockFetcherGetBlocksCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

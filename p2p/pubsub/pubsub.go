@@ -3,7 +3,6 @@ package pubsub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
@@ -14,9 +13,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/hash"
-	"github.com/spacemeshos/go-spacemesh/log"
-	p2pmetrics "github.com/spacemeshos/go-spacemesh/p2p/metrics"
 )
 
 func init() {
@@ -83,9 +79,7 @@ const (
 )
 
 // DefaultConfig for PubSub.
-func DefaultConfig() Config {
-	return Config{Flood: true, PeerOutboundQueueSize: 8192, QueueSize: 10000, Throttle: 10000}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 // Config for PubSub.
 type Config struct {
@@ -103,18 +97,9 @@ type Config struct {
 
 // New creates PubSub instance.
 func New(ctx context.Context, logger *zap.Logger, h host.Host, cfg Config) (*GossipPubSub, error) {
+	_ = "STUB: not implemented"
 	// TODO(dshulyak) refactor code to accept options
-	opts := getOptions(cfg)
-	ps, err := pubsub.NewGossipSub(ctx, h, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize gossipsub instance: %w", err)
-	}
-	return &GossipPubSub{
-		logger: logger,
-		pubsub: ps,
-		topics: map[string]*pubsub.Topic{},
-		host:   h,
-	}, nil
+	return nil, nil
 }
 
 //go:generate mockgen -typed -package=mocks -destination=./mocks/publisher.go -source=./pubsub.go
@@ -156,169 +141,56 @@ var ErrValidationReject = errors.New("validation reject")
 
 // ChainGossipHandler helper to chain multiple GossipHandler together. Called synchronously and in the order.
 func ChainGossipHandler(handlers ...GossipHandler) GossipHandler {
-	return func(ctx context.Context, pid peer.ID, msg []byte) error {
-		for _, h := range handlers {
-			if err := h(ctx, pid, msg); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(GossipHandler)
 }
 
 // DropPeerOnValidationReject wraps a gossip handler to provide a handler that drops a
 // peer if the wrapped handler returns ErrValidationReject.
 func DropPeerOnValidationReject(handler GossipHandler, h host.Host, logger *zap.Logger) GossipHandler {
-	return func(ctx context.Context, peer peer.ID, data []byte) error {
-		err := handler(ctx, peer, data)
-		if errors.Is(err, ErrValidationReject) {
-			logger.Warn("dropping a peer due to a rejected validation",
-				log.ZContext(ctx),
-				zap.Stringer("peer", peer),
-				zap.Error(err),
-			)
-			p2pmetrics.DroppedConnectionsValidationReject.Inc()
-			err := h.Network().ClosePeer(peer)
-			if err != nil {
-				logger.Debug("failed to close peer", log.ZShortStringer("peer", peer), zap.Error(err))
-			}
-		}
-		return err
-	}
+	_ = "STUB: not implemented"
+	return *new(GossipHandler)
 }
 
 func DropPeerOnSyncValidationReject(handler SyncHandler, h host.Host, logger *zap.Logger) SyncHandler {
-	return func(ctx context.Context, hash types.Hash32, peer peer.ID, data []byte) error {
-		err := handler(ctx, hash, peer, data)
-		if errors.Is(err, ErrValidationReject) {
-			p2pmetrics.DroppedConnectionsValidationReject.Inc()
-			err := h.Network().ClosePeer(peer)
-			if err != nil {
-				logger.Debug("failed to close peer", log.ZShortStringer("peer", peer), zap.Error(err))
-			}
-		}
-		return err
-	}
+	_ = "STUB: not implemented"
+	return *new(SyncHandler)
 }
 
-func msgID(msg *pubsubpb.Message) string {
-	hasher := hash.GetHasher()
-	defer hash.PutHasher(hasher)
-	if msg.Topic != nil {
-		hasher.Write([]byte(*msg.Topic))
-	}
-	hasher.Write(msg.Data)
-	return string(hasher.Sum(nil))
-}
+func msgID(msg *pubsubpb.Message) string { _ = "STUB: not implemented"; return "" }
 
-func getOptions(cfg Config) []pubsub.Option {
-	boots := map[peer.ID]struct{}{}
-	for _, addr := range cfg.Bootnodes {
-		boots[addr.ID] = struct{}{}
-	}
-	options := []pubsub.Option{
-		// Gossipsubv1.1 configuration
-		pubsub.WithFloodPublish(cfg.Flood),
-		pubsub.WithDirectPeers(cfg.Direct),
-		pubsub.WithMessageIdFn(msgID),
-		pubsub.WithNoAuthor(),
-		pubsub.WithMessageSignaturePolicy(pubsub.StrictNoSign),
-		pubsub.WithPeerOutboundQueueSize(8192),
-		pubsub.WithValidateQueueSize(cfg.QueueSize),
-		pubsub.WithValidateThrottle(cfg.Throttle),
-		pubsub.WithRawTracer(p2pmetrics.NewGoSIPCollector()),
-		pubsub.WithSeenMessagesStrategy(cfg.EvictionStrategy),
-		pubsub.WithPeerScore(
-			&pubsub.PeerScoreParams{
-				AppSpecificScore: func(p peer.ID) float64 {
-					_, exist := boots[p]
-					if exist && !cfg.IsBootnode {
-						return 10000
-					}
-					return 0
-				},
-				AppSpecificWeight: 1,
+func getOptions(cfg Config) []pubsub.Option { _ = "STUB: not implemented"; return nil }
 
-				// TODO: consider setting IP co-location threshold before applying penalties
+// Gossipsubv1.1 configuration
 
-				// P7: behavioral penalties, decay after 1hr
-				BehaviourPenaltyThreshold: 6,
-				BehaviourPenaltyWeight:    -10,
-				BehaviourPenaltyDecay:     pubsub.ScoreParameterDecay(time.Hour),
+// TODO: consider setting IP co-location threshold before applying penalties
 
-				DecayInterval: pubsub.DefaultDecayInterval,
-				DecayToZero:   pubsub.DefaultDecayToZero,
+// P7: behavioral penalties, decay after 1hr
 
-				// this retains non-positive scores for 6 hours
-				RetainScore: 6 * time.Hour,
+// this retains non-positive scores for 6 hours
 
-				Topics: map[string]*pubsub.TopicScoreParams{
-					AtxProtocol:      defaultTopicParam(),
-					ProposalProtocol: defaultTopicParam(),
-				},
-				// TODO: add TopicScoreParams
-			},
-			&pubsub.PeerScoreThresholds{
-				GossipThreshold:             GossipScoreThreshold,
-				PublishThreshold:            PublishScoreThreshold,
-				GraylistThreshold:           GraylistScoreThreshold,
-				AcceptPXThreshold:           AcceptPXScoreThreshold,
-				OpportunisticGraftThreshold: OpportunisticGraftScoreThreshold,
-			},
-		),
-		// TODO: add peer scoring debugging with WithPeerScoreInspect
-	}
+// TODO: add TopicScoreParams
 
-	if cfg.MaxMessageSize != 0 {
-		options = append(options, pubsub.WithMaxMessageSize(cfg.MaxMessageSize))
-	}
+// TODO: add peer scoring debugging with WithPeerScoreInspect
 
-	// enable Peer eXchange on bootstrappers
-	if cfg.IsBootnode {
-		// turn off the mesh for bootnodes -- only do gossip and PX
-		pubsub.GossipSubD = 0
-		pubsub.GossipSubDscore = 0
-		pubsub.GossipSubDlo = 0
-		pubsub.GossipSubDhi = 0
-		pubsub.GossipSubDout = 0
-		pubsub.GossipSubDlazy = 64
-		pubsub.GossipSubGossipFactor = 0.25
-		pubsub.GossipSubPruneBackoff = 5 * time.Minute
-		// turn on PX
-		options = append(options, pubsub.WithPeerExchange(true))
-	}
-	return options
-}
+// enable Peer eXchange on bootstrappers
 
-func defaultTopicParam() *pubsub.TopicScoreParams {
-	return &pubsub.TopicScoreParams{
-		TopicWeight: 0.1, // max cap is 50, max mesh penalty is -10, single invalid message is -100
+// turn off the mesh for bootnodes -- only do gossip and PX
 
-		// 1 tick per second, maxes at 1 after 1 hour
-		TimeInMeshWeight:  0.00027, // ~1/3600
-		TimeInMeshQuantum: time.Second,
-		TimeInMeshCap:     1,
+// turn on PX
 
-		// deliveries decay after 1 hour, cap at 1000
-		FirstMessageDeliveriesWeight: 5, // max value is 500
-		FirstMessageDeliveriesDecay:  pubsub.ScoreParameterDecay(time.Hour),
-		FirstMessageDeliveriesCap:    100,
+func defaultTopicParam() *pubsub.TopicScoreParams { _ = "STUB: not implemented"; return nil }
 
-		// TODO: consider mesh delivery failure when the network grows and traffic becomes significant
+// max cap is 50, max mesh penalty is -10, single invalid message is -100
 
-		// invalid messages decay after 1 hour
-		InvalidMessageDeliveriesWeight: -1000,
-		InvalidMessageDeliveriesDecay:  pubsub.ScoreParameterDecay(time.Hour),
-	}
-}
+// 1 tick per second, maxes at 1 after 1 hour
+// ~1/3600
 
-func castResult(err error) string {
-	switch {
-	case err == nil:
-		return "accept"
-	case errors.Is(err, ErrValidationReject):
-		return "reject"
-	default:
-		return "ignore"
-	}
-}
+// deliveries decay after 1 hour, cap at 1000
+// max value is 500
+
+// TODO: consider mesh delivery failure when the network grows and traffic becomes significant
+
+// invalid messages decay after 1 hour
+
+func castResult(err error) string { _ = "STUB: not implemented"; return "" }

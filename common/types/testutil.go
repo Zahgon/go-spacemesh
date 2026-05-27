@@ -1,139 +1,43 @@
 package types
 
-import (
-	"crypto/rand"
-)
-
 // RandomBytes generates random data in bytes for testing.
-func RandomBytes(size int) []byte {
-	b := make([]byte, size)
-	_, err := rand.Read(b)
-	if err != nil {
-		return nil
-	}
-	return b
-}
+func RandomBytes(size int) []byte { _ = "STUB: not implemented"; return nil }
 
 // RandomHash generates random Hash32 for testing.
-func RandomHash() Hash32 {
-	var h Hash32
-	h.SetBytes(RandomBytes(Hash32Length))
-	return h
-}
+func RandomHash() Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // RandomBeacon generates random beacon in bytes for testing.
-func RandomBeacon() Beacon {
-	return BytesToBeacon(RandomBytes(BeaconSize))
-}
+func RandomBeacon() Beacon { _ = "STUB: not implemented"; return *new(Beacon) }
 
 // RandomActiveSet generates a random set of ATXIDs of the specified size.
-func RandomActiveSet(size int) []ATXID {
-	ids := make([]ATXID, 0, size)
-	for i := 0; i < size; i++ {
-		ids = append(ids, RandomATXID())
-	}
-	return ids
-}
+func RandomActiveSet(size int) []ATXID { _ = "STUB: not implemented"; return nil }
 
 // RandomTXSet generates a random set of TransactionID of the specified size.
-func RandomTXSet(size int) []TransactionID {
-	ids := make([]TransactionID, 0, size)
-	for i := 0; i < size; i++ {
-		ids = append(ids, RandomTransactionID())
-	}
-	return ids
-}
+func RandomTXSet(size int) []TransactionID { _ = "STUB: not implemented"; return nil }
 
 // RandomATXID generates a random ATXID for testing.
-func RandomATXID() ATXID {
-	var b [ATXIDSize]byte
-	_, err := rand.Read(b[:])
-	if err != nil {
-		return EmptyATXID
-	}
-	return ATXID(b)
-}
+func RandomATXID() ATXID { _ = "STUB: not implemented"; return *new(ATXID) }
 
 // RandomNodeID generates a random NodeID for testing.
-func RandomNodeID() NodeID {
-	var b [NodeIDSize]byte
-	_, err := rand.Read(b[:])
-	if err != nil {
-		return EmptyNodeID
-	}
-	return NodeID(b)
-}
+func RandomNodeID() NodeID { _ = "STUB: not implemented"; return *new(NodeID) }
 
 // RandomBallotID generates a random BallotID for testing.
-func RandomBallotID() BallotID {
-	var id BallotID
-	_, err := rand.Read(id[:])
-	if err != nil {
-		return EmptyBallotID
-	}
-	return id
-}
+func RandomBallotID() BallotID { _ = "STUB: not implemented"; return *new(BallotID) }
 
 // RandomProposalID generates a random ProposalID for testing.
-func RandomProposalID() ProposalID {
-	var id ProposalID
-	_, err := rand.Read(id[:])
-	if err != nil {
-		return ProposalID{}
-	}
-	return id
-}
+func RandomProposalID() ProposalID { _ = "STUB: not implemented"; return *new(ProposalID) }
 
 // RandomBlockID generates a random ProposalID for testing.
-func RandomBlockID() BlockID {
-	return BlockID(RandomProposalID())
-}
+func RandomBlockID() BlockID { _ = "STUB: not implemented"; return *new(BlockID) }
 
 // RandomTransactionID generates a random TransactionID for testing.
-func RandomTransactionID() TransactionID {
-	var b [TransactionIDSize]byte
-	_, err := rand.Read(b[:])
-	if err != nil {
-		return TransactionID{}
-	}
-	return TransactionID(b)
-}
+func RandomTransactionID() TransactionID { _ = "STUB: not implemented"; return *new(TransactionID) }
 
 // RandomBallot generates a Ballot with random content for testing.
-func RandomBallot() *Ballot {
-	var vrf VrfSignature
-	rand.Read(vrf[:])
-
-	return &Ballot{
-		InnerBallot: InnerBallot{
-			Layer:     LayerID(10),
-			AtxID:     RandomATXID(),
-			RefBallot: RandomBallotID(),
-		},
-		EligibilityProofs: []VotingEligibility{{Sig: vrf}},
-		Votes: Votes{
-			Base:    RandomBallotID(),
-			Support: []Vote{{ID: RandomBlockID()}, {ID: RandomBlockID()}},
-		},
-	}
-}
+func RandomBallot() *Ballot { _ = "STUB: not implemented"; return nil }
 
 // RandomEdSignature generates a random (not necessarily valid) EdSignature for testing.
-func RandomEdSignature() EdSignature {
-	var b [EdSignatureSize]byte
-	_, err := rand.Read(b[:])
-	if err != nil {
-		return EdSignature{}
-	}
-	return EdSignature(b)
-}
+func RandomEdSignature() EdSignature { _ = "STUB: not implemented"; return *new(EdSignature) }
 
 // RandomVrfSignature generates a random VrfSignature for testing.
-func RandomVrfSignature() VrfSignature {
-	var b [VrfSignatureSize]byte
-	_, err := rand.Read(b[:])
-	if err != nil {
-		return VrfSignature{}
-	}
-	return VrfSignature(b)
-}
+func RandomVrfSignature() VrfSignature { _ = "STUB: not implemented"; return *new(VrfSignature) }

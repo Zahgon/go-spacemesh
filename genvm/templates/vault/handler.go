@@ -1,9 +1,6 @@
 package vault
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/spacemeshos/go-scale"
 
 	"github.com/spacemeshos/go-spacemesh/genvm/core"
@@ -18,67 +15,35 @@ func init() {
 }
 
 // Register vault template.
-func Register(reg *registry.Registry) {
-	reg.Register(TemplateAddress, &handler{})
-}
+func Register(reg *registry.Registry) { _ = "STUB: not implemented"; return }
 
 type handler struct{}
 
 // Parse is noop on vault template.
 func (h *handler) Parse(method uint8, decoder *scale.Decoder) (core.ParseOutput, error) {
-	return core.ParseOutput{}, nil
+	_ = "STUB: not implemented"
+	return *new(core.ParseOutput), nil
 }
 
 // New instantiates vault state.
 func (h *handler) New(args any) (core.Template, error) {
-	spawn := args.(*SpawnArguments)
-	if spawn.InitialUnlockAmount > spawn.TotalAmount {
-		return nil, fmt.Errorf(
-			"initial %d should be less or equal to total %d",
-			spawn.InitialUnlockAmount,
-			spawn.TotalAmount,
-		)
-	}
-	if spawn.VestingEnd.Before(spawn.VestingStart) {
-		return nil, fmt.Errorf("vesting end %s should be atleast equal to start %s",
-			spawn.VestingEnd, spawn.VestingStart)
-	}
-	return &Vault{
-		Owner:       spawn.Owner,
-		TotalAmount: spawn.TotalAmount,
-		// InitialUnlockAmount is no longer used per SMIP-0002
-		InitialUnlockAmount: spawn.InitialUnlockAmount,
-		VestingStart:        spawn.VestingStart,
-		VestingEnd:          spawn.VestingEnd,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
+
+// InitialUnlockAmount is no longer used per SMIP-0002
 
 // Load vault from state.
 func (h *handler) Load(state []byte) (core.Template, error) {
-	dec := scale.NewDecoder(bytes.NewBuffer(state))
-	vault := &Vault{}
-	if _, err := vault.DecodeScale(dec); err != nil {
-		return nil, fmt.Errorf("%w: %w", core.ErrInternal, err)
-	}
-	return vault, nil
+	_ = "STUB: not implemented"
+	return *new(core.Template), nil
 }
 
 // Exec supports only MethodSpend.
 func (h *handler) Exec(host core.Host, method uint8, args scale.Encodable) error {
-	if method != core.MethodSpend {
-		return fmt.Errorf("%w: unknown method %d", core.ErrMalformed, method)
-	}
-	spend := args.(*SpendArguments)
-	return host.Template().(*Vault).Spend(host, spend.Destination, spend.Amount)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Args ...
-func (h *handler) Args(method uint8) scale.Type {
-	switch method {
-	case core.MethodSpawn:
-		return &SpawnArguments{}
-	case core.MethodSpend:
-		return &SpendArguments{}
-	}
-	return nil
-}
+func (h *handler) Args(method uint8) scale.Type { _ = "STUB: not implemented"; return *new(scale.Type) }

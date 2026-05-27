@@ -11,7 +11,6 @@ package txs
 
 import (
 	context "context"
-	reflect "reflect"
 	time "time"
 
 	types "github.com/spacemeshos/go-spacemesh/common/types"
@@ -33,29 +32,27 @@ type MockconservativeStateMockRecorder struct {
 
 // NewMockconservativeState creates a new mock instance.
 func NewMockconservativeState(ctrl *gomock.Controller) *MockconservativeState {
-	mock := &MockconservativeState{ctrl: ctrl}
-	mock.recorder = &MockconservativeStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockconservativeState) EXPECT() *MockconservativeStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AddToCache mocks base method.
+	return nil
 }
 
-// AddToCache mocks base method.
 func (m *MockconservativeState) AddToCache(arg0 context.Context, arg1 *types.Transaction, arg2 time.Time) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddToCache", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddToCache indicates an expected call of AddToCache.
 func (mr *MockconservativeStateMockRecorder) AddToCache(arg0, arg1, arg2 any) *MockconservativeStateAddToCacheCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddToCache", reflect.TypeOf((*MockconservativeState)(nil).AddToCache), arg0, arg1, arg2)
-	return &MockconservativeStateAddToCacheCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateAddToCacheCall wrap *gomock.Call
@@ -65,35 +62,32 @@ type MockconservativeStateAddToCacheCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateAddToCacheCall) Return(arg0 error) *MockconservativeStateAddToCacheCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateAddToCacheCall) Do(f func(context.Context, *types.Transaction, time.Time) error) *MockconservativeStateAddToCacheCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateAddToCacheCall) DoAndReturn(f func(context.Context, *types.Transaction, time.Time) error) *MockconservativeStateAddToCacheCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddToDB mocks base method.
 func (m *MockconservativeState) AddToDB(arg0 *types.Transaction) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddToDB", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddToDB indicates an expected call of AddToDB.
 func (mr *MockconservativeStateMockRecorder) AddToDB(arg0 any) *MockconservativeStateAddToDBCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddToDB", reflect.TypeOf((*MockconservativeState)(nil).AddToDB), arg0)
-	return &MockconservativeStateAddToDBCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateAddToDBCall wrap *gomock.Call
@@ -103,36 +97,32 @@ type MockconservativeStateAddToDBCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateAddToDBCall) Return(arg0 error) *MockconservativeStateAddToDBCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateAddToDBCall) Do(f func(*types.Transaction) error) *MockconservativeStateAddToDBCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateAddToDBCall) DoAndReturn(f func(*types.Transaction) error) *MockconservativeStateAddToDBCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMeshTransaction mocks base method.
 func (m *MockconservativeState) GetMeshTransaction(arg0 types.TransactionID) (*types.MeshTransaction, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMeshTransaction", arg0)
-	ret0, _ := ret[0].(*types.MeshTransaction)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetMeshTransaction indicates an expected call of GetMeshTransaction.
 func (mr *MockconservativeStateMockRecorder) GetMeshTransaction(arg0 any) *MockconservativeStateGetMeshTransactionCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMeshTransaction", reflect.TypeOf((*MockconservativeState)(nil).GetMeshTransaction), arg0)
-	return &MockconservativeStateGetMeshTransactionCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetMeshTransactionCall wrap *gomock.Call
@@ -142,36 +132,32 @@ type MockconservativeStateGetMeshTransactionCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetMeshTransactionCall) Return(arg0 *types.MeshTransaction, arg1 error) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetMeshTransactionCall) Do(f func(types.TransactionID) (*types.MeshTransaction, error)) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetMeshTransactionCall) DoAndReturn(f func(types.TransactionID) (*types.MeshTransaction, error)) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HasTx mocks base method.
 func (m *MockconservativeState) HasTx(arg0 types.TransactionID) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HasTx", arg0)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // HasTx indicates an expected call of HasTx.
 func (mr *MockconservativeStateMockRecorder) HasTx(arg0 any) *MockconservativeStateHasTxCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasTx", reflect.TypeOf((*MockconservativeState)(nil).HasTx), arg0)
-	return &MockconservativeStateHasTxCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateHasTxCall wrap *gomock.Call
@@ -181,35 +167,32 @@ type MockconservativeStateHasTxCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateHasTxCall) Return(arg0 bool, arg1 error) *MockconservativeStateHasTxCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateHasTxCall) Do(f func(types.TransactionID) (bool, error)) *MockconservativeStateHasTxCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateHasTxCall) DoAndReturn(f func(types.TransactionID) (bool, error)) *MockconservativeStateHasTxCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validation mocks base method.
 func (m *MockconservativeState) Validation(arg0 types.RawTx) system.ValidationRequest {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validation", arg0)
-	ret0, _ := ret[0].(system.ValidationRequest)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(system.ValidationRequest)
 }
 
 // Validation indicates an expected call of Validation.
 func (mr *MockconservativeStateMockRecorder) Validation(arg0 any) *MockconservativeStateValidationCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validation", reflect.TypeOf((*MockconservativeState)(nil).Validation), arg0)
-	return &MockconservativeStateValidationCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateValidationCall wrap *gomock.Call
@@ -219,20 +202,20 @@ type MockconservativeStateValidationCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateValidationCall) Return(arg0 system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateValidationCall) Do(f func(types.RawTx) system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateValidationCall) DoAndReturn(f func(types.RawTx) system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmState is a mock of vmState interface.
@@ -248,31 +231,25 @@ type MockvmStateMockRecorder struct {
 }
 
 // NewMockvmState creates a new mock instance.
-func NewMockvmState(ctrl *gomock.Controller) *MockvmState {
-	mock := &MockvmState{ctrl: ctrl}
-	mock.recorder = &MockvmStateMockRecorder{mock}
-	return mock
-}
+func NewMockvmState(ctrl *gomock.Controller) *MockvmState { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockvmState) EXPECT() *MockvmStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAllAccounts mocks base method.
+	return nil
 }
 
-// GetAllAccounts mocks base method.
 func (m *MockvmState) GetAllAccounts() ([]*types.Account, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllAccounts")
-	ret0, _ := ret[0].([]*types.Account)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAllAccounts indicates an expected call of GetAllAccounts.
 func (mr *MockvmStateMockRecorder) GetAllAccounts() *MockvmStateGetAllAccountsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllAccounts", reflect.TypeOf((*MockvmState)(nil).GetAllAccounts))
-	return &MockvmStateGetAllAccountsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetAllAccountsCall wrap *gomock.Call
@@ -282,36 +259,32 @@ type MockvmStateGetAllAccountsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetAllAccountsCall) Return(arg0 []*types.Account, arg1 error) *MockvmStateGetAllAccountsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetAllAccountsCall) Do(f func() ([]*types.Account, error)) *MockvmStateGetAllAccountsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetAllAccountsCall) DoAndReturn(f func() ([]*types.Account, error)) *MockvmStateGetAllAccountsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBalance mocks base method.
 func (m *MockvmState) GetBalance(arg0 types.Address) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBalance", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GetBalance indicates an expected call of GetBalance.
 func (mr *MockvmStateMockRecorder) GetBalance(arg0 any) *MockvmStateGetBalanceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBalance", reflect.TypeOf((*MockvmState)(nil).GetBalance), arg0)
-	return &MockvmStateGetBalanceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetBalanceCall wrap *gomock.Call
@@ -321,36 +294,32 @@ type MockvmStateGetBalanceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetBalanceCall) Return(arg0 uint64, arg1 error) *MockvmStateGetBalanceCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetBalanceCall) Do(f func(types.Address) (uint64, error)) *MockvmStateGetBalanceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetBalanceCall) DoAndReturn(f func(types.Address) (uint64, error)) *MockvmStateGetBalanceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerApplied mocks base method.
 func (m *MockvmState) GetLayerApplied(arg0 types.TransactionID) (types.LayerID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerApplied", arg0)
-	ret0, _ := ret[0].(types.LayerID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.LayerID), nil
 }
 
 // GetLayerApplied indicates an expected call of GetLayerApplied.
 func (mr *MockvmStateMockRecorder) GetLayerApplied(arg0 any) *MockvmStateGetLayerAppliedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerApplied", reflect.TypeOf((*MockvmState)(nil).GetLayerApplied), arg0)
-	return &MockvmStateGetLayerAppliedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetLayerAppliedCall wrap *gomock.Call
@@ -360,36 +329,32 @@ type MockvmStateGetLayerAppliedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetLayerAppliedCall) Return(arg0 types.LayerID, arg1 error) *MockvmStateGetLayerAppliedCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetLayerAppliedCall) Do(f func(types.TransactionID) (types.LayerID, error)) *MockvmStateGetLayerAppliedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetLayerAppliedCall) DoAndReturn(f func(types.TransactionID) (types.LayerID, error)) *MockvmStateGetLayerAppliedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerStateRoot mocks base method.
 func (m *MockvmState) GetLayerStateRoot(arg0 types.LayerID) (types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerStateRoot", arg0)
-	ret0, _ := ret[0].(types.Hash32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Hash32), nil
 }
 
 // GetLayerStateRoot indicates an expected call of GetLayerStateRoot.
 func (mr *MockvmStateMockRecorder) GetLayerStateRoot(arg0 any) *MockvmStateGetLayerStateRootCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerStateRoot", reflect.TypeOf((*MockvmState)(nil).GetLayerStateRoot), arg0)
-	return &MockvmStateGetLayerStateRootCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetLayerStateRootCall wrap *gomock.Call
@@ -399,36 +364,32 @@ type MockvmStateGetLayerStateRootCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetLayerStateRootCall) Return(arg0 types.Hash32, arg1 error) *MockvmStateGetLayerStateRootCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetLayerStateRootCall) Do(f func(types.LayerID) (types.Hash32, error)) *MockvmStateGetLayerStateRootCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetLayerStateRootCall) DoAndReturn(f func(types.LayerID) (types.Hash32, error)) *MockvmStateGetLayerStateRootCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetNonce mocks base method.
 func (m *MockvmState) GetNonce(arg0 types.Address) (types.Nonce, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetNonce", arg0)
-	ret0, _ := ret[0].(types.Nonce)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Nonce), nil
 }
 
 // GetNonce indicates an expected call of GetNonce.
 func (mr *MockvmStateMockRecorder) GetNonce(arg0 any) *MockvmStateGetNonceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNonce", reflect.TypeOf((*MockvmState)(nil).GetNonce), arg0)
-	return &MockvmStateGetNonceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetNonceCall wrap *gomock.Call
@@ -438,36 +399,32 @@ type MockvmStateGetNonceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetNonceCall) Return(arg0 types.Nonce, arg1 error) *MockvmStateGetNonceCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetNonceCall) Do(f func(types.Address) (types.Nonce, error)) *MockvmStateGetNonceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetNonceCall) DoAndReturn(f func(types.Address) (types.Nonce, error)) *MockvmStateGetNonceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStateRoot mocks base method.
 func (m *MockvmState) GetStateRoot() (types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStateRoot")
-	ret0, _ := ret[0].(types.Hash32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Hash32), nil
 }
 
 // GetStateRoot indicates an expected call of GetStateRoot.
 func (mr *MockvmStateMockRecorder) GetStateRoot() *MockvmStateGetStateRootCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStateRoot", reflect.TypeOf((*MockvmState)(nil).GetStateRoot))
-	return &MockvmStateGetStateRootCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateGetStateRootCall wrap *gomock.Call
@@ -477,35 +434,32 @@ type MockvmStateGetStateRootCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateGetStateRootCall) Return(arg0 types.Hash32, arg1 error) *MockvmStateGetStateRootCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateGetStateRootCall) Do(f func() (types.Hash32, error)) *MockvmStateGetStateRootCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateGetStateRootCall) DoAndReturn(f func() (types.Hash32, error)) *MockvmStateGetStateRootCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validation mocks base method.
 func (m *MockvmState) Validation(arg0 types.RawTx) system.ValidationRequest {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validation", arg0)
-	ret0, _ := ret[0].(system.ValidationRequest)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(system.ValidationRequest)
 }
 
 // Validation indicates an expected call of Validation.
 func (mr *MockvmStateMockRecorder) Validation(arg0 any) *MockvmStateValidationCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validation", reflect.TypeOf((*MockvmState)(nil).Validation), arg0)
-	return &MockvmStateValidationCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockvmStateValidationCall wrap *gomock.Call
@@ -515,20 +469,20 @@ type MockvmStateValidationCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockvmStateValidationCall) Return(arg0 system.ValidationRequest) *MockvmStateValidationCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockvmStateValidationCall) Do(f func(types.RawTx) system.ValidationRequest) *MockvmStateValidationCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockvmStateValidationCall) DoAndReturn(f func(types.RawTx) system.ValidationRequest) *MockvmStateValidationCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconStateCache is a mock of conStateCache interface.
@@ -545,29 +499,27 @@ type MockconStateCacheMockRecorder struct {
 
 // NewMockconStateCache creates a new mock instance.
 func NewMockconStateCache(ctrl *gomock.Controller) *MockconStateCache {
-	mock := &MockconStateCache{ctrl: ctrl}
-	mock.recorder = &MockconStateCacheMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockconStateCache) EXPECT() *MockconStateCacheMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetMempool mocks base method.
+	return nil
 }
 
-// GetMempool mocks base method.
 func (m *MockconStateCache) GetMempool() map[types.Address][]*NanoTX {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMempool")
-	ret0, _ := ret[0].(map[types.Address][]*NanoTX)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMempool indicates an expected call of GetMempool.
 func (mr *MockconStateCacheMockRecorder) GetMempool() *MockconStateCacheGetMempoolCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMempool", reflect.TypeOf((*MockconStateCache)(nil).GetMempool))
-	return &MockconStateCacheGetMempoolCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconStateCacheGetMempoolCall wrap *gomock.Call
@@ -577,18 +529,18 @@ type MockconStateCacheGetMempoolCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconStateCacheGetMempoolCall) Return(arg0 map[types.Address][]*NanoTX) *MockconStateCacheGetMempoolCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconStateCacheGetMempoolCall) Do(f func() map[types.Address][]*NanoTX) *MockconStateCacheGetMempoolCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconStateCacheGetMempoolCall) DoAndReturn(f func() map[types.Address][]*NanoTX) *MockconStateCacheGetMempoolCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

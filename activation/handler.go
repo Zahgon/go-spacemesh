@@ -4,19 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"slices"
-	"time"
 
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"golang.org/x/sync/singleflight"
 
-	"github.com/spacemeshos/go-spacemesh/activation/wire"
 	"github.com/spacemeshos/go-spacemesh/atxsdata"
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/datastore"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/p2p"
 	"github.com/spacemeshos/go-spacemesh/p2p/pubsub"
 	"github.com/spacemeshos/go-spacemesh/signing"
@@ -38,29 +32,9 @@ type atxVersion struct {
 
 type AtxVersions map[types.EpochID]types.AtxVersion
 
-func (v AtxVersions) asSlice() []atxVersion {
-	var versions []atxVersion
-	for epoch, version := range v {
-		versions = append(versions, atxVersion{epoch, version})
-	}
-	slices.SortFunc(versions, func(a, b atxVersion) int { return int(int64(a.publish) - int64(b.publish)) })
-	return versions
-}
+func (v AtxVersions) asSlice() []atxVersion { _ = "STUB: not implemented"; return nil }
 
-func (v AtxVersions) Validate() error {
-	versions := v.asSlice()
-	lastVersion := types.AtxV1
-	for _, v := range versions {
-		if v.AtxVersion < types.AtxV1 || v.AtxVersion > types.AtxVMAX {
-			return fmt.Errorf("ATX version: %v not in range [%v:%v]", v, types.AtxV1, types.AtxVMAX)
-		}
-		if v.AtxVersion < lastVersion {
-			return fmt.Errorf("cannot decrease ATX version from %v to %v", lastVersion, v.AtxVersion)
-		}
-		lastVersion = v.AtxVersion
-	}
-	return nil
-}
+func (v AtxVersions) Validate() error { _ = "STUB: not implemented"; return nil }
 
 // Handler processes the atxs received from all nodes and their validity status.
 type Handler struct {
@@ -79,16 +53,13 @@ type Handler struct {
 type HandlerOption func(*Handler)
 
 func WithAtxVersions(v AtxVersions) HandlerOption {
-	return func(h *Handler) {
-		h.versions = append(h.versions, v.asSlice()...)
-	}
+	_ = "STUB: not implemented"
+	return *new(HandlerOption)
 }
 
 func WithTickSize(tickSize uint64) HandlerOption {
-	return func(h *Handler) {
-		h.v1.tickSize = tickSize
-		h.v2.tickSize = tickSize
-	}
+	_ = "STUB: not implemented"
+	return *new(HandlerOption)
 }
 
 // NewHandler returns a data handler for ATX.
@@ -108,125 +79,27 @@ func NewHandler(
 	lg *zap.Logger,
 	opts ...HandlerOption,
 ) *Handler {
-	h := &Handler{
-		local:    local,
-		logger:   lg,
-		versions: []atxVersion{{0, types.AtxV1}},
-
-		v1: &HandlerV1{
-			local:           local,
-			cdb:             cdb,
-			atxsdata:        atxsdata,
-			edVerifier:      edVerifier,
-			clock:           c,
-			tickSize:        1,
-			goldenATXID:     goldenATXID,
-			nipostValidator: nipostValidator,
-			logger:          lg,
-			fetcher:         fetcher,
-			beacon:          beacon,
-			tortoise:        tortoise,
-			malPublisher:    legacyMalPublisher,
-			malPublisher2:   malPublisher,
-		},
-
-		v2: &HandlerV2{
-			local:           local,
-			cdb:             cdb,
-			atxsdata:        atxsdata,
-			edVerifier:      edVerifier,
-			clock:           c,
-			tickSize:        1,
-			goldenATXID:     goldenATXID,
-			nipostValidator: nipostValidator,
-			logger:          lg,
-			fetcher:         fetcher,
-			beacon:          beacon,
-			tortoise:        tortoise,
-			malPublisher:    malPublisher,
-		},
-	}
-
-	for _, opt := range opts {
-		opt(h)
-	}
-
-	h.logger.Info("atx handler created",
-		zap.Array("supported ATX versions", zapcore.ArrayMarshalerFunc(func(enc zapcore.ArrayEncoder) error {
-			for _, v := range h.versions {
-				enc.AppendString(fmt.Sprintf("v%v from epoch %d", v.AtxVersion, v.publish))
-			}
-			return nil
-		})))
-
-	return h
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HandleSyncedAtx handles atxs received by sync.
 func (h *Handler) HandleSyncedAtx(ctx context.Context, expHash types.Hash32, peer p2p.Peer, data []byte) error {
-	err := h.handleAtx(ctx, expHash, peer, data)
-	switch {
-	case errors.Is(err, errKnownAtx):
-		return nil
-	case errors.Is(err, errMalformedData):
-		h.logger.Debug("malformed atx",
-			log.ZContext(ctx),
-			zap.Stringer("sender", peer),
-			zap.Error(err),
-		)
-		return err
-	case err != nil:
-		h.logger.Warn("failed to process synced atx",
-			log.ZContext(ctx),
-			zap.Stringer("sender", peer),
-			zap.Error(err),
-		)
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // HandleGossipAtx handles the atx gossip data channel.
 func (h *Handler) HandleGossipAtx(ctx context.Context, peer p2p.Peer, msg []byte) error {
-	err := h.handleAtx(ctx, types.EmptyHash32, peer, msg)
-	switch {
-	case errors.Is(err, errKnownAtx) && peer == h.local:
-		return nil
-	case errors.Is(err, errKnownAtx):
-		return errKnownAtx
-	case errors.Is(err, errMalformedData):
-		h.logger.Debug("malformed atx gossip",
-			log.ZContext(ctx),
-			zap.Stringer("sender", peer),
-			zap.Error(err),
-		)
-		return err
-	case err != nil:
-		h.logger.Warn("failed to process atx gossip",
-			log.ZContext(ctx),
-			zap.Stringer("sender", peer),
-			zap.Error(err),
-		)
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (h *Handler) determineVersion(msg []byte) (*types.AtxVersion, error) {
+	_ = "STUB: not implemented"
 	// The first field of all ATXs is the publish epoch, which
 	// we use to determine the version of the ATX.
-	var publish types.EpochID
-	if err := codec.Decode(msg, &publish); err != nil && !errors.Is(err, codec.ErrShortRead) {
-		return nil, fmt.Errorf("%w: %w", errMalformedData, err)
-	}
-
-	version := types.AtxV1
-	for _, v := range h.versions {
-		if publish >= v.publish {
-			version = v.AtxVersion
-		}
-	}
-	return &version, nil
+	return nil, nil
 }
 
 type opaqueAtx interface {
@@ -234,55 +107,11 @@ type opaqueAtx interface {
 }
 
 func (h *Handler) decodeATX(msg []byte) (atx opaqueAtx, err error) {
-	version, err := h.determineVersion(msg)
-	if err != nil {
-		return nil, fmt.Errorf("determining ATX version: %w", err)
-	}
-
-	switch *version {
-	case types.AtxV1:
-		atx, err = wire.DecodeAtxV1(msg)
-	case types.AtxV2:
-		atx, err = wire.DecodeAtxV2(msg)
-	default:
-		return nil, fmt.Errorf("unsupported ATX version: %v", *version)
-	}
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errMalformedData, err)
-	}
-	return atx, nil
+	_ = "STUB: not implemented"
+	return *new(opaqueAtx), nil
 }
 
 func (h *Handler) handleAtx(ctx context.Context, expHash types.Hash32, peer p2p.Peer, msg []byte) error {
-	receivedTime := time.Now()
-
-	opaqueAtx, err := h.decodeATX(msg)
-	if err != nil {
-		return fmt.Errorf("%w: decoding ATX: %w", pubsub.ErrValidationReject, err)
-	}
-	id := opaqueAtx.ID()
-
-	if expHash != types.EmptyHash32 && id.Hash32() != expHash {
-		return fmt.Errorf("%w: atx want %s, got %s", errWrongHash, expHash.ShortString(), id.ShortString())
-	}
-
-	key := string(id.Bytes())
-	_, err, _ = h.inProgress.Do(key, func() (any, error) {
-		h.logger.Debug("handling incoming atx",
-			log.ZContext(ctx),
-			zap.Stringer("atx_id", id),
-			zap.Int("size", len(msg)),
-		)
-
-		switch atx := opaqueAtx.(type) {
-		case *wire.ActivationTxV1:
-			return nil, h.v1.processATX(ctx, peer, atx, receivedTime)
-		case *wire.ActivationTxV2:
-			return nil, h.v2.processATX(ctx, peer, atx, receivedTime)
-		default:
-			panic("unreachable")
-		}
-	})
-	h.inProgress.Forget(key)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

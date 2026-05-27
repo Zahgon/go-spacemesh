@@ -1,8 +1,6 @@
 package fetch
 
 import (
-	"fmt"
-
 	"github.com/spacemeshos/go-scale"
 	"go.uber.org/zap/zapcore"
 
@@ -69,44 +67,18 @@ type MeshHashRequest struct {
 }
 
 func NewMeshHashRequest(from, to types.LayerID) *MeshHashRequest {
-	diff := to.Difference(from)
-	delta := diff/uint32(MaxHashesInReq-1) + 1
-	return &MeshHashRequest{
-		From: from,
-		To:   to,
-		Step: delta,
-	}
-}
-
-func (r *MeshHashRequest) Count() uint {
-	diff := r.To.Difference(r.From)
-	count := uint(diff/r.Step + 1)
-	if diff%r.Step != 0 {
-		// last layer is not a multiple of Step size, so we need to add it
-		count++
-	}
-	return count
-}
-
-func (r *MeshHashRequest) Validate() error {
-	if r.Step == 0 {
-		return fmt.Errorf("%w: By must not be zero", errBadRequest)
-	}
-
-	if r.To.Before(r.From) {
-		return fmt.Errorf("%w: To before From", errBadRequest)
-	}
-
-	if r.Count() > MaxHashesInReq {
-		return fmt.Errorf("%w: number of layers requested exceeds maximum for one request", errBadRequest)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (r *MeshHashRequest) Count() uint { _ = "STUB: not implemented"; return 0 }
+
+// last layer is not a multiple of Step size, so we need to add it
+
+func (r *MeshHashRequest) Validate() error { _ = "STUB: not implemented"; return nil }
+
 func (r *MeshHashRequest) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("from", r.From.Uint32())
-	encoder.AddUint32("to", r.To.Uint32())
-	encoder.AddUint32("by", r.Step)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -165,21 +137,20 @@ type LayerOpinion struct {
 
 // SetPeer ...
 func (lo *LayerOpinion) SetPeer(p p2p.Peer) {
-	lo.peer = p
+	_ = "STUB: not implemented"
+
+	// Peer ...
+	return
 }
 
-// Peer ...
 func (lo *LayerOpinion) Peer() p2p.Peer {
-	return lo.peer
+	_ = "STUB: not implemented"
+
+	// MarshalLogObject implements logging encoder for LayerOpinion.
+	return *new(p2p.Peer)
 }
 
-// MarshalLogObject implements logging encoder for LayerOpinion.
 func (lo *LayerOpinion) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("peer", lo.peer.String())
-	encoder.AddString("prev hash", lo.PrevAggHash.String())
-	encoder.AddBool("has cert", lo.Certified != nil)
-	if lo.Certified != nil {
-		encoder.AddString("cert block", lo.Certified.String())
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

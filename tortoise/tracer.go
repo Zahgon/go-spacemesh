@@ -1,18 +1,9 @@
 package tortoise
 
 import (
-	"bufio"
-	"context"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
-	"os"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 
 	"github.com/spacemeshos/go-spacemesh/atxsdata"
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -28,44 +19,13 @@ type tracer struct {
 	logger *zap.Logger
 }
 
-func (t *tracer) On(event traceEvent) {
-	buf, err := json.Marshal(event)
-	if err != nil {
-		panic(err.Error())
-	}
-	raw := json.RawMessage(buf)
-	t.logger.Info("",
-		zap.Uint16("t", event.Type()),
-		zap.Any("o", &raw),
-	)
-}
+func (t *tracer) On(event traceEvent) { _ = "STUB: not implemented"; return }
 
 type TraceOpt func(*zap.Config)
 
-func WithOutput(path string) TraceOpt {
-	return func(cfg *zap.Config) {
-		cfg.OutputPaths = []string{path}
-	}
-}
+func WithOutput(path string) TraceOpt { _ = "STUB: not implemented"; return *new(TraceOpt) }
 
-func newTracer(opts ...TraceOpt) *tracer {
-	cfg := zap.NewProductionConfig()
-	cfg.Sampling = nil
-	cfg.EncoderConfig.CallerKey = zapcore.OmitKey
-	cfg.EncoderConfig.MessageKey = zapcore.OmitKey
-	cfg.EncoderConfig.LevelKey = zapcore.OmitKey
-	cfg.DisableCaller = true
-	for _, opt := range opts {
-		opt(&cfg)
-	}
-	logger, err := cfg.Build()
-	if err != nil {
-		panic(err.Error())
-	}
-	return &tracer{
-		logger: logger.Named("tracer"),
-	}
-}
+func newTracer(opts ...TraceOpt) *tracer { _ = "STUB: not implemented"; return nil }
 
 type traceRunner struct {
 	opts          []Opt
@@ -77,34 +37,8 @@ type traceRunner struct {
 }
 
 func RunTrace(path string, breakpoint func(), opts ...Opt) error {
-	f, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	dec := json.NewDecoder(bufio.NewReaderSize(f, 1<<20))
-	enum := newEventEnum()
-	runner := &traceRunner{
-		opts:          opts,
-		pending:       map[types.BallotID]*DecodedBallot{},
-		assertOutputs: true,
-		assertErrors:  true,
-	}
-	for {
-		ev, err := enum.Decode(dec)
-		if err != nil {
-			if errors.Is(err, io.EOF) {
-				return nil
-			}
-			return err
-		}
-		if err := ev.Run(runner); err != nil {
-			return err
-		}
-		if breakpoint != nil {
-			breakpoint()
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type eventType = uint16
@@ -144,34 +78,11 @@ type ConfigTrace struct {
 	EffectiveGenesis         uint32 `json:"effective-genesis"`
 }
 
-func (c *ConfigTrace) Type() eventType {
-	return traceStart
-}
+func (c *ConfigTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (c *ConfigTrace) New() traceEvent {
-	return &ConfigTrace{}
-}
+func (c *ConfigTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (c *ConfigTrace) Run(r *traceRunner) error {
-	types.SetLayersPerEpoch(c.EpochSize)
-	types.SetEffectiveGenesis(c.EffectiveGenesis)
-	r.atxdata = atxsdata.New()
-	trt, err := New(
-		r.atxdata,
-		append(r.opts, WithConfig(Config{
-			Hdist:                    c.Hdist,
-			Zdist:                    c.Zdist,
-			WindowSize:               c.WindowSize,
-			MaxExceptions:            int(c.MaxExceptions),
-			BadBeaconVoteDelayLayers: c.BadBeaconVoteDelayLayers,
-			LayerSize:                c.LayerSize,
-		}))...)
-	if err != nil {
-		return err
-	}
-	r.trt = trt
-	return nil
-}
+func (c *ConfigTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type AtxTrace struct {
 	ID          types.ATXID   `json:"id"`
@@ -179,72 +90,43 @@ type AtxTrace struct {
 	Atx         *atxsdata.ATX `json:",inline"`
 }
 
-func (a *AtxTrace) Type() eventType {
-	return traceAtx
-}
+func (a *AtxTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (a *AtxTrace) New() traceEvent {
-	return &AtxTrace{}
-}
+func (a *AtxTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (a *AtxTrace) Run(r *traceRunner) error {
-	r.atxdata.AddAtx(a.TargetEpoch, a.ID, a.Atx)
-	r.trt.OnAtx(a.TargetEpoch, a.ID, a.Atx)
-	return nil
-}
+func (a *AtxTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type WeakCoinTrace struct {
 	Layer types.LayerID `json:"lid"`
 	Coin  bool          `json:"coin"`
 }
 
-func (w *WeakCoinTrace) Type() eventType {
-	return traceWeakCoin
-}
+func (w *WeakCoinTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (w *WeakCoinTrace) New() traceEvent {
-	return &WeakCoinTrace{}
-}
+func (w *WeakCoinTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (w *WeakCoinTrace) Run(r *traceRunner) error {
-	r.trt.OnWeakCoin(w.Layer, w.Coin)
-	return nil
-}
+func (w *WeakCoinTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type BeaconTrace struct {
 	Epoch  types.EpochID `json:"epoch"`
 	Beacon types.Beacon  `json:"beacon"`
 }
 
-func (b *BeaconTrace) Type() eventType {
-	return traceBeacon
-}
+func (b *BeaconTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (b *BeaconTrace) New() traceEvent {
-	return &BeaconTrace{}
-}
+func (b *BeaconTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (b *BeaconTrace) Run(r *traceRunner) error {
-	r.trt.OnBeacon(b.Epoch, b.Beacon)
-	return nil
-}
+func (b *BeaconTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type BallotTrace struct {
 	Ballot *types.BallotTortoiseData `json:",inline"`
 }
 
-func (b *BallotTrace) Type() eventType {
-	return traceBallot
-}
+func (b *BallotTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (b *BallotTrace) New() traceEvent {
-	return &BallotTrace{}
-}
+func (b *BallotTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (b *BallotTrace) Run(r *traceRunner) error {
-	r.trt.OnBallot(b.Ballot)
-	return nil
-}
+func (b *BallotTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type DecodeBallotTrace struct {
 	Ballot *types.BallotTortoiseData `json:",inline"`
@@ -253,26 +135,11 @@ type DecodeBallotTrace struct {
 	// TODO(dshulyak) want to assert decoding results somehow
 }
 
-func (d *DecodeBallotTrace) Type() eventType {
-	return traceDecode
-}
+func (d *DecodeBallotTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (d *DecodeBallotTrace) New() traceEvent {
-	return &DecodeBallotTrace{}
-}
+func (d *DecodeBallotTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (b *DecodeBallotTrace) Run(r *traceRunner) error {
-	decoded, err := r.trt.DecodeBallot(b.Ballot)
-	if r.assertErrors {
-		if err := assertErrors(err, b.Error); err != nil {
-			return err
-		}
-	}
-	if err == nil {
-		r.pending[decoded.ID] = decoded
-	}
-	return nil
-}
+func (b *DecodeBallotTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type StoreBallotTrace struct {
 	ID        types.BallotID `json:"id"`
@@ -280,31 +147,11 @@ type StoreBallotTrace struct {
 	Error     string         `json:"e,omitempty"`
 }
 
-func (s *StoreBallotTrace) Type() eventType {
-	return traceStore
-}
+func (s *StoreBallotTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (s *StoreBallotTrace) New() traceEvent {
-	return &StoreBallotTrace{}
-}
+func (s *StoreBallotTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (s *StoreBallotTrace) Run(r *traceRunner) error {
-	pending, exist := r.pending[s.ID]
-	if !exist {
-		return fmt.Errorf("id %v should be pending", s.ID)
-	}
-	if s.Malicious {
-		pending.SetMalicious()
-	}
-	delete(r.pending, s.ID)
-	err := r.trt.StoreBallot(pending)
-	if r.assertErrors {
-		if err := assertErrors(err, s.Error); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (s *StoreBallotTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type EncodeVotesTrace struct {
 	Layer   types.LayerID  `json:"lid"`
@@ -312,63 +159,32 @@ type EncodeVotesTrace struct {
 	Error   string         `json:"e"`
 }
 
-func (e *EncodeVotesTrace) Type() eventType {
-	return traceEncode
-}
+func (e *EncodeVotesTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (e *EncodeVotesTrace) New() traceEvent {
-	return &EncodeVotesTrace{}
-}
+func (e *EncodeVotesTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (e *EncodeVotesTrace) Run(r *traceRunner) error {
-	opinion, err := r.trt.EncodeVotes(context.Background(), EncodeVotesWithCurrent(e.Layer))
-	if r.assertErrors {
-		if err := assertErrors(err, e.Error); err != nil {
-			return err
-		}
-	}
-	if err == nil {
-		if diff := cmp.Diff(opinion, e.Opinion); len(diff) > 0 && r.assertOutputs {
-			return errors.New(diff)
-		}
-	}
-	return nil
-}
+func (e *EncodeVotesTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type TallyTrace struct {
 	Layer types.LayerID `json:"lid"`
 }
 
-func (t *TallyTrace) Type() eventType {
-	return traceTally
-}
+func (t *TallyTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (t *TallyTrace) New() traceEvent {
-	return &TallyTrace{}
-}
+func (t *TallyTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (t *TallyTrace) Run(r *traceRunner) error {
-	r.trt.TallyVotes(t.Layer)
-	return nil
-}
+func (t *TallyTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type HareTrace struct {
 	Layer types.LayerID `json:"lid"`
 	Vote  types.BlockID `json:"vote"`
 }
 
-func (h *HareTrace) Type() eventType {
-	return traceHare
-}
+func (h *HareTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (h *HareTrace) New() traceEvent {
-	return &HareTrace{}
-}
+func (h *HareTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (h *HareTrace) Run(r *traceRunner) error {
-	r.trt.OnHareOutput(h.Layer, h.Vote)
-	return nil
-}
+func (h *HareTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type UpdatesTrace struct {
 	From    types.LayerID  `json:"from"`
@@ -377,21 +193,11 @@ type UpdatesTrace struct {
 	Results []result.Layer `json:"results"`
 }
 
-func (u *UpdatesTrace) Type() eventType {
-	return traceUpdates
-}
+func (u *UpdatesTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (u *UpdatesTrace) New() traceEvent {
-	return &UpdatesTrace{}
-}
+func (u *UpdatesTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (u *UpdatesTrace) Run(r *traceRunner) error {
-	rst := r.trt.Updates()
-	if diff := cmp.Diff(rst, u.Results, cmpopts.EquateEmpty()); len(diff) > 0 && r.assertOutputs {
-		return errors.New(diff)
-	}
-	return nil
-}
+func (u *UpdatesTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type AppliedTrace struct {
 	Layer   types.LayerID `json:"layer"`
@@ -399,55 +205,31 @@ type AppliedTrace struct {
 	Result  bool          `json:"rst"`
 }
 
-func (a *AppliedTrace) Type() eventType {
-	return traceApplied
-}
+func (a *AppliedTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (a *AppliedTrace) New() traceEvent {
-	return &AppliedTrace{}
-}
+func (a *AppliedTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (a *AppliedTrace) Run(r *traceRunner) error {
-	rst := r.trt.OnApplied(a.Layer, a.Opinion)
-	if rst != a.Result {
-		return fmt.Errorf("on applied: expected %v got %v", a.Result, rst)
-	}
-	return nil
-}
+func (a *AppliedTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type BlockTrace struct {
 	Header types.BlockHeader `json:",inline"`
 }
 
-func (b *BlockTrace) Type() eventType {
-	return traceBlock
-}
+func (b *BlockTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (b *BlockTrace) New() traceEvent {
-	return &BlockTrace{}
-}
+func (b *BlockTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (b *BlockTrace) Run(r *traceRunner) error {
-	r.trt.OnBlock(b.Header)
-	return nil
-}
+func (b *BlockTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type MalfeasanceTrace struct {
 	ID types.NodeID `json:"id"`
 }
 
-func (m *MalfeasanceTrace) Type() eventType {
-	return traceMalfeasance
-}
+func (m *MalfeasanceTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (m *MalfeasanceTrace) New() traceEvent {
-	return &MalfeasanceTrace{}
-}
+func (m *MalfeasanceTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (m *MalfeasanceTrace) Run(r *traceRunner) error {
-	r.trt.OnMalfeasance(m.ID)
-	return nil
-}
+func (m *MalfeasanceTrace) Run(r *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
 type headerWithValidity struct {
 	Header types.BlockHeader `json:"header"`
@@ -459,11 +241,8 @@ func newRecoveredBlocksTrace(
 	blocks map[types.BlockHeader]bool,
 	hare *types.BlockID,
 ) *RecoveredBlocksTrace {
-	rst := make([]headerWithValidity, 0, len(blocks))
-	for header, validity := range blocks {
-		rst = append(rst, headerWithValidity{header, validity})
-	}
-	return &RecoveredBlocksTrace{Layer: layer, Blocks: rst, Hare: hare}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type RecoveredBlocksTrace struct {
@@ -472,74 +251,23 @@ type RecoveredBlocksTrace struct {
 	Hare   *types.BlockID       `json:"hare"`
 }
 
-func (r *RecoveredBlocksTrace) Type() eventType {
-	return traceRecoveredBlocks
-}
+func (r *RecoveredBlocksTrace) Type() eventType { _ = "STUB: not implemented"; return *new(eventType) }
 
-func (r *RecoveredBlocksTrace) New() traceEvent {
-	return &RecoveredBlocksTrace{}
-}
+func (r *RecoveredBlocksTrace) New() traceEvent { _ = "STUB: not implemented"; return *new(traceEvent) }
 
-func (r *RecoveredBlocksTrace) Run(tr *traceRunner) error {
-	validity := map[types.BlockHeader]bool{}
-	for _, block := range r.Blocks {
-		validity[block.Header] = block.Valid
-	}
-	tr.trt.OnRecoveredBlocks(r.Layer, validity, r.Hare)
-	return nil
-}
+func (r *RecoveredBlocksTrace) Run(tr *traceRunner) error { _ = "STUB: not implemented"; return nil }
 
-func assertErrors(err error, expect string) error {
-	msg := ""
-	if err != nil {
-		msg = err.Error()
-	}
-	if expect != msg {
-		return fmt.Errorf("%s != %s", expect, msg)
-	}
-	return nil
-}
+func assertErrors(err error, expect string) error { _ = "STUB: not implemented"; return nil }
 
-func newEventEnum() eventEnum {
-	enum := eventEnum{types: map[uint16]traceEvent{}}
-	enum.Register(&ConfigTrace{})
-	enum.Register(&WeakCoinTrace{})
-	enum.Register(&BeaconTrace{})
-	enum.Register(&AtxTrace{})
-	enum.Register(&BallotTrace{})
-	enum.Register(&DecodeBallotTrace{})
-	enum.Register(&StoreBallotTrace{})
-	enum.Register(&EncodeVotesTrace{})
-	enum.Register(&TallyTrace{})
-	enum.Register(&BlockTrace{})
-	enum.Register(&HareTrace{})
-	enum.Register(&UpdatesTrace{})
-	enum.Register(&AppliedTrace{})
-	enum.Register(&MalfeasanceTrace{})
-	enum.Register(&RecoveredBlocksTrace{})
-	return enum
-}
+func newEventEnum() eventEnum { _ = "STUB: not implemented"; return *new(eventEnum) }
 
 type eventEnum struct {
 	types map[eventType]traceEvent
 }
 
-func (e *eventEnum) Register(ev traceEvent) {
-	e.types[ev.Type()] = ev
-}
+func (e *eventEnum) Register(ev traceEvent) { _ = "STUB: not implemented"; return }
 
 func (e *eventEnum) Decode(dec *json.Decoder) (traceEvent, error) {
-	var event output
-	if err := dec.Decode(&event); err != nil {
-		return nil, err
-	}
-	ev := e.types[event.Type]
-	if ev == nil {
-		return nil, fmt.Errorf("type %d is not registered", event.Type)
-	}
-	obj := ev.New()
-	if err := json.Unmarshal(event.Event, obj); err != nil {
-		return nil, err
-	}
-	return obj, nil
+	_ = "STUB: not implemented"
+	return *new(traceEvent), nil
 }

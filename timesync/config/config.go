@@ -11,8 +11,7 @@ type TimeConfig struct {
 
 // DefaultConfig defines the default timesync configuration.
 func DefaultConfig() TimeConfig {
+	_ = "STUB: not implemented"
 	// TimeConfigValues defines default values for all time and ntp related params.
-	return TimeConfig{
-		Peersync: peersync.DefaultConfig(),
-	}
+	return *new(TimeConfig)
 }

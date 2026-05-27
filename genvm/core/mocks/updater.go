@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	core "github.com/spacemeshos/go-spacemesh/genvm/core"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,29 +28,24 @@ type MockAccountUpdaterMockRecorder struct {
 
 // NewMockAccountUpdater creates a new mock instance.
 func NewMockAccountUpdater(ctrl *gomock.Controller) *MockAccountUpdater {
-	mock := &MockAccountUpdater{ctrl: ctrl}
-	mock.recorder = &MockAccountUpdaterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccountUpdater) EXPECT() *MockAccountUpdaterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Update mocks base method.
+	return nil
 }
 
-// Update mocks base method.
-func (m *MockAccountUpdater) Update(arg0 core.Account) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockAccountUpdater) Update(arg0 core.Account) error { _ = "STUB: not implemented"; return nil }
 
 // Update indicates an expected call of Update.
 func (mr *MockAccountUpdaterMockRecorder) Update(arg0 any) *MockAccountUpdaterUpdateCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockAccountUpdater)(nil).Update), arg0)
-	return &MockAccountUpdaterUpdateCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockAccountUpdaterUpdateCall wrap *gomock.Call
@@ -62,18 +55,18 @@ type MockAccountUpdaterUpdateCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockAccountUpdaterUpdateCall) Return(arg0 error) *MockAccountUpdaterUpdateCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockAccountUpdaterUpdateCall) Do(f func(core.Account) error) *MockAccountUpdaterUpdateCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockAccountUpdaterUpdateCall) DoAndReturn(f func(core.Account) error) *MockAccountUpdaterUpdateCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

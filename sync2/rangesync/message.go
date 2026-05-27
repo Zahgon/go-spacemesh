@@ -1,9 +1,6 @@
 package rangesync
 
 import (
-	"fmt"
-	"slices"
-	"strings"
 	"time"
 )
 
@@ -59,92 +56,38 @@ var messageTypes = []string{
 }
 
 // String implements Stringer.
-func (mtype MessageType) String() string {
-	if int(mtype) < len(messageTypes) {
-		return messageTypes[mtype]
-	}
-	return fmt.Sprintf("<unknown %02x>", int(mtype))
-}
+func (mtype MessageType) String() string { _ = "STUB: not implemented"; return "" }
 
 // SyncMessageToString returns string representation of a sync message.
-func SyncMessageToString(m SyncMessage) string {
-	var sb strings.Builder
-	sb.WriteString("<" + m.Type().String())
-	if x := m.X(); x != nil {
-		sb.WriteString(" X=" + x.String())
-	}
-	if y := m.Y(); y != nil {
-		sb.WriteString(" Y=" + y.String())
-	}
-	if count := m.Count(); count != 0 {
-		fmt.Fprintf(&sb, " Count=%d", count)
-	}
-	if fp := m.Fingerprint(); fp != EmptyFingerprint() {
-		sb.WriteString(" FP=" + fp.String())
-	}
-	for _, k := range m.Keys() {
-		fmt.Fprintf(&sb, " item=%s", k.String())
-	}
-	sb.WriteString(">")
-	return sb.String()
-}
+func SyncMessageToString(m SyncMessage) string { _ = "STUB: not implemented"; return "" }
 
 type sender struct {
 	Conduit
 }
 
 func (s sender) SendFingerprint(x, y KeyBytes, fp Fingerprint, count int) error {
-	return s.Send(&FingerprintMessage{
-		RangeX:           chash(x),
-		RangeY:           chash(y),
-		RangeFingerprint: fp,
-		NumItems:         uint32(count),
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s sender) SendEmptySet() error {
-	return s.Send(&EmptySetMessage{})
-}
+func (s sender) SendEmptySet() error { _ = "STUB: not implemented"; return nil }
 
-func (s sender) SendEmptyRange(x, y KeyBytes) error {
-	return s.Send(&EmptyRangeMessage{
-		RangeX: chash(x),
-		RangeY: chash(y),
-	})
-}
+func (s sender) SendEmptyRange(x, y KeyBytes) error { _ = "STUB: not implemented"; return nil }
 
 func (s sender) SendRangeContents(x, y KeyBytes, count int) error {
-	return s.Send(&RangeContentsMessage{
-		RangeX:   chash(x),
-		RangeY:   chash(y),
-		NumItems: uint32(count),
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s sender) SendChunk(items []KeyBytes) error {
-	msg := ItemBatchMessage{
-		ContentKeys: KeyCollection{
-			Keys: slices.Clone(items),
-		},
-	}
-	return s.Send(&msg)
-}
+func (s sender) SendChunk(items []KeyBytes) error { _ = "STUB: not implemented"; return nil }
 
-func (s sender) SendEndRound() error {
-	return s.Send(&EndRoundMessage{})
-}
+func (s sender) SendEndRound() error { _ = "STUB: not implemented"; return nil }
 
-func (s sender) SendDone() error {
-	return s.Send(&DoneMessage{})
-}
+func (s sender) SendDone() error { _ = "STUB: not implemented"; return nil }
 
 func (s sender) SendProbe(x, y KeyBytes, fp Fingerprint, sampleSize int) error {
-	return s.Send(&ProbeMessage{
-		RangeFingerprint: fp,
-		SampleSize:       uint32(sampleSize),
-		RangeX:           chash(x),
-		RangeY:           chash(y),
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s sender) SendSample(
@@ -153,58 +96,57 @@ func (s sender) SendSample(
 	count, sampleSize int,
 	sr SeqResult,
 ) error {
-	items, err := Sample(sr, count, sampleSize)
-	if err != nil {
-		return err
-	}
-	return s.Send(&SampleMessage{
-		RangeFingerprint: fp,
-		NumItems:         uint32(count),
-		SampleItems:      items,
-		RangeX:           chash(x),
-		RangeY:           chash(y),
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s sender) SendRecent(since time.Time) error {
-	var m RecentMessage
-	if !since.IsZero() {
-		m.SinceTime = uint64(since.UnixNano())
-	}
-	return s.Send(&m)
-}
+func (s sender) SendRecent(since time.Time) error { _ = "STUB: not implemented"; return nil }
 
 // "Empty" message types follow. These do not need scalegen and thus are not in wire_types.go.
 
 type Marker struct{}
 
-func (*Marker) X() KeyBytes                 { return nil }
-func (*Marker) Y() KeyBytes                 { return nil }
-func (*Marker) Fingerprint() Fingerprint    { return EmptyFingerprint() }
-func (*Marker) Count() int                  { return 0 }
-func (*Marker) Keys() []KeyBytes            { return nil }
-func (*Marker) Since() time.Time            { return time.Time{} }
-func (*Marker) Sample() []MinhashSampleItem { return nil }
+func (*Marker) X() KeyBytes              { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (*Marker) Y() KeyBytes              { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (*Marker) Fingerprint() Fingerprint { _ = "STUB: not implemented"; return *new(Fingerprint) }
+func (*Marker) Count() int               { _ = "STUB: not implemented"; return 0 }
+func (*Marker) Keys() []KeyBytes         { _ = "STUB: not implemented"; return nil }
+func (*Marker) Since() time.Time         { _ = "STUB: not implemented"; return *new(time.Time) }
+func (*Marker) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
 
-// DoneMessage is a SyncMessage that denotes the end of the synchronization.
-// The peer should stop any further processing after receiving this message.
+	// DoneMessage is a SyncMessage that denotes the end of the synchronization.
+	// The peer should stop any further processing after receiving this message.
+	return nil
+}
+
 type DoneMessage struct{ Marker }
 
 var _ SyncMessage = &DoneMessage{}
 
-func (*DoneMessage) Type() MessageType { return MessageTypeDone }
+func (*DoneMessage) Type() MessageType {
+	_ = "STUB: not implemented"
+	return *
 
-// EndRoundMessage is a SyncMessage that denotes the end of the sync round.
+	// EndRoundMessage is a SyncMessage that denotes the end of the sync round.
+	new(MessageType)
+}
+
 type EndRoundMessage struct{ Marker }
 
 var _ SyncMessage = &EndRoundMessage{}
 
-func (*EndRoundMessage) Type() MessageType { return MessageTypeEndRound }
+func (*EndRoundMessage) Type() MessageType {
+	_ = "STUB: not implemented"
+	return *
 
-// EmptySetMessage is a SyncMessage that denotes an empty set, requesting the
-// peer to send all of its items.
+	// EmptySetMessage is a SyncMessage that denotes an empty set, requesting the
+	// peer to send all of its items.
+	new(MessageType)
+}
+
 type EmptySetMessage struct{ Marker }
 
 var _ SyncMessage = &EmptySetMessage{}
 
-func (*EmptySetMessage) Type() MessageType { return MessageTypeEmptySet }
+func (*EmptySetMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }

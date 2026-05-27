@@ -11,7 +11,6 @@ package v1
 
 import (
 	context "context"
-	reflect "reflect"
 	time "time"
 
 	network "github.com/libp2p/go-libp2p/core/network"
@@ -39,29 +38,24 @@ type MocknetworkInfoMockRecorder struct {
 
 // NewMocknetworkInfo creates a new mock instance.
 func NewMocknetworkInfo(ctrl *gomock.Controller) *MocknetworkInfo {
-	mock := &MocknetworkInfo{ctrl: ctrl}
-	mock.recorder = &MocknetworkInfoMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocknetworkInfo) EXPECT() *MocknetworkInfoMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// DHTServerEnabled mocks base method.
+	return nil
 }
 
-// DHTServerEnabled mocks base method.
-func (m *MocknetworkInfo) DHTServerEnabled() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DHTServerEnabled")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MocknetworkInfo) DHTServerEnabled() bool { _ = "STUB: not implemented"; return false }
 
 // DHTServerEnabled indicates an expected call of DHTServerEnabled.
 func (mr *MocknetworkInfoMockRecorder) DHTServerEnabled() *MocknetworkInfoDHTServerEnabledCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DHTServerEnabled", reflect.TypeOf((*MocknetworkInfo)(nil).DHTServerEnabled))
-	return &MocknetworkInfoDHTServerEnabledCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoDHTServerEnabledCall wrap *gomock.Call
@@ -71,35 +65,29 @@ type MocknetworkInfoDHTServerEnabledCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoDHTServerEnabledCall) Return(arg0 bool) *MocknetworkInfoDHTServerEnabledCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoDHTServerEnabledCall) Do(f func() bool) *MocknetworkInfoDHTServerEnabledCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoDHTServerEnabledCall) DoAndReturn(f func() bool) *MocknetworkInfoDHTServerEnabledCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ID mocks base method.
-func (m *MocknetworkInfo) ID() p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ID")
-	ret0, _ := ret[0].(p2p.Peer)
-	return ret0
-}
+func (m *MocknetworkInfo) ID() p2p.Peer { _ = "STUB: not implemented"; return *new(p2p.Peer) }
 
 // ID indicates an expected call of ID.
 func (mr *MocknetworkInfoMockRecorder) ID() *MocknetworkInfoIDCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*MocknetworkInfo)(nil).ID))
-	return &MocknetworkInfoIDCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoIDCall wrap *gomock.Call
@@ -109,35 +97,32 @@ type MocknetworkInfoIDCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoIDCall) Return(arg0 p2p.Peer) *MocknetworkInfoIDCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoIDCall) Do(f func() p2p.Peer) *MocknetworkInfoIDCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoIDCall) DoAndReturn(f func() p2p.Peer) *MocknetworkInfoIDCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // KnownAddresses mocks base method.
 func (m *MocknetworkInfo) KnownAddresses() []multiaddr.Multiaddr {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "KnownAddresses")
-	ret0, _ := ret[0].([]multiaddr.Multiaddr)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // KnownAddresses indicates an expected call of KnownAddresses.
 func (mr *MocknetworkInfoMockRecorder) KnownAddresses() *MocknetworkInfoKnownAddressesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "KnownAddresses", reflect.TypeOf((*MocknetworkInfo)(nil).KnownAddresses))
-	return &MocknetworkInfoKnownAddressesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoKnownAddressesCall wrap *gomock.Call
@@ -147,35 +132,32 @@ type MocknetworkInfoKnownAddressesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoKnownAddressesCall) Return(arg0 []multiaddr.Multiaddr) *MocknetworkInfoKnownAddressesCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoKnownAddressesCall) Do(f func() []multiaddr.Multiaddr) *MocknetworkInfoKnownAddressesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoKnownAddressesCall) DoAndReturn(f func() []multiaddr.Multiaddr) *MocknetworkInfoKnownAddressesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ListenAddresses mocks base method.
 func (m *MocknetworkInfo) ListenAddresses() []multiaddr.Multiaddr {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListenAddresses")
-	ret0, _ := ret[0].([]multiaddr.Multiaddr)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ListenAddresses indicates an expected call of ListenAddresses.
 func (mr *MocknetworkInfoMockRecorder) ListenAddresses() *MocknetworkInfoListenAddressesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAddresses", reflect.TypeOf((*MocknetworkInfo)(nil).ListenAddresses))
-	return &MocknetworkInfoListenAddressesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoListenAddressesCall wrap *gomock.Call
@@ -185,36 +167,32 @@ type MocknetworkInfoListenAddressesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoListenAddressesCall) Return(arg0 []multiaddr.Multiaddr) *MocknetworkInfoListenAddressesCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoListenAddressesCall) Do(f func() []multiaddr.Multiaddr) *MocknetworkInfoListenAddressesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoListenAddressesCall) DoAndReturn(f func() []multiaddr.Multiaddr) *MocknetworkInfoListenAddressesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NATDeviceType mocks base method.
 func (m *MocknetworkInfo) NATDeviceType() (network.NATDeviceType, network.NATDeviceType) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NATDeviceType")
-	ret0, _ := ret[0].(network.NATDeviceType)
-	ret1, _ := ret[1].(network.NATDeviceType)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(network.NATDeviceType), *new(network.NATDeviceType)
 }
 
 // NATDeviceType indicates an expected call of NATDeviceType.
 func (mr *MocknetworkInfoMockRecorder) NATDeviceType() *MocknetworkInfoNATDeviceTypeCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NATDeviceType", reflect.TypeOf((*MocknetworkInfo)(nil).NATDeviceType))
-	return &MocknetworkInfoNATDeviceTypeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoNATDeviceTypeCall wrap *gomock.Call
@@ -224,35 +202,32 @@ type MocknetworkInfoNATDeviceTypeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoNATDeviceTypeCall) Return(udpNATType, tcpNATType network.NATDeviceType) *MocknetworkInfoNATDeviceTypeCall {
-	c.Call = c.Call.Return(udpNATType, tcpNATType)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoNATDeviceTypeCall) Do(f func() (network.NATDeviceType, network.NATDeviceType)) *MocknetworkInfoNATDeviceTypeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoNATDeviceTypeCall) DoAndReturn(f func() (network.NATDeviceType, network.NATDeviceType)) *MocknetworkInfoNATDeviceTypeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerInfo mocks base method.
 func (m *MocknetworkInfo) PeerInfo() peerinfo.PeerInfo {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerInfo")
-	ret0, _ := ret[0].(peerinfo.PeerInfo)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(peerinfo.PeerInfo)
 }
 
 // PeerInfo indicates an expected call of PeerInfo.
 func (mr *MocknetworkInfoMockRecorder) PeerInfo() *MocknetworkInfoPeerInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerInfo", reflect.TypeOf((*MocknetworkInfo)(nil).PeerInfo))
-	return &MocknetworkInfoPeerInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoPeerInfoCall wrap *gomock.Call
@@ -262,35 +237,32 @@ type MocknetworkInfoPeerInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoPeerInfoCall) Return(arg0 peerinfo.PeerInfo) *MocknetworkInfoPeerInfoCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoPeerInfoCall) Do(f func() peerinfo.PeerInfo) *MocknetworkInfoPeerInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoPeerInfoCall) DoAndReturn(f func() peerinfo.PeerInfo) *MocknetworkInfoPeerInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Reachability mocks base method.
 func (m *MocknetworkInfo) Reachability() network.Reachability {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Reachability")
-	ret0, _ := ret[0].(network.Reachability)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(network.Reachability)
 }
 
 // Reachability indicates an expected call of Reachability.
 func (mr *MocknetworkInfoMockRecorder) Reachability() *MocknetworkInfoReachabilityCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reachability", reflect.TypeOf((*MocknetworkInfo)(nil).Reachability))
-	return &MocknetworkInfoReachabilityCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocknetworkInfoReachabilityCall wrap *gomock.Call
@@ -300,20 +272,20 @@ type MocknetworkInfoReachabilityCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocknetworkInfoReachabilityCall) Return(arg0 network.Reachability) *MocknetworkInfoReachabilityCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocknetworkInfoReachabilityCall) Do(f func() network.Reachability) *MocknetworkInfoReachabilityCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocknetworkInfoReachabilityCall) DoAndReturn(f func() network.Reachability) *MocknetworkInfoReachabilityCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeState is a mock of conservativeState interface.
@@ -330,30 +302,27 @@ type MockconservativeStateMockRecorder struct {
 
 // NewMockconservativeState creates a new mock instance.
 func NewMockconservativeState(ctrl *gomock.Controller) *MockconservativeState {
-	mock := &MockconservativeState{ctrl: ctrl}
-	mock.recorder = &MockconservativeStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockconservativeState) EXPECT() *MockconservativeStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAllAccounts mocks base method.
+	return nil
 }
 
-// GetAllAccounts mocks base method.
 func (m *MockconservativeState) GetAllAccounts() ([]*types.Account, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAllAccounts")
-	ret0, _ := ret[0].([]*types.Account)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAllAccounts indicates an expected call of GetAllAccounts.
 func (mr *MockconservativeStateMockRecorder) GetAllAccounts() *MockconservativeStateGetAllAccountsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllAccounts", reflect.TypeOf((*MockconservativeState)(nil).GetAllAccounts))
-	return &MockconservativeStateGetAllAccountsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetAllAccountsCall wrap *gomock.Call
@@ -363,36 +332,32 @@ type MockconservativeStateGetAllAccountsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetAllAccountsCall) Return(arg0 []*types.Account, arg1 error) *MockconservativeStateGetAllAccountsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetAllAccountsCall) Do(f func() ([]*types.Account, error)) *MockconservativeStateGetAllAccountsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetAllAccountsCall) DoAndReturn(f func() ([]*types.Account, error)) *MockconservativeStateGetAllAccountsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBalance mocks base method.
 func (m *MockconservativeState) GetBalance(arg0 types.Address) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBalance", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GetBalance indicates an expected call of GetBalance.
 func (mr *MockconservativeStateMockRecorder) GetBalance(arg0 any) *MockconservativeStateGetBalanceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBalance", reflect.TypeOf((*MockconservativeState)(nil).GetBalance), arg0)
-	return &MockconservativeStateGetBalanceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetBalanceCall wrap *gomock.Call
@@ -402,36 +367,32 @@ type MockconservativeStateGetBalanceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetBalanceCall) Return(arg0 uint64, arg1 error) *MockconservativeStateGetBalanceCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetBalanceCall) Do(f func(types.Address) (uint64, error)) *MockconservativeStateGetBalanceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetBalanceCall) DoAndReturn(f func(types.Address) (uint64, error)) *MockconservativeStateGetBalanceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerStateRoot mocks base method.
 func (m *MockconservativeState) GetLayerStateRoot(arg0 types.LayerID) (types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerStateRoot", arg0)
-	ret0, _ := ret[0].(types.Hash32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Hash32), nil
 }
 
 // GetLayerStateRoot indicates an expected call of GetLayerStateRoot.
 func (mr *MockconservativeStateMockRecorder) GetLayerStateRoot(arg0 any) *MockconservativeStateGetLayerStateRootCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerStateRoot", reflect.TypeOf((*MockconservativeState)(nil).GetLayerStateRoot), arg0)
-	return &MockconservativeStateGetLayerStateRootCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetLayerStateRootCall wrap *gomock.Call
@@ -441,36 +402,32 @@ type MockconservativeStateGetLayerStateRootCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetLayerStateRootCall) Return(arg0 types.Hash32, arg1 error) *MockconservativeStateGetLayerStateRootCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetLayerStateRootCall) Do(f func(types.LayerID) (types.Hash32, error)) *MockconservativeStateGetLayerStateRootCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetLayerStateRootCall) DoAndReturn(f func(types.LayerID) (types.Hash32, error)) *MockconservativeStateGetLayerStateRootCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMeshTransaction mocks base method.
 func (m *MockconservativeState) GetMeshTransaction(arg0 types.TransactionID) (*types.MeshTransaction, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMeshTransaction", arg0)
-	ret0, _ := ret[0].(*types.MeshTransaction)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetMeshTransaction indicates an expected call of GetMeshTransaction.
 func (mr *MockconservativeStateMockRecorder) GetMeshTransaction(arg0 any) *MockconservativeStateGetMeshTransactionCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMeshTransaction", reflect.TypeOf((*MockconservativeState)(nil).GetMeshTransaction), arg0)
-	return &MockconservativeStateGetMeshTransactionCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetMeshTransactionCall wrap *gomock.Call
@@ -480,36 +437,32 @@ type MockconservativeStateGetMeshTransactionCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetMeshTransactionCall) Return(arg0 *types.MeshTransaction, arg1 error) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetMeshTransactionCall) Do(f func(types.TransactionID) (*types.MeshTransaction, error)) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetMeshTransactionCall) DoAndReturn(f func(types.TransactionID) (*types.MeshTransaction, error)) *MockconservativeStateGetMeshTransactionCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMeshTransactions mocks base method.
 func (m *MockconservativeState) GetMeshTransactions(arg0 []types.TransactionID) ([]*types.MeshTransaction, map[types.TransactionID]struct{}) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMeshTransactions", arg0)
-	ret0, _ := ret[0].([]*types.MeshTransaction)
-	ret1, _ := ret[1].(map[types.TransactionID]struct{})
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetMeshTransactions indicates an expected call of GetMeshTransactions.
 func (mr *MockconservativeStateMockRecorder) GetMeshTransactions(arg0 any) *MockconservativeStateGetMeshTransactionsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMeshTransactions", reflect.TypeOf((*MockconservativeState)(nil).GetMeshTransactions), arg0)
-	return &MockconservativeStateGetMeshTransactionsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetMeshTransactionsCall wrap *gomock.Call
@@ -519,36 +472,32 @@ type MockconservativeStateGetMeshTransactionsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetMeshTransactionsCall) Return(arg0 []*types.MeshTransaction, arg1 map[types.TransactionID]struct{}) *MockconservativeStateGetMeshTransactionsCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetMeshTransactionsCall) Do(f func([]types.TransactionID) ([]*types.MeshTransaction, map[types.TransactionID]struct{})) *MockconservativeStateGetMeshTransactionsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetMeshTransactionsCall) DoAndReturn(f func([]types.TransactionID) ([]*types.MeshTransaction, map[types.TransactionID]struct{})) *MockconservativeStateGetMeshTransactionsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetNonce mocks base method.
 func (m *MockconservativeState) GetNonce(arg0 types.Address) (types.Nonce, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetNonce", arg0)
-	ret0, _ := ret[0].(types.Nonce)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Nonce), nil
 }
 
 // GetNonce indicates an expected call of GetNonce.
 func (mr *MockconservativeStateMockRecorder) GetNonce(arg0 any) *MockconservativeStateGetNonceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNonce", reflect.TypeOf((*MockconservativeState)(nil).GetNonce), arg0)
-	return &MockconservativeStateGetNonceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetNonceCall wrap *gomock.Call
@@ -558,36 +507,32 @@ type MockconservativeStateGetNonceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetNonceCall) Return(arg0 types.Nonce, arg1 error) *MockconservativeStateGetNonceCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetNonceCall) Do(f func(types.Address) (types.Nonce, error)) *MockconservativeStateGetNonceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetNonceCall) DoAndReturn(f func(types.Address) (types.Nonce, error)) *MockconservativeStateGetNonceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetProjection mocks base method.
 func (m *MockconservativeState) GetProjection(arg0 types.Address) (uint64, uint64) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetProjection", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(uint64)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, 0
 }
 
 // GetProjection indicates an expected call of GetProjection.
 func (mr *MockconservativeStateMockRecorder) GetProjection(arg0 any) *MockconservativeStateGetProjectionCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProjection", reflect.TypeOf((*MockconservativeState)(nil).GetProjection), arg0)
-	return &MockconservativeStateGetProjectionCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetProjectionCall wrap *gomock.Call
@@ -597,36 +542,32 @@ type MockconservativeStateGetProjectionCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetProjectionCall) Return(arg0, arg1 uint64) *MockconservativeStateGetProjectionCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetProjectionCall) Do(f func(types.Address) (uint64, uint64)) *MockconservativeStateGetProjectionCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetProjectionCall) DoAndReturn(f func(types.Address) (uint64, uint64)) *MockconservativeStateGetProjectionCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStateRoot mocks base method.
 func (m *MockconservativeState) GetStateRoot() (types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStateRoot")
-	ret0, _ := ret[0].(types.Hash32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Hash32), nil
 }
 
 // GetStateRoot indicates an expected call of GetStateRoot.
 func (mr *MockconservativeStateMockRecorder) GetStateRoot() *MockconservativeStateGetStateRootCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStateRoot", reflect.TypeOf((*MockconservativeState)(nil).GetStateRoot))
-	return &MockconservativeStateGetStateRootCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetStateRootCall wrap *gomock.Call
@@ -636,36 +577,32 @@ type MockconservativeStateGetStateRootCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetStateRootCall) Return(arg0 types.Hash32, arg1 error) *MockconservativeStateGetStateRootCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetStateRootCall) Do(f func() (types.Hash32, error)) *MockconservativeStateGetStateRootCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetStateRootCall) DoAndReturn(f func() (types.Hash32, error)) *MockconservativeStateGetStateRootCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetTransactionsByAddress mocks base method.
 func (m *MockconservativeState) GetTransactionsByAddress(arg0, arg1 types.LayerID, arg2 types.Address) ([]*types.MeshTransaction, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTransactionsByAddress", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]*types.MeshTransaction)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetTransactionsByAddress indicates an expected call of GetTransactionsByAddress.
 func (mr *MockconservativeStateMockRecorder) GetTransactionsByAddress(arg0, arg1, arg2 any) *MockconservativeStateGetTransactionsByAddressCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTransactionsByAddress", reflect.TypeOf((*MockconservativeState)(nil).GetTransactionsByAddress), arg0, arg1, arg2)
-	return &MockconservativeStateGetTransactionsByAddressCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateGetTransactionsByAddressCall wrap *gomock.Call
@@ -675,36 +612,32 @@ type MockconservativeStateGetTransactionsByAddressCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateGetTransactionsByAddressCall) Return(arg0 []*types.MeshTransaction, arg1 error) *MockconservativeStateGetTransactionsByAddressCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateGetTransactionsByAddressCall) Do(f func(types.LayerID, types.LayerID, types.Address) ([]*types.MeshTransaction, error)) *MockconservativeStateGetTransactionsByAddressCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateGetTransactionsByAddressCall) DoAndReturn(f func(types.LayerID, types.LayerID, types.Address) ([]*types.MeshTransaction, error)) *MockconservativeStateGetTransactionsByAddressCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HasEvicted mocks base method.
 func (m *MockconservativeState) HasEvicted(tid types.TransactionID) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HasEvicted", tid)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // HasEvicted indicates an expected call of HasEvicted.
 func (mr *MockconservativeStateMockRecorder) HasEvicted(tid any) *MockconservativeStateHasEvictedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasEvicted", reflect.TypeOf((*MockconservativeState)(nil).HasEvicted), tid)
-	return &MockconservativeStateHasEvictedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateHasEvictedCall wrap *gomock.Call
@@ -714,35 +647,32 @@ type MockconservativeStateHasEvictedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateHasEvictedCall) Return(arg0 bool, arg1 error) *MockconservativeStateHasEvictedCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateHasEvictedCall) Do(f func(types.TransactionID) (bool, error)) *MockconservativeStateHasEvictedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateHasEvictedCall) DoAndReturn(f func(types.TransactionID) (bool, error)) *MockconservativeStateHasEvictedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validation mocks base method.
 func (m *MockconservativeState) Validation(raw types.RawTx) system.ValidationRequest {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Validation", raw)
-	ret0, _ := ret[0].(system.ValidationRequest)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(system.ValidationRequest)
 }
 
 // Validation indicates an expected call of Validation.
 func (mr *MockconservativeStateMockRecorder) Validation(raw any) *MockconservativeStateValidationCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validation", reflect.TypeOf((*MockconservativeState)(nil).Validation), raw)
-	return &MockconservativeStateValidationCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockconservativeStateValidationCall wrap *gomock.Call
@@ -752,20 +682,20 @@ type MockconservativeStateValidationCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockconservativeStateValidationCall) Return(arg0 system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockconservativeStateValidationCall) Do(f func(types.RawTx) system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockconservativeStateValidationCall) DoAndReturn(f func(types.RawTx) system.ValidationRequest) *MockconservativeStateValidationCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mocksyncer is a mock of syncer interface.
@@ -781,30 +711,22 @@ type MocksyncerMockRecorder struct {
 }
 
 // NewMocksyncer creates a new mock instance.
-func NewMocksyncer(ctrl *gomock.Controller) *Mocksyncer {
-	mock := &Mocksyncer{ctrl: ctrl}
-	mock.recorder = &MocksyncerMockRecorder{mock}
-	return mock
-}
+func NewMocksyncer(ctrl *gomock.Controller) *Mocksyncer { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mocksyncer) EXPECT() *MocksyncerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// IsSynced mocks base method.
+	return nil
 }
 
-// IsSynced mocks base method.
-func (m *Mocksyncer) IsSynced(arg0 context.Context) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsSynced", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *Mocksyncer) IsSynced(arg0 context.Context) bool { _ = "STUB: not implemented"; return false }
 
 // IsSynced indicates an expected call of IsSynced.
 func (mr *MocksyncerMockRecorder) IsSynced(arg0 any) *MocksyncerIsSyncedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsSynced", reflect.TypeOf((*Mocksyncer)(nil).IsSynced), arg0)
-	return &MocksyncerIsSyncedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocksyncerIsSyncedCall wrap *gomock.Call
@@ -814,20 +736,20 @@ type MocksyncerIsSyncedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocksyncerIsSyncedCall) Return(arg0 bool) *MocksyncerIsSyncedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocksyncerIsSyncedCall) Do(f func(context.Context) bool) *MocksyncerIsSyncedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocksyncerIsSyncedCall) DoAndReturn(f func(context.Context) bool) *MocksyncerIsSyncedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktxValidator is a mock of txValidator interface.
@@ -844,29 +766,27 @@ type MocktxValidatorMockRecorder struct {
 
 // NewMocktxValidator creates a new mock instance.
 func NewMocktxValidator(ctrl *gomock.Controller) *MocktxValidator {
-	mock := &MocktxValidator{ctrl: ctrl}
-	mock.recorder = &MocktxValidatorMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocktxValidator) EXPECT() *MocktxValidatorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// VerifyAndCacheTx mocks base method.
+	return nil
 }
 
-// VerifyAndCacheTx mocks base method.
 func (m *MocktxValidator) VerifyAndCacheTx(arg0 context.Context, arg1 []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyAndCacheTx", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyAndCacheTx indicates an expected call of VerifyAndCacheTx.
 func (mr *MocktxValidatorMockRecorder) VerifyAndCacheTx(arg0, arg1 any) *MocktxValidatorVerifyAndCacheTxCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyAndCacheTx", reflect.TypeOf((*MocktxValidator)(nil).VerifyAndCacheTx), arg0, arg1)
-	return &MocktxValidatorVerifyAndCacheTxCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocktxValidatorVerifyAndCacheTxCall wrap *gomock.Call
@@ -876,20 +796,20 @@ type MocktxValidatorVerifyAndCacheTxCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocktxValidatorVerifyAndCacheTxCall) Return(arg0 error) *MocktxValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocktxValidatorVerifyAndCacheTxCall) Do(f func(context.Context, []byte) error) *MocktxValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocktxValidatorVerifyAndCacheTxCall) DoAndReturn(f func(context.Context, []byte) error) *MocktxValidatorVerifyAndCacheTxCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxProvider is a mock of atxProvider interface.
@@ -906,30 +826,27 @@ type MockatxProviderMockRecorder struct {
 
 // NewMockatxProvider creates a new mock instance.
 func NewMockatxProvider(ctrl *gomock.Controller) *MockatxProvider {
-	mock := &MockatxProvider{ctrl: ctrl}
-	mock.recorder = &MockatxProviderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockatxProvider) EXPECT() *MockatxProviderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetAtx mocks base method.
+	return nil
 }
 
-// GetAtx mocks base method.
 func (m *MockatxProvider) GetAtx(id types.ATXID) (*types.ActivationTx, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAtx", id)
-	ret0, _ := ret[0].(*types.ActivationTx)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAtx indicates an expected call of GetAtx.
 func (mr *MockatxProviderMockRecorder) GetAtx(id any) *MockatxProviderGetAtxCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAtx", reflect.TypeOf((*MockatxProvider)(nil).GetAtx), id)
-	return &MockatxProviderGetAtxCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxProviderGetAtxCall wrap *gomock.Call
@@ -939,36 +856,32 @@ type MockatxProviderGetAtxCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockatxProviderGetAtxCall) Return(arg0 *types.ActivationTx, arg1 error) *MockatxProviderGetAtxCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockatxProviderGetAtxCall) Do(f func(types.ATXID) (*types.ActivationTx, error)) *MockatxProviderGetAtxCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockatxProviderGetAtxCall) DoAndReturn(f func(types.ATXID) (*types.ActivationTx, error)) *MockatxProviderGetAtxCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MalfeasanceProof mocks base method.
 func (m *MockatxProvider) MalfeasanceProof(id types.NodeID) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MalfeasanceProof", id)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MalfeasanceProof indicates an expected call of MalfeasanceProof.
 func (mr *MockatxProviderMockRecorder) MalfeasanceProof(id any) *MockatxProviderMalfeasanceProofCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MalfeasanceProof", reflect.TypeOf((*MockatxProvider)(nil).MalfeasanceProof), id)
-	return &MockatxProviderMalfeasanceProofCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxProviderMalfeasanceProofCall wrap *gomock.Call
@@ -978,36 +891,32 @@ type MockatxProviderMalfeasanceProofCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockatxProviderMalfeasanceProofCall) Return(arg0 []byte, arg1 error) *MockatxProviderMalfeasanceProofCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockatxProviderMalfeasanceProofCall) Do(f func(types.NodeID) ([]byte, error)) *MockatxProviderMalfeasanceProofCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockatxProviderMalfeasanceProofCall) DoAndReturn(f func(types.NodeID) ([]byte, error)) *MockatxProviderMalfeasanceProofCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MaxHeightAtx mocks base method.
 func (m *MockatxProvider) MaxHeightAtx() (types.ATXID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MaxHeightAtx")
-	ret0, _ := ret[0].(types.ATXID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.ATXID), nil
 }
 
 // MaxHeightAtx indicates an expected call of MaxHeightAtx.
 func (mr *MockatxProviderMockRecorder) MaxHeightAtx() *MockatxProviderMaxHeightAtxCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxHeightAtx", reflect.TypeOf((*MockatxProvider)(nil).MaxHeightAtx))
-	return &MockatxProviderMaxHeightAtxCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxProviderMaxHeightAtxCall wrap *gomock.Call
@@ -1017,36 +926,32 @@ type MockatxProviderMaxHeightAtxCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockatxProviderMaxHeightAtxCall) Return(arg0 types.ATXID, arg1 error) *MockatxProviderMaxHeightAtxCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockatxProviderMaxHeightAtxCall) Do(f func() (types.ATXID, error)) *MockatxProviderMaxHeightAtxCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockatxProviderMaxHeightAtxCall) DoAndReturn(f func() (types.ATXID, error)) *MockatxProviderMaxHeightAtxCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Previous mocks base method.
 func (m *MockatxProvider) Previous(id types.ATXID) ([]types.ATXID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Previous", id)
-	ret0, _ := ret[0].([]types.ATXID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Previous indicates an expected call of Previous.
 func (mr *MockatxProviderMockRecorder) Previous(id any) *MockatxProviderPreviousCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Previous", reflect.TypeOf((*MockatxProvider)(nil).Previous), id)
-	return &MockatxProviderPreviousCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockatxProviderPreviousCall wrap *gomock.Call
@@ -1056,20 +961,20 @@ type MockatxProviderPreviousCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockatxProviderPreviousCall) Return(arg0 []types.ATXID, arg1 error) *MockatxProviderPreviousCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockatxProviderPreviousCall) Do(f func(types.ATXID) ([]types.ATXID, error)) *MockatxProviderPreviousCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockatxProviderPreviousCall) DoAndReturn(f func(types.ATXID) ([]types.ATXID, error)) *MockatxProviderPreviousCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostState is a mock of postState interface.
@@ -1086,29 +991,27 @@ type MockpostStateMockRecorder struct {
 
 // NewMockpostState creates a new mock instance.
 func NewMockpostState(ctrl *gomock.Controller) *MockpostState {
-	mock := &MockpostState{ctrl: ctrl}
-	mock.recorder = &MockpostStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockpostState) EXPECT() *MockpostStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// PostStates mocks base method.
+	return nil
 }
 
-// PostStates mocks base method.
 func (m *MockpostState) PostStates() map[types.IdentityDescriptor]types.PostState {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PostStates")
-	ret0, _ := ret[0].(map[types.IdentityDescriptor]types.PostState)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PostStates indicates an expected call of PostStates.
 func (mr *MockpostStateMockRecorder) PostStates() *MockpostStatePostStatesCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostStates", reflect.TypeOf((*MockpostState)(nil).PostStates))
-	return &MockpostStatePostStatesCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostStatePostStatesCall wrap *gomock.Call
@@ -1118,20 +1021,20 @@ type MockpostStatePostStatesCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostStatePostStatesCall) Return(arg0 map[types.IdentityDescriptor]types.PostState) *MockpostStatePostStatesCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostStatePostStatesCall) Do(f func() map[types.IdentityDescriptor]types.PostState) *MockpostStatePostStatesCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostStatePostStatesCall) DoAndReturn(f func() map[types.IdentityDescriptor]types.PostState) *MockpostStatePostStatesCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisor is a mock of postSupervisor interface.
@@ -1148,30 +1051,27 @@ type MockpostSupervisorMockRecorder struct {
 
 // NewMockpostSupervisor creates a new mock instance.
 func NewMockpostSupervisor(ctrl *gomock.Controller) *MockpostSupervisor {
-	mock := &MockpostSupervisor{ctrl: ctrl}
-	mock.recorder = &MockpostSupervisorMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockpostSupervisor) EXPECT() *MockpostSupervisorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Benchmark mocks base method.
+	return nil
 }
 
-// Benchmark mocks base method.
 func (m *MockpostSupervisor) Benchmark(p activation.PostSetupProvider) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Benchmark", p)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Benchmark indicates an expected call of Benchmark.
 func (mr *MockpostSupervisorMockRecorder) Benchmark(p any) *MockpostSupervisorBenchmarkCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Benchmark", reflect.TypeOf((*MockpostSupervisor)(nil).Benchmark), p)
-	return &MockpostSupervisorBenchmarkCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorBenchmarkCall wrap *gomock.Call
@@ -1181,35 +1081,32 @@ type MockpostSupervisorBenchmarkCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorBenchmarkCall) Return(arg0 int, arg1 error) *MockpostSupervisorBenchmarkCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorBenchmarkCall) Do(f func(activation.PostSetupProvider) (int, error)) *MockpostSupervisorBenchmarkCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorBenchmarkCall) DoAndReturn(f func(activation.PostSetupProvider) (int, error)) *MockpostSupervisorBenchmarkCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Config mocks base method.
 func (m *MockpostSupervisor) Config() activation.PostConfig {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Config")
-	ret0, _ := ret[0].(activation.PostConfig)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(activation.PostConfig)
 }
 
 // Config indicates an expected call of Config.
 func (mr *MockpostSupervisorMockRecorder) Config() *MockpostSupervisorConfigCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Config", reflect.TypeOf((*MockpostSupervisor)(nil).Config))
-	return &MockpostSupervisorConfigCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorConfigCall wrap *gomock.Call
@@ -1219,36 +1116,32 @@ type MockpostSupervisorConfigCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorConfigCall) Return(arg0 activation.PostConfig) *MockpostSupervisorConfigCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorConfigCall) Do(f func() activation.PostConfig) *MockpostSupervisorConfigCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorConfigCall) DoAndReturn(f func() activation.PostConfig) *MockpostSupervisorConfigCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Providers mocks base method.
 func (m *MockpostSupervisor) Providers() ([]activation.PostSetupProvider, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Providers")
-	ret0, _ := ret[0].([]activation.PostSetupProvider)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Providers indicates an expected call of Providers.
 func (mr *MockpostSupervisorMockRecorder) Providers() *MockpostSupervisorProvidersCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Providers", reflect.TypeOf((*MockpostSupervisor)(nil).Providers))
-	return &MockpostSupervisorProvidersCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorProvidersCall wrap *gomock.Call
@@ -1258,35 +1151,32 @@ type MockpostSupervisorProvidersCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorProvidersCall) Return(arg0 []activation.PostSetupProvider, arg1 error) *MockpostSupervisorProvidersCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorProvidersCall) Do(f func() ([]activation.PostSetupProvider, error)) *MockpostSupervisorProvidersCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorProvidersCall) DoAndReturn(f func() ([]activation.PostSetupProvider, error)) *MockpostSupervisorProvidersCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Start mocks base method.
 func (m *MockpostSupervisor) Start(cmdCfg activation.PostSupervisorConfig, opts activation.PostSetupOpts, sig *signing.EdSigner) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Start", cmdCfg, opts, sig)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Start indicates an expected call of Start.
 func (mr *MockpostSupervisorMockRecorder) Start(cmdCfg, opts, sig any) *MockpostSupervisorStartCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Start", reflect.TypeOf((*MockpostSupervisor)(nil).Start), cmdCfg, opts, sig)
-	return &MockpostSupervisorStartCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorStartCall wrap *gomock.Call
@@ -1296,35 +1186,32 @@ type MockpostSupervisorStartCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorStartCall) Return(arg0 error) *MockpostSupervisorStartCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorStartCall) Do(f func(activation.PostSupervisorConfig, activation.PostSetupOpts, *signing.EdSigner) error) *MockpostSupervisorStartCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorStartCall) DoAndReturn(f func(activation.PostSupervisorConfig, activation.PostSetupOpts, *signing.EdSigner) error) *MockpostSupervisorStartCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Status mocks base method.
 func (m *MockpostSupervisor) Status() *activation.PostSetupStatus {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Status")
-	ret0, _ := ret[0].(*activation.PostSetupStatus)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Status indicates an expected call of Status.
 func (mr *MockpostSupervisorMockRecorder) Status() *MockpostSupervisorStatusCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Status", reflect.TypeOf((*MockpostSupervisor)(nil).Status))
-	return &MockpostSupervisorStatusCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorStatusCall wrap *gomock.Call
@@ -1334,35 +1221,29 @@ type MockpostSupervisorStatusCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorStatusCall) Return(arg0 *activation.PostSetupStatus) *MockpostSupervisorStatusCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorStatusCall) Do(f func() *activation.PostSetupStatus) *MockpostSupervisorStatusCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorStatusCall) DoAndReturn(f func() *activation.PostSetupStatus) *MockpostSupervisorStatusCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Stop mocks base method.
-func (m *MockpostSupervisor) Stop(deleteFiles bool) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Stop", deleteFiles)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockpostSupervisor) Stop(deleteFiles bool) error { _ = "STUB: not implemented"; return nil }
 
 // Stop indicates an expected call of Stop.
 func (mr *MockpostSupervisorMockRecorder) Stop(deleteFiles any) *MockpostSupervisorStopCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stop", reflect.TypeOf((*MockpostSupervisor)(nil).Stop), deleteFiles)
-	return &MockpostSupervisorStopCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpostSupervisorStopCall wrap *gomock.Call
@@ -1372,20 +1253,20 @@ type MockpostSupervisorStopCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpostSupervisorStopCall) Return(arg0 error) *MockpostSupervisorStopCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpostSupervisorStopCall) Do(f func(bool) error) *MockpostSupervisorStopCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpostSupervisorStopCall) DoAndReturn(f func(bool) error) *MockpostSupervisorStopCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgrpcPostService is a mock of grpcPostService interface.
@@ -1402,27 +1283,24 @@ type MockgrpcPostServiceMockRecorder struct {
 
 // NewMockgrpcPostService creates a new mock instance.
 func NewMockgrpcPostService(ctrl *gomock.Controller) *MockgrpcPostService {
-	mock := &MockgrpcPostService{ctrl: ctrl}
-	mock.recorder = &MockgrpcPostServiceMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockgrpcPostService) EXPECT() *MockgrpcPostServiceMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AllowConnections mocks base method.
+	return nil
 }
 
-// AllowConnections mocks base method.
-func (m *MockgrpcPostService) AllowConnections(allow bool) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AllowConnections", allow)
-}
+func (m *MockgrpcPostService) AllowConnections(allow bool) { _ = "STUB: not implemented"; return }
 
 // AllowConnections indicates an expected call of AllowConnections.
 func (mr *MockgrpcPostServiceMockRecorder) AllowConnections(allow any) *MockgrpcPostServiceAllowConnectionsCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AllowConnections", reflect.TypeOf((*MockgrpcPostService)(nil).AllowConnections), allow)
-	return &MockgrpcPostServiceAllowConnectionsCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgrpcPostServiceAllowConnectionsCall wrap *gomock.Call
@@ -1432,20 +1310,20 @@ type MockgrpcPostServiceAllowConnectionsCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockgrpcPostServiceAllowConnectionsCall) Return() *MockgrpcPostServiceAllowConnectionsCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockgrpcPostServiceAllowConnectionsCall) Do(f func(bool)) *MockgrpcPostServiceAllowConnectionsCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockgrpcPostServiceAllowConnectionsCall) DoAndReturn(f func(bool)) *MockgrpcPostServiceAllowConnectionsCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerCounter is a mock of peerCounter interface.
@@ -1462,29 +1340,24 @@ type MockpeerCounterMockRecorder struct {
 
 // NewMockpeerCounter creates a new mock instance.
 func NewMockpeerCounter(ctrl *gomock.Controller) *MockpeerCounter {
-	mock := &MockpeerCounter{ctrl: ctrl}
-	mock.recorder = &MockpeerCounterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockpeerCounter) EXPECT() *MockpeerCounterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// PeerCount mocks base method.
+	return nil
 }
 
-// PeerCount mocks base method.
-func (m *MockpeerCounter) PeerCount() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerCount")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockpeerCounter) PeerCount() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // PeerCount indicates an expected call of PeerCount.
 func (mr *MockpeerCounterMockRecorder) PeerCount() *MockpeerCounterPeerCountCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerCount", reflect.TypeOf((*MockpeerCounter)(nil).PeerCount))
-	return &MockpeerCounterPeerCountCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerCounterPeerCountCall wrap *gomock.Call
@@ -1494,20 +1367,20 @@ type MockpeerCounterPeerCountCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeerCounterPeerCountCall) Return(arg0 uint64) *MockpeerCounterPeerCountCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeerCounterPeerCountCall) Do(f func() uint64) *MockpeerCounterPeerCountCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeerCounterPeerCountCall) DoAndReturn(f func() uint64) *MockpeerCounterPeerCountCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mockpeers is a mock of peers interface.
@@ -1523,30 +1396,25 @@ type MockpeersMockRecorder struct {
 }
 
 // NewMockpeers creates a new mock instance.
-func NewMockpeers(ctrl *gomock.Controller) *Mockpeers {
-	mock := &Mockpeers{ctrl: ctrl}
-	mock.recorder = &MockpeersMockRecorder{mock}
-	return mock
-}
+func NewMockpeers(ctrl *gomock.Controller) *Mockpeers { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockpeers) EXPECT() *MockpeersMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ConnectedPeerInfo mocks base method.
+	return nil
 }
 
-// ConnectedPeerInfo mocks base method.
 func (m *Mockpeers) ConnectedPeerInfo(arg0 p2p.Peer) *p2p.PeerInfo {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ConnectedPeerInfo", arg0)
-	ret0, _ := ret[0].(*p2p.PeerInfo)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ConnectedPeerInfo indicates an expected call of ConnectedPeerInfo.
 func (mr *MockpeersMockRecorder) ConnectedPeerInfo(arg0 any) *MockpeersConnectedPeerInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConnectedPeerInfo", reflect.TypeOf((*Mockpeers)(nil).ConnectedPeerInfo), arg0)
-	return &MockpeersConnectedPeerInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeersConnectedPeerInfoCall wrap *gomock.Call
@@ -1556,35 +1424,29 @@ type MockpeersConnectedPeerInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeersConnectedPeerInfoCall) Return(arg0 *p2p.PeerInfo) *MockpeersConnectedPeerInfoCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeersConnectedPeerInfoCall) Do(f func(p2p.Peer) *p2p.PeerInfo) *MockpeersConnectedPeerInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeersConnectedPeerInfoCall) DoAndReturn(f func(p2p.Peer) *p2p.PeerInfo) *MockpeersConnectedPeerInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetPeers mocks base method.
-func (m *Mockpeers) GetPeers() []p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPeers")
-	ret0, _ := ret[0].([]p2p.Peer)
-	return ret0
-}
+func (m *Mockpeers) GetPeers() []p2p.Peer { _ = "STUB: not implemented"; return nil }
 
 // GetPeers indicates an expected call of GetPeers.
 func (mr *MockpeersMockRecorder) GetPeers() *MockpeersGetPeersCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPeers", reflect.TypeOf((*Mockpeers)(nil).GetPeers))
-	return &MockpeersGetPeersCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeersGetPeersCall wrap *gomock.Call
@@ -1594,20 +1456,20 @@ type MockpeersGetPeersCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeersGetPeersCall) Return(arg0 []p2p.Peer) *MockpeersGetPeersCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeersGetPeersCall) Do(f func() []p2p.Peer) *MockpeersGetPeersCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeersGetPeersCall) DoAndReturn(f func() []p2p.Peer) *MockpeersGetPeersCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgenesisTimeAPI is a mock of genesisTimeAPI interface.
@@ -1624,29 +1486,27 @@ type MockgenesisTimeAPIMockRecorder struct {
 
 // NewMockgenesisTimeAPI creates a new mock instance.
 func NewMockgenesisTimeAPI(ctrl *gomock.Controller) *MockgenesisTimeAPI {
-	mock := &MockgenesisTimeAPI{ctrl: ctrl}
-	mock.recorder = &MockgenesisTimeAPIMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockgenesisTimeAPI) EXPECT() *MockgenesisTimeAPIMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// CurrentLayer mocks base method.
+	return nil
 }
 
-// CurrentLayer mocks base method.
 func (m *MockgenesisTimeAPI) CurrentLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CurrentLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // CurrentLayer indicates an expected call of CurrentLayer.
 func (mr *MockgenesisTimeAPIMockRecorder) CurrentLayer() *MockgenesisTimeAPICurrentLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CurrentLayer", reflect.TypeOf((*MockgenesisTimeAPI)(nil).CurrentLayer))
-	return &MockgenesisTimeAPICurrentLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgenesisTimeAPICurrentLayerCall wrap *gomock.Call
@@ -1656,35 +1516,32 @@ type MockgenesisTimeAPICurrentLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockgenesisTimeAPICurrentLayerCall) Return(arg0 types.LayerID) *MockgenesisTimeAPICurrentLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockgenesisTimeAPICurrentLayerCall) Do(f func() types.LayerID) *MockgenesisTimeAPICurrentLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockgenesisTimeAPICurrentLayerCall) DoAndReturn(f func() types.LayerID) *MockgenesisTimeAPICurrentLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GenesisTime mocks base method.
 func (m *MockgenesisTimeAPI) GenesisTime() time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenesisTime")
-	ret0, _ := ret[0].(time.Time)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
 // GenesisTime indicates an expected call of GenesisTime.
 func (mr *MockgenesisTimeAPIMockRecorder) GenesisTime() *MockgenesisTimeAPIGenesisTimeCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenesisTime", reflect.TypeOf((*MockgenesisTimeAPI)(nil).GenesisTime))
-	return &MockgenesisTimeAPIGenesisTimeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgenesisTimeAPIGenesisTimeCall wrap *gomock.Call
@@ -1694,20 +1551,20 @@ type MockgenesisTimeAPIGenesisTimeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockgenesisTimeAPIGenesisTimeCall) Return(arg0 time.Time) *MockgenesisTimeAPIGenesisTimeCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockgenesisTimeAPIGenesisTimeCall) Do(f func() time.Time) *MockgenesisTimeAPIGenesisTimeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockgenesisTimeAPIGenesisTimeCall) DoAndReturn(f func() time.Time) *MockgenesisTimeAPIGenesisTimeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPI is a mock of meshAPI interface.
@@ -1723,31 +1580,25 @@ type MockmeshAPIMockRecorder struct {
 }
 
 // NewMockmeshAPI creates a new mock instance.
-func NewMockmeshAPI(ctrl *gomock.Controller) *MockmeshAPI {
-	mock := &MockmeshAPI{ctrl: ctrl}
-	mock.recorder = &MockmeshAPIMockRecorder{mock}
-	return mock
-}
+func NewMockmeshAPI(ctrl *gomock.Controller) *MockmeshAPI { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockmeshAPI) EXPECT() *MockmeshAPIMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetLayer mocks base method.
+	return nil
 }
 
-// GetLayer mocks base method.
 func (m *MockmeshAPI) GetLayer(arg0 types.LayerID) (*types.Layer, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayer", arg0)
-	ret0, _ := ret[0].(*types.Layer)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayer indicates an expected call of GetLayer.
 func (mr *MockmeshAPIMockRecorder) GetLayer(arg0 any) *MockmeshAPIGetLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayer", reflect.TypeOf((*MockmeshAPI)(nil).GetLayer), arg0)
-	return &MockmeshAPIGetLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPIGetLayerCall wrap *gomock.Call
@@ -1757,36 +1608,32 @@ type MockmeshAPIGetLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPIGetLayerCall) Return(arg0 *types.Layer, arg1 error) *MockmeshAPIGetLayerCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPIGetLayerCall) Do(f func(types.LayerID) (*types.Layer, error)) *MockmeshAPIGetLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPIGetLayerCall) DoAndReturn(f func(types.LayerID) (*types.Layer, error)) *MockmeshAPIGetLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLayerVerified mocks base method.
 func (m *MockmeshAPI) GetLayerVerified(arg0 types.LayerID) (*types.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLayerVerified", arg0)
-	ret0, _ := ret[0].(*types.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLayerVerified indicates an expected call of GetLayerVerified.
 func (mr *MockmeshAPIMockRecorder) GetLayerVerified(arg0 any) *MockmeshAPIGetLayerVerifiedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLayerVerified", reflect.TypeOf((*MockmeshAPI)(nil).GetLayerVerified), arg0)
-	return &MockmeshAPIGetLayerVerifiedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPIGetLayerVerifiedCall wrap *gomock.Call
@@ -1796,36 +1643,32 @@ type MockmeshAPIGetLayerVerifiedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPIGetLayerVerifiedCall) Return(arg0 *types.Block, arg1 error) *MockmeshAPIGetLayerVerifiedCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPIGetLayerVerifiedCall) Do(f func(types.LayerID) (*types.Block, error)) *MockmeshAPIGetLayerVerifiedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPIGetLayerVerifiedCall) DoAndReturn(f func(types.LayerID) (*types.Block, error)) *MockmeshAPIGetLayerVerifiedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetRewardsByCoinbase mocks base method.
 func (m *MockmeshAPI) GetRewardsByCoinbase(arg0 types.Address) ([]*types.Reward, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRewardsByCoinbase", arg0)
-	ret0, _ := ret[0].([]*types.Reward)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetRewardsByCoinbase indicates an expected call of GetRewardsByCoinbase.
 func (mr *MockmeshAPIMockRecorder) GetRewardsByCoinbase(arg0 any) *MockmeshAPIGetRewardsByCoinbaseCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRewardsByCoinbase", reflect.TypeOf((*MockmeshAPI)(nil).GetRewardsByCoinbase), arg0)
-	return &MockmeshAPIGetRewardsByCoinbaseCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPIGetRewardsByCoinbaseCall wrap *gomock.Call
@@ -1835,35 +1678,32 @@ type MockmeshAPIGetRewardsByCoinbaseCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPIGetRewardsByCoinbaseCall) Return(arg0 []*types.Reward, arg1 error) *MockmeshAPIGetRewardsByCoinbaseCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPIGetRewardsByCoinbaseCall) Do(f func(types.Address) ([]*types.Reward, error)) *MockmeshAPIGetRewardsByCoinbaseCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPIGetRewardsByCoinbaseCall) DoAndReturn(f func(types.Address) ([]*types.Reward, error)) *MockmeshAPIGetRewardsByCoinbaseCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LatestLayer mocks base method.
 func (m *MockmeshAPI) LatestLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LatestLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // LatestLayer indicates an expected call of LatestLayer.
 func (mr *MockmeshAPIMockRecorder) LatestLayer() *MockmeshAPILatestLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LatestLayer", reflect.TypeOf((*MockmeshAPI)(nil).LatestLayer))
-	return &MockmeshAPILatestLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPILatestLayerCall wrap *gomock.Call
@@ -1873,35 +1713,32 @@ type MockmeshAPILatestLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPILatestLayerCall) Return(arg0 types.LayerID) *MockmeshAPILatestLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPILatestLayerCall) Do(f func() types.LayerID) *MockmeshAPILatestLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPILatestLayerCall) DoAndReturn(f func() types.LayerID) *MockmeshAPILatestLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LatestLayerInState mocks base method.
 func (m *MockmeshAPI) LatestLayerInState() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LatestLayerInState")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // LatestLayerInState indicates an expected call of LatestLayerInState.
 func (mr *MockmeshAPIMockRecorder) LatestLayerInState() *MockmeshAPILatestLayerInStateCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LatestLayerInState", reflect.TypeOf((*MockmeshAPI)(nil).LatestLayerInState))
-	return &MockmeshAPILatestLayerInStateCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPILatestLayerInStateCall wrap *gomock.Call
@@ -1911,36 +1748,32 @@ type MockmeshAPILatestLayerInStateCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPILatestLayerInStateCall) Return(arg0 types.LayerID) *MockmeshAPILatestLayerInStateCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPILatestLayerInStateCall) Do(f func() types.LayerID) *MockmeshAPILatestLayerInStateCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPILatestLayerInStateCall) DoAndReturn(f func() types.LayerID) *MockmeshAPILatestLayerInStateCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MeshHash mocks base method.
 func (m *MockmeshAPI) MeshHash(arg0 types.LayerID) (types.Hash32, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MeshHash", arg0)
-	ret0, _ := ret[0].(types.Hash32)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Hash32), nil
 }
 
 // MeshHash indicates an expected call of MeshHash.
 func (mr *MockmeshAPIMockRecorder) MeshHash(arg0 any) *MockmeshAPIMeshHashCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MeshHash", reflect.TypeOf((*MockmeshAPI)(nil).MeshHash), arg0)
-	return &MockmeshAPIMeshHashCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPIMeshHashCall wrap *gomock.Call
@@ -1950,35 +1783,32 @@ type MockmeshAPIMeshHashCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPIMeshHashCall) Return(arg0 types.Hash32, arg1 error) *MockmeshAPIMeshHashCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPIMeshHashCall) Do(f func(types.LayerID) (types.Hash32, error)) *MockmeshAPIMeshHashCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPIMeshHashCall) DoAndReturn(f func(types.LayerID) (types.Hash32, error)) *MockmeshAPIMeshHashCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ProcessedLayer mocks base method.
 func (m *MockmeshAPI) ProcessedLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ProcessedLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // ProcessedLayer indicates an expected call of ProcessedLayer.
 func (mr *MockmeshAPIMockRecorder) ProcessedLayer() *MockmeshAPIProcessedLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProcessedLayer", reflect.TypeOf((*MockmeshAPI)(nil).ProcessedLayer))
-	return &MockmeshAPIProcessedLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockmeshAPIProcessedLayerCall wrap *gomock.Call
@@ -1988,20 +1818,20 @@ type MockmeshAPIProcessedLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockmeshAPIProcessedLayerCall) Return(arg0 types.LayerID) *MockmeshAPIProcessedLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockmeshAPIProcessedLayerCall) Do(f func() types.LayerID) *MockmeshAPIProcessedLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockmeshAPIProcessedLayerCall) DoAndReturn(f func() types.LayerID) *MockmeshAPIProcessedLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Mockoracle is a mock of oracle interface.
@@ -2017,31 +1847,25 @@ type MockoracleMockRecorder struct {
 }
 
 // NewMockoracle creates a new mock instance.
-func NewMockoracle(ctrl *gomock.Controller) *Mockoracle {
-	mock := &Mockoracle{ctrl: ctrl}
-	mock.recorder = &MockoracleMockRecorder{mock}
-	return mock
-}
+func NewMockoracle(ctrl *gomock.Controller) *Mockoracle { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Mockoracle) EXPECT() *MockoracleMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ActiveSet mocks base method.
+	return nil
 }
 
-// ActiveSet mocks base method.
 func (m *Mockoracle) ActiveSet(arg0 context.Context, arg1 types.EpochID) ([]types.ATXID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ActiveSet", arg0, arg1)
-	ret0, _ := ret[0].([]types.ATXID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ActiveSet indicates an expected call of ActiveSet.
 func (mr *MockoracleMockRecorder) ActiveSet(arg0, arg1 any) *MockoracleActiveSetCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ActiveSet", reflect.TypeOf((*Mockoracle)(nil).ActiveSet), arg0, arg1)
-	return &MockoracleActiveSetCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockoracleActiveSetCall wrap *gomock.Call
@@ -2051,18 +1875,18 @@ type MockoracleActiveSetCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockoracleActiveSetCall) Return(arg0 []types.ATXID, arg1 error) *MockoracleActiveSetCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockoracleActiveSetCall) Do(f func(context.Context, types.EpochID) ([]types.ATXID, error)) *MockoracleActiveSetCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockoracleActiveSetCall) DoAndReturn(f func(context.Context, types.EpochID) ([]types.ATXID, error)) *MockoracleActiveSetCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -16,12 +16,7 @@ var pool = &sync.Pool{
 // It may or may not allocate a new one. Consumers are not required
 // to call Reset() on the hasher before putting it back in
 // the pool.
-func GetHasher() *OpinionHasher {
-	return pool.Get().(*OpinionHasher)
-}
+func GetHasher() *OpinionHasher { _ = "STUB: not implemented"; return nil }
 
 // PutHasher resets the hasher and puts it back to the pool.
-func PutHasher(hasher *OpinionHasher) {
-	hasher.Reset()
-	pool.Put(hasher)
-}
+func PutHasher(hasher *OpinionHasher) { _ = "STUB: not implemented"; return }

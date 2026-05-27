@@ -23,11 +23,7 @@ type HareEligibilityGossip struct {
 }
 
 func (hg *HareEligibilityGossip) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("layer", hg.Layer.Uint32())
-	encoder.AddUint32("round", hg.Round)
-	encoder.AddString("smesher", hg.NodeID.String())
-	encoder.AddUint16("count", hg.Eligibility.Count)
-	encoder.AddString("proof", hg.Eligibility.Proof.String())
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -42,8 +38,7 @@ type HareEligibility struct {
 
 // MarshalLogObject implements logging interface.
 func (e *HareEligibility) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint16("count", e.Count)
-	encoder.AddString("proof", e.Proof.String())
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -60,7 +55,6 @@ type VotingEligibility struct {
 
 // MarshalLogObject implements logging interface.
 func (v *VotingEligibility) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("j", v.J)
-	encoder.AddString("sig", v.Sig.String())
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -23,52 +23,47 @@ func NewDBBackedStore(
 	sts *sqlstore.SyncedTableSnapshot,
 	keyLen int,
 ) *DBBackedStore {
-	return &DBBackedStore{
-		SQLIDStore: sqlstore.NewSQLIDStore(db, sts, keyLen),
-		FPTree:     NewFPTreeWithValues(0, keyLen),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Clone creates a copy of the store.
 // Implements IDStore.Clone.
 func (s *DBBackedStore) Clone() sqlstore.IDStore {
-	return &DBBackedStore{
-		SQLIDStore: s.SQLIDStore.Clone().(*sqlstore.SQLIDStore),
-		FPTree:     s.FPTree.Clone().(*FPTree),
-	}
+	_ = "STUB: not implemented"
+	return *new(sqlstore.IDStore)
 }
 
 // RegisterKey adds a hash to the store, using the FPTree so that the underlying database
 // table is unchanged.
 // Implements IDStore.
 func (s *DBBackedStore) RegisterKey(k rangesync.KeyBytes) error {
-	return s.FPTree.RegisterKey(k)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // All returns all the items currently in the store.
 // Implements IDStore.
 func (s *DBBackedStore) All() rangesync.SeqResult {
-	return rangesync.CombineSeqs(nil, s.SQLIDStore.All(), s.FPTree.All())
+	_ = "STUB: not implemented"
+	return *new(rangesync.SeqResult)
 }
 
 // From returns all the items in the store that are greater than or equal to the given key.
 // Implements IDStore.
 func (s *DBBackedStore) From(from rangesync.KeyBytes, sizeHint int) rangesync.SeqResult {
-	return rangesync.CombineSeqs(
-		from,
-		// There may be fewer than sizeHint to be loaded from the database as some
-		// may be in FPTree, but for most cases that will do.
-		s.SQLIDStore.From(from, sizeHint),
-		s.FPTree.From(from, sizeHint))
+	_ = "STUB: not implemented"
+	return *new(rangesync.SeqResult)
 }
+
+// There may be fewer than sizeHint to be loaded from the database as some
+// may be in FPTree, but for most cases that will do.
 
 // SetSnapshot sets the table snapshot to be used by the store.
 func (s *DBBackedStore) SetSnapshot(sts *sqlstore.SyncedTableSnapshot) {
-	s.SQLIDStore.SetSnapshot(sts)
-	s.FPTree.Clear()
+	_ = "STUB: not implemented"
+	return
 }
 
 // Release releases resources used by the store.
-func (s *DBBackedStore) Release() {
-	s.FPTree.Release()
-}
+func (s *DBBackedStore) Release() { _ = "STUB: not implemented"; return }

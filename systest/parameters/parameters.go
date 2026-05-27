@@ -1,32 +1,20 @@
 package parameters
 
 import (
-	"fmt"
-	"strconv"
 	"time"
 )
 
 // New creates Parameters instance with default values.
-func New() *Parameters {
-	return &Parameters{values: map[string]string{}}
-}
+func New() *Parameters { _ = "STUB: not implemented"; return nil }
 
 // FromValues instantiates parameters with a cope of values.
-func FromValues(values map[string]string) *Parameters {
-	p := New()
-	p.Update(values)
-	return p
-}
+func FromValues(values map[string]string) *Parameters { _ = "STUB: not implemented"; return nil }
 
 type Parameters struct {
 	values map[string]string
 }
 
-func (p *Parameters) Update(values map[string]string) {
-	for name, value := range values {
-		p.values[name] = value
-	}
-}
+func (p *Parameters) Update(values map[string]string) { _ = "STUB: not implemented"; return }
 
 type Parser[T any] func(string) (T, error)
 
@@ -36,77 +24,39 @@ type Parameter[T any] struct {
 	parser     Parser[T]
 }
 
-func (p *Parameter[T]) Get(params *Parameters) T {
-	value, exist := params.values[p.name]
-	var rst T
-	if !exist {
-		return p.defaults
-	}
-	rst, err := p.parser(value)
-	if err != nil {
-		// TODO(dshulyak) move this to part to validation that is executed
-		// when values are updated (Parameters.Update)
-		panic(fmt.Sprintf("invalid parameter %s: %s. default (%v): %v", p.name, p.desc, p.defaults, err))
-	}
-	return rst
-}
+func (p *Parameter[T]) Get(params *Parameters) T { _ = "STUB: not implemented"; return *new(T) }
+
+// TODO(dshulyak) move this to part to validation that is executed
+// when values are updated (Parameters.Update)
 
 func NewParameter[T any](name, desc string, defaults T, parser Parser[T]) Parameter[T] {
-	return Parameter[T]{name: name, desc: desc, defaults: defaults, parser: parser}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func String(name, desc, defaults string) Parameter[string] {
-	return NewParameter(name, desc, defaults, toString)
-}
+func String(name, desc, defaults string) Parameter[string] { _ = "STUB: not implemented"; return nil }
 
 func Bytes(name, desc string, defaults []byte) Parameter[[]byte] {
-	return NewParameter(name, desc, defaults, toBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func Duration(name, desc string, defaults time.Duration) Parameter[time.Duration] {
-	return NewParameter(name, desc, defaults, toDuration)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func Int(name, desc string, defaults int) Parameter[int] {
-	return NewParameter(name, desc, defaults, toInt)
-}
+func Int(name, desc string, defaults int) Parameter[int] { _ = "STUB: not implemented"; return nil }
 
-func Bool(name, desc string) Parameter[bool] {
-	return NewParameter(name, desc, false, func(value string) (bool, error) {
-		switch value {
-		case "true":
-			return true, nil
-		case "1":
-			return true, nil
-		case "false":
-			return false, nil
-		case "0":
-			return false, nil
-		}
-		return false, fmt.Errorf("not a boolean %v", value)
-	})
-}
+func Bool(name, desc string) Parameter[bool] { _ = "STUB: not implemented"; return nil }
 
-func toBytes(value string) ([]byte, error) {
-	return []byte(value), nil
-}
+func toBytes(value string) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func toString(value string) (string, error) {
-	return value, nil
-}
+func toString(value string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func toInt(value string) (int, error) {
-	rst, err := strconv.ParseInt(value, 0, 0)
-	if err != nil {
-		return 0, err
-	}
-	return int(rst), nil
-}
+func toInt(value string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func toDuration(value string) (time.Duration, error) {
-	rst, err := time.ParseDuration(value)
-	if err != nil {
-		return 0, err
-	}
-	return rst, nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), nil
 }

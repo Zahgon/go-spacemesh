@@ -10,8 +10,6 @@
 package bootstrap
 
 import (
-	reflect "reflect"
-
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,29 +28,27 @@ type MocklayerClockMockRecorder struct {
 
 // NewMocklayerClock creates a new mock instance.
 func NewMocklayerClock(ctrl *gomock.Controller) *MocklayerClock {
-	mock := &MocklayerClock{ctrl: ctrl}
-	mock.recorder = &MocklayerClockMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MocklayerClock) EXPECT() *MocklayerClockMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// CurrentLayer mocks base method.
+	return nil
 }
 
-// CurrentLayer mocks base method.
 func (m *MocklayerClock) CurrentLayer() types.LayerID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CurrentLayer")
-	ret0, _ := ret[0].(types.LayerID)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // CurrentLayer indicates an expected call of CurrentLayer.
 func (mr *MocklayerClockMockRecorder) CurrentLayer() *MocklayerClockCurrentLayerCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CurrentLayer", reflect.TypeOf((*MocklayerClock)(nil).CurrentLayer))
-	return &MocklayerClockCurrentLayerCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MocklayerClockCurrentLayerCall wrap *gomock.Call
@@ -62,18 +58,18 @@ type MocklayerClockCurrentLayerCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MocklayerClockCurrentLayerCall) Return(arg0 types.LayerID) *MocklayerClockCurrentLayerCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MocklayerClockCurrentLayerCall) Do(f func() types.LayerID) *MocklayerClockCurrentLayerCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MocklayerClockCurrentLayerCall) DoAndReturn(f func() types.LayerID) *MocklayerClockCurrentLayerCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

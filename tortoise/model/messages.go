@@ -77,28 +77,10 @@ type reliableMessenger struct {
 	events   list.List
 }
 
-func (r *reliableMessenger) Send(msgs ...Message) {
-	for _, msg := range msgs {
-		r.messages.PushBack(msg)
-	}
-}
+func (r *reliableMessenger) Send(msgs ...Message) { _ = "STUB: not implemented"; return }
 
-func (r *reliableMessenger) Notify(events ...Event) {
-	for _, ev := range events {
-		r.events.PushBack(ev)
-	}
-}
+func (r *reliableMessenger) Notify(events ...Event) { _ = "STUB: not implemented"; return }
 
-func (r *reliableMessenger) PopMessage() Message {
-	if r.messages.Len() == 0 {
-		return nil
-	}
-	return r.messages.Remove(r.messages.Front())
-}
+func (r *reliableMessenger) PopMessage() Message { _ = "STUB: not implemented"; return *new(Message) }
 
-func (r *reliableMessenger) PopEvent() Event {
-	if r.events.Len() == 0 {
-		return nil
-	}
-	return r.events.Remove(r.events.Front())
-}
+func (r *reliableMessenger) PopEvent() Event { _ = "STUB: not implemented"; return *new(Event) }

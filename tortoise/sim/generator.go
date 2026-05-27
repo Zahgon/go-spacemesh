@@ -3,11 +3,9 @@ package sim
 import (
 	"math/rand"
 	"testing"
-	"time"
 
 	"go.uber.org/zap"
 
-	"github.com/spacemeshos/go-spacemesh/atxsdata"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/signing"
 )
@@ -16,54 +14,23 @@ import (
 type GenOpt func(*Generator)
 
 // WithSeed configures seed for Generator. By default 0 is used.
-func WithSeed(seed int64) GenOpt {
-	return func(g *Generator) {
-		g.rng = rand.New(rand.NewSource(seed))
-	}
-}
+func WithSeed(seed int64) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
 // WithLayerSize configures average layer size.
-func WithLayerSize(size uint32) GenOpt {
-	return func(g *Generator) {
-		g.conf.LayerSize = size
-	}
-}
+func WithLayerSize(size uint32) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
 // WithLogger configures logger.
-func WithLogger(logger *zap.Logger) GenOpt {
-	return func(g *Generator) {
-		g.logger = logger
-	}
-}
+func WithLogger(logger *zap.Logger) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
 // WithPath configures path for persistent databases.
-func WithPath(path string) GenOpt {
-	return func(g *Generator) {
-		g.conf.Path = path
-	}
-}
+func WithPath(path string) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
 // WithStates creates n states.
-func WithStates(n int) GenOpt {
-	if n == 0 {
-		panic("generator without attached state is not supported")
-	}
-	return func(g *Generator) {
-		g.conf.StateInstances = n
-	}
-}
+func WithStates(n int) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
-func withRng(rng *rand.Rand) GenOpt {
-	return func(g *Generator) {
-		g.rng = rng
-	}
-}
+func withRng(rng *rand.Rand) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
-func withConf(conf config) GenOpt {
-	return func(g *Generator) {
-		g.conf = conf
-	}
-}
+func withConf(conf config) GenOpt { _ = "STUB: not implemented"; return *new(GenOpt) }
 
 type config struct {
 	Path           string
@@ -73,34 +40,12 @@ type config struct {
 	WindowSize     uint32
 }
 
-func defaults() config {
-	return config{
-		LayerSize:      30,
-		LayersPerEpoch: types.GetLayersPerEpoch(),
-		StateInstances: 1,
-		WindowSize:     2,
-	}
-}
+func defaults() config { _ = "STUB: not implemented"; return *new(config) }
 
 // New creates Generator instance.
-func New(tb testing.TB, opts ...GenOpt) *Generator {
-	g := &Generator{
-		tb:        tb,
-		rng:       rand.New(rand.NewSource(0)),
-		conf:      defaults(),
-		logger:    zap.NewNop(),
-		reordered: map[types.LayerID]types.LayerID{},
-	}
-	for _, opt := range opts {
-		opt(g)
-	}
-	// TODO support multiple persist states.
-	for i := 0; i < g.conf.StateInstances; i++ {
-		atxdata := atxsdata.New()
-		g.states = append(g.states, newState(g.tb, g.logger, g.conf, atxdata))
-	}
-	return g
-}
+func New(tb testing.TB, opts ...GenOpt) *Generator { _ = "STUB: not implemented"; return nil }
+
+// TODO support multiple persist states.
 
 // Generator for layers of blocks.
 type Generator struct {
@@ -130,34 +75,16 @@ type Generator struct {
 type SetupOpt func(g *setupConf)
 
 // WithSetupMinerRange number of miners will be selected between low and high values.
-func WithSetupMinerRange(low, high int) SetupOpt {
-	return func(conf *setupConf) {
-		conf.Miners = [2]int{low, high}
-	}
-}
+func WithSetupMinerRange(low, high int) SetupOpt { _ = "STUB: not implemented"; return *new(SetupOpt) }
 
 // WithSetupUnitsRange adjusts units of the ATXs, which will directly affect block weight.
-func WithSetupUnitsRange(low, high int) SetupOpt {
-	return func(conf *setupConf) {
-		conf.UnitsRange = [2]int{low, high}
-	}
-}
+func WithSetupUnitsRange(low, high int) SetupOpt { _ = "STUB: not implemented"; return *new(SetupOpt) }
 
 // WithSetupTicksRange configures range of atxs, that will be randomly chosen by atxs.
-func WithSetupTicksRange(low, high int) SetupOpt {
-	return func(conf *setupConf) {
-		conf.TicksRange = [2]int{low, high}
-	}
-}
+func WithSetupTicksRange(low, high int) SetupOpt { _ = "STUB: not implemented"; return *new(SetupOpt) }
 
 // WithSetupTicks configures ticks for every atx.
-func WithSetupTicks(ticks ...uint64) SetupOpt {
-	return func(conf *setupConf) {
-		if len(ticks) > 0 {
-			conf.Ticks = ticks
-		}
-	}
-}
+func WithSetupTicks(ticks ...uint64) SetupOpt { _ = "STUB: not implemented"; return *new(SetupOpt) }
 
 type setupConf struct {
 	Miners     [2]int
@@ -166,100 +93,19 @@ type setupConf struct {
 	Ticks      []uint64
 }
 
-func defaultSetupConf() setupConf {
-	return setupConf{
-		Miners:     [2]int{30, 30},
-		UnitsRange: [2]int{10, 10},
-		TicksRange: [2]int{10, 10},
-	}
-}
+func defaultSetupConf() setupConf { _ = "STUB: not implemented"; return *new(setupConf) }
 
 // GetState at index.
-func (g *Generator) GetState(i int) State {
-	return g.states[i]
-}
+func (g *Generator) GetState(i int) State { _ = "STUB: not implemented"; return *new(State) }
 
-func (g *Generator) addState(state State) {
-	g.states = append(g.states, state)
-}
+func (g *Generator) addState(state State) { _ = "STUB: not implemented"; return }
 
-func (g *Generator) popState(i int) State {
-	state := g.states[i]
-	copy(g.states[i:], g.states[i+1:])
-	g.states[len(g.states)-1] = State{}
-	g.states = g.states[:len(g.states)-1]
-	return state
-}
+func (g *Generator) popState(i int) State { _ = "STUB: not implemented"; return *new(State) }
 
 // Setup should be called before running Next.
-func (g *Generator) Setup(opts ...SetupOpt) {
-	conf := defaultSetupConf()
-	for _, opt := range opts {
-		opt(&conf)
-	}
-	if conf.Ticks != nil && conf.Miners[0] != conf.Miners[1] && len(conf.Ticks) != conf.Miners[0] {
-		g.logger.Panic("if conf.Ticks is provided it should be equal to the constant number of conf.Miners")
-	}
-	g.units = conf.UnitsRange
-	g.ticks = conf.Ticks
-	g.ticksRange = conf.TicksRange
-	if len(g.layers) == 0 {
-		genesis := types.NewLayer(types.GetEffectiveGenesis())
-		ballot := &types.Ballot{}
-		ballot.Layer = genesis.Index()
-		genesis.AddBallot(ballot)
-		g.layers = append(g.layers, genesis)
-	}
-	last := g.layers[len(g.layers)-1]
-	g.nextLayer = last.Index().Add(1)
+func (g *Generator) Setup(opts ...SetupOpt) { _ = "STUB: not implemented"; return }
 
-	miners := intInRange(g.rng, conf.Miners)
-	g.activations = make([]*types.ActivationTx, miners)
-	g.prevHeight = make([]uint64, miners)
-
-	for i := uint32(0); i < miners; i++ {
-		sig, err := signing.NewEdSigner(signing.WithKeyFromRand(g.rng))
-		if err != nil {
-			panic(err)
-		}
-		g.keys = append(g.keys, sig)
-	}
-}
-
-func (g *Generator) generateAtxs() {
-	for i := range g.activations {
-		units := intInRange(g.rng, g.units)
-		sig, err := signing.NewEdSigner()
-		if err != nil {
-			panic(err)
-		}
-
-		var ticks uint64
-		if g.ticks != nil {
-			ticks = g.ticks[i]
-		} else {
-			ticks = uint64(intInRange(g.rng, g.ticksRange))
-		}
-		atx := &types.ActivationTx{
-			PublishEpoch:   g.nextLayer.Sub(1).GetEpoch(),
-			Coinbase:       types.GenerateAddress(sig.PublicKey().Bytes()),
-			NumUnits:       units,
-			SmesherID:      sig.NodeID(),
-			BaseTickHeight: g.prevHeight[i],
-			TickCount:      ticks,
-			Weight:         uint64(units) * ticks,
-		}
-		atx.SetID(types.RandomATXID())
-		atx.SetReceived(time.Now())
-		g.prevHeight[i] += ticks
-		g.activations[i] = atx
-		for _, state := range g.states {
-			state.OnActivationTx(atx)
-		}
-	}
-}
+func (g *Generator) generateAtxs() { _ = "STUB: not implemented"; return }
 
 // Layer returns generated layer.
-func (g *Generator) Layer(i int) *types.Layer {
-	return g.layers[i+1]
-}
+func (g *Generator) Layer(i int) *types.Layer { _ = "STUB: not implemented"; return nil }

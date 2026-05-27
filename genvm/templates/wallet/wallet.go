@@ -1,18 +1,13 @@
 package wallet
 
 import (
-	"fmt"
-
-	"github.com/oasisprotocol/curve25519-voi/primitives/ed25519"
 	"github.com/spacemeshos/go-scale"
 
 	"github.com/spacemeshos/go-spacemesh/genvm/core"
 )
 
 // New returns Wallet instance with SpawnArguments.
-func New(args *SpawnArguments) *Wallet {
-	return &Wallet{PublicKey: args.PublicKey}
-}
+func New(args *SpawnArguments) *Wallet { _ = "STUB: not implemented"; return nil }
 
 //go:generate scalegen
 
@@ -23,43 +18,24 @@ type Wallet struct {
 
 // MaxSpend returns amount specified in the SpendArguments for Spend method.
 func (s *Wallet) MaxSpend(method uint8, args any) (uint64, error) {
-	switch method {
-	case core.MethodSpawn:
-		return 0, nil
-	case core.MethodSpend:
-		return args.(*SpendArguments).Amount, nil
-	default:
-		return 0, fmt.Errorf("%w: unknown method %d", core.ErrMalformed, method)
-	}
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Verify that transaction is signed by the owner of the PublicKey using ed25519.
 func (s *Wallet) Verify(host core.Host, raw []byte, dec *scale.Decoder) bool {
-	sig := core.Signature{}
-	n, err := sig.DecodeScale(dec)
-	if err != nil {
-		return false
-	}
-	return ed25519.Verify(
-		ed25519.PublicKey(s.PublicKey[:]),
-		core.SigningBody(host.GetGenesisID().Bytes(), raw[:len(raw)-n]),
-		sig[:],
-	)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Spend transfers an amount to the address specified in SpendArguments.
 func (s *Wallet) Spend(host core.Host, args *SpendArguments) error {
-	return host.Transfer(args.Destination, args.Amount)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *Wallet) BaseGas(method uint8) uint64 {
-	return BaseGas(method)
-}
+func (s *Wallet) BaseGas(method uint8) uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *Wallet) LoadGas() uint64 {
-	return LoadGas()
-}
+func (s *Wallet) LoadGas() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *Wallet) ExecGas(method uint8) uint64 {
-	return ExecGas(method)
-}
+func (s *Wallet) ExecGas(method uint8) uint64 { _ = "STUB: not implemented"; return 0 }

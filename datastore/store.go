@@ -3,9 +3,7 @@ package datastore
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
-	"time"
 
 	lru "github.com/hashicorp/golang-lru/v2"
 	"go.uber.org/zap"
@@ -18,9 +16,7 @@ import (
 	"github.com/spacemeshos/go-spacemesh/sql/atxs"
 	"github.com/spacemeshos/go-spacemesh/sql/ballots"
 	"github.com/spacemeshos/go-spacemesh/sql/blocks"
-	"github.com/spacemeshos/go-spacemesh/sql/builder"
 	"github.com/spacemeshos/go-spacemesh/sql/identities"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
 	"github.com/spacemeshos/go-spacemesh/sql/poets"
 	"github.com/spacemeshos/go-spacemesh/sql/transactions"
 )
@@ -55,12 +51,11 @@ type Config struct {
 }
 
 func DefaultConfig() Config {
-	return Config{
-		// NOTE(dshulyak) there are several places where this cache is used, but none of them require to hold
-		// all atxs in memory. those places should eventually be refactored to load necessary data from db.
-		ATXSize:         1_000,
-		MalfeasanceSize: 1_000,
-	}
+	_ = "STUB: not implemented"
+
+	// NOTE(dshulyak) there are several places where this cache is used, but none of them require to hold
+	// all atxs in memory. those places should eventually be refactored to load necessary data from db.
+	return *new(Config)
 }
 
 type cacheOpts struct {
@@ -70,154 +65,68 @@ type cacheOpts struct {
 
 type Opt func(*cacheOpts)
 
-func WithConfig(cfg Config) Opt {
-	return func(o *cacheOpts) {
-		o.cfg = cfg
-	}
-}
+func WithConfig(cfg Config) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithConsensusCache(c *atxsdata.Data) Opt {
-	return func(o *cacheOpts) {
-		o.atxsdata = c
-	}
-}
+func WithConsensusCache(c *atxsdata.Data) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // NewCachedDB create an instance of a CachedDB.
 func NewCachedDB(db sql.StateDatabase, lg *zap.Logger, opts ...Opt) *CachedDB {
-	o := cacheOpts{cfg: DefaultConfig()}
-	for _, opt := range opts {
-		opt(&o)
-	}
-	lg.Info("initialized datastore", zap.Any("config", o.cfg))
-
-	atxHdrCache, err := lru.New[types.ATXID, *types.ActivationTx](o.cfg.ATXSize)
-	if err != nil {
-		lg.Fatal("failed to create atx cache", zap.Error(err))
-	}
-
-	malfeasanceCache, err := lru.New[types.NodeID, []byte](o.cfg.MalfeasanceSize)
-	if err != nil {
-		lg.Fatal("failed to create malfeasance cache", zap.Error(err))
-	}
-
-	vrfNonceCache, err := lru.New[VrfNonceKey, types.VRFPostIndex](o.cfg.ATXSize)
-	if err != nil {
-		lg.Fatal("failed to create vrf nonce cache", zap.Error(err))
-	}
-
-	return &CachedDB{
-		Database:         db,
-		atxsdata:         o.atxsdata,
-		atxCache:         atxHdrCache,
-		malfeasanceCache: malfeasanceCache,
-		vrfNonceCache:    vrfNonceCache,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MalfeasanceProof returns the malfeasance proof for the given node ID. This function is thread safe and will return
 // an error if the proof is not found in the ATX DB.
 // Deprecated: use functions in the `sql/identities` and `sql/malfeasance` packages.
 func (db *CachedDB) MalfeasanceProof(id types.NodeID) ([]byte, error) {
-	if id == types.EmptyNodeID {
-		panic("invalid argument to GetMalfeasanceProof")
-	}
-
-	db.mu.Lock()
-	defer db.mu.Unlock()
-	if proof, ok := db.malfeasanceCache.Get(id); ok {
-		if proof == nil {
-			return nil, sql.ErrNotFound
-		}
-		return proof, nil
-	}
-
-	var blob sql.Blob
-	err := identities.LoadMalfeasanceBlob(context.Background(), db.Database, id.Bytes(), &blob)
-	if err != nil && err != sql.ErrNotFound {
-		return nil, err
-	}
-	db.malfeasanceCache.Add(id, blob.Bytes)
-	return blob.Bytes, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // CacheMalfeasanceProof caches the malfeasance proof for the given node ID. This function is thread safe.
 // Deprecated: caching is done by the sql database automatically.
 func (db *CachedDB) CacheMalfeasanceProof(id types.NodeID, proof []byte) {
-	if id == types.EmptyNodeID {
-		panic("invalid argument to CacheMalfeasanceProof")
-	}
-	if db.atxsdata != nil {
-		db.atxsdata.SetMalicious(id)
-	}
-	db.mu.Lock()
-	defer db.mu.Unlock()
-	db.malfeasanceCache.Add(id, proof)
+	_ = "STUB: not implemented"
+	return
 }
 
 // VRFNonce returns the VRF nonce of for the given node in the given epoch. This function is thread safe and will
 // return an error if the nonce is not found in the ATX DB.
 func (db *CachedDB) VRFNonce(id types.NodeID, epoch types.EpochID) (types.VRFPostIndex, error) {
-	key := VrfNonceKey{id, epoch}
-	if nonce, ok := db.vrfNonceCache.Get(key); ok {
-		return nonce, nil
-	}
-
-	nonce, err := atxs.VRFNonce(db, id, epoch)
-	if err != nil {
-		return types.VRFPostIndex(0), err
-	}
-
-	db.vrfNonceCache.Add(key, nonce)
-	return nonce, nil
+	_ = "STUB: not implemented"
+	return *new(types.VRFPostIndex), nil
 }
 
 // GetAtx returns the ATX by the given ID. This function is thread safe and will return an error if the ID
 // is not found in the ATX DB.
 func (db *CachedDB) GetAtx(id types.ATXID) (*types.ActivationTx, error) {
-	if id == types.EmptyATXID {
-		return nil, errors.New("trying to fetch empty atx id")
-	}
-
-	if atx, gotIt := db.atxCache.Get(id); gotIt {
-		return atx, nil
-	}
-
-	atx, err := atxs.Get(db, id)
-	if err != nil {
-		return nil, fmt.Errorf("get ATX from DB: %w", err)
-	}
-
-	db.atxCache.Add(id, atx)
-	return atx, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Previous retrieves the list of previous ATXs for the given ATX ID.
 // Deprecated: replaced by atxs.Previous.
 func (db *CachedDB) Previous(id types.ATXID) ([]types.ATXID, error) {
-	return atxs.Previous(db, id)
+	_ = "STUB: not implemented"
+	return nil, nil
+
+	// IterateMalfeasanceProofs iterates over all malfeasance proofs in the database and calls the provided callback on
+	// each.
+	// Deprecated: replaced by identities.IterateOps and malfeasance.IterateOps.
 }
 
-// IterateMalfeasanceProofs iterates over all malfeasance proofs in the database and calls the provided callback on
-// each.
-// Deprecated: replaced by identities.IterateOps and malfeasance.IterateOps.
 func (db *CachedDB) IterateMalfeasanceProofs(
 	iter func(types.NodeID, []byte) error,
 ) error {
-	var callbackErr error
-	if err := identities.IterateOps(db, builder.Operations{},
-		func(id types.NodeID, proof []byte, _ time.Time) bool {
-			callbackErr = iter(id, proof)
-			return callbackErr == nil
-		}); err != nil {
-		return err
-	}
-	return callbackErr
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MaxHeightAtx returns the ATX ID with the maximum height.
 // Deprecated: replaced by atxs.GetIDWithMaxHeight.
 func (db *CachedDB) MaxHeightAtx() (types.ATXID, error) {
-	return atxs.GetIDWithMaxHeight(db, types.EmptyNodeID, atxs.FilterAll)
+	_ = "STUB: not implemented"
+	return *new(types.ATXID), nil
 }
 
 // Hint marks which DB should be queried for a certain provided hash.
@@ -239,10 +148,8 @@ const (
 
 // NewBlobStore returns a BlobStore.
 func NewBlobStore(db sql.StateDatabase, proposals *store.Store) *BlobStore {
-	return &BlobStore{
-		DB:        db,
-		proposals: proposals,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetMalfeasanceProvider sets the malfeasance provider dependency.
@@ -251,10 +158,11 @@ func NewBlobStore(db sql.StateDatabase, proposals *store.Store) *BlobStore {
 //
 //	malfeasance2 -> fetcher -> datastore -> malfeasance2
 func (bs *BlobStore) SetMalfeasanceProvider(p MalfeasanceProvider) {
-	bs.malfeasance = p
-}
+	_ = "STUB: not implemented"
+	return
 
-//go:generate mockgen -typed -package=datastore -destination=./mocks.go -source=./store.go
+	//go:generate mockgen -typed -package=datastore -destination=./mocks.go -source=./store.go
+}
 
 type MalfeasanceProvider interface {
 	ProofByID(ctx context.Context, nodeID types.NodeID) ([]byte, error)
@@ -296,134 +204,39 @@ var blobSizeDispatch = map[Hint]blobSizeFunc{
 }
 
 func (bs *BlobStore) loadProposal(key []byte, blob *sql.Blob) error {
-	id := types.ProposalID(types.BytesToHash(key).ToHash20())
-	b, err := bs.proposals.GetBlob(id)
-	switch {
-	case err == nil:
-		blob.Bytes = b
-		return nil
-	case errors.Is(err, store.ErrNotFound):
-		return ErrNotFound
-	default:
-		return err
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (bs *BlobStore) proposalSizes(keys [][]byte) (sizes []int, err error) {
-	sizes = make([]int, len(keys))
-	for n, k := range keys {
-		id := types.ProposalID(types.BytesToHash(k).ToHash20())
-		size, err := bs.proposals.GetBlobSize(id)
-		switch {
-		case err == nil:
-			sizes[n] = size
-		case errors.Is(err, store.ErrNotFound):
-			sizes[n] = -1
-		default:
-			return nil, err
-		}
-	}
-	return sizes, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (bs *BlobStore) loadMalfeasance(key []byte, blob *sql.Blob) error {
-	id := types.BytesToNodeID(key)
-	b, err := bs.malfeasance.ProofByID(context.Background(), id)
-	switch {
-	case err == nil:
-		blob.Bytes = b
-		return nil
-	case errors.Is(err, sql.ErrNotFound):
-		return ErrNotFound
-	default:
-		return err
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (bs *BlobStore) malfeasanceSizes(keys [][]byte) (sizes []int, err error) {
-	sizes = make([]int, len(keys))
-	for n, k := range keys {
-		id := types.NodeID(k)
-		b, err := bs.malfeasance.ProofByID(context.Background(), id)
-		switch {
-		case err == nil:
-			sizes[n] = len(b)
-		case errors.Is(err, store.ErrNotFound):
-			sizes[n] = -1
-		default:
-			return nil, err
-		}
-	}
-	return sizes, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // LoadBlob gets an blob as bytes by an object ID as bytes.
 func (bs *BlobStore) LoadBlob(ctx context.Context, hint Hint, key []byte, blob *sql.Blob) error {
-	switch hint {
-	case ProposalDB:
-		return bs.loadProposal(key, blob)
-	case Malfeasance:
-		return bs.loadMalfeasance(key, blob)
-	default:
-	}
-	loader, found := loadBlobDispatch[hint]
-	if !found {
-		return fmt.Errorf("blob store not found %s", hint)
-	}
-	err := loader(ctx, bs.DB, key, blob)
-	switch {
-	case err == nil:
-		return nil
-	case errors.Is(err, sql.ErrNotFound):
-		return ErrNotFound
-	default:
-		return fmt.Errorf("get %s blob: %w", hint, err)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlobSizes returns the sizes of the blobs corresponding to the specified ids. For
 // non-existent objects, the corresponding items are set to -1.
 func (bs *BlobStore) GetBlobSizes(hint Hint, ids [][]byte) (sizes []int, err error) {
-	switch hint {
-	case ProposalDB:
-		return bs.proposalSizes(ids)
-	case Malfeasance:
-		return bs.malfeasanceSizes(ids)
-	default:
-	}
-	getSizes, found := blobSizeDispatch[hint]
-	if !found {
-		return nil, fmt.Errorf("blob store not found %s", hint)
-	}
-	sizes, err = getSizes(bs.DB, ids)
-	if err != nil {
-		return nil, fmt.Errorf("get %s blob sizes: %w", hint, err)
-	}
-	return sizes, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (bs *BlobStore) Has(hint Hint, key []byte) (bool, error) {
-	switch hint {
-	case ATXDB:
-		return atxs.Has(bs.DB, types.BytesToATXID(key))
-	case ProposalDB:
-		return bs.proposals.Has(types.ProposalID(types.BytesToHash(key).ToHash20())), nil
-	case BallotDB:
-		id := types.BallotID(types.BytesToHash(key).ToHash20())
-		return ballots.Has(bs.DB, id)
-	case BlockDB:
-		id := types.BlockID(types.BytesToHash(key).ToHash20())
-		return blocks.Has(bs.DB, id)
-	case TXDB:
-		return transactions.Has(bs.DB, types.TransactionID(types.BytesToHash(key)))
-	case POETDB:
-		return poets.Has(bs.DB, types.ByteToPoetProofRef(key))
-	case LegacyMalfeasance:
-		return identities.IsMalicious(bs.DB, types.BytesToNodeID(key))
-	case Malfeasance:
-		return malfeasance.IsMalicious(bs.DB, types.BytesToNodeID(key))
-	case ActiveSet:
-		return activesets.Has(bs.DB, types.BytesToHash(key))
-	}
-	return false, fmt.Errorf("blob store not found %s", hint)
+	_ = "STUB: not implemented"
+	return false, nil
 }

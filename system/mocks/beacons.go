@@ -10,8 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	fixed "github.com/spacemeshos/fixed"
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
@@ -31,27 +29,27 @@ type MockBeaconCollectorMockRecorder struct {
 
 // NewMockBeaconCollector creates a new mock instance.
 func NewMockBeaconCollector(ctrl *gomock.Controller) *MockBeaconCollector {
-	mock := &MockBeaconCollector{ctrl: ctrl}
-	mock.recorder = &MockBeaconCollectorMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockBeaconCollector) EXPECT() *MockBeaconCollectorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ReportBeaconFromBallot mocks base method.
+	return nil
 }
 
-// ReportBeaconFromBallot mocks base method.
 func (m *MockBeaconCollector) ReportBeaconFromBallot(arg0 types.EpochID, arg1 *types.Ballot, arg2 types.Beacon, arg3 fixed.Fixed) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "ReportBeaconFromBallot", arg0, arg1, arg2, arg3)
+	_ = "STUB: not implemented"
+	return
 }
 
 // ReportBeaconFromBallot indicates an expected call of ReportBeaconFromBallot.
 func (mr *MockBeaconCollectorMockRecorder) ReportBeaconFromBallot(arg0, arg1, arg2, arg3 any) *MockBeaconCollectorReportBeaconFromBallotCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportBeaconFromBallot", reflect.TypeOf((*MockBeaconCollector)(nil).ReportBeaconFromBallot), arg0, arg1, arg2, arg3)
-	return &MockBeaconCollectorReportBeaconFromBallotCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockBeaconCollectorReportBeaconFromBallotCall wrap *gomock.Call
@@ -61,20 +59,20 @@ type MockBeaconCollectorReportBeaconFromBallotCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockBeaconCollectorReportBeaconFromBallotCall) Return() *MockBeaconCollectorReportBeaconFromBallotCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockBeaconCollectorReportBeaconFromBallotCall) Do(f func(types.EpochID, *types.Ballot, types.Beacon, fixed.Fixed)) *MockBeaconCollectorReportBeaconFromBallotCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockBeaconCollectorReportBeaconFromBallotCall) DoAndReturn(f func(types.EpochID, *types.Ballot, types.Beacon, fixed.Fixed)) *MockBeaconCollectorReportBeaconFromBallotCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockBeaconGetter is a mock of BeaconGetter interface.
@@ -91,30 +89,27 @@ type MockBeaconGetterMockRecorder struct {
 
 // NewMockBeaconGetter creates a new mock instance.
 func NewMockBeaconGetter(ctrl *gomock.Controller) *MockBeaconGetter {
-	mock := &MockBeaconGetter{ctrl: ctrl}
-	mock.recorder = &MockBeaconGetterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockBeaconGetter) EXPECT() *MockBeaconGetterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetBeacon mocks base method.
+	return nil
 }
 
-// GetBeacon mocks base method.
 func (m *MockBeaconGetter) GetBeacon(arg0 types.EpochID) (types.Beacon, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBeacon", arg0)
-	ret0, _ := ret[0].(types.Beacon)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(types.Beacon), nil
 }
 
 // GetBeacon indicates an expected call of GetBeacon.
 func (mr *MockBeaconGetterMockRecorder) GetBeacon(arg0 any) *MockBeaconGetterGetBeaconCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBeacon", reflect.TypeOf((*MockBeaconGetter)(nil).GetBeacon), arg0)
-	return &MockBeaconGetterGetBeaconCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockBeaconGetterGetBeaconCall wrap *gomock.Call
@@ -124,18 +119,18 @@ type MockBeaconGetterGetBeaconCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockBeaconGetterGetBeaconCall) Return(arg0 types.Beacon, arg1 error) *MockBeaconGetterGetBeaconCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockBeaconGetterGetBeaconCall) Do(f func(types.EpochID) (types.Beacon, error)) *MockBeaconGetterGetBeaconCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockBeaconGetterGetBeaconCall) DoAndReturn(f func(types.EpochID) (types.Beacon, error)) *MockBeaconGetterGetBeaconCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

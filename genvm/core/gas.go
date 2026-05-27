@@ -1,14 +1,10 @@
 package core
 
 // IntrinsicGas computes intrinsic gas from base gas and storage cost.
-func IntrinsicGas(baseGas uint64, tx []byte) uint64 {
-	return baseGas + TxDataGas(len(tx))
-}
+func IntrinsicGas(baseGas uint64, tx []byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MaxGas computes total gas cost by adding fixed gas to intrinsic gas cost.
-func MaxGas(baseGas, fixedGas uint64, tx []byte) uint64 {
-	return IntrinsicGas(baseGas, tx) + fixedGas
-}
+func MaxGas(baseGas, fixedGas uint64, tx []byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
 const (
 	// TXDATA is a cost for storing transaction data included into the block. Charged per 8 byte.
@@ -37,16 +33,6 @@ const (
 
 // SizeGas computes total gas cost for a value of the specific size.
 // Gas is charged for every 8 bytes, rounded up.
-func SizeGas(gas uint64, size int) uint64 {
-	quo := size / 8
-	rem := size % 8
-	rst := uint64(quo) * gas
-	if rem != 0 {
-		rst += gas
-	}
-	return rst
-}
+func SizeGas(gas uint64, size int) uint64 { _ = "STUB: not implemented"; return 0 }
 
-func TxDataGas(size int) uint64 {
-	return SizeGas(TXDATA, size)
-}
+func TxDataGas(size int) uint64 { _ = "STUB: not implemented"; return 0 }

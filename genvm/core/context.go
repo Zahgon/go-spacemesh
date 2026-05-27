@@ -1,9 +1,6 @@
 package core
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/spacemeshos/go-scale"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -44,215 +41,88 @@ type Context struct {
 }
 
 // Principal returns address of the account that signed transaction.
-func (c *Context) Principal() Address {
-	return c.PrincipalAccount.Address
-}
+func (c *Context) Principal() Address { _ = "STUB: not implemented"; return *new(Address) }
 
 // Layer returns block layer id.
 func (c *Context) Layer() LayerID {
-	return c.LayerID
+	_ = "STUB: not implemented"
+
+	// GetGenesisID returns genesis id.
+	return *new(LayerID)
 }
 
-// GetGenesisID returns genesis id.
 func (c *Context) GetGenesisID() Hash20 {
-	return c.GenesisID
+	_ = "STUB: not implemented"
+
+	// Balance returns the account balance.
+	return *new(Hash20)
 }
 
-// Balance returns the account balance.
-func (c *Context) Balance() uint64 { return c.PrincipalAccount.Balance }
+func (c *Context) Balance() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Template of the principal account.
-func (c *Context) Template() Template {
-	return c.PrincipalTemplate
-}
+func (c *Context) Template() Template { _ = "STUB: not implemented"; return *new(Template) }
 
 // Handler of the principal account.
 func (c *Context) Handler() Handler {
-	return c.PrincipalHandler
+	_ = "STUB: not implemented"
+	return *
+
+	// Spawn account.
+	new(Handler)
 }
 
-// Spawn account.
-func (c *Context) Spawn(args scale.Encodable) error {
-	account, err := c.load(ComputePrincipal(c.Header.TemplateAddress, args))
-	if err != nil {
-		return err
-	}
-	if account.TemplateAddress != nil {
-		return ErrSpawned
-	}
-	handler := c.Registry.Get(c.Header.TemplateAddress)
-	if handler == nil {
-		return fmt.Errorf("%w: spawn is called with unknown handler", ErrInternal)
-	}
-	buf := bytes.NewBuffer(nil)
-	instance, err := handler.New(args)
-	if err != nil {
-		return fmt.Errorf("%w: %w", ErrMalformed, err)
-	}
-	_, err = instance.EncodeScale(scale.NewEncoder(buf))
-	if err != nil {
-		return fmt.Errorf("%w: %w", ErrInternal, err)
-	}
-	account.State = buf.Bytes()
-	account.TemplateAddress = &c.Header.TemplateAddress
-	c.change(account)
-	return nil
-}
+func (c *Context) Spawn(args scale.Encodable) error { _ = "STUB: not implemented"; return nil }
 
 // Transfer amount to the address after validation passes.
-func (c *Context) Transfer(to Address, amount uint64) error {
-	return c.transfer(&c.PrincipalAccount, to, amount, c.Header.MaxSpend)
-}
+func (c *Context) Transfer(to Address, amount uint64) error { _ = "STUB: not implemented"; return nil }
 
 func (c *Context) transfer(from *Account, to Address, amount, max uint64) error {
-	account, err := c.load(to)
-	if err != nil {
-		return err
-	}
-	if amount > from.Balance {
-		return ErrNoBalance
-	}
-	if c.transferred+amount > max {
-		return fmt.Errorf("%w: %d", ErrMaxSpend, max)
-	}
-	// noop. only gas is consumed
-	if from.Address == to {
-		return nil
-	}
-
-	c.transferred += amount
-	from.Balance -= amount
-	account.Balance += amount
-	c.change(account)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// noop. only gas is consumed
 
 // Relay call to the remote account.
 func (c *Context) Relay(remoteTemplate, address Address, call func(Host) error) error {
-	account, err := c.load(address)
-	if err != nil {
-		return err
-	}
-	if account.TemplateAddress == nil {
-		return ErrNotSpawned
-	}
-	if *account.TemplateAddress != remoteTemplate {
-		return fmt.Errorf(
-			"%w: %s != %s",
-			ErrTemplateMismatch,
-			remoteTemplate.String(),
-			account.TemplateAddress.String(),
-		)
-	}
-	handler := c.Registry.Get(remoteTemplate)
-	if handler == nil {
-		panic("template of the spawned account should exist in the registry")
-	}
-	template, err := handler.Load(account.State)
-	if err != nil {
-		return err
-	}
-
-	remote := &RemoteContext{
-		Context:  c,
-		remote:   account,
-		handler:  handler,
-		template: template,
-	}
-	if err := call(remote); err != nil {
-		return err
-	}
-	// ideally such changes would be serialized once for the whole block execution
-	// but it requires more changes in the cache, so can be done as an optimization
-	// if it proves meaningful (most likely wont)
-	buf := bytes.NewBuffer(nil)
-	encoder := scale.NewEncoder(buf)
-	if _, err := template.EncodeScale(encoder); err != nil {
-		return fmt.Errorf("%w: %w", ErrInternal, err)
-	}
-	account.State = buf.Bytes()
-	c.change(account)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// ideally such changes would be serialized once for the whole block execution
+// but it requires more changes in the cache, so can be done as an optimization
+// if it proves meaningful (most likely wont)
 
 // Consume gas from the account after validation passes.
-func (c *Context) Consume(gas uint64) (err error) {
-	amount := gas * c.Header.GasPrice
-	if amount > c.PrincipalAccount.Balance {
-		amount = c.PrincipalAccount.Balance
-		err = ErrOutOfGas
-	} else if total := c.consumed + gas; total > c.Header.MaxGas {
-		gas = c.Header.MaxGas - c.consumed
-		amount = gas * c.Header.GasPrice
-		err = ErrMaxGas
-	}
-	c.consumed += gas
-	c.fee += amount
-	c.PrincipalAccount.Balance -= amount
-	return err
-}
+func (c *Context) Consume(gas uint64) (err error) { _ = "STUB: not implemented"; return nil }
 
 // Apply is executed if transaction was consumed.
-func (c *Context) Apply(updater AccountUpdater) error {
-	c.PrincipalAccount.NextNonce = c.Header.Nonce + 1
-	if err := updater.Update(c.PrincipalAccount); err != nil {
-		return fmt.Errorf("%w: %w", ErrInternal, err)
-	}
-	for _, address := range c.touched {
-		account := c.changed[address]
-		if err := updater.Update(*account); err != nil {
-			return fmt.Errorf("%w: %w", ErrInternal, err)
-		}
-	}
-	return nil
-}
+func (c *Context) Apply(updater AccountUpdater) error { _ = "STUB: not implemented"; return nil }
 
 // Consumed gas.
 func (c *Context) Consumed() uint64 {
-	return c.consumed
+	_ = "STUB: not implemented"
+
+	// Fee computed from consumed gas.
+	return 0
 }
 
-// Fee computed from consumed gas.
 func (c *Context) Fee() uint64 {
-	return c.fee
+	_ = "STUB: not implemented"
+
+	// Updated list of addresses.
+	return 0
 }
 
-// Updated list of addresses.
-func (c *Context) Updated() []types.Address {
-	rst := make([]types.Address, 0, len(c.touched)+1)
-	rst = append(rst, c.PrincipalAccount.Address)
-	rst = append(rst, c.touched...)
-	return rst
-}
+func (c *Context) Updated() []types.Address { _ = "STUB: not implemented"; return nil }
 
 func (c *Context) load(address types.Address) (*Account, error) {
-	if address == c.Principal() {
-		return &c.PrincipalAccount, nil
-	}
-	if c.changed == nil {
-		c.changed = map[Address]*Account{}
-	}
-	account, exist := c.changed[address]
-	if !exist {
-		loaded, err := c.Loader.Get(address)
-		if err != nil {
-			return nil, fmt.Errorf("%w: %w", ErrInternal, err)
-		}
-		account = &loaded
-	}
-	return account, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (c *Context) change(account *Account) {
-	if account.Address == c.Principal() {
-		return
-	}
-	_, exist := c.changed[account.Address]
-	if !exist {
-		c.touched = append(c.touched, account.Address)
-	}
-	c.changed[account.Address] = account
-}
+func (c *Context) change(account *Account) { _ = "STUB: not implemented"; return }
 
 // RemoteContext ...
 type RemoteContext struct {
@@ -263,24 +133,24 @@ type RemoteContext struct {
 }
 
 // Balance returns the remote account balance.
-func (r *RemoteContext) Balance() uint64 {
-	return r.remote.Balance
-}
+func (r *RemoteContext) Balance() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Template ...
 func (r *RemoteContext) Template() Template {
-	return r.template
+	_ = "STUB: not implemented"
+
+	// Handler ...
+	return *new(Template)
 }
 
-// Handler ...
 func (r *RemoteContext) Handler() Handler {
-	return r.handler
+	_ = "STUB: not implemented"
+
+	// Transfer ...
+	return *new(Handler)
 }
 
-// Transfer ...
 func (r *RemoteContext) Transfer(to Address, amount uint64) error {
-	if err := r.transfer(r.remote, to, amount, amount); err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

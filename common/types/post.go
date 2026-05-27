@@ -1,7 +1,5 @@
 package types
 
-import "fmt"
-
 // PostInfo contains information about the PoST as returned by the service.
 type PostInfo struct {
 	NodeID        NodeID
@@ -21,16 +19,7 @@ const (
 	PostStateProving
 )
 
-func (s PostState) String() string {
-	switch s {
-	case PostStateIdle:
-		return "idle"
-	case PostStateProving:
-		return "proving"
-	default:
-		panic(fmt.Sprintf("unknown post state %d", s))
-	}
-}
+func (s PostState) String() string { _ = "STUB: not implemented"; return "" }
 
 type IdentityDescriptor interface {
 	Name() string

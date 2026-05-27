@@ -2,7 +2,6 @@ package rangesync
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/spacemeshos/go-scale"
 )
@@ -41,68 +40,19 @@ type CompactHash struct {
 
 // DecodeScale implements scale.Decodable.
 func (c *CompactHash) DecodeScale(dec *scale.Decoder) (int, error) {
-	var h [maxCompactHashSize]byte
-	b, total, err := scale.DecodeByte(dec)
-	switch {
-	case err != nil:
-		return total, err
-	case b>>compactHashSizeBits == compactHashTypeNil:
-		c.H = nil
-		return total, nil
-	case b>>compactHashSizeBits != compactHashType32:
-		return total, errInvalidCompactHash
-	case b != 0:
-		l := b & ((1 << compactHashSizeBits) - 1)
-		n, err := scale.DecodeByteArray(dec, h[:l])
-		total += n
-		if err != nil {
-			return total, err
-		}
-	}
-	c.H = h[:]
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // EncodeScale implements scale.Encodable.
 func (c *CompactHash) EncodeScale(enc *scale.Encoder) (int, error) {
-	if c.H == nil {
-		return scale.EncodeByte(enc, compactHashTypeNil<<compactHashSizeBits)
-	}
-
-	if len(c.H) != 32 {
-		panic("BUG: only 32-byte hashes are supported at the moment")
-	}
-
-	var b byte
-	for b = 32; b > 0; b-- {
-		if c.H[b-1] != 0 {
-			break
-		}
-	}
-
-	total, err := scale.EncodeByte(enc, b|(compactHashType32<<compactHashSizeBits))
-	if b == 0 || err != nil {
-		return total, err
-	}
-
-	n, err := scale.EncodeByteArray(enc, c.H[:b])
-	total += n
-	return total, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (c *CompactHash) ToOrdered() KeyBytes {
-	if c.H == nil {
-		return nil
-	}
-	return c.H
-}
+func (c *CompactHash) ToOrdered() KeyBytes { _ = "STUB: not implemented"; return *new(KeyBytes) }
 
-func chash(h KeyBytes) CompactHash {
-	if h == nil {
-		return CompactHash{}
-	}
-	return CompactHash{H: h.Clone()}
-}
+func chash(h KeyBytes) CompactHash { _ = "STUB: not implemented"; return *new(CompactHash) }
 
 const (
 	keyCollectionLimit = 100000000
@@ -115,56 +65,12 @@ type KeyCollection struct {
 
 // DecodeScale implements scale.Decodable.
 func (c *KeyCollection) DecodeScale(dec *scale.Decoder) (int, error) {
-	size, total, err := scale.DecodeLen(dec, keyCollectionLimit)
-	if err != nil {
-		return total, err
-	}
-	if size == 0 {
-		c.Keys = nil
-		return total, nil
-	}
-	hashType, n, err := scale.DecodeByte(dec)
-	total += n
-	if err != nil {
-		return total, err
-	}
-	if hashType != compactHashType32 {
-		return total, errInvalidCompactHash
-	}
-	c.Keys = make([]KeyBytes, size)
-	for p := range size {
-		var h [maxCompactHashSize]byte
-		n, err := scale.DecodeByteArray(dec, h[:])
-		total += n
-		if err != nil {
-			return total, err
-		}
-		c.Keys[p] = h[:]
-	}
-
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // EncodeScale implements scale.Encodable.
 func (c *KeyCollection) EncodeScale(enc *scale.Encoder) (int, error) {
-	total, err := scale.EncodeLen(enc, uint32(len(c.Keys)), keyCollectionLimit)
-	if err != nil || len(c.Keys) == 0 {
-		return total, err
-	}
-	n, err := scale.EncodeByte(enc, compactHashType32)
-	total += n
-	if err != nil {
-		return total, err
-	}
-	for _, k := range c.Keys {
-		if len(k) != 32 {
-			return total, fmt.Errorf("bad key size %d", len(k))
-		}
-		n, err := scale.EncodeByteArray(enc, k)
-		total += n
-		if err != nil {
-			return total, err
-		}
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

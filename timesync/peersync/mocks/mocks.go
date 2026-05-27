@@ -10,7 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
 	time "time"
 
 	p2p "github.com/spacemeshos/go-spacemesh/p2p"
@@ -30,31 +29,20 @@ type MockTimeMockRecorder struct {
 }
 
 // NewMockTime creates a new mock instance.
-func NewMockTime(ctrl *gomock.Controller) *MockTime {
-	mock := &MockTime{ctrl: ctrl}
-	mock.recorder = &MockTimeMockRecorder{mock}
-	return mock
-}
+func NewMockTime(ctrl *gomock.Controller) *MockTime { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockTime) EXPECT() *MockTimeMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Now mocks base method.
+	return nil
 }
 
-// Now mocks base method.
-func (m *MockTime) Now() time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Now")
-	ret0, _ := ret[0].(time.Time)
-	return ret0
-}
+func (m *MockTime) Now() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // Now indicates an expected call of Now.
-func (mr *MockTimeMockRecorder) Now() *MockTimeNowCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Now", reflect.TypeOf((*MockTime)(nil).Now))
-	return &MockTimeNowCall{Call: call}
-}
+func (mr *MockTimeMockRecorder) Now() *MockTimeNowCall { _ = "STUB: not implemented"; return nil }
 
 // MockTimeNowCall wrap *gomock.Call
 type MockTimeNowCall struct {
@@ -63,20 +51,20 @@ type MockTimeNowCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockTimeNowCall) Return(arg0 time.Time) *MockTimeNowCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockTimeNowCall) Do(f func() time.Time) *MockTimeNowCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockTimeNowCall) DoAndReturn(f func() time.Time) *MockTimeNowCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgetPeers is a mock of getPeers interface.
@@ -92,30 +80,22 @@ type MockgetPeersMockRecorder struct {
 }
 
 // NewMockgetPeers creates a new mock instance.
-func NewMockgetPeers(ctrl *gomock.Controller) *MockgetPeers {
-	mock := &MockgetPeers{ctrl: ctrl}
-	mock.recorder = &MockgetPeersMockRecorder{mock}
-	return mock
-}
+func NewMockgetPeers(ctrl *gomock.Controller) *MockgetPeers { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockgetPeers) EXPECT() *MockgetPeersMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetPeers mocks base method.
+	return nil
 }
 
-// GetPeers mocks base method.
-func (m *MockgetPeers) GetPeers() []p2p.Peer {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPeers")
-	ret0, _ := ret[0].([]p2p.Peer)
-	return ret0
-}
+func (m *MockgetPeers) GetPeers() []p2p.Peer { _ = "STUB: not implemented"; return nil }
 
 // GetPeers indicates an expected call of GetPeers.
 func (mr *MockgetPeersMockRecorder) GetPeers() *MockgetPeersGetPeersCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPeers", reflect.TypeOf((*MockgetPeers)(nil).GetPeers))
-	return &MockgetPeersGetPeersCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockgetPeersGetPeersCall wrap *gomock.Call
@@ -125,18 +105,18 @@ type MockgetPeersGetPeersCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockgetPeersGetPeersCall) Return(arg0 []p2p.Peer) *MockgetPeersGetPeersCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockgetPeersGetPeersCall) Do(f func() []p2p.Peer) *MockgetPeersGetPeersCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockgetPeersGetPeersCall) DoAndReturn(f func() []p2p.Peer) *MockgetPeersGetPeersCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

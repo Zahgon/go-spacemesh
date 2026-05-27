@@ -4,13 +4,7 @@ import (
 	"context"
 )
 
-func newSubconf(opts ...SubOpt) *subconf {
-	conf := &subconf{buffer: 1 << 10}
-	for _, opt := range opts {
-		opt(conf)
-	}
-	return conf
-}
+func newSubconf(opts ...SubOpt) *subconf { _ = "STUB: not implemented"; return nil }
 
 type subconf struct {
 	buffer int
@@ -20,36 +14,23 @@ type subconf struct {
 type SubOpt func(*subconf)
 
 // WithBuffer changes subscription buffer size.
-func WithBuffer(n int) SubOpt {
-	return func(conf *subconf) {
-		conf.buffer = n
-	}
-}
+func WithBuffer(n int) SubOpt { _ = "STUB: not implemented"; return *new(SubOpt) }
 
 func subscribe[T any](matcher func(*T) bool, opts ...SubOpt) (*BufferedSubscription[T], error) {
-	sub, err := reporter.bus.Subscribe(new(T))
-	if err != nil {
-		return nil, err
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-	conf := newSubconf(opts...)
-	bs := &BufferedSubscription[T]{
-		cancel: cancel,
-		result: make(chan T, conf.buffer),
-		full:   make(chan struct{}),
-	}
-	go bs.run(ctx, sub, matcher)
-	return bs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Subscribe to the objects of type T.
 func Subscribe[T any](opts ...SubOpt) (*BufferedSubscription[T], error) {
-	return subscribe[T](nil, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SubscribeMatched subscribes and filters results before adding them to the Out channel.
 func SubscribeMatched[T any](matcher func(*T) bool, opts ...SubOpt) (*BufferedSubscription[T], error) {
-	return subscribe(matcher, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // BufferedSubscription is meant to be used by API subscribers.
@@ -67,37 +48,22 @@ type BufferedSubscription[T any] struct {
 
 // Close non-blocking close of the subscription.
 func (sub *BufferedSubscription[T]) Close() {
-	sub.cancel()
+	_ = "STUB: not implemented"
+
+	// Out is a channel with subscription results.
+	return
 }
 
-// Out is a channel with subscription results.
 func (sub *BufferedSubscription[T]) Out() <-chan T {
-	return sub.result
+	_ = "STUB: not implemented"
+
+	// Full is closed if subscriptions buffer overflows.
+	return nil
 }
 
-// Full is closed if subscriptions buffer overflows.
-func (sub *BufferedSubscription[T]) Full() <-chan struct{} {
-	return sub.full
-}
+func (sub *BufferedSubscription[T]) Full() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 func (sub *BufferedSubscription[T]) run(ctx context.Context, s Subscription, matcher func(*T) bool) {
-	defer s.Close()
-	for {
-		select {
-		case <-ctx.Done():
-			close(sub.result)
-			return
-		case evt := <-s.Out():
-			typed := evt.(T)
-			if matcher != nil && !matcher(&typed) {
-				break
-			}
-			select {
-			case sub.result <- typed:
-			default:
-				close(sub.full)
-				return
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }

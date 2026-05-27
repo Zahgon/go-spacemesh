@@ -4,8 +4,6 @@
 package expr
 
 import (
-	"strings"
-
 	rsql "github.com/rqlite/sql"
 )
 
@@ -41,21 +39,12 @@ type Expr = rsql.Expr
 type Statement = rsql.Statement
 
 // MustParse parses an SQL expression and panics if there's an error.
-func MustParse(s string) rsql.Expr {
-	expr, err := rsql.ParseExprString(s)
-	if err != nil {
-		panic("error parsing SQL expression: " + err.Error())
-	}
-	return expr
-}
+func MustParse(s string) rsql.Expr { _ = "STUB: not implemented"; return *new(rsql.Expr) }
 
 // MustParseStatement parses an SQL statement and panics if there's an error.
 func MustParseStatement(s string) rsql.Statement {
-	st, err := rsql.NewParser(strings.NewReader(s)).ParseStatement()
-	if err != nil {
-		panic("error parsing SQL statement: " + err.Error())
-	}
-	return st
+	_ = "STUB: not implemented"
+	return *new(rsql.Statement)
 }
 
 // MaybeAnd joins together several SQL expressions with AND, ignoring any nil exprs.
@@ -63,74 +52,38 @@ func MustParseStatement(s string) rsql.Statement {
 // If a single non-nil expression is passed, that single expression is returned.
 // Otherwise, the expressions are joined together with ANDs:
 // a AND b AND c AND d.
-func MaybeAnd(exprs ...Expr) Expr {
-	var r Expr
-	for _, expr := range exprs {
-		switch {
-		case expr == nil:
-		case r == nil:
-			r = expr
-		default:
-			r = Op(r, AND, expr)
-		}
-	}
-	return r
-}
+func MaybeAnd(exprs ...Expr) Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // Ident constructs SQL identifier expression for the identifier with the specified name.
-func Ident(name string) *rsql.Ident {
-	return &rsql.Ident{Name: name}
-}
+func Ident(name string) *rsql.Ident { _ = "STUB: not implemented"; return nil }
 
 // Number constructs a number literal.
-func Number(value string) *rsql.NumberLit {
-	return &rsql.NumberLit{Value: value}
-}
+func Number(value string) *rsql.NumberLit { _ = "STUB: not implemented"; return nil }
 
 // TableSource constructs a Source clause for SELECT statement that corresponds to
 // selecting from a single table with the specified name.
-func TableSource(name string) rsql.Source {
-	return &rsql.QualifiedTableName{Name: Ident(name)}
-}
+func TableSource(name string) rsql.Source { _ = "STUB: not implemented"; return *new(rsql.Source) }
 
 // Op constructs a binary expression such as x + y or x < y.
-func Op(x Expr, op rsql.Token, y Expr) Expr {
-	return &rsql.BinaryExpr{
-		X:  x,
-		Op: op,
-		Y:  y,
-	}
-}
+func Op(x Expr, op rsql.Token, y Expr) Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // Bind constructs the unnamed bind expression (?).
-func Bind() Expr {
-	return &rsql.BindExpr{Name: "?"}
-}
+func Bind() Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // Between constructs BETWEEN expression: x BETWEEN a AND b.
-func Between(x, a, b Expr) Expr {
-	return Op(x, rsql.BETWEEN, &rsql.Range{X: a, Y: b})
-}
+func Between(x, a, b Expr) Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // Call constructs a call expression with specified arguments such as max(x).
-func Call(name string, args ...Expr) Expr {
-	return &rsql.Call{Name: Ident(name), Args: args}
-}
+func Call(name string, args ...Expr) Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // CountStar returns a COUNT(*) expression.
-func CountStar() Expr {
-	return &rsql.Call{Name: Ident("count"), Star: rsql.Pos{Offset: 1}}
-}
+func CountStar() Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // Asc constructs an ascending ORDER BY term.
-func Asc(expr Expr) *rsql.OrderingTerm {
-	return &rsql.OrderingTerm{X: expr}
-}
+func Asc(expr Expr) *rsql.OrderingTerm { _ = "STUB: not implemented"; return nil }
 
 // Desc constructs a descedning ORDER BY term.
-func Desc(expr Expr) *rsql.OrderingTerm {
-	return &rsql.OrderingTerm{X: expr, Desc: rsql.Pos{Offset: 1}}
-}
+func Desc(expr Expr) *rsql.OrderingTerm { _ = "STUB: not implemented"; return nil }
 
 // SelectBuilder is used to construct a SELECT statement.
 type SelectBuilder struct {
@@ -138,75 +91,58 @@ type SelectBuilder struct {
 }
 
 // Select returns a SELECT statement builder.
-func Select(columns ...any) SelectBuilder {
-	sb := SelectBuilder{st: &rsql.SelectStatement{}}
-	return sb.Columns(columns...)
-}
+func Select(columns ...any) SelectBuilder { _ = "STUB: not implemented"; return *new(SelectBuilder) }
 
 // SelectBasedOn returns a SELECT statement builder based on the specified SELECT statement.
 // The statement must be parseable, otherwise SelectBasedOn panics.
 // The builder methods can be used to alter the statement.
 func SelectBasedOn(st Statement) SelectBuilder {
-	st = rsql.CloneStatement(st)
-	return SelectBuilder{st: st.(*rsql.SelectStatement)}
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // Get returns the underlying SELECT statement.
 func (sb SelectBuilder) Get() *rsql.SelectStatement {
-	return sb.st
+	_ = "STUB: not implemented"
+
+	// String returns the underlying SELECT statement as a string.
+	return nil
 }
 
-// String returns the underlying SELECT statement as a string.
-func (sb SelectBuilder) String() string {
-	return sb.st.String()
-}
+func (sb SelectBuilder) String() string { _ = "STUB: not implemented"; return "" }
 
 // Columns sets columns in the SELECT statement.
 func (sb SelectBuilder) Columns(columns ...any) SelectBuilder {
-	sb.st.Columns = make([]*rsql.ResultColumn, len(columns))
-	for n, column := range columns {
-		switch c := column.(type) {
-		case *rsql.ResultColumn:
-			sb.st.Columns[n] = c
-		case Expr:
-			sb.st.Columns[n] = &rsql.ResultColumn{Expr: c}
-		default:
-			panic("unexpected column type")
-		}
-	}
-	return sb
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // From adds FROM clause to the SELECT statement.
 func (sb SelectBuilder) From(s rsql.Source) SelectBuilder {
-	sb.st.Source = s
-	return sb
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // From adds WHERE clause to the SELECT statement.
 func (sb SelectBuilder) Where(s Expr) SelectBuilder {
-	sb.st.WhereExpr = s
-	return sb
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // From adds ORDER BY clause to the SELECT statement.
 func (sb SelectBuilder) OrderBy(terms ...*rsql.OrderingTerm) SelectBuilder {
-	sb.st.OrderingTerms = terms
-	return sb
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // From adds LIMIT clause to the SELECT statement.
 func (sb SelectBuilder) Limit(limit Expr) SelectBuilder {
-	sb.st.LimitExpr = limit
-	return sb
+	_ = "STUB: not implemented"
+	return *new(SelectBuilder)
 }
 
 // ColumnExpr returns nth column expression from the SELECT statement.
-func ColumnExpr(st Statement, n int) Expr {
-	return st.(*rsql.SelectStatement).Columns[n].Expr
-}
+func ColumnExpr(st Statement, n int) Expr { _ = "STUB: not implemented"; return *new(Expr) }
 
 // WhereExpr returns WHERE expression from the SELECT statement.
-func WhereExpr(st Statement) Expr {
-	return st.(*rsql.SelectStatement).WhereExpr
-}
+func WhereExpr(st Statement) Expr { _ = "STUB: not implemented"; return *new(Expr) }

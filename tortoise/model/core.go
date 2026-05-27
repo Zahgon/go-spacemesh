@@ -1,29 +1,15 @@
 package model
 
 import (
-	"context"
-	"errors"
 	"math/rand"
 	"testing"
-	"time"
 
-	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 
 	"github.com/spacemeshos/go-spacemesh/atxsdata"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/datastore"
 	"github.com/spacemeshos/go-spacemesh/signing"
-	"github.com/spacemeshos/go-spacemesh/sql"
-	"github.com/spacemeshos/go-spacemesh/sql/atxs"
-	"github.com/spacemeshos/go-spacemesh/sql/ballots"
-	"github.com/spacemeshos/go-spacemesh/sql/beacons"
-	"github.com/spacemeshos/go-spacemesh/sql/blocks"
-	"github.com/spacemeshos/go-spacemesh/sql/certificates"
-	"github.com/spacemeshos/go-spacemesh/sql/identities"
-	"github.com/spacemeshos/go-spacemesh/sql/layers"
-	"github.com/spacemeshos/go-spacemesh/sql/malfeasance"
-	"github.com/spacemeshos/go-spacemesh/sql/statesql"
 	"github.com/spacemeshos/go-spacemesh/tortoise"
 )
 
@@ -33,32 +19,8 @@ const (
 )
 
 func newCore(tb testing.TB, rng *rand.Rand, id string, logger *zap.Logger) *core {
-	cdb := datastore.NewCachedDB(statesql.InMemoryTest(tb), logger)
-	tb.Cleanup(func() { assert.NoError(tb, cdb.Close()) })
-	sig, err := signing.NewEdSigner(signing.WithKeyFromRand(rng))
-	if err != nil {
-		panic(err)
-	}
-	c := &core{
-		id:      id,
-		logger:  logger,
-		rng:     rng,
-		cdb:     cdb,
-		units:   units,
-		signer:  sig,
-		atxdata: atxsdata.New(),
-	}
-	cfg := tortoise.DefaultConfig()
-	cfg.LayerSize = layerSize
-	c.tortoise, err = tortoise.New(
-		c.atxdata,
-		tortoise.WithLogger(logger.Named("trtl")),
-		tortoise.WithConfig(cfg),
-	)
-	if err != nil {
-		panic(err)
-	}
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // core state machine.
@@ -87,112 +49,6 @@ type core struct {
 // OnMessage receive blocks, atx, input vector, beacon, coinflip and store them.
 // Generate atx at the end of each epoch.
 // Generate block at the start of every layer.
-func (c *core) OnMessage(m Messenger, event Message) {
-	switch ev := event.(type) {
-	case MessageLayerStart:
-		// TODO(dshulyak) produce ballot according to eligibilities
-		if !ev.LayerID.After(types.GetEffectiveGenesis()) {
-			return
-		}
-		if c.refBallot == nil {
-			total := uint64(0)
-			c.atxdata.IterateInEpoch(ev.LayerID.GetEpoch(), func(_ types.ATXID, atx *atxsdata.ATX) {
-				total += atx.Weight
-			})
-			c.eligibilities = max(uint32(c.weight*layerSize/total), 1)
-		}
-		votes, err := c.tortoise.EncodeVotes(context.Background())
-		if err != nil {
-			panic(err)
-		}
-		ballot := &types.Ballot{}
-		ballot.Layer = ev.LayerID
-		ballot.Votes = votes.Votes
-		ballot.OpinionHash = votes.Hash
-		ballot.AtxID = c.atx
-		for i := uint32(0); i < c.eligibilities; i++ {
-			ballot.EligibilityProofs = append(ballot.EligibilityProofs, types.VotingEligibility{J: i})
-		}
-		if c.refBallot != nil {
-			ballot.RefBallot = *c.refBallot
-		} else {
-			beacon, err := beacons.Get(c.cdb, ev.LayerID.GetEpoch())
-			if err != nil {
-				beacon = types.Beacon{}
-				c.rng.Read(beacon[:])
-				beacons.Set(c.cdb, ev.LayerID.GetEpoch(), beacon)
-			}
-			ballot.EpochData = &types.EpochData{
-				ActiveSetHash:    types.Hash32{1, 2, 3},
-				Beacon:           beacon,
-				EligibilityCount: c.eligibilities,
-			}
-		}
-		ballot.Signature = c.signer.Sign(signing.BALLOT, ballot.SignedBytes())
-		ballot.SmesherID = c.signer.NodeID()
-		ballot.Initialize()
-		if c.refBallot == nil {
-			id := ballot.ID()
-			c.refBallot = &id
-		}
-		m.Send(MessageBallot{Ballot: ballot})
-	case MessageLayerEnd:
-		if ev.LayerID.After(types.GetEffectiveGenesis()) {
-			tortoise.RecoverLayer(
-				c.tortoise,
-				c.cdb.Database,
-				c.atxdata,
-				ev.LayerID,
-				c.tortoise.OnBallot,
-			)
-			c.tortoise.TallyVotes(ev.LayerID)
-			m.Notify(EventVerified{ID: c.id, Verified: c.tortoise.LatestComplete(), Layer: ev.LayerID})
-		}
+func (c *core) OnMessage(m Messenger, event Message) { _ = "STUB: not implemented"; return }
 
-		if ev.LayerID.GetEpoch() == ev.LayerID.Add(1).GetEpoch() {
-			return
-		}
-
-		atx := &types.ActivationTx{
-			PublishEpoch:   ev.LayerID.GetEpoch(),
-			NumUnits:       c.units,
-			Coinbase:       types.GenerateAddress(c.signer.PublicKey().Bytes()),
-			SmesherID:      c.signer.NodeID(),
-			BaseTickHeight: 1,
-			TickCount:      2,
-			Weight:         uint64(c.units) * 2,
-		}
-		atx.SetID(types.RandomATXID())
-		atx.SetReceived(time.Now())
-		c.refBallot = nil
-		c.atx = atx.ID()
-		c.weight = atx.Weight
-
-		m.Send(MessageAtx{Atx: atx})
-	case MessageBlock:
-		ids, err := blocks.IDsInLayer(c.cdb, ev.Block.LayerIndex)
-		if errors.Is(err, sql.ErrNotFound) || len(ids) == 0 {
-			certificates.SetHareOutput(c.cdb, ev.Block.LayerIndex, ev.Block.ID())
-		}
-		blocks.Add(c.cdb, ev.Block)
-	case MessageBallot:
-		ballots.Add(c.cdb, ev.Ballot)
-	case MessageAtx:
-		ev.Atx.BaseTickHeight = 1
-		ev.Atx.TickCount = 2
-		atxs.Add(c.cdb, ev.Atx, types.AtxBlob{})
-		malicious, err := identities.IsMalicious(c.cdb, ev.Atx.SmesherID)
-		if err != nil {
-			c.logger.Fatal("failed is malicious lookup", zap.Error(err))
-		}
-		malicious2, err := malfeasance.IsMalicious(c.cdb, ev.Atx.SmesherID)
-		if err != nil {
-			c.logger.Fatal("failed is malicious lookup", zap.Error(err))
-		}
-		c.atxdata.AddFromAtx(ev.Atx, malicious || malicious2)
-	case MessageBeacon:
-		beacons.Add(c.cdb, ev.EpochID+1, ev.Beacon)
-	case MessageCoinflip:
-		layers.SetWeakCoin(c.cdb, ev.LayerID, ev.Coinflip)
-	}
-}
+// TODO(dshulyak) produce ballot according to eligibilities

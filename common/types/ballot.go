@@ -1,17 +1,8 @@
 package types
 
 import (
-	"bytes"
-	"errors"
-
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/spacemeshos/go-scale"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/codec"
-	"github.com/spacemeshos/go-spacemesh/common/util"
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 const (
@@ -30,21 +21,19 @@ var EmptyBallotID = BallotID{}
 
 // EncodeScale implements scale codec interface.
 func (id *BallotID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *BallotID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (id *BallotID) MarshalText() ([]byte, error) {
-	return util.Base64Encode(id[:]), nil
-}
+func (id *BallotID) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (id *BallotID) UnmarshalText(buf []byte) error {
-	return util.Base64Decode(id[:], buf)
-}
+func (id *BallotID) UnmarshalText(buf []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Ballot contains the smeshers signed vote on the mesh history.
 type Ballot struct {
@@ -81,21 +70,7 @@ type Ballot struct {
 	malicious bool
 }
 
-func (b Ballot) Equal(other Ballot) bool {
-	if !cmp.Equal(other.InnerBallot, b.InnerBallot, cmpopts.EquateEmpty()) {
-		return false
-	}
-	if other.Signature != b.Signature {
-		return false
-	}
-	if !cmp.Equal(other.Votes, b.Votes) {
-		return false
-	}
-	if !cmp.Equal(other.EligibilityProofs, b.EligibilityProofs) {
-		return false
-	}
-	return true
-}
+func (b Ballot) Equal(other Ballot) bool { _ = "STUB: not implemented"; return false }
 
 // BallotMetadata is the signed part of Ballot.
 type BallotMetadata struct {
@@ -104,8 +79,7 @@ type BallotMetadata struct {
 }
 
 func (m *BallotMetadata) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddUint32("layer", m.Layer.Uint32())
-	encoder.AddString("msgHash", m.MsgHash.String())
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -187,25 +161,7 @@ type Votes struct {
 
 // MarshalLogObject implements logging interface.
 func (v *Votes) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("base", v.Base.String())
-	encoder.AddArray("support", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-		for _, vote := range v.Support {
-			encoder.AppendObject(&vote)
-		}
-		return nil
-	}))
-	encoder.AddArray("against", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-		for _, vote := range v.Against {
-			encoder.AppendObject(&vote)
-		}
-		return nil
-	}))
-	encoder.AddArray("abstain", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-		for _, lid := range v.Abstain {
-			encoder.AppendString(lid.String())
-		}
-		return nil
-	}))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -217,9 +173,7 @@ type BlockHeader struct {
 
 // MarshalLogObject implements logging interface.
 func (header *BlockHeader) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("id", header.ID.String())
-	encoder.AddUint32("layer", header.LayerID.Uint32())
-	encoder.AddUint64("height", header.Height)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -235,8 +189,8 @@ type Opinion struct {
 
 // MarshalLogObject implements logging interface.
 func (o *Opinion) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("hash", o.Hash.ShortString())
-	return o.Votes.MarshalLogObject(encoder)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EpochData contains information that cannot be changed mid-epoch.
@@ -250,150 +204,70 @@ type EpochData struct {
 
 // Initialize calculates and sets the Ballot's cached ballotID and smesherID.
 // This should be called once all the other fields of the Ballot are set.
-func (b *Ballot) Initialize() error {
-	if b.ID() != EmptyBallotID {
-		return errors.New("ballot already initialized")
-	}
-
-	b.ballotID = BallotID(BytesToHash(b.HashInnerBytes()).ToHash20())
-	return nil
-}
+func (b *Ballot) Initialize() error { _ = "STUB: not implemented"; return nil }
 
 // SignedBytes returns the serialization of the BallotMetadata for signing.
-func (b *Ballot) SignedBytes() []byte {
-	return codec.MustEncode(&BallotMetadata{
-		Layer:   b.Layer,
-		MsgHash: BytesToHash(b.HashInnerBytes()),
-	})
-}
+func (b *Ballot) SignedBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // HashInnerBytes returns the hash of the InnerBallot.
-func (b *Ballot) HashInnerBytes() []byte {
-	h := hash.GetHasher()
-	defer hash.PutHasher(h)
-	codec.MustEncodeTo(h, &b.InnerBallot)
-	return h.Sum(nil)
-}
+func (b *Ballot) HashInnerBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // SetID from stored data.
 func (b *Ballot) SetID(id BallotID) {
-	b.ballotID = id
+	_ = "STUB: not implemented"
+
+	// ID returns the BallotID.
+	return
 }
 
-// ID returns the BallotID.
 func (b *Ballot) ID() BallotID {
-	return b.ballotID
+	_ = "STUB: not implemented"
+
+	// SetMalicious sets ballot as malicious.
+	return *new(BallotID)
 }
 
-// SetMalicious sets ballot as malicious.
 func (b *Ballot) SetMalicious() {
-	b.malicious = true
+	_ = "STUB: not implemented"
+
+	// IsMalicious returns true if ballot is malicious.
+	return
 }
 
-// IsMalicious returns true if ballot is malicious.
 func (b *Ballot) IsMalicious() bool {
-	return b.malicious
+	_ = "STUB: not implemented"
+
+	// MarshalLogObject implements logging encoder for Ballot.
+	return false
 }
 
-// MarshalLogObject implements logging encoder for Ballot.
 func (b *Ballot) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	var (
-		activeHash Hash32
-		beacon     Beacon
-	)
-
-	if b.EpochData != nil {
-		activeHash = b.EpochData.ActiveSetHash
-		beacon = b.EpochData.Beacon
-	}
-
-	encoder.AddString("ballot_id", b.ID().String())
-	encoder.AddUint32("layer_id", b.Layer.Uint32())
-	encoder.AddUint32("epoch_id", uint32(b.Layer.GetEpoch()))
-	encoder.AddString("smesher", b.SmesherID.String())
-	encoder.AddString("opinion hash", b.OpinionHash.ShortString())
-	encoder.AddString("base_ballot", b.Votes.Base.String())
-	encoder.AddInt("support", len(b.Votes.Support))
-	encoder.AddInt("against", len(b.Votes.Against))
-	encoder.AddInt("abstain", len(b.Votes.Abstain))
-	encoder.AddString("atx_id", b.AtxID.String())
-	encoder.AddString("ref_ballot", b.RefBallot.String())
-	encoder.AddString("active set hash", activeHash.ShortString())
-	encoder.AddString("beacon", beacon.String())
-	encoder.AddObject("votes", &b.Votes)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (b *Ballot) ToTortoiseData() *BallotTortoiseData {
-	data := &BallotTortoiseData{
-		ID:            b.ID(),
-		Smesher:       b.SmesherID,
-		Layer:         b.Layer,
-		Eligibilities: uint32(len(b.EligibilityProofs)),
-		AtxID:         b.AtxID,
-		Opinion: Opinion{
-			Votes: b.Votes,
-			Hash:  b.OpinionHash,
-		},
-		Malicious: b.malicious,
-	}
-	if b.EpochData != nil {
-		data.EpochData = &ReferenceData{
-			Beacon:        b.EpochData.Beacon,
-			Eligibilities: uint32(b.EpochData.EligibilityCount),
-		}
-	} else {
-		data.Ref = &b.RefBallot
-	}
-	return data
-}
+func (b *Ballot) ToTortoiseData() *BallotTortoiseData { _ = "STUB: not implemented"; return nil }
 
 // ToBallotIDs turns a list of Ballot into a list of BallotID.
-func ToBallotIDs(ballots []*Ballot) []BallotID {
-	ids := make([]BallotID, 0, len(ballots))
-	for _, b := range ballots {
-		ids = append(ids, b.ID())
-	}
-	return ids
-}
+func ToBallotIDs(ballots []*Ballot) []BallotID { _ = "STUB: not implemented"; return nil }
 
 // String returns a short prefix of the hex representation of the ID.
-func (id BallotID) String() string {
-	return id.AsHash32().ShortString()
-}
+func (id BallotID) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the BallotID as a byte slice.
-func (id BallotID) Bytes() []byte {
-	return id.AsHash32().Bytes()
-}
+func (id BallotID) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // AsHash32 returns a Hash32 whose first 20 bytes are the bytes of this BallotID, it is right-padded with zeros.
-func (id BallotID) AsHash32() Hash32 {
-	return Hash20(id).ToHash32()
-}
+func (id BallotID) AsHash32() Hash32 { _ = "STUB: not implemented"; return *new(Hash32) }
 
 // Compare returns true if other (the given BallotID) is less than this BallotID, by lexicographic comparison.
-func (id BallotID) Compare(other BallotID) bool {
-	return bytes.Compare(id.Bytes(), other.Bytes()) < 0
-}
+func (id BallotID) Compare(other BallotID) bool { _ = "STUB: not implemented"; return false }
 
 // BallotIDsToHashes turns a list of BallotID into their Hash32 representation.
-func BallotIDsToHashes(ids []BallotID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, id.AsHash32())
-	}
-	return hashes
-}
+func BallotIDsToHashes(ids []BallotID) []Hash32 { _ = "STUB: not implemented"; return nil }
 
 // NewExistingBallot creates ballot from stored data.
 func NewExistingBallot(id BallotID, sig EdSignature, nodeId NodeID, layer LayerID) Ballot {
-	return Ballot{
-		InnerBallot: InnerBallot{
-			Layer: layer,
-		},
-		ballotID:  id,
-		Signature: sig,
-		SmesherID: nodeId,
-	}
+	_ = "STUB: not implemented"
+	return *new(Ballot)
 }

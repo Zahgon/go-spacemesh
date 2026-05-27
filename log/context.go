@@ -2,9 +2,6 @@ package log
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/google/uuid"
 )
 
 type correlationIDType int
@@ -27,50 +24,40 @@ const (
 // This requires a requestId string, and optionally, other LoggableFields that are added to
 // context and printed in contextual logs.
 func withRequestID(ctx context.Context, requestID string, fields ...LoggableField) context.Context {
-	ctx = context.WithValue(ctx, requestIDKey, requestID)
-	if len(fields) > 0 {
-		ctx = context.WithValue(ctx, requestFieldsKey, fields)
-	}
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // WithNewRequestID does the same thing as WithRequestID but generates a new, random requestId.
 // It can be used when there isn't a single, clear, unique id associated with a request (e.g.,
 // a block or tx hash).
 func WithNewRequestID(ctx context.Context, fields ...LoggableField) context.Context {
-	return withRequestID(ctx, shortUUID(), fields...)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // ExtractSessionID extracts the session id from a context object.
 func ExtractSessionID(ctx context.Context) (string, bool) {
-	if ctxSessionID, ok := ctx.Value(sessionIDKey).(string); ok {
-		return ctxSessionID, true
-	}
+	_ = "STUB: not implemented"
 	return "", false
 }
 
 // ExtractRequestID extracts the request id from a context object.
 func ExtractRequestID(ctx context.Context) (string, bool) {
-	if ctxRequestID, ok := ctx.Value(requestIDKey).(string); ok {
-		return ctxRequestID, true
-	}
+	_ = "STUB: not implemented"
 	return "", false
 }
 
 // ExtractSessionFields extracts additional loggable fields associated with the session from a context object.
 func ExtractSessionFields(ctx context.Context) (fields []LoggableField) {
-	if sessionFields, ok := ctx.Value(sessionFieldsKey).([]LoggableField); ok {
-		fields = sessionFields
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ExtractRequestFields extracts additional loggable fields associated with the request from a context object.
 func ExtractRequestFields(ctx context.Context) (fields []LoggableField) {
-	if requestFields, ok := ctx.Value(requestFieldsKey).([]LoggableField); ok {
-		fields = requestFields
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithSessionID returns a context which knows its session ID
@@ -83,20 +70,19 @@ func ExtractRequestFields(ctx context.Context) (fields []LoggableField) {
 // This requires a sessionId string, and optionally, other LoggableFields that are added to
 // context and printed in contextual logs.
 func WithSessionID(ctx context.Context, sessionID string, fields ...LoggableField) context.Context {
-	ctx = context.WithValue(ctx, sessionIDKey, sessionID)
-	if len(fields) > 0 {
-		ctx = context.WithValue(ctx, sessionFieldsKey, fields)
-	}
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // WithNewSessionID does the same thing as WithSessionID but generates a new, random sessionId.
 // It can be used when there isn't a single, clear, unique id associated with a session.
 func WithNewSessionID(ctx context.Context, fields ...LoggableField) context.Context {
-	return WithSessionID(ctx, shortUUID(), fields...)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func shortUUID() string {
+	_ = "STUB: not implemented"
 	// 4 first bytes from uuid in hex. before the first hyphen
-	return fmt.Sprintf("%.8s", uuid.New())
+	return ""
 }

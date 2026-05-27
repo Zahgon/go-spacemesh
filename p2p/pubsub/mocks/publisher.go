@@ -11,7 +11,6 @@ package mocks
 
 import (
 	context "context"
-	reflect "reflect"
 
 	pubsub "github.com/spacemeshos/go-spacemesh/p2p/pubsub"
 	gomock "go.uber.org/mock/gomock"
@@ -31,29 +30,27 @@ type MockPublisherMockRecorder struct {
 
 // NewMockPublisher creates a new mock instance.
 func NewMockPublisher(ctrl *gomock.Controller) *MockPublisher {
-	mock := &MockPublisher{ctrl: ctrl}
-	mock.recorder = &MockPublisherMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPublisher) EXPECT() *MockPublisherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Publish mocks base method.
+	return nil
 }
 
-// Publish mocks base method.
 func (m *MockPublisher) Publish(arg0 context.Context, arg1 string, arg2 []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Publish", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Publish indicates an expected call of Publish.
 func (mr *MockPublisherMockRecorder) Publish(arg0, arg1, arg2 any) *MockPublisherPublishCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockPublisher)(nil).Publish), arg0, arg1, arg2)
-	return &MockPublisherPublishCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPublisherPublishCall wrap *gomock.Call
@@ -63,20 +60,20 @@ type MockPublisherPublishCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPublisherPublishCall) Return(arg0 error) *MockPublisherPublishCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPublisherPublishCall) Do(f func(context.Context, string, []byte) error) *MockPublisherPublishCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPublisherPublishCall) DoAndReturn(f func(context.Context, string, []byte) error) *MockPublisherPublishCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockSubscriber is a mock of Subscriber interface.
@@ -93,32 +90,27 @@ type MockSubscriberMockRecorder struct {
 
 // NewMockSubscriber creates a new mock instance.
 func NewMockSubscriber(ctrl *gomock.Controller) *MockSubscriber {
-	mock := &MockSubscriber{ctrl: ctrl}
-	mock.recorder = &MockSubscriberMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockSubscriber) EXPECT() *MockSubscriberMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Register mocks base method.
+	return nil
 }
 
-// Register mocks base method.
 func (m *MockSubscriber) Register(arg0 string, arg1 pubsub.GossipHandler, arg2 ...pubsub.ValidatorOpt) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	m.ctrl.Call(m, "Register", varargs...)
+	_ = "STUB: not implemented"
+	return
 }
 
 // Register indicates an expected call of Register.
 func (mr *MockSubscriberMockRecorder) Register(arg0, arg1 any, arg2 ...any) *MockSubscriberRegisterCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockSubscriber)(nil).Register), varargs...)
-	return &MockSubscriberRegisterCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockSubscriberRegisterCall wrap *gomock.Call
@@ -128,20 +120,20 @@ type MockSubscriberRegisterCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockSubscriberRegisterCall) Return() *MockSubscriberRegisterCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockSubscriberRegisterCall) Do(f func(string, pubsub.GossipHandler, ...pubsub.ValidatorOpt)) *MockSubscriberRegisterCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockSubscriberRegisterCall) DoAndReturn(f func(string, pubsub.GossipHandler, ...pubsub.ValidatorOpt)) *MockSubscriberRegisterCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPublishSubscriber is a mock of PublishSubscriber interface.
@@ -158,29 +150,27 @@ type MockPublishSubscriberMockRecorder struct {
 
 // NewMockPublishSubscriber creates a new mock instance.
 func NewMockPublishSubscriber(ctrl *gomock.Controller) *MockPublishSubscriber {
-	mock := &MockPublishSubscriber{ctrl: ctrl}
-	mock.recorder = &MockPublishSubscriberMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPublishSubscriber) EXPECT() *MockPublishSubscriberMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Publish mocks base method.
+	return nil
 }
 
-// Publish mocks base method.
 func (m *MockPublishSubscriber) Publish(arg0 context.Context, arg1 string, arg2 []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Publish", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Publish indicates an expected call of Publish.
 func (mr *MockPublishSubscriberMockRecorder) Publish(arg0, arg1, arg2 any) *MockPublishSubscriberPublishCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockPublishSubscriber)(nil).Publish), arg0, arg1, arg2)
-	return &MockPublishSubscriberPublishCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPublishSubscriberPublishCall wrap *gomock.Call
@@ -190,38 +180,32 @@ type MockPublishSubscriberPublishCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPublishSubscriberPublishCall) Return(arg0 error) *MockPublishSubscriberPublishCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPublishSubscriberPublishCall) Do(f func(context.Context, string, []byte) error) *MockPublishSubscriberPublishCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPublishSubscriberPublishCall) DoAndReturn(f func(context.Context, string, []byte) error) *MockPublishSubscriberPublishCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Register mocks base method.
 func (m *MockPublishSubscriber) Register(arg0 string, arg1 pubsub.GossipHandler, arg2 ...pubsub.ValidatorOpt) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	m.ctrl.Call(m, "Register", varargs...)
+	_ = "STUB: not implemented"
+	return
 }
 
 // Register indicates an expected call of Register.
 func (mr *MockPublishSubscriberMockRecorder) Register(arg0, arg1 any, arg2 ...any) *MockPublishSubscriberRegisterCall {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockPublishSubscriber)(nil).Register), varargs...)
-	return &MockPublishSubscriberRegisterCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockPublishSubscriberRegisterCall wrap *gomock.Call
@@ -231,18 +215,18 @@ type MockPublishSubscriberRegisterCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockPublishSubscriberRegisterCall) Return() *MockPublishSubscriberRegisterCall {
-	c.Call = c.Call.Return()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockPublishSubscriberRegisterCall) Do(f func(string, pubsub.GossipHandler, ...pubsub.ValidatorOpt)) *MockPublishSubscriberRegisterCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockPublishSubscriberRegisterCall) DoAndReturn(f func(string, pubsub.GossipHandler, ...pubsub.ValidatorOpt)) *MockPublishSubscriberRegisterCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

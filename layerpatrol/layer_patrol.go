@@ -17,35 +17,16 @@ type LayerPatrol struct {
 }
 
 // New returns an instance of LayerPatrol.
-func New() *LayerPatrol {
-	return &LayerPatrol{
-		runByHare: make(map[types.LayerID]struct{}),
-	}
-}
+func New() *LayerPatrol { _ = "STUB: not implemented"; return nil }
 
 // SetHareInCharge sets the layer's validation to be triggered by hare (as opposed to syncer).
-func (lp *LayerPatrol) SetHareInCharge(layerID types.LayerID) {
-	lp.mu.Lock()
-	defer lp.mu.Unlock()
-
-	if layerID.Uint32() > bufferSize {
-		lp.oldestLayer = layerID.Sub(bufferSize)
-	}
-	delete(lp.runByHare, lp.oldestLayer)
-	lp.runByHare[layerID] = struct{}{}
-}
+func (lp *LayerPatrol) SetHareInCharge(layerID types.LayerID) { _ = "STUB: not implemented"; return }
 
 // IsHareInCharge returns true if the hare is set to handle the validation of the specified layer.
 func (lp *LayerPatrol) IsHareInCharge(layerID types.LayerID) bool {
-	lp.mu.Lock()
-	defer lp.mu.Unlock()
-	_, ok := lp.runByHare[layerID]
-	return ok
+	_ = "STUB: not implemented"
+	return false
 }
 
 // CompleteHare is called by hare instance that completed this layer.
-func (lp *LayerPatrol) CompleteHare(layerID types.LayerID) {
-	lp.mu.Lock()
-	defer lp.mu.Unlock()
-	delete(lp.runByHare, layerID)
-}
+func (lp *LayerPatrol) CompleteHare(layerID types.LayerID) { _ = "STUB: not implemented"; return }

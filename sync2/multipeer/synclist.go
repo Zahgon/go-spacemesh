@@ -19,42 +19,14 @@ type syncList struct {
 }
 
 func newSyncList(clock clockwork.Clock, minSyncCount int, duration time.Duration) *syncList {
-	return &syncList{
-		clock:        clock,
-		minSyncCount: minSyncCount,
-		duration:     duration,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (sl *syncList) prune(now time.Time) {
-	t := now.Add(-sl.duration)
-	for sl.syncs.Len() != 0 {
-		el := sl.syncs.Back()
-		if t.After(el.Value.(time.Time)) {
-			sl.syncs.Remove(el)
-		} else {
-			break
-		}
-	}
-}
+func (sl *syncList) prune(now time.Time) { _ = "STUB: not implemented"; return }
 
-func (sl *syncList) NoteSync() {
-	sl.mtx.Lock()
-	defer sl.mtx.Unlock()
-	now := sl.clock.Now()
-	sl.prune(now)
-	sl.syncs.PushFront(now)
-}
+func (sl *syncList) NoteSync() { _ = "STUB: not implemented"; return }
 
-func (sl *syncList) Synced() bool {
-	sl.mtx.Lock()
-	defer sl.mtx.Unlock()
-	sl.prune(sl.clock.Now())
-	return sl.syncs.Len() >= sl.minSyncCount
-}
+func (sl *syncList) Synced() bool { _ = "STUB: not implemented"; return false }
 
-func (sl *syncList) Len() int {
-	sl.mtx.Lock()
-	defer sl.mtx.Unlock()
-	return sl.syncs.Len()
-}
+func (sl *syncList) Len() int { _ = "STUB: not implemented"; return 0 }

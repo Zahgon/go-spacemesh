@@ -1,7 +1,6 @@
 package util
 
 import (
-	"encoding/binary"
 	"errors"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -20,20 +19,14 @@ var (
 
 // CalcEligibleLayer calculates the eligible layer from the VRF signature.
 func CalcEligibleLayer(epochNumber types.EpochID, layersPerEpoch uint32, vrfSig types.VrfSignature) types.LayerID {
-	vrfInteger := binary.LittleEndian.Uint64(vrfSig[:])
-	eligibleLayerOffset := vrfInteger % uint64(layersPerEpoch)
-	return epochNumber.FirstLayer().Add(uint32(eligibleLayerOffset))
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
 // GetNumEligibleSlots calculates the number of eligible slots for a smesher in an epoch.
 func GetNumEligibleSlots(weight, minWeight, totalWeight uint64, committeeSize, layersPerEpoch uint32) (uint32, error) {
-	if totalWeight == 0 {
-		return 0, ErrZeroTotalWeight
-	}
-	// TODO: numEligible could overflow uint64 if weight is very large
-	numEligible := weight * uint64(committeeSize) * uint64(layersPerEpoch) / max(minWeight, totalWeight)
-	if numEligible == 0 {
-		numEligible = 1
-	}
-	return uint32(numEligible), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// TODO: numEligible could overflow uint64 if weight is very large

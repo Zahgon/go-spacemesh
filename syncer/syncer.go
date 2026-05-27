@@ -3,8 +3,6 @@ package syncer
 import (
 	"context"
 	"errors"
-	"fmt"
-	"math"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -16,13 +14,10 @@ import (
 	"github.com/spacemeshos/go-spacemesh/activation"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/datastore"
-	"github.com/spacemeshos/go-spacemesh/events"
 	"github.com/spacemeshos/go-spacemesh/fetch"
 	"github.com/spacemeshos/go-spacemesh/fetch/peers"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/mesh"
 	"github.com/spacemeshos/go-spacemesh/p2p"
-	"github.com/spacemeshos/go-spacemesh/p2p/server"
 	"github.com/spacemeshos/go-spacemesh/sync2"
 	"github.com/spacemeshos/go-spacemesh/sync2/rangesync"
 	"github.com/spacemeshos/go-spacemesh/syncer/atxsync"
@@ -60,41 +55,7 @@ type ReconcSyncConfig struct {
 }
 
 // DefaultConfig for the syncer.
-func DefaultConfig() Config {
-	oldAtxSyncCfg := sync2.DefaultConfig()
-	oldAtxSyncCfg.MaxDepth = 16
-	oldAtxSyncCfg.MultiPeerReconcilerConfig.SyncInterval = 10 * time.Hour
-	oldAtxSyncCfg.AdvanceInterval = time.Hour
-	newAtxSyncCfg := sync2.DefaultConfig()
-	newAtxSyncCfg.MaxDepth = 21
-	newAtxSyncCfg.MultiPeerReconcilerConfig.SyncInterval = 30 * time.Minute
-	newAtxSyncCfg.AdvanceInterval = 5 * time.Minute
-	return Config{
-		Interval:                 10 * time.Second,
-		EpochEndFraction:         0.5,
-		HareDelayLayers:          10,
-		SyncCertDistance:         10,
-		TallyVotesFrequency:      0.25,
-		MaxStaleDuration:         time.Second,
-		GossipDuration:           15 * time.Second,
-		OutOfSyncThresholdLayers: 3,
-		AtxSync:                  atxsync.DefaultConfig(),
-		MalSync:                  malsync.DefaultConfig(),
-		ReconcSync: ReconcSyncConfig{
-			Enable:            true,
-			EnableActiveSync:  true,
-			OldAtxSyncCfg:     oldAtxSyncCfg,
-			NewAtxSyncCfg:     newAtxSyncCfg,
-			ParallelLoadLimit: 10,
-			HardTimeout:       10 * time.Minute,
-			ServerConfig: fetch.ServerConfig{
-				Queue:    200,
-				Requests: 100,
-				Interval: time.Second,
-			},
-		},
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 type syncState uint32
 
@@ -111,18 +72,7 @@ const (
 	synced
 )
 
-func (s syncState) String() string {
-	switch s {
-	case notSynced:
-		return "notSynced"
-	case gossipSync:
-		return "gossipSync"
-	case synced:
-		return "synced"
-	default:
-		return "unknown"
-	}
-}
+func (s syncState) String() string { _ = "STUB: not implemented"; return "" }
 
 var (
 	errHareInCharge  = errors.New("hare in charge of layer")
@@ -133,46 +83,23 @@ var (
 type Option func(*Syncer)
 
 // WithConfig ...
-func WithConfig(c Config) Option {
-	return func(s *Syncer) {
-		s.cfg = c
-	}
-}
+func WithConfig(c Config) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLogger ...
-func WithLogger(l *zap.Logger) Option {
-	return func(s *Syncer) {
-		s.logger = l
-	}
-}
+func WithLogger(l *zap.Logger) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithAtxVersions(v activation.AtxVersions) Option {
-	return func(s *Syncer) {
-		for epoch, version := range v {
-			if version == types.AtxV2 {
-				s.malSyncStartEpoch = epoch
-				break
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func withDataFetcher(d fetchLogic) Option {
-	return func(s *Syncer) {
-		s.dataFetcher = d
-	}
-}
+func withDataFetcher(d fetchLogic) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withForkFinder(f forkFinder) Option {
-	return func(s *Syncer) {
-		s.forkFinder = f
-	}
-}
+func withForkFinder(f forkFinder) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func withAtxSyncerV2(asv2 multiEpochAtxSyncerV2) Option {
-	return func(s *Syncer) {
-		s.asv2 = asv2
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // Syncer is responsible to keep the node in sync with the network.
@@ -240,484 +167,118 @@ func NewSyncer(
 	malSyncer malSyncer,
 	opts ...Option,
 ) (*Syncer, error) {
-	s := &Syncer{
-		logger:            zap.NewNop(),
-		cfg:               DefaultConfig(),
-		cdb:               cdb,
-		atxsyncer:         atxSyncer,
-		malsyncer:         malSyncer,
-		ticker:            ticker,
-		mesh:              mesh,
-		tortoise:          tortoise,
-		certHandler:       ch,
-		patrol:            patrol,
-		malSyncStartEpoch: math.MaxUint32,
-		awaitATXSyncedCh:  make(chan struct{}),
-	}
-	for _, opt := range opts {
-		opt(s)
-	}
-
-	if s.dataFetcher == nil {
-		s.dataFetcher = NewDataFetch(fetcher, s.logger)
-	}
-	if s.forkFinder == nil {
-		s.forkFinder = NewForkFinder(s.logger, cdb, fetcher, s.cfg.MaxStaleDuration)
-	}
-	s.syncState.Store(notSynced)
-	s.atxSyncState.Store(notSynced)
-	s.isBusy.Store(false)
-	s.lastLayerSynced.Store(s.mesh.LatestLayer().Uint32())
-	s.lastEpochSynced.Store(types.GetEffectiveGenesis().GetEpoch().Uint32() - 1)
-	if s.cfg.ReconcSync.Enable && s.asv2 == nil {
-		serverOpts := s.cfg.ReconcSync.ServerConfig.ToOpts()
-		serverOpts = append(serverOpts, server.WithHardTimeout(s.cfg.ReconcSync.HardTimeout))
-		s.dispatcher = sync2.NewDispatcher(s.logger, host, serverOpts)
-		hss := sync2.NewATXSyncSource(
-			s.logger,
-			s.dispatcher,
-			cdb.Database,
-			fetcher,
-			peerCache,
-			s.cfg.ReconcSync.EnableActiveSync,
-		)
-		var err error
-		s.asv2, err = sync2.NewMultiEpochATXSyncer(
-			s.logger,
-			hss,
-			s.cfg.ReconcSync.OldAtxSyncCfg,
-			s.cfg.ReconcSync.NewAtxSyncCfg,
-			s.cfg.ReconcSync.ParallelLoadLimit,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("creating multi-epoch ATX syncer: %w", err)
-		}
-	}
-	return s, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Close stops the syncing process and the goroutines syncer spawns.
-func (s *Syncer) Close() {
-	if s.stop == nil {
-		return // not started yet
-	}
-	s.stop()
-	s.logger.Debug("waiting for syncer goroutines to finish")
-	err := s.eg.Wait()
-	if s.asv2 != nil {
-		s.asv2.Stop()
-	}
-	s.logger.Debug("all syncer goroutines finished", zap.Error(err))
-}
+func (s *Syncer) Close() { _ = "STUB: not implemented"; return }
+
+// not started yet
 
 // RegisterForATXSynced returns a channel for notification when the node enters ATX synced state.
-func (s *Syncer) RegisterForATXSynced() <-chan struct{} {
-	return s.awaitATXSyncedCh
-}
+func (s *Syncer) RegisterForATXSynced() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 // ListenToGossip returns true if the node is listening to gossip for blocks/TXs data.
-func (s *Syncer) ListenToGossip() bool {
-	return s.getSyncState() >= gossipSync
-}
+func (s *Syncer) ListenToGossip() bool { _ = "STUB: not implemented"; return false }
 
 // ListenToATXGossip returns true if the node is listening to gossip for ATXs data.
-func (s *Syncer) ListenToATXGossip() bool {
-	return s.getATXSyncState() == synced
-}
+func (s *Syncer) ListenToATXGossip() bool { _ = "STUB: not implemented"; return false }
 
 // IsSynced returns true if the node is in synced state.
-func (s *Syncer) IsSynced(ctx context.Context) bool {
-	return s.getSyncState() == synced
-}
+func (s *Syncer) IsSynced(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
 // Start starts the main sync loop that tries to sync data for every SyncInterval.
-func (s *Syncer) Start() {
-	s.syncOnce.Do(func() {
-		ctx, cancel := context.WithCancel(context.Background())
-		s.stop = cancel
+func (s *Syncer) Start() { _ = "STUB: not implemented"; return }
 
-		s.logger.Info("starting syncer loop", log.ZContext(ctx))
-		if s.dispatcher != nil {
-			s.eg.Go(func() error {
-				return s.dispatcher.Server.Run(ctx)
-			})
-		}
-		s.eg.Go(func() error {
-			if s.ticker.CurrentLayer() <= types.GetEffectiveGenesis() {
-				s.setSyncState(ctx, synced)
-			}
-			for {
-				select {
-				case <-ctx.Done():
-					s.logger.Info("stopping sync to shutdown", log.ZContext(ctx))
-					return fmt.Errorf("shutdown context done: %w", ctx.Err())
-				case <-time.After(s.cfg.Interval):
-					ok := s.synchronize(ctx)
-					if ok {
-						runSuccess.Inc()
-					} else {
-						runFail.Inc()
-					}
-				}
-			}
-		})
-		s.logger.Info("starting syncer layer processing loop", log.ZContext(ctx))
-		s.eg.Go(func() error {
-			for {
-				select {
-				case <-ctx.Done():
-					return nil
-				case <-time.After(s.cfg.Interval):
-					if err := s.processLayers(ctx); err != nil {
-						sRunFail.Inc()
-					} else {
-						sRunSuccess.Inc()
-					}
-					s.forkFinder.Purge(false)
-				}
-			}
-		})
-	})
-}
+func (s *Syncer) setATXSynced() { _ = "STUB: not implemented"; return }
 
-func (s *Syncer) setATXSynced() {
-	s.atxSyncState.Store(synced)
-	select {
-	case <-s.awaitATXSyncedCh:
-	default:
-		s.logger.Info("reached ATX synced state")
-		close(s.awaitATXSyncedCh)
-		atxSynced.Set(1)
-	}
-}
+func (s *Syncer) getATXSyncState() syncState { _ = "STUB: not implemented"; return *new(syncState) }
 
-func (s *Syncer) getATXSyncState() syncState {
-	return s.atxSyncState.Load().(syncState)
-}
-
-func (s *Syncer) getSyncState() syncState {
-	return s.syncState.Load().(syncState)
-}
+func (s *Syncer) getSyncState() syncState { _ = "STUB: not implemented"; return *new(syncState) }
 
 func (s *Syncer) setSyncState(ctx context.Context, newState syncState) {
-	oldState := s.syncState.Swap(newState).(syncState)
-	if oldState != newState {
-		s.logger.Info("sync state change",
-			log.ZContext(ctx),
-			zap.Stringer("from state", oldState),
-			zap.Stringer("to state", newState),
-			zap.Stringer("current", s.ticker.CurrentLayer()),
-			zap.Stringer("last synced", s.getLastSyncedLayer()),
-			zap.Stringer("latest", s.mesh.LatestLayer()),
-			zap.Stringer("processed", s.mesh.ProcessedLayer()))
-		if err := events.ReportNodeStatusUpdate(); err != nil {
-			s.logger.Error("Failed to emit status update", zap.Error(err))
-		}
-	}
-	switch newState {
-	case notSynced:
-		nodeNotSynced.Set(1)
-		nodeGossip.Set(0)
-		nodeSynced.Set(0)
-	case gossipSync:
-		nodeNotSynced.Set(0)
-		nodeGossip.Set(1)
-		nodeSynced.Set(0)
-	case synced:
-		nodeNotSynced.Set(0)
-		nodeGossip.Set(0)
-		nodeSynced.Set(1)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // setSyncerBusy returns false if the syncer is already running a sync process.
 // Otherwise it sets syncer to be busy and returns true.
-func (s *Syncer) setSyncerBusy() bool {
-	return s.isBusy.CompareAndSwap(false, true)
-}
+func (s *Syncer) setSyncerBusy() bool { _ = "STUB: not implemented"; return false }
 
-func (s *Syncer) setSyncerIdle() {
-	s.isBusy.Store(false)
-}
+func (s *Syncer) setSyncerIdle() { _ = "STUB: not implemented"; return }
 
-func (s *Syncer) setLastSyncedLayer(lid types.LayerID) {
-	s.lastLayerSynced.Store(lid.Uint32())
-	syncedLayer.Set(float64(lid))
-}
+func (s *Syncer) setLastSyncedLayer(lid types.LayerID) { _ = "STUB: not implemented"; return }
 
 func (s *Syncer) getLastSyncedLayer() types.LayerID {
-	return types.LayerID(s.lastLayerSynced.Load())
+	_ = "STUB: not implemented"
+	return *new(types.LayerID)
 }
 
-func (s *Syncer) setLastAtxEpoch(epoch types.EpochID) {
-	s.lastEpochSynced.Store(epoch.Uint32())
-}
+func (s *Syncer) setLastAtxEpoch(epoch types.EpochID) { _ = "STUB: not implemented"; return }
 
 func (s *Syncer) lastAtxEpoch() types.EpochID {
-	return types.EpochID(s.lastEpochSynced.Load())
+	_ = "STUB: not implemented"
+	return *new(types.EpochID)
 }
 
 // synchronize sync data up to the currentLayer-1 and wait for the layers to be validated.
 // It returns false if the data sync failed.
-func (s *Syncer) synchronize(ctx context.Context) bool {
-	ctx = log.WithNewSessionID(ctx)
+func (s *Syncer) synchronize(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
-	select {
-	case <-ctx.Done():
-		s.logger.Warn("attempting to sync while shutting down", log.ZContext(ctx))
-		return false
-	default:
-	}
-	// at most one synchronize process can run at any time
-	if !s.setSyncerBusy() {
-		s.logger.Debug("sync is already running, giving up", log.ZContext(ctx))
-		return false
-	}
-	defer s.setSyncerIdle()
+// at most one synchronize process can run at any time
 
-	s.setStateBeforeSync(ctx)
-	if s.ticker.CurrentLayer().Uint32() == 0 {
-		return false
-	}
+// no need to worry about race condition for s.run. only one instance of synchronize can run at a time
 
-	// no need to worry about race condition for s.run. only one instance of synchronize can run at a time
-	s.logger.Debug("starting sync run",
-		log.ZContext(ctx),
-		zap.Stringer("sync_state", s.getSyncState()),
-		zap.Stringer("last_synced", s.getLastSyncedLayer()),
-		zap.Stringer("current", s.ticker.CurrentLayer()),
-		zap.Stringer("latest", s.mesh.LatestLayer()),
-		zap.Stringer("in_state", s.mesh.LatestLayerInState()),
-		zap.Stringer("processed", s.mesh.ProcessedLayer()),
-	)
-	// TODO
-	// https://github.com/spacemeshos/go-spacemesh/issues/3987
-	syncFunc := func() bool {
-		if s.cfg.Standalone {
-			s.setLastSyncedLayer(s.ticker.CurrentLayer().Sub(1))
-			s.setATXSynced()
-			return true
-		}
-		// check that we have any peers
-		if len(s.dataFetcher.SelectBestShuffled(1)) == 0 {
-			return false
-		}
+// TODO
+// https://github.com/spacemeshos/go-spacemesh/issues/3987
 
-		if err := s.syncAtxAndMalfeasance(ctx); err != nil {
-			if !errors.Is(err, context.Canceled) {
-				s.logger.Error("failed to sync atxs", log.ZContext(ctx), zap.Error(err))
-			}
-			return false
-		}
+// check that we have any peers
 
-		if s.ticker.CurrentLayer() <= types.GetEffectiveGenesis() {
-			return true
-		}
+// always sync to currentLayer-1 to reduce race with gossip and hare/tortoise
 
-		// always sync to currentLayer-1 to reduce race with gossip and hare/tortoise
-		for layer := s.getLastSyncedLayer().Add(1); layer.Before(s.ticker.CurrentLayer()); layer = layer.Add(1) {
-			if err := s.syncLayer(ctx, layer); err != nil {
-				batchError := &fetch.BatchError{}
-				if errors.As(err, &batchError) && batchError.Ignore() {
-					s.logger.Debug(
-						"remaining ballots are rejected in the layer",
-						log.ZContext(ctx),
-						zap.Error(err),
-						zap.Uint32("layer", layer.Uint32()),
-					)
-				} else {
-					if !errors.Is(err, context.Canceled) {
-						// BatchError spams too much, in case of no progress enable debug mode for sync
-						s.logger.Debug("failed to sync layer",
-							log.ZContext(ctx),
-							zap.Error(err),
-							zap.Uint32("layer", layer.Uint32()),
-						)
-					}
-					return false
-				}
-			}
-			s.setLastSyncedLayer(layer)
-		}
-		s.logger.Debug("data is synced",
-			log.ZContext(ctx),
-			zap.Stringer("current", s.ticker.CurrentLayer()),
-			zap.Stringer("latest", s.mesh.LatestLayer()),
-			zap.Stringer("last_synced", s.getLastSyncedLayer()))
-		return true
-	}
+// BatchError spams too much, in case of no progress enable debug mode for sync
 
-	success := syncFunc()
-	s.setStateAfterSync(ctx, success)
-	s.logger.Debug("finished sync run",
-		log.ZContext(ctx),
-		zap.Bool("success", success),
-		zap.Stringer("sync_state", s.getSyncState()),
-		zap.Stringer("last_synced", s.getLastSyncedLayer()),
-		zap.Stringer("current", s.ticker.CurrentLayer()),
-		zap.Stringer("latest", s.mesh.LatestLayer()),
-		zap.Stringer("in_state", s.mesh.LatestLayerInState()),
-		zap.Stringer("processed", s.mesh.ProcessedLayer()),
-	)
-	return success
-}
+func (s *Syncer) ensureATXsInSync(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (s *Syncer) ensureATXsInSync(ctx context.Context) error {
-	current := s.ticker.CurrentLayer()
-	publish := current.GetEpoch()
-	if publish == 0 {
-		return nil // nothing to sync in epoch 0
-	}
+// nothing to sync in epoch 0
 
-	// if we are not advanced enough sync previous epoch, otherwise start syncing activations published in this epoch
-	if current.OrdinalInEpoch() <= uint32(float64(types.GetLayersPerEpoch())*s.cfg.EpochEndFraction) {
-		publish -= 1
-	}
+// if we are not advanced enough sync previous epoch, otherwise start syncing activations published in this epoch
 
-	// on startup always download all activations that were published before current epoch
-	if !s.ListenToATXGossip() {
-		s.logger.Debug("syncing atx from genesis",
-			log.ZContext(ctx),
-			zap.Stringer("current layer", current),
-			zap.Stringer("last epoch", s.lastAtxEpoch()),
-		)
-		for epoch := s.lastAtxEpoch() + 1; epoch < current.GetEpoch(); epoch++ {
-			if err := s.fetchATXsForEpoch(ctx, epoch, false); err != nil {
-				return err
-			}
-		}
-		s.logger.Debug("atxs synced to epoch", log.ZContext(ctx), zap.Stringer("last epoch", s.lastAtxEpoch()))
-	}
-
-	if epoch := s.backgroundSync.epoch.Load(); epoch != 0 && epoch != publish.Uint32() {
-		s.backgroundSync.cancel()
-		s.backgroundSync.eg.Wait()
-		s.backgroundSync.epoch.Store(0)
-	}
-	if s.backgroundSync.epoch.Load() == 0 && publish.Uint32() != 0 {
-		s.logger.Debug("download atx for epoch in background", zap.Stringer("publish", publish), log.ZContext(ctx))
-		s.backgroundSync.epoch.Store(publish.Uint32())
-		ctx, cancel := context.WithCancel(ctx)
-		s.backgroundSync.cancel = cancel
-		s.backgroundSync.eg.Go(func() error {
-			err := s.fetchATXsForEpoch(ctx, publish, true)
-			if err == nil {
-				return nil
-			}
-			if !errors.Is(err, context.Canceled) {
-				s.logger.Warn("background atx sync failed",
-					log.ZContext(ctx),
-					zap.Stringer("publish", publish),
-					zap.Error(err),
-				)
-			} else {
-				s.logger.Debug("background atx sync stopped", log.ZContext(ctx), zap.Stringer("publish", publish))
-			}
-			s.backgroundSync.epoch.Store(0)
-			return err
-		})
-	}
-	return nil
-}
+// on startup always download all activations that were published before current epoch
 
 // ensureATXsInSyncV2 ensures that the ATXs are in sync and being synchronized
 // continuously using syncv2.
 func (s *Syncer) ensureATXsInSyncV2(ctx context.Context) error {
-	current := s.ticker.CurrentLayer()
-	currentEpoch := current.GetEpoch()
-	if currentEpoch == 0 {
-		return nil // nothing to sync in epoch 0
-	}
-	publish := currentEpoch
-	if current.OrdinalInEpoch() <= uint32(float64(types.GetLayersPerEpoch())*s.cfg.EpochEndFraction) {
-		publish--
-	}
-
-	if !s.ListenToATXGossip() && s.cfg.ReconcSync.EnableActiveSync {
-		// ATXs are not in sync yet, to we need to sync them synchronously
-		lastWaitEpoch := types.EpochID(0)
-		if currentEpoch > 1 {
-			lastWaitEpoch = currentEpoch - 1
-		}
-		s.logger.Debug("syncing atx from genesis",
-			log.ZContext(ctx),
-			zap.Stringer("current layer", current),
-			zap.Stringer("last synced epoch", s.lastAtxEpoch()),
-			zap.Stringer("lastWaitEpoch", lastWaitEpoch),
-			zap.Stringer("publish", publish),
-		)
-		lastAtxEpoch, err := s.asv2.EnsureSync(ctx, lastWaitEpoch, publish)
-		if lastAtxEpoch > 0 {
-			s.setLastAtxEpoch(lastAtxEpoch)
-		}
-		if err != nil {
-			return fmt.Errorf("syncing atxs: %w", err)
-		}
-		s.logger.Debug("atxs synced to epoch",
-			log.ZContext(ctx), zap.Stringer("last epoch", s.lastAtxEpoch()))
-		return nil
-	}
-
-	// When active syncv2 is not enabled, this will only cause the per-epoch sync
-	// servers (multiplexed via dispatcher) to be activated, without attempting to
-	// initiate sync against the peers
-	s.logger.Debug("activating sync2", zap.Uint32("new epoch", publish.Uint32()))
-	if _, err := s.asv2.EnsureSync(ctx, 0, publish); err != nil {
-		return fmt.Errorf("activating sync: %w", err)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// nothing to sync in epoch 0
+
+// ATXs are not in sync yet, to we need to sync them synchronously
+
+// When active syncv2 is not enabled, this will only cause the per-epoch sync
+// servers (multiplexed via dispatcher) to be activated, without attempting to
+// initiate sync against the peers
 
 func (s *Syncer) ensureMalfeasanceInSync(ctx context.Context) error {
+	_ = "STUB: not implemented"
 	// TODO: use syncv2 for malfeasance proofs:
-	current := s.ticker.CurrentLayer()
-	if !s.ListenToATXGossip() {
-		s.logger.Info("syncing malicious proofs", log.ZContext(ctx))
-		if err := s.syncMalfeasance(ctx, current.GetEpoch()); err != nil {
-			return err
-		}
-		s.logger.Info("malicious IDs synced", log.ZContext(ctx))
-		// Malfeasance proofs are synced after the actual ATXs.
-		// We set ATX synced status after both ATXs and malfeasance proofs
-		// are in sync.
-		s.setATXSynced()
-	}
-
-	if current.GetEpoch() > 0 && !s.malSync.started {
-		s.malSync.started = true
-		s.malSync.eg.Go(func() error {
-			select {
-			case <-ctx.Done():
-				return nil
-			case <-s.awaitATXSyncedCh:
-				err := s.malsyncer.DownloadLoop(ctx, s.malSyncStartEpoch)
-				if err != nil && !errors.Is(err, context.Canceled) {
-					s.logger.Error("malfeasance sync failed", log.ZContext(ctx), zap.Error(err))
-				}
-				return nil
-			}
-		})
-	}
-
 	return nil
 }
 
+// Malfeasance proofs are synced after the actual ATXs.
+// We set ATX synced status after both ATXs and malfeasance proofs
+// are in sync.
+
 func (s *Syncer) syncAtxAndMalfeasance(ctx context.Context) error {
-	if s.cfg.ReconcSync.Enable {
-		if err := s.ensureATXsInSyncV2(ctx); err != nil {
-			return err
-		}
-	}
-	if !s.cfg.ReconcSync.Enable || !s.cfg.ReconcSync.EnableActiveSync {
-		// If syncv2 is being used in server-only mode, we still need to run
-		// active syncv1.
-		if err := s.ensureATXsInSync(ctx); err != nil {
-			return err
-		}
-	}
-	return s.ensureMalfeasanceInSync(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// If syncv2 is being used in server-only mode, we still need to run
+// active syncv1.
 
 func isTooFarBehind(
 	ctx context.Context,
@@ -725,129 +286,47 @@ func isTooFarBehind(
 	current, lastSynced types.LayerID,
 	outOfSyncThreshold uint32,
 ) bool {
-	if current.After(lastSynced) && current.Difference(lastSynced) >= outOfSyncThreshold {
-		logger.Info("node is too far behind",
-			log.ZContext(ctx),
-			zap.Stringer("current", current),
-			zap.Stringer("last synced", lastSynced),
-			zap.Uint32("behind threshold", outOfSyncThreshold))
-		return true
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
-func (s *Syncer) setStateBeforeSync(ctx context.Context) {
-	current := s.ticker.CurrentLayer()
-	if s.ticker.CurrentLayer() <= types.GetEffectiveGenesis() {
-		s.setSyncState(ctx, synced)
-		if current.GetEpoch() == 0 {
-			s.setATXSynced()
-		}
-		return
-	}
-	if isTooFarBehind(
-		ctx,
-		s.logger,
-		current,
-		s.getLastSyncedLayer(),
-		s.cfg.OutOfSyncThresholdLayers,
-	) {
-		s.setSyncState(ctx, notSynced)
-	}
-}
+func (s *Syncer) setStateBeforeSync(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-func (s *Syncer) dataSynced() bool {
-	current := s.ticker.CurrentLayer()
-	return current.Uint32() <= 1 || !s.getLastSyncedLayer().Before(current.Sub(1))
-}
+func (s *Syncer) dataSynced() bool { _ = "STUB: not implemented"; return false }
 
 func (s *Syncer) setStateAfterSync(ctx context.Context, success bool) {
-	currSyncState := s.getSyncState()
-	current := s.ticker.CurrentLayer()
-
-	// for the gossipSync/notSynced states, we check if the mesh state is on target before we advance sync state.
-	// but for the synced state, we don't check the mesh state because gossip+hare+tortoise are in charge of
-	// advancing processed/verified layers.  syncer is just auxiliary that fetches data in case of a temporary
-	// network outage.
-	switch currSyncState {
-	case synced:
-		if !success &&
-			isTooFarBehind(
-				ctx,
-				s.logger,
-				current,
-				s.getLastSyncedLayer(),
-				s.cfg.OutOfSyncThresholdLayers,
-			) {
-			s.setSyncState(ctx, notSynced)
-		}
-	case gossipSync:
-		if !success || !s.dataSynced() || !s.stateSynced() {
-			// push out the target synced layer
-			s.syncedTargetTime = time.Now().Add(s.cfg.GossipDuration)
-			s.logger.Info("extending gossip sync",
-				zap.Bool("success", success),
-				zap.Bool("data", s.dataSynced()),
-				zap.Bool("state", s.stateSynced()),
-			)
-			break
-		}
-		// if we have gossip-synced long enough, we are ready to participate in consensus
-		if !time.Now().Before(s.syncedTargetTime) {
-			s.setSyncState(ctx, synced)
-		}
-	case notSynced:
-		if success && s.dataSynced() && s.stateSynced() {
-			// wait till s.ticker.GetCurrentLayer() + numGossipSyncLayers to participate in consensus
-			s.setSyncState(ctx, gossipSync)
-			s.syncedTargetTime = time.Now().Add(s.cfg.GossipDuration)
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
+// for the gossipSync/notSynced states, we check if the mesh state is on target before we advance sync state.
+// but for the synced state, we don't check the mesh state because gossip+hare+tortoise are in charge of
+// advancing processed/verified layers.  syncer is just auxiliary that fetches data in case of a temporary
+// network outage.
+
+// push out the target synced layer
+
+// if we have gossip-synced long enough, we are ready to participate in consensus
+
+// wait till s.ticker.GetCurrentLayer() + numGossipSyncLayers to participate in consensus
+
 func (s *Syncer) syncMalfeasance(parent context.Context, epoch types.EpochID) error {
-	epochStart := s.ticker.LayerToTime(epoch.FirstLayer())
-	epochEnd := s.ticker.LayerToTime(epoch.Add(1).FirstLayer())
-	eg, ctx := errgroup.WithContext(parent)
-	eg.Go(func() error {
-		return s.malsyncer.EnsureLegacyInSync(ctx, epochStart, epochEnd)
-	})
-	// TODO(mafa): remove this check again when ATXv2 is live https://github.com/spacemeshos/go-spacemesh/issues/6716
-	if epoch >= s.malSyncStartEpoch {
-		eg.Go(func() error {
-			return s.malsyncer.EnsureInSync(ctx, epochStart, epochEnd)
-		})
-	}
-	if err := eg.Wait(); err != nil {
-		return fmt.Errorf("syncing malfeasance proof: %w", err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// TODO(mafa): remove this check again when ATXv2 is live https://github.com/spacemeshos/go-spacemesh/issues/6716
+
 func (s *Syncer) syncLayer(ctx context.Context, layerID types.LayerID, peers ...p2p.Peer) error {
-	if err := s.dataFetcher.PollLayerData(ctx, layerID, peers...); err != nil {
-		return err
-	}
-	dataLayer.Set(float64(layerID))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // fetching ATXs published the specified epoch.
 func (s *Syncer) fetchATXsForEpoch(ctx context.Context, publish types.EpochID, background bool) error {
-	target := publish + 1
-	if background {
-		target++
-	}
-	downloadUntil := s.ticker.LayerToTime(target.FirstLayer())
-	if err := s.atxsyncer.Download(ctx, publish, downloadUntil); err != nil {
-		return err
-	}
-	s.setLastAtxEpoch(publish)
-	atxEpoch.Set(float64(publish))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // waitBackgroundSync is a helper to wait for the background sync to finish.
-func (s *Syncer) waitBackgroundSync() {
-	s.backgroundSync.eg.Wait()
-}
+func (s *Syncer) waitBackgroundSync() { _ = "STUB: not implemented"; return }

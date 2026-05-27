@@ -46,14 +46,9 @@ type ConnectionInfo struct {
 const NoPeer Peer = ""
 
 // IsNoPeer checks if it's any peer.
-func IsNoPeer(p Peer) bool {
-	return p == NoPeer
-}
+func IsNoPeer(p Peer) bool { _ = "STUB: not implemented"; return false }
 
 func grabPeerConnStats(stats *peerinfo.PeerRequestStats) PeerRequestStats {
-	return PeerRequestStats{
-		SuccessCount: stats.SuccessCount(),
-		FailureCount: stats.FailureCount(),
-		Latency:      stats.Latency(),
-	}
+	_ = "STUB: not implemented"
+	return *new(PeerRequestStats)
 }

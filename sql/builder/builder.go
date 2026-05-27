@@ -1,9 +1,6 @@
 package builder
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/sql"
 )
@@ -83,125 +80,20 @@ type Operations struct {
 }
 
 func FilterEpochOnly(publish types.EpochID) Operations {
-	return Operations{
-		Filter: []Op{
-			{Field: Epoch, Token: Eq, Value: publish},
-		},
-	}
+	_ = "STUB: not implemented"
+	return *new(Operations)
 }
 
-func FilterFrom(operations Operations) string {
-	var queryBuilder strings.Builder
-
-	bindIndex := 1
-	for i, op := range operations.Filter {
-		if i == 0 {
-			if operations.StartWith != "" {
-				queryBuilder.WriteString(" " + operations.StartWith)
-			} else {
-				queryBuilder.WriteString(" where")
-			}
-		} else {
-			queryBuilder.WriteString(" and")
-		}
-
-		if len(op.CustomQuery) > 0 {
-			queryBuilder.WriteString(fmt.Sprintf("  %s", op.CustomQuery))
-			if op.Value != nil {
-				bindIndex++
-			}
-			continue
-		}
-
-		if len(op.Group) > 0 {
-			queryBuilder.WriteString(" (")
-			for k, groupOp := range op.Group {
-				if k != 0 {
-					queryBuilder.WriteString(fmt.Sprintf(" %s", op.GroupOperator))
-				}
-				if groupOp.Token == In {
-					values, ok := groupOp.Value.([][]byte)
-					if !ok {
-						panic("value for 'In' token must be a slice of []byte")
-					}
-					params := make([]string, len(values))
-					for j := range values {
-						params[j] = fmt.Sprintf("?%d", bindIndex)
-						bindIndex++
-					}
-					fmt.Fprintf(&queryBuilder, " %s%s %s (%s)", groupOp.Prefix, groupOp.Field, groupOp.Token,
-						strings.Join(params, ", "))
-				} else {
-					fmt.Fprintf(&queryBuilder, " %s%s %s ?%d", groupOp.Prefix, groupOp.Field, groupOp.Token, bindIndex)
-					bindIndex++
-				}
-			}
-			queryBuilder.WriteString(" )")
-			continue
-		}
-
-		switch op.Token {
-		case In:
-			values, ok := op.Value.([][]byte)
-			if !ok {
-				panic("value for 'In' token must be a slice of []byte")
-			}
-			params := make([]string, len(values))
-			for j := range values {
-				params[j] = fmt.Sprintf("?%d", bindIndex)
-				bindIndex++
-			}
-			fmt.Fprintf(&queryBuilder, " %s%s %s (%s)", op.Prefix, op.Field, op.Token, strings.Join(params, ", "))
-		case IsNotNull:
-			fmt.Fprintf(&queryBuilder, " %s%s %s", op.Prefix, op.Field, op.Token)
-		default:
-			fmt.Fprintf(&queryBuilder, " %s%s %s ?%d", op.Prefix, op.Field, op.Token, bindIndex)
-			bindIndex++
-		}
-	}
-
-	for _, m := range operations.Modifiers {
-		queryBuilder.WriteString(fmt.Sprintf(" %s %v", string(m.Key), m.Value))
-	}
-	return queryBuilder.String()
-}
+func FilterFrom(operations Operations) string { _ = "STUB: not implemented"; return "" }
 
 func BindingsFrom(operations Operations) sql.Encoder {
-	return func(stmt *sql.Statement) {
-		bindIndex := 1
-		for _, op := range operations.Filter {
-			if len(op.Group) > 0 {
-				for _, groupOp := range op.Group {
-					bindIndex = bindValue(stmt, bindIndex, groupOp.Value)
-				}
-			} else {
-				bindIndex = bindValue(stmt, bindIndex, op.Value)
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(sql.Encoder)
 }
 
 func bindValue(stmt *sql.Statement, bindIndex int, value any) int {
-	switch val := value.(type) {
-	case int64:
-		stmt.BindInt64(bindIndex, val)
-		bindIndex++
-	case []byte:
-		stmt.BindBytes(bindIndex, val)
-		bindIndex++
-	case types.EpochID:
-		stmt.BindInt64(bindIndex, int64(val))
-		bindIndex++
-	case [][]byte:
-		for _, v := range val {
-			stmt.BindBytes(bindIndex, v)
-			bindIndex++
-		}
-	case nil:
-		// do nothing
-	default:
-		panic(fmt.Sprintf("unexpected type %T", value))
-	}
-
-	return bindIndex
+	_ = "STUB: not implemented"
+	return 0
 }
+
+// do nothing

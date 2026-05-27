@@ -1,15 +1,11 @@
 package types
 
 import (
-	"encoding/hex"
-	"fmt"
 	"net/url"
 	"time"
 
 	poetShared "github.com/spacemeshos/poet/shared"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/spacemeshos/go-spacemesh/codec"
 )
 
 //go:generate scalegen -types PoetProof,PoetProofMessage
@@ -20,15 +16,13 @@ type PoetServer struct {
 }
 
 func ByteToPoetProofRef(b []byte) (ref PoetProofRef) {
-	copy(ref[:], b)
-	return ref
+	_ = "STUB: not implemented"
+	return *new(PoetProofRef)
 }
 
 type PoetProofRef Hash32
 
-func (r *PoetProofRef) String() string {
-	return hex.EncodeToString(r[:])
-}
+func (r *PoetProofRef) String() string { _ = "STUB: not implemented"; return "" }
 
 // EmptyPoetProofRef is an empty PoET proof reference.
 var EmptyPoetProofRef = PoetProofRef{}
@@ -41,25 +35,7 @@ type PoetProof struct {
 }
 
 func (p *PoetProof) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if p == nil {
-		return nil
-	}
-	encoder.AddUint64("LeafCount", p.LeafCount)
-
-	encoder.AddString("MerkleProof.Root", hex.EncodeToString(p.Root))
-	encoder.AddArray("MerkleProof.ProvenLeaves", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-		for _, v := range p.ProvenLeaves {
-			encoder.AppendString(hex.EncodeToString(v))
-		}
-		return nil
-	}))
-	encoder.AddArray("MerkleProof.ProofNodes", zapcore.ArrayMarshalerFunc(func(encoder zapcore.ArrayEncoder) error {
-		for _, v := range p.ProofNodes {
-			encoder.AppendString(hex.EncodeToString(v))
-		}
-		return nil
-	}))
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -76,26 +52,14 @@ type PoetProofMessage struct {
 }
 
 func (p *PoetProofMessage) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if p == nil {
-		return nil
-	}
-	encoder.AddObject("PoetProof", &p.PoetProof)
-	encoder.AddString("PoetServiceID", hex.EncodeToString(p.PoetServiceID))
-	encoder.AddString("RoundID", p.RoundID)
-	encoder.AddString("Statement", hex.EncodeToString(p.Statement[:]))
-	encoder.AddString("Signature", p.Signature.String())
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Ref returns the reference to the PoET proof message. It's the blake3 sum of the entire proof.
 func (p *PoetProof) Ref() (PoetProofRef, error) {
-	poetProofBytes, err := codec.Encode(p)
-	if err != nil {
-		return PoetProofRef{}, fmt.Errorf("encoding poet proof: %w", err)
-	}
-	h := CalcHash32(poetProofBytes)
-	return (PoetProofRef)(h), nil
+	_ = "STUB: not implemented"
+	return *new(PoetProofRef), nil
 }
 
 // PoetRound includes the PoET's round ID.

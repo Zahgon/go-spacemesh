@@ -41,23 +41,18 @@ type postVerifierCallOption struct {
 type postVerifierOptionFunc func(*postVerifierCallOption)
 
 func applyOptions(options ...postVerifierOptionFunc) postVerifierCallOption {
-	opts := postVerifierCallOption{}
-	for _, opt := range options {
-		opt(&opts)
-	}
-	return opts
+	_ = "STUB: not implemented"
+	return *new(postVerifierCallOption)
 }
 
 func PrioritizedCall() postVerifierOptionFunc {
-	return func(o *postVerifierCallOption) {
-		o.prioritized = true
-	}
+	_ = "STUB: not implemented"
+	return *new(postVerifierOptionFunc)
 }
 
 func WithVerifierOptions(ops ...verifying.OptionFunc) postVerifierOptionFunc {
-	return func(o *postVerifierCallOption) {
-		o.verifierOptions = ops
-	}
+	_ = "STUB: not implemented"
+	return *new(postVerifierOptionFunc)
 }
 
 // validatorOption is a functional option type for the validator.

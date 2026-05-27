@@ -37,19 +37,10 @@ var (
 )
 
 // GetLogger gets logger.
-func GetLogger() Log {
-	mu.RLock()
-	defer mu.RUnlock()
-
-	return AppLog
-}
+func GetLogger() Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // SetupGlobal overwrites global logger.
-func SetupGlobal(logger Log) {
-	mu.Lock()
-	defer mu.Unlock()
-	AppLog = NewFromLog(logger.logger.Named(mainLoggerName))
-}
+func SetupGlobal(logger Log) { _ = "STUB: not implemented"; return }
 
 func init() {
 	SetupGlobal(NewWithLevel(mainLoggerName,
@@ -59,9 +50,7 @@ func init() {
 }
 
 // NewNop creates silent logger.
-func NewNop() Log {
-	return NewFromLog(zap.NewNop())
-}
+func NewNop() Log { _ = "STUB: not implemented"; return *new(Log) }
 
 // NewWithLevel creates a logger with a fixed level and with a set of (optional) hooks.
 func NewWithLevel(module string,
@@ -69,40 +58,30 @@ func NewWithLevel(module string,
 	encoder zapcore.Encoder,
 	hooks ...func(zapcore.Entry) error,
 ) Log {
-	consoleSyncer := zapcore.AddSync(logWriter)
-	core := zapcore.NewCore(encoder, consoleSyncer, level)
-	log := zap.New(zapcore.RegisterHooks(core, hooks...)).Named(module)
-	return NewFromLog(log)
+	_ = "STUB: not implemented"
+	return *new(Log)
 }
 
 // NewFromLog creates a Log from an existing zap-compatible log.
 func NewFromLog(l *zap.Logger) Log {
-	return Log{logger: l}
-}
+	_ = "STUB: not implemented"
+	return *
 
-// public wrappers abstracting away logging lib impl
+	// public wrappers abstracting away logging lib impl
+	new(Log)
+}
 
 // Info prints formatted info level log message.
-func Info(msg string, args ...any) {
-	GetLogger().Info(msg, args...)
-}
+func Info(msg string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Debug prints formatted debug level log message.
-func Debug(msg string, args ...any) {
-	GetLogger().Debug(msg, args...)
-}
+func Debug(msg string, args ...any) { _ = "STUB: not implemented"; return }
 
 // Warning prints formatted warning level log message.
-func Warning(msg string, args ...any) {
-	GetLogger().Warning(msg, args...)
-}
+func Warning(msg string, args ...any) { _ = "STUB: not implemented"; return }
 
 // With returns a FieldLogger which you can append fields to.
-func With() FieldLogger {
-	return FieldLogger{GetLogger().logger, GetLogger().name}
-}
+func With() FieldLogger { _ = "STUB: not implemented"; return *new(FieldLogger) }
 
 // Panic writes the log message and then panics.
-func Panic(msg string, args ...any) {
-	GetLogger().Panic(msg, args...)
-}
+func Panic(msg string, args ...any) { _ = "STUB: not implemented"; return }

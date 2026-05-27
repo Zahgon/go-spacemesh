@@ -1,14 +1,6 @@
 package p2p
 
 import (
-	"crypto/rand"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
-
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/peer"
 )
@@ -21,72 +13,21 @@ type identityInfo struct {
 }
 
 func genIdentity() (crypto.PrivKey, error) {
-	pk, _, err := crypto.GenerateEd25519Key(rand.Reader)
-	if err != nil {
-		return nil, fmt.Errorf("generate ed25519 identity: %w", err)
-	}
-	return pk, nil
+	_ = "STUB: not implemented"
+	return *new(crypto.PrivKey), nil
 }
 
 func identityInfoFromDir(dir string) (*identityInfo, error) {
-	path := filepath.Join(dir, keyFilename)
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("read file %s: %w", path, err)
-	}
-	var info identityInfo
-	err = json.Unmarshal(data, &info)
-	if err != nil {
-		return nil, fmt.Errorf("unmarshal file content from %s into %+v: %w", path, info, err)
-	}
-	return &info, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IdentityInfoFromDir returns a printable ID from a given identity directory.
-func IdentityInfoFromDir(dir string) (string, error) {
-	identityInfo, err := identityInfoFromDir(dir)
-	return identityInfo.ID.String(), err
-}
+func IdentityInfoFromDir(dir string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // EnsureIdentity generates an identity key file in given directory.
 func EnsureIdentity(dir string) (crypto.PrivKey, error) {
+	_ = "STUB: not implemented"
 	// TODO add crc check
-	if err := os.MkdirAll(dir, 0o700); err != nil {
-		return nil, fmt.Errorf("ensure that directory %s exist: %w", dir, err)
-	}
-	info, err := identityInfoFromDir(dir)
-	switch {
-	case errors.Is(err, fs.ErrNotExist):
-		key, err := genIdentity()
-		if err != nil {
-			return nil, err
-		}
-		id, err := peer.IDFromPrivateKey(key)
-		if err != nil {
-			panic("generated key is malformed")
-		}
-		raw, err := crypto.MarshalPrivateKey(key)
-		if err != nil {
-			panic("generated key can't be marshaled to bytes")
-		}
-		data, err := json.Marshal(identityInfo{
-			Key: raw,
-			ID:  id,
-		})
-		if err != nil {
-			return nil, err
-		}
-		if err := os.WriteFile(filepath.Join(dir, keyFilename), data, 0o600); err != nil {
-			return nil, fmt.Errorf("write identity data: %w", err)
-		}
-		return key, nil
-	case err != nil:
-		return nil, fmt.Errorf("read key from disk: %w", err)
-	}
-
-	pk, err := crypto.UnmarshalPrivateKey(info.Key)
-	if err != nil {
-		return nil, fmt.Errorf("unmarshal privkey: %w", err)
-	}
-	return pk, nil
+	return *new(crypto.PrivKey), nil
 }

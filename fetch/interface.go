@@ -29,7 +29,8 @@ func (f ValidatorFunc) HandleMessage(
 	peer p2p.Peer,
 	msg []byte,
 ) error {
-	return f(ctx, hash, peer, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SyncValidator exists to allow for mocking of GossipHandlers through the use

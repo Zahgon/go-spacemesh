@@ -34,9 +34,7 @@ var charges = []charge{
 
 type costFn func(charge) int
 
-func eth(c charge) int {
-	return c.eth
-}
+func eth(c charge) int { _ = "STUB: not implemented"; return 0 }
 
 const (
 	kindStore = iota
@@ -53,168 +51,37 @@ type tx struct {
 	ops  []op
 }
 
-func perWord(size int) int {
-	den := size / word
-	rem := size % word
-	if rem != 0 {
-		return den + 1
-	}
-	return den
-}
+func perWord(size int) int { _ = "STUB: not implemented"; return 0 }
 
-func (t tx) cost(f costFn) int {
-	total := perWord(t.size) * f(chargeTXDATA)
-	for _, o := range t.ops {
-		total += o.cost(f)
-	}
-	return total + f(chargeTX)
-}
+func (t tx) cost(f costFn) int { _ = "STUB: not implemented"; return 0 }
 
 type op struct {
 	kind int
 	size int
 }
 
-func (o op) cost(f costFn) int {
-	switch o.kind {
-	case kindStore:
-		return perWord(o.size) * f(chargeSTORE)
-	case kindUpdate:
-		return perWord(o.size) * f(chargeUPDATE)
-	case kindLoad:
-		return perWord(o.size) * f(chargeLOAD)
-	case kindEdverify:
-		return o.size * f(chargeEDVERIFY)
-	case kindSpawn:
-		return f(chargeSPAWN)
-	case kindAccountsAccess:
-		return f(chargeACCOUNTACCESS)
-	}
-	panic("unknown")
-}
+func (o op) cost(f costFn) int { _ = "STUB: not implemented"; return 0 }
 
-func store(size int) op {
-	return op{kindStore, size}
-}
+func store(size int) op { _ = "STUB: not implemented"; return *new(op) }
 
-func update(size int) op {
-	return op{kindUpdate, size}
-}
+func update(size int) op { _ = "STUB: not implemented"; return *new(op) }
 
-func load(size int) op {
-	return op{kindLoad, size}
-}
+func load(size int) op { _ = "STUB: not implemented"; return *new(op) }
 
-func edverify(size int) op {
-	return op{kindEdverify, size}
-}
+func edverify(size int) op { _ = "STUB: not implemented"; return *new(op) }
 
-func spawn() op {
-	return op{kindSpawn, 0}
-}
+func spawn() op { _ = "STUB: not implemented"; return *new(op) }
 
-func accountaccess() op {
-	return op{kindAccountsAccess, 0}
-}
+func accountaccess() op { _ = "STUB: not implemented"; return *new(op) }
 
-func describe(name string, size int, ops ...op) tx {
-	return tx{name: name, size: size, ops: ops}
-}
+func describe(name string, size int, ops ...op) tx { _ = "STUB: not implemented"; return *new(tx) }
 
 const (
 	sizeSpawn = 64
 	sizeSpend = 56
 )
 
-func txs() []tx {
-	txs := []tx{
-		describe("singlesig/selfspawn", sizeSpawn+32+64, store(48), edverify(1), spawn()),
-		describe(
-			"singlesig/spawn",
-			sizeSpawn+32+64,
-			accountaccess(),
-			accountaccess(),
-			load(48),
-			store(48),
-			update(16),
-			edverify(1),
-			spawn(),
-		),
-		describe(
-			"singlesig/spend",
-			sizeSpend+64,
-			accountaccess(),
-			accountaccess(),
-			load(48),
-			load(8),
-			update(16),
-			update(8),
-			edverify(1),
-		),
-	}
-	for n := 1; n <= 3; n++ {
-		for k := 1; k <= 10; k++ {
-			if n > k {
-				continue
-			}
-			sigs := n * 64
-			pubs := k * 32
-			txs = append(
-				txs,
-				describe(
-					fmt.Sprintf("multisig/%d/%d/selfspawn", n, k),
-					sizeSpawn+sigs+pubs,
-					store(16+pubs),
-					edverify(n),
-					spawn(),
-				),
-				describe(
-					fmt.Sprintf("multisig/%d/%d/spawn", n, k),
-					sizeSpawn+sigs+pubs,
-					load(16+pubs),
-					accountaccess(),
-					store(16+pubs),
-					update(16),
-					edverify(n),
-					spawn(),
-				),
-				describe(
-					fmt.Sprintf("multisig/%d/%d/spend", n, k),
-					sizeSpend+sigs,
-					load(16+pubs),
-					accountaccess(),
-					accountaccess(),
-					load(8),
-					update(16),
-					update(8),
-					edverify(n),
-				),
-				describe(
-					fmt.Sprintf("vesting/%d/%d/spawnvault", n, k),
-					sizeSpawn+sigs+56,
-					accountaccess(),
-					load(sizeSpawn+sigs),
-					store(80),
-					update(16),
-					edverify(n),
-					spawn(),
-				),
-				describe(
-					fmt.Sprintf("vesting/%d/%d/drain", n, k),
-					sizeSpend+24+sigs,
-					accountaccess(),
-					accountaccess(),
-					load(16+pubs),
-					load(80),
-					edverify(n),
-					update(16),
-					update(16),
-				),
-			)
-		}
-	}
-	return txs
-}
+func txs() []tx { _ = "STUB: not implemented"; return nil }
 
 const price = 8.3e-08
 

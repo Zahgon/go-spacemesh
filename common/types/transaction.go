@@ -1,12 +1,9 @@
 package types
 
 import (
-	"bytes"
 	"time"
 
 	"github.com/spacemeshos/go-scale"
-
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 //go:generate scalegen -types Transaction,Reward,RawTx
@@ -21,38 +18,38 @@ const (
 
 // Hash32 returns the TransactionID as a Hash32.
 func (id TransactionID) Hash32() Hash32 {
-	return Hash32(id)
+	_ = "STUB: not implemented"
+
+	// ShortString returns a the first 10 characters of the ID, for logging purposes.
+	return *new(Hash32)
 }
 
-// ShortString returns a the first 10 characters of the ID, for logging purposes.
-func (id TransactionID) ShortString() string {
-	return id.Hash32().ShortString()
-}
+func (id TransactionID) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // String returns a hexadecimal representation of the TransactionID with "0x" prepended, for logging purposes.
 // It implements the fmt.Stringer interface.
-func (id TransactionID) String() string {
-	return id.Hash32().String()
-}
+func (id TransactionID) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the TransactionID as a byte slice.
 func (id TransactionID) Bytes() []byte {
-	return id[:]
+	_ = "STUB: not implemented"
+
+	// Compare returns true if other (the given TransactionID) is less than this TransactionID, by lexicographic comparison.
+	return nil
 }
 
-// Compare returns true if other (the given TransactionID) is less than this TransactionID, by lexicographic comparison.
-func (id TransactionID) Compare(other TransactionID) bool {
-	return bytes.Compare(id.Bytes(), other.Bytes()) < 0
-}
+func (id TransactionID) Compare(other TransactionID) bool { _ = "STUB: not implemented"; return false }
 
 // EncodeScale implements scale codec interface.
 func (id *TransactionID) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (id *TransactionID) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, id[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Transaction is an alias to RawTx.
@@ -63,41 +60,30 @@ type Transaction struct {
 
 // GetRaw returns raw bytes of the transaction with id.
 func (t Transaction) GetRaw() RawTx {
-	return t.RawTx
+	_ = "STUB: not implemented"
+
+	// Verified returns true if header is set.
+	return *new(RawTx)
 }
 
-// Verified returns true if header is set.
-func (t Transaction) Verified() bool {
-	return t.TxHeader != nil
-}
+func (t Transaction) Verified() bool { _ = "STUB: not implemented"; return false }
 
 // Hash32 returns the TransactionID as a Hash32.
 func (t *Transaction) Hash32() Hash32 {
-	return t.ID.Hash32()
+	_ = "STUB: not implemented"
+	return *
+
+	// ShortString returns the first 5 characters of the ID, for logging purposes.
+	new(Hash32)
 }
 
-// ShortString returns the first 5 characters of the ID, for logging purposes.
-func (t *Transaction) ShortString() string {
-	return t.ID.ShortString()
-}
+func (t *Transaction) ShortString() string { _ = "STUB: not implemented"; return "" }
 
 // ToTransactionIDs returns a slice of TransactionID corresponding to the given transactions.
-func ToTransactionIDs(txs []*Transaction) []TransactionID {
-	ids := make([]TransactionID, 0, len(txs))
-	for _, tx := range txs {
-		ids = append(ids, tx.ID)
-	}
-	return ids
-}
+func ToTransactionIDs(txs []*Transaction) []TransactionID { _ = "STUB: not implemented"; return nil }
 
 // TransactionIDsToHashes turns a list of TransactionID into their Hash32 representation.
-func TransactionIDsToHashes(ids []TransactionID) []Hash32 {
-	hashes := make([]Hash32, 0, len(ids))
-	for _, id := range ids {
-		hashes = append(hashes, id.Hash32())
-	}
-	return hashes
-}
+func TransactionIDsToHashes(ids []TransactionID) []Hash32 { _ = "STUB: not implemented"; return nil }
 
 // TXState describes the state of a transaction.
 type TXState uint32
@@ -131,12 +117,7 @@ type Reward struct {
 }
 
 // NewRawTx computes id from raw bytes and returns the object.
-func NewRawTx(raw []byte) RawTx {
-	return RawTx{
-		ID:  hash.Sum(raw),
-		Raw: raw,
-	}
-}
+func NewRawTx(raw []byte) RawTx { _ = "STUB: not implemented"; return *new(RawTx) }
 
 // RawTx stores an identity and a pointer to raw bytes.
 type RawTx struct {

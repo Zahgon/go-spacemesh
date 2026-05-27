@@ -1,8 +1,6 @@
 package txs
 
 import (
-	"container/heap"
-
 	"go.uber.org/zap"
 
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -22,53 +20,37 @@ type item struct {
 type priorityQueue []*item
 
 // Len implements head.Interface.
-func (pq priorityQueue) Len() int { return len(pq) }
+func (pq priorityQueue) Len() int {
+	_ = "STUB: not implemented"
 
-// Less implements head.Interface.
-func (pq priorityQueue) Less(i, j int) bool {
-	// We want Pop to give us the highest, not lowest, fee, so we use greater than here.
-	if pq[i].Fee() != pq[j].Fee() {
-		return pq[i].Fee() > pq[j].Fee()
-	}
-	// if fees are equal, we want the older tx first
-	if !pq[i].Received.Equal(pq[j].Received) {
-		return pq[i].Received.Before(pq[j].Received)
-	}
-	// if fees and timestamps are equal, we want the tx with the lower ID first
-	return pq[i].ID.Compare(pq[j].ID)
+	// Less implements head.Interface.
+	return 0
 }
+
+func (pq priorityQueue) Less(i, j int) bool {
+	_ = "STUB: not implemented"
+	// We want Pop to give us the highest, not lowest, fee, so we use greater than here.
+	return false
+}
+
+// if fees are equal, we want the older tx first
+
+// if fees and timestamps are equal, we want the tx with the lower ID first
 
 // Swap implements head.Interface.
-func (pq priorityQueue) Swap(i, j int) {
-	pq[i], pq[j] = pq[j], pq[i]
-	pq[i].index = i
-	pq[j].index = j
-}
+func (pq priorityQueue) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
 // Push implements head.Interface.
-func (pq *priorityQueue) Push(i any) {
-	n := len(*pq)
-	it := i.(*item)
-	it.index = n
-	*pq = append(*pq, it)
-}
+func (pq *priorityQueue) Push(i any) { _ = "STUB: not implemented"; return }
 
 // Pop implements head.Interface.
-func (pq *priorityQueue) Pop() any {
-	old := *pq
-	n := len(old)
-	it := old[n-1]
-	old[n-1] = nil // avoid memory leak
-	it.index = -1  // for safety
-	*pq = old[0 : n-1]
-	return it
-}
+func (pq *priorityQueue) Pop() any { _ = "STUB: not implemented"; return *new(any) }
+
+// avoid memory leak
+// for safety
 
 // update modifies the fee and value of an item in the queue.
-func (pq *priorityQueue) update(it *item, ntx *NanoTX) {
-	it.NanoTX = ntx
-	heap.Fix(pq, it.index)
-}
+func (pq *priorityQueue) update(it *item, ntx *NanoTX) { _ = "STUB: not implemented"; return }
 
 // mempoolIterator holds the best transaction from the conservative state mempool.
 // Not thread-safe.
@@ -81,128 +63,27 @@ type mempoolIterator struct {
 
 // newMempoolIterator builds and returns a mempoolIterator.
 func newMempoolIterator(logger *zap.Logger, cs conStateCache, gasLimit uint64) *mempoolIterator {
-	txs := cs.GetMempool()
-	mi := &mempoolIterator{
-		logger:       logger,
-		gasRemaining: gasLimit,
-		pq:           make(priorityQueue, 0, len(txs)),
-		txs:          txs,
-	}
-	logger.Info("received mempool txs", zap.Int("num_accounts", len(txs)))
-	mi.buildPQ()
-	return mi
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (mi *mempoolIterator) buildPQ() {
-	i := 0
-	for addr, ntxs := range mi.txs {
-		ntx := ntxs[0]
-		it := &item{
-			NanoTX: ntx,
-			index:  i,
-		}
-		i++
-		mi.pq = append(mi.pq, it)
-		mi.logger.Debug("adding item to pq",
-			zap.Stringer("tx_id", ntx.ID),
-			zap.Stringer("address", ntx.Principal),
-			zap.Uint64("fee", ntx.Fee()),
-			zap.Uint64("gas", ntx.MaxGas),
-			zap.Time("received", ntx.Received))
-
-		if len(ntxs) == 1 {
-			delete(mi.txs, addr)
-		} else {
-			mi.txs[addr] = ntxs[1:]
-		}
-	}
-	heap.Init(&mi.pq)
-}
+func (mi *mempoolIterator) buildPQ() { _ = "STUB: not implemented"; return }
 
 func (mi *mempoolIterator) getNext(addr types.Address) *NanoTX {
-	if _, ok := mi.txs[addr]; !ok {
-		return nil
-	}
-	ntx := mi.txs[addr][0]
-	if len(mi.txs[addr]) == 1 {
-		delete(mi.txs, addr)
-	} else {
-		mi.txs[addr] = mi.txs[addr][1:]
-	}
-	return ntx
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (mi *mempoolIterator) pop() *NanoTX {
-	if mi.pq.Len() == 0 || mi.gasRemaining < MinTXGas {
-		return nil
-	}
+func (mi *mempoolIterator) pop() *NanoTX { _ = "STUB: not implemented"; return nil }
 
-	var top *item
-	for mi.pq.Len() > 0 {
-		// the first item in priority queue is always the item to be popped with the heap
-		top = mi.pq[0]
-		if top.MaxGas <= mi.gasRemaining {
-			break
-		}
-		mi.logger.Debug("tx max gas too high, removing addr from mempool",
-			zap.Stringer("tx_id", top.ID),
-			zap.Stringer("address", top.Principal),
-			zap.Uint64("fee", top.Fee()),
-			zap.Uint64("gas", top.MaxGas),
-			zap.Uint64("gas_left", mi.gasRemaining),
-			zap.Time("received", top.Received),
-		)
-		heap.Pop(&mi.pq)
-		// remove all txs for this principal since we cannot fulfill the lowest nonce for this principal
-		delete(mi.txs, top.Principal)
-		top = nil
-	}
+// the first item in priority queue is always the item to be popped with the heap
 
-	if top == nil {
-		return nil
-	}
+// remove all txs for this principal since we cannot fulfill the lowest nonce for this principal
 
-	ntx := top.NanoTX
-	mi.gasRemaining -= ntx.MaxGas
-	mi.logger.Debug("popping tx",
-		zap.Stringer("tx_id", ntx.ID),
-		zap.Stringer("address", ntx.Principal),
-		zap.Uint64("fee", ntx.Fee()),
-		zap.Uint64("gas_used", ntx.MaxGas),
-		zap.Uint64("gas_left", mi.gasRemaining),
-		zap.Time("received", ntx.Received))
-	next := mi.getNext(ntx.Principal)
-	if next == nil {
-		mi.logger.Debug("addr txs exhausted", zap.Stringer("address", ntx.Principal))
-		heap.Pop(&mi.pq)
-	} else {
-		mi.logger.Debug("added tx for addr",
-			zap.Stringer("tx_id", next.ID),
-			zap.Stringer("address", next.Principal),
-			zap.Uint64("fee", next.Fee()),
-			zap.Uint64("gas", next.MaxGas),
-			zap.Time("received", next.Received))
-		// updating the item (for the same address) in the heap is less expensive than a pop followed by a push.
-		mi.pq.update(top, next)
-	}
-	return ntx
-}
+// updating the item (for the same address) in the heap is less expensive than a pop followed by a push.
 
 // PopAll returns all the transaction in the mempoolIterator.
 func (mi *mempoolIterator) PopAll() ([]*NanoTX, map[types.Address][]*NanoTX) {
-	result := make([]*NanoTX, 0)
-	byAddrAndNonce := make(map[types.Address][]*NanoTX)
-	for {
-		popped := mi.pop()
-		if popped == nil {
-			break
-		}
-		result = append(result, popped)
-		principal := popped.Principal
-		if _, ok := byAddrAndNonce[principal]; !ok {
-			byAddrAndNonce[principal] = make([]*NanoTX, 0, maxTXsPerAcct)
-		}
-		byAddrAndNonce[principal] = append(byAddrAndNonce[principal], popped)
-	}
-	return result, byAddrAndNonce
+	_ = "STUB: not implemented"
+	return nil, nil
 }

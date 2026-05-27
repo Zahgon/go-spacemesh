@@ -24,12 +24,8 @@ type nodeMeshAPI interface {
 }
 
 func NewNodeService(peers nodePeerCounter, msh nodeMeshAPI, clock *timesync.NodeClock, syncer syncer) *NodeService {
-	return &NodeService{
-		mesh:        msh,
-		clock:       clock,
-		peerCounter: peers,
-		syncer:      syncer,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type NodeService struct {
@@ -39,36 +35,24 @@ type NodeService struct {
 	syncer      syncer
 }
 
-func (s *NodeService) RegisterService(server *grpc.Server) {
-	spacemeshv2alpha1.RegisterNodeServiceServer(server, s)
-}
+func (s *NodeService) RegisterService(server *grpc.Server) { _ = "STUB: not implemented"; return }
 
 func (s *NodeService) RegisterHandlerService(mux *runtime.ServeMux) error {
-	return spacemeshv2alpha1.RegisterNodeServiceHandlerServer(context.Background(), mux, s)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // String returns the service name.
-func (s *NodeService) String() string {
-	return "NodeService"
-}
+func (s *NodeService) String() string { _ = "STUB: not implemented"; return "" }
 
 func (s *NodeService) Status(ctx context.Context, _ *spacemeshv2alpha1.NodeStatusRequest) (
 	*spacemeshv2alpha1.NodeStatusResponse, error,
 ) {
-	var status spacemeshv2alpha1.NodeStatusResponse_SyncStatus
-
-	if s.syncer.IsSynced(ctx) {
-		status = spacemeshv2alpha1.NodeStatusResponse_SYNC_STATUS_SYNCED
-	} else {
-		status = spacemeshv2alpha1.NodeStatusResponse_SYNC_STATUS_SYNCING
-	}
-
-	return &spacemeshv2alpha1.NodeStatusResponse{
-		ConnectedPeers: s.peerCounter.PeerCount(),
-		Status:         status,
-		LatestLayer:    s.mesh.LatestLayer().Uint32(),        // latest layer node has seen from blocks
-		AppliedLayer:   s.mesh.LatestLayerInState().Uint32(), // last layer node has applied to the state
-		ProcessedLayer: s.mesh.ProcessedLayer().Uint32(),     // last layer whose votes have been processed
-		CurrentLayer:   s.clock.CurrentLayer().Uint32(),      // current layer, based on clock time
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// latest layer node has seen from blocks
+// last layer node has applied to the state
+// last layer whose votes have been processed
+// current layer, based on clock time

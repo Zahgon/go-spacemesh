@@ -3,9 +3,7 @@ package wire
 import (
 	"go.uber.org/zap/zapcore"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 //go:generate scalegen
@@ -23,27 +21,16 @@ type NIPostChallengeV2 struct {
 // The serialized challenge is first prepended with a byte 0x00, and then hashed
 // for second preimage resistance of poet membership merkle tree.
 func (c *NIPostChallengeV2) Hash() types.Hash32 {
-	ncBytes := codec.MustEncode(c)
-	return hash.Sum([]byte{0x00}, ncBytes)
+	_ = "STUB: not implemented"
+	return *new(types.Hash32)
 }
 
 func (c *NIPostChallengeV2) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if c == nil {
-		return nil
-	}
-	encoder.AddString("Hash", c.Hash().String())
-	encoder.AddUint32("PublishEpoch", c.PublishEpoch.Uint32())
-	encoder.AddString("PrevATXID", c.PrevATXID.String())
-	encoder.AddString("PositioningATX", c.PositioningATXID.String())
-	encoder.AddObject("InitialPost", c.InitialPost)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func NIPostChallengeToWireV2(c *types.NIPostChallenge) *NIPostChallengeV2 {
-	return &NIPostChallengeV2{
-		PublishEpoch:     c.PublishEpoch,
-		PrevATXID:        c.PrevATXID,
-		PositioningATXID: c.PositioningATX,
-		InitialPost:      PostToWireV1(c.InitialPost),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

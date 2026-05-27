@@ -18,24 +18,14 @@ type TxHeader struct {
 }
 
 // Fee is a MaxGas multiplied by a GasPrice.
-func (h *TxHeader) Fee() uint64 {
-	return h.MaxGas * h.GasPrice
-}
+func (h *TxHeader) Fee() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Spending is Fee() + MaxSpend.
-func (h *TxHeader) Spending() uint64 {
-	return h.Fee() + h.MaxSpend
-}
+func (h *TxHeader) Spending() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalLogObject implements encoding for the tx header.
 func (h *TxHeader) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	encoder.AddString("principal", h.Principal.String())
-	encoder.AddUint64("nonce_counter", h.Nonce)
-	encoder.AddUint32("layer_min", h.LayerLimits.Min)
-	encoder.AddUint32("layer_max", h.LayerLimits.Max)
-	encoder.AddUint64("max_gas", h.MaxGas)
-	encoder.AddUint64("gas_price", h.GasPrice)
-	encoder.AddUint64("max_spend", h.MaxSpend)
+	_ = "STUB: not implemented"
 	return nil
 }
 

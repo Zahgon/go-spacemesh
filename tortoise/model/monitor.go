@@ -3,8 +3,6 @@ package model
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/spacemeshos/go-spacemesh/common/types"
 )
 
@@ -26,11 +24,8 @@ type EventVerified struct {
 }
 
 func newVerifiedMonitor(tb testing.TB, genesis types.LayerID) *verifiedMonitor {
-	return &verifiedMonitor{
-		tb:       tb,
-		genesis:  genesis,
-		verified: map[string]types.LayerID{},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type verifiedMonitor struct {
@@ -40,21 +35,6 @@ type verifiedMonitor struct {
 	verified map[string]types.LayerID
 }
 
-func (m *verifiedMonitor) OnEvent(event Event) {
-	switch ev := event.(type) {
-	case EventVerified:
-		m.verified[ev.ID] = ev.Verified
-		if ev.Layer.After(m.last) {
-			m.last = ev.Layer
-		}
-	}
-}
+func (m *verifiedMonitor) OnEvent(event Event) { _ = "STUB: not implemented"; return }
 
-func (m *verifiedMonitor) Test() {
-	if !m.last.After(m.genesis) {
-		return
-	}
-	for id, verified := range m.verified {
-		require.Equal(m.tb, m.last.Sub(1), verified, "id=%s", id)
-	}
-}
+func (m *verifiedMonitor) Test() { _ = "STUB: not implemented"; return }

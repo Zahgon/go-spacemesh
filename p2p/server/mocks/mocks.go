@@ -10,7 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
 	time "time"
 
 	gomock "go.uber.org/mock/gomock"
@@ -30,29 +29,24 @@ type MockpeerStreamMockRecorder struct {
 
 // NewMockpeerStream creates a new mock instance.
 func NewMockpeerStream(ctrl *gomock.Controller) *MockpeerStream {
-	mock := &MockpeerStream{ctrl: ctrl}
-	mock.recorder = &MockpeerStreamMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockpeerStream) EXPECT() *MockpeerStreamMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Close mocks base method.
+	return nil
 }
 
-// Close mocks base method.
-func (m *MockpeerStream) Close() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Close")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockpeerStream) Close() error { _ = "STUB: not implemented"; return nil }
 
 // Close indicates an expected call of Close.
 func (mr *MockpeerStreamMockRecorder) Close() *MockpeerStreamCloseCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockpeerStream)(nil).Close))
-	return &MockpeerStreamCloseCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerStreamCloseCall wrap *gomock.Call
@@ -62,36 +56,29 @@ type MockpeerStreamCloseCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeerStreamCloseCall) Return(arg0 error) *MockpeerStreamCloseCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeerStreamCloseCall) Do(f func() error) *MockpeerStreamCloseCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeerStreamCloseCall) DoAndReturn(f func() error) *MockpeerStreamCloseCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Read mocks base method.
-func (m *MockpeerStream) Read(p []byte) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Read", p)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
+func (m *MockpeerStream) Read(p []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // Read indicates an expected call of Read.
 func (mr *MockpeerStreamMockRecorder) Read(p any) *MockpeerStreamReadCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockpeerStream)(nil).Read), p)
-	return &MockpeerStreamReadCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerStreamReadCall wrap *gomock.Call
@@ -101,35 +88,29 @@ type MockpeerStreamReadCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeerStreamReadCall) Return(n int, err error) *MockpeerStreamReadCall {
-	c.Call = c.Call.Return(n, err)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeerStreamReadCall) Do(f func([]byte) (int, error)) *MockpeerStreamReadCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeerStreamReadCall) DoAndReturn(f func([]byte) (int, error)) *MockpeerStreamReadCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetDeadline mocks base method.
-func (m *MockpeerStream) SetDeadline(arg0 time.Time) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetDeadline", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockpeerStream) SetDeadline(arg0 time.Time) error { _ = "STUB: not implemented"; return nil }
 
 // SetDeadline indicates an expected call of SetDeadline.
 func (mr *MockpeerStreamMockRecorder) SetDeadline(arg0 any) *MockpeerStreamSetDeadlineCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDeadline", reflect.TypeOf((*MockpeerStream)(nil).SetDeadline), arg0)
-	return &MockpeerStreamSetDeadlineCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerStreamSetDeadlineCall wrap *gomock.Call
@@ -139,36 +120,29 @@ type MockpeerStreamSetDeadlineCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeerStreamSetDeadlineCall) Return(arg0 error) *MockpeerStreamSetDeadlineCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeerStreamSetDeadlineCall) Do(f func(time.Time) error) *MockpeerStreamSetDeadlineCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeerStreamSetDeadlineCall) DoAndReturn(f func(time.Time) error) *MockpeerStreamSetDeadlineCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Write mocks base method.
-func (m *MockpeerStream) Write(p []byte) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Write", p)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
+func (m *MockpeerStream) Write(p []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // Write indicates an expected call of Write.
 func (mr *MockpeerStreamMockRecorder) Write(p any) *MockpeerStreamWriteCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Write", reflect.TypeOf((*MockpeerStream)(nil).Write), p)
-	return &MockpeerStreamWriteCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockpeerStreamWriteCall wrap *gomock.Call
@@ -178,18 +152,18 @@ type MockpeerStreamWriteCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockpeerStreamWriteCall) Return(n int, err error) *MockpeerStreamWriteCall {
-	c.Call = c.Call.Return(n, err)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockpeerStreamWriteCall) Do(f func([]byte) (int, error)) *MockpeerStreamWriteCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockpeerStreamWriteCall) DoAndReturn(f func([]byte) (int, error)) *MockpeerStreamWriteCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

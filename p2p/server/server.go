@@ -1,27 +1,18 @@
 package server
 
 import (
-	"bufio"
 	"context"
-	"encoding/binary"
 	"errors"
-	"fmt"
 	"io"
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/connmgr"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/libp2p/go-libp2p/core/protocol"
-	"github.com/multiformats/go-varint"
-	dto "github.com/prometheus/client_model/go"
 	"go.uber.org/zap"
-	"golang.org/x/sync/errgroup"
 	"golang.org/x/sync/semaphore"
 	"golang.org/x/time/rate"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
-	"github.com/spacemeshos/go-spacemesh/log"
 	"github.com/spacemeshos/go-spacemesh/p2p/peerinfo"
 )
 
@@ -41,40 +32,20 @@ type Opt func(s *Server)
 // WithTimeout configures stream timeout.
 // The requests are terminated when no data is received or sent for
 // the specified duration.
-func WithTimeout(timeout time.Duration) Opt {
-	return func(s *Server) {
-		s.timeout = timeout
-	}
-}
+func WithTimeout(timeout time.Duration) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithHardTimeout configures the hard timeout for requests.
 // Requests are terminated if they take longer than the specified
 // duration.
-func WithHardTimeout(timeout time.Duration) Opt {
-	return func(s *Server) {
-		s.hardTimeout = timeout
-	}
-}
+func WithHardTimeout(timeout time.Duration) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithLog configures logger for the server.
-func WithLog(log *zap.Logger) Opt {
-	return func(s *Server) {
-		s.logger = log
-	}
-}
+func WithLog(log *zap.Logger) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
-func WithRequestSizeLimit(limit int) Opt {
-	return func(s *Server) {
-		s.requestLimit = limit
-	}
-}
+func WithRequestSizeLimit(limit int) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithMetrics will enable metrics collection in the server.
-func WithMetrics() Opt {
-	return func(s *Server) {
-		s.metrics = newTracker(s.protocol)
-	}
-}
+func WithMetrics() Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithQueueSize parametrize number of message that will be kept in queue
 // and eventually processed by server. Otherwise stream is closed immediately.
@@ -83,30 +54,20 @@ func WithMetrics() Opt {
 // and server processes 1000 requests per second size should be 100.
 //
 // Defaults to 100.
-func WithQueueSize(size int) Opt {
-	return func(s *Server) {
-		s.queueSize = size
-	}
-}
+func WithQueueSize(size int) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // WithRequestsPerInterval parametrizes server rate limit to limit maximum amount of bandwidth
 // that this handler can consume.
 //
 // Defaults to 100 requests per second.
 func WithRequestsPerInterval(n int, interval time.Duration) Opt {
-	return func(s *Server) {
-		s.requestsPerInterval = n
-		s.interval = interval
-	}
+	_ = "STUB: not implemented"
+	return *new(Opt)
 }
 
 // WithDecayingTag specifies P2P decaying tag that is applied to the peer when a request
 // is being served.
-func WithDecayingTag(tag DecayingTagSpec) Opt {
-	return func(s *Server) {
-		s.decayingTagSpec = &tag
-	}
-}
+func WithDecayingTag(tag DecayingTagSpec) Opt { _ = "STUB: not implemented"; return *new(Opt) }
 
 // Handler is a handler to be defined by the application.
 type Handler func(context.Context, peer.ID, []byte) ([]byte, error)
@@ -124,13 +85,9 @@ type ServerError struct {
 	msg string
 }
 
-func NewServerError(msg string) *ServerError {
-	return &ServerError{msg: msg}
-}
+func NewServerError(msg string) *ServerError { _ = "STUB: not implemented"; return nil }
 
-func (err *ServerError) Error() string {
-	return fmt.Sprintf("peer error: %s", err.msg)
-}
+func (err *ServerError) Error() string { _ = "STUB: not implemented"; return "" }
 
 //go:generate scalegen -types Response
 
@@ -167,68 +124,11 @@ type Server struct {
 
 // New server for the handler.
 func New(h Host, proto string, handler StreamHandler, opts ...Opt) *Server {
-	srv := &Server{
-		logger:              zap.NewNop(),
-		protocol:            proto,
-		handler:             handler,
-		h:                   h,
-		timeout:             25 * time.Second,
-		hardTimeout:         5 * time.Minute,
-		requestLimit:        10240,
-		queueSize:           1000,
-		requestsPerInterval: 100,
-		interval:            time.Second,
-
-		queue:   make(chan request),
-		stopped: make(chan struct{}),
-	}
-	for _, opt := range opts {
-		opt(srv)
-	}
-
-	if srv.decayingTagSpec != nil {
-		decayer, supported := connmgr.SupportsDecay(h.ConnManager())
-		if supported {
-			tag, err := decayer.RegisterDecayingTag(
-				"server:"+proto,
-				srv.decayingTagSpec.Interval,
-				connmgr.DecayFixed(srv.decayingTagSpec.Dec),
-				connmgr.BumpSumBounded(0, srv.decayingTagSpec.Cap))
-			if err != nil {
-				srv.logger.Error("error registering decaying tag", zap.Error(err))
-			} else {
-				srv.decayingTag = tag
-			}
-		}
-	}
-
-	srv.limit = rate.NewLimiter(
-		rate.Every(srv.interval/time.Duration(srv.requestsPerInterval)),
-		srv.requestsPerInterval,
-	)
-	srv.sem = semaphore.NewWeighted(int64(srv.queueSize))
-	srv.h.SetStreamHandler(protocol.ID(srv.protocol), func(stream network.Stream) {
-		if !srv.sem.TryAcquire(1) {
-			if srv.metrics != nil {
-				srv.metrics.dropped.Inc()
-			}
-			stream.Close()
-			return
-		}
-		select {
-		case <-srv.stopped:
-			srv.sem.Release(1)
-			stream.Close()
-		case srv.queue <- request{stream: stream, received: time.Now()}:
-			// at most s.queueSize requests block here, the others are dropped with the semaphore
-		}
-	})
-	if srv.metrics != nil {
-		srv.metrics.targetQueue.Set(float64(srv.queueSize))
-		srv.metrics.targetRps.Set(float64(srv.limit.Limit()))
-	}
-	return srv
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// at most s.queueSize requests block here, the others are dropped with the semaphore
 
 type request struct {
 	stream   network.Stream
@@ -236,141 +136,24 @@ type request struct {
 }
 
 func (s *Server) peerInfo() peerinfo.PeerInfo {
-	if h, ok := s.h.(PeerInfoHost); ok {
-		return h.PeerInfo()
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(peerinfo.PeerInfo)
 }
 
-func (s *Server) Run(ctx context.Context) error {
-	var eg errgroup.Group
-	for {
-		select {
-		case <-ctx.Done():
-			close(s.stopped)
-			eg.Wait()
-			return nil
-		case req := <-s.queue:
-			if s.metrics != nil {
-				s.metrics.queue.Set(float64(s.queueSize))
-				s.metrics.accepted.Inc()
-			}
-			if s.metrics != nil {
-				s.metrics.inQueueLatency.Observe(time.Since(req.received).Seconds())
-			}
-			if err := s.limit.Wait(ctx); err != nil {
-				eg.Wait()
-				return nil
-			}
-			peer := req.stream.Conn().RemotePeer()
-			ctx, cancel := context.WithCancel(ctx)
-			eg.Go(func() error {
-				<-ctx.Done()
-				s.sem.Release(1)
-				req.stream.Close()
-				return nil
-			})
-			eg.Go(func() error {
-				defer cancel()
-				conn := req.stream.Conn()
-				if s.decayingTag != nil {
-					s.decayingTag.Bump(peer, s.decayingTagSpec.Inc)
-				}
-				ok := s.queueHandler(ctx, peer, req.stream)
-				duration := time.Since(req.received)
-				if s.peerInfo() != nil {
-					info := s.peerInfo().EnsurePeerInfo(conn.RemotePeer())
-					info.ServerStats.RequestDone(duration, ok)
-				}
-				if s.metrics != nil {
-					s.metrics.serverLatency.Observe(duration.Seconds())
-					if ok {
-						s.metrics.completed.Inc()
-					} else {
-						s.metrics.failed.Inc()
-					}
-				}
-				return nil
-			})
-		}
-	}
-}
+func (s *Server) Run(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 func (s *Server) queueHandler(ctx context.Context, peer peer.ID, stream network.Stream) bool {
-	dadj := newDeadlineAdjuster(stream, s.timeout, s.hardTimeout)
-	defer dadj.Close()
-	size, err := varint.ReadUvarint(dadj)
-	if err != nil {
-		s.logger.Debug("initial read failed",
-			zap.String("protocol", s.protocol),
-			zap.Stringer("remotePeer", stream.Conn().RemotePeer()),
-			zap.Stringer("remoteMultiaddr", stream.Conn().RemoteMultiaddr()),
-			zap.Error(err),
-		)
-		return false
-	}
-	if size > uint64(s.requestLimit) {
-		s.logger.Warn("request limit overflow",
-			zap.String("protocol", s.protocol),
-			zap.Stringer("remotePeer", stream.Conn().RemotePeer()),
-			zap.Stringer("remoteMultiaddr", stream.Conn().RemoteMultiaddr()),
-			zap.Int("limit", s.requestLimit),
-			zap.Uint64("request", size),
-		)
-		stream.Conn().Close()
-		return false
-	}
-	buf := make([]byte, size)
-	_, err = io.ReadFull(dadj, buf)
-	if err != nil {
-		s.logger.Debug("error reading request",
-			zap.String("protocol", s.protocol),
-			zap.Stringer("remotePeer", stream.Conn().RemotePeer()),
-			zap.Stringer("remoteMultiaddr", stream.Conn().RemoteMultiaddr()),
-			zap.Error(err),
-		)
-		return false
-	}
-	start := time.Now()
-	if err = s.handler(log.WithNewRequestID(ctx), peer, buf, dadj); err != nil {
-		s.logger.Debug("handler reported error",
-			zap.String("protocol", s.protocol),
-			zap.Stringer("remotePeer", stream.Conn().RemotePeer()),
-			zap.Stringer("remoteMultiaddr", stream.Conn().RemoteMultiaddr()),
-			zap.Error(err),
-		)
-		return false
-	}
-	s.logger.Debug("protocol handler execution time",
-		zap.String("protocol", s.protocol),
-		zap.Stringer("remotePeer", stream.Conn().RemotePeer()),
-		zap.Stringer("remoteMultiaddr", stream.Conn().RemoteMultiaddr()),
-		zap.Duration("duration", time.Since(start)),
-	)
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Request sends a binary request to the peer.
 func (s *Server) Request(ctx context.Context, pid peer.ID, req []byte, extraProtocols ...string) ([]byte, error) {
-	var r Response
-	if err := s.StreamRequest(ctx, pid, req, func(ctx context.Context, stream io.ReadWriter) error {
-		rd := bufio.NewReader(stream)
-		if _, err := codec.DecodeFrom(rd, &r); err != nil {
-			if errors.Is(err, io.ErrClosedPipe) && ctx.Err() != nil {
-				// ensure that a canceled context is returned as the right error
-				return ctx.Err()
-			}
-			return fmt.Errorf("peer %s: %w", pid, err)
-		}
-		if r.Error != "" {
-			return &ServerError{msg: r.Error}
-		}
-		return nil
-	}, extraProtocols...); err != nil {
-		return nil, err
-	}
-	return r.Data, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// ensure that a canceled context is returned as the right error
 
 // StreamRequest sends a binary request to the peer. The response is read from the stream
 // by the specified callback.
@@ -381,53 +164,8 @@ func (s *Server) StreamRequest(
 	callback StreamRequestCallback,
 	extraProtocols ...string,
 ) error {
-	start := time.Now()
-	if len(req) > s.requestLimit {
-		return fmt.Errorf("request length (%d) is longer than limit %d", len(req), s.requestLimit)
-	}
-	if s.h.Network().Connectedness(pid) != network.Connected {
-		return ErrNotConnected
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, s.hardTimeout)
-	defer cancel()
-	stream, info, err := s.streamRequest(ctx, pid, req, extraProtocols...)
-	if err == nil {
-		var eg errgroup.Group
-		eg.Go(func() error {
-			<-ctx.Done()
-			stream.Close()
-			return nil
-		})
-		err = callback(ctx, stream)
-		s.logger.Debug("request execution time",
-			zap.String("protocol", s.protocol),
-			zap.Duration("duration", time.Since(start)),
-			zap.Error(err),
-			log.ZContext(ctx),
-		)
-		cancel()
-		eg.Wait()
-	}
-
-	var srvError *ServerError
-	duration := time.Since(start)
-	if info != nil {
-		info.ClientStats.RequestDone(duration, err == nil)
-	}
-	switch {
-	case s.metrics == nil:
-	case errors.As(err, &srvError):
-		s.metrics.clientServerError.Inc()
-		s.metrics.clientLatency.Observe(duration.Seconds())
-	case err != nil:
-		s.metrics.clientFailed.Inc()
-		s.metrics.clientLatencyFailure.Observe(duration.Seconds())
-	default:
-		s.metrics.clientSucceeded.Inc()
-		s.metrics.clientLatency.Observe(duration.Seconds())
-	}
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Server) streamRequest(
@@ -440,116 +178,24 @@ func (s *Server) streamRequest(
 	info *peerinfo.Info,
 	err error,
 ) {
-	protoIDs := make([]protocol.ID, len(extraProtocols)+1)
-	for n, p := range extraProtocols {
-		protoIDs[n] = protocol.ID(p)
-	}
-	protoIDs[len(extraProtocols)] = protocol.ID(s.protocol)
-	stream, err := s.h.NewStream(
-		network.WithNoDial(ctx, "existing connection"),
-		pid,
-		protoIDs...,
-	)
-	if err != nil {
-		return nil, nil, err
-	}
-	if s.peerInfo() != nil {
-		info = s.peerInfo().EnsurePeerInfo(stream.Conn().RemotePeer())
-	}
-	dadj := newDeadlineAdjuster(stream, s.timeout, s.hardTimeout)
-	defer func() {
-		if err != nil {
-			dadj.Close()
-		}
-	}()
-	wr := bufio.NewWriter(dadj)
-	sz := make([]byte, binary.MaxVarintLen64)
-	n := binary.PutUvarint(sz, uint64(len(req)))
-	if _, err := wr.Write(sz[:n]); err != nil {
-		return nil, info, fmt.Errorf("peer %s address %s: %w",
-			pid, stream.Conn().RemoteMultiaddr(), err)
-	}
-	if _, err := wr.Write(req); err != nil {
-		return nil, info, fmt.Errorf("peer %s address %s: %w",
-			pid, stream.Conn().RemoteMultiaddr(), err)
-	}
-	if err := wr.Flush(); err != nil {
-		return nil, info, fmt.Errorf("peer %s address %s: %w",
-			pid, stream.Conn().RemoteMultiaddr(), err)
-	}
-	return dadj, info, nil
+	_ = "STUB: not implemented"
+	return *new(io.ReadWriteCloser), nil, nil
 }
 
 // NumAcceptedRequests returns the number of accepted requests for this server.
 // It is used for testing.
-func (s *Server) NumAcceptedRequests() int {
-	if s.metrics == nil {
-		return -1
-	}
-	m := &dto.Metric{}
-	if err := s.metrics.accepted.Write(m); err != nil {
-		panic("failed to get metric: " + err.Error())
-	}
-	return int(m.Counter.GetValue())
-}
+func (s *Server) NumAcceptedRequests() int { _ = "STUB: not implemented"; return 0 }
 
-func writeResponse(w io.Writer, resp *Response) error {
-	wr := bufio.NewWriter(w)
-	if _, err := codec.EncodeTo(wr, resp); err != nil {
-		return fmt.Errorf("failed to write response (len %d err len %d): %w", len(resp.Data), len(resp.Error), err)
-	}
-	if err := wr.Flush(); err != nil {
-		return fmt.Errorf("failed to write response (len %d err len %d): %w", len(resp.Data), len(resp.Error), err)
-	}
-	return nil
-}
+func writeResponse(w io.Writer, resp *Response) error { _ = "STUB: not implemented"; return nil }
 
-func WriteErrorResponse(w io.Writer, respErr error) error {
-	return writeResponse(w, &Response{
-		Error: respErr.Error(),
-	})
-}
+func WriteErrorResponse(w io.Writer, respErr error) error { _ = "STUB: not implemented"; return nil }
 
 func ReadResponse(r io.Reader, toCall func(resLen uint32) (int, error)) (int, error) {
-	respLen, nBytes, err := codec.DecodeLen(r)
-	if err != nil {
-		return nBytes, err
-	}
-	if respLen != 0 {
-		n, err := toCall(respLen)
-		nBytes += n
-		if err != nil {
-			return nBytes, fmt.Errorf("callback error: %w", err)
-		}
-		if int(respLen) != n {
-			return nBytes, errors.New("malformed server response")
-		}
-	}
-	errStr, n, err := codec.DecodeStringWithLimit(r, 1024)
-	nBytes += n
-	switch {
-	case err != nil:
-		return nBytes, fmt.Errorf("decode error: %w", err)
-	case errStr != "":
-		return nBytes, NewServerError(errStr)
-	case respLen == 0:
-		return nBytes, errors.New("malformed server response")
-	}
-	return nBytes, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func WrapHandler(handler Handler) StreamHandler {
-	return func(ctx context.Context, peer peer.ID, req []byte, stream io.ReadWriter) error {
-		buf, hErr := handler(ctx, peer, req)
-		var resp Response
-		if hErr != nil {
-			resp.Error = hErr.Error()
-		} else {
-			resp.Data = buf
-		}
-		if err := writeResponse(stream, &resp); err != nil {
-			return err
-		}
-		return hErr
-	}
+	_ = "STUB: not implemented"
+	return *new(StreamHandler)
 }

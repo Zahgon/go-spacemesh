@@ -1,12 +1,7 @@
 package mapstructureutil
 
 import (
-	"errors"
-	"reflect"
-
 	"github.com/go-viper/mapstructure/v2"
-
-	"github.com/spacemeshos/go-spacemesh/log"
 )
 
 // Deprecated is an interface for deprecated config fields.
@@ -17,12 +12,6 @@ type Deprecated interface {
 }
 
 func DeprecatedHook() mapstructure.DecodeHookFunc {
-	return func(f, t reflect.Type, data any) (any, error) {
-		if t.Implements(reflect.TypeOf((*Deprecated)(nil)).Elem()) {
-			instance := reflect.New(t).Elem().Interface().(Deprecated)
-			log.GetLogger().Error(instance.DeprecatedMsg())
-			return nil, errors.New("use of deprecated config field")
-		}
-		return data, nil
-	}
+	_ = "STUB: not implemented"
+	return *new(mapstructure.DecodeHookFunc)
 }

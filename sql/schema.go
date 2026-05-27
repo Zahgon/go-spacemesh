@@ -1,16 +1,8 @@
 package sql
 
 import (
-	"bufio"
-	"bytes"
-	"errors"
-	"fmt"
 	"io"
-	"os"
-	"path/filepath"
-	"strings"
 
-	"github.com/google/go-cmp/cmp"
 	"go.uber.org/zap"
 )
 
@@ -20,36 +12,13 @@ const (
 )
 
 // LoadDBSchemaScript retrieves the database schema as text.
-func LoadDBSchemaScript(db Executor) (string, error) {
-	var (
-		err error
-		sb  strings.Builder
-	)
-	version, err := version(db)
-	if err != nil {
-		return "", err
-	}
-	fmt.Fprintf(&sb, "PRAGMA user_version = %d;\n", version)
-	// The following SQL query ensures that tables are listed first,
-	// ordered by name, and then all other objects, ordered by their table name
-	// and then by their own name.
-	if _, err = db.Exec(`
-		SELECT tbl_name, sql || ';'
-		FROM sqlite_master
-		WHERE sql IS NOT NULL AND tbl_name NOT LIKE 'sqlite_%'
-		ORDER BY
-			CASE WHEN type = 'table' THEN 1 ELSE 2 END,
-			tbl_name,
-			name
-	`, nil, func(st *Statement) bool {
-		fmt.Fprintln(&sb, st.ColumnText(1))
-		return true
-	}); err != nil {
-		return "", fmt.Errorf("error retrieving DB schema: %w", err)
-	}
-	// On Windows, the result contains extra carriage returns
-	return strings.ReplaceAll(sb.String(), "\r", ""), nil
-}
+func LoadDBSchemaScript(db Executor) (string, error) { _ = "STUB: not implemented"; return "", nil }
+
+// The following SQL query ensures that tables are listed first,
+// ordered by name, and then all other objects, ordered by their table name
+// and then by their own name.
+
+// On Windows, the result contains extra carriage returns
 
 // Schema represents database schema.
 type Schema struct {
@@ -61,79 +30,28 @@ type Schema struct {
 // Diff diffs the database schema against the actual schema.
 // If there's no differences, it returns an empty string.
 func (s *Schema) Diff(actualScript string) string {
+	_ = "STUB: not implemented"
 	// If the difference is only in whitespaces, consider the schemas equal.
-	return cmp.Diff(strings.Join(strings.Fields(s.Script), " "),
-		strings.Join(strings.Fields(actualScript), " "))
+	return ""
 }
 
 // WriteToFile writes the schema to the corresponding updated schema file.
-func (s *Schema) WriteToFile(basedir string) error {
-	path := filepath.Join(basedir, UpdatedSchemaPath)
-	if err := os.WriteFile(path, []byte(s.Script), 0o777); err != nil {
-		return fmt.Errorf("error writing schema file %s: %w", path, err)
-	}
-	return nil
-}
+func (s *Schema) WriteToFile(basedir string) error { _ = "STUB: not implemented"; return nil }
 
 // SkipMigrations skips the specified migrations.
-func (s *Schema) SkipMigrations(i ...int) {
-	if s.skipMigration == nil {
-		s.skipMigration = make(map[int]struct{})
-	}
-	for _, index := range i {
-		s.skipMigration[index] = struct{}{}
-	}
-}
+func (s *Schema) SkipMigrations(i ...int) { _ = "STUB: not implemented"; return }
 
 // Apply applies the schema to the database.
-func (s *Schema) Apply(db Database) error {
-	return db.WithTxImmediate(func(tx Transaction) error {
-		scanner := bufio.NewScanner(strings.NewReader(s.Script))
-		scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
-			if i := bytes.Index(data, []byte(";")); i >= 0 {
-				if !bytes.Contains(data[:i], []byte("BEGIN")) {
-					return i + 1, data[:i+1], nil
-				}
-			}
-			if i := bytes.Index(data, []byte("END;")); i >= 0 {
-				return i + 4, data[:i+4], nil
-			}
-			return 0, nil, nil
-		})
-		for scanner.Scan() {
-			if _, err := tx.Exec(scanner.Text(), nil, nil); err != nil {
-				return fmt.Errorf("exec %s: %w", scanner.Text(), err)
-			}
-		}
-		return nil
-	})
-}
+func (s *Schema) Apply(db Database) error { _ = "STUB: not implemented"; return nil }
 
 func (s *Schema) CheckDBVersion(logger *zap.Logger, db Database) (before, after int, err error) {
-	if len(s.Migrations) == 0 {
-		return 0, 0, nil
-	}
-	before, err = version(db)
-	if err != nil {
-		return 0, 0, err
-	}
-	after = s.Migrations.Version()
-	if before > after {
-		logger.Error("database version is newer than expected - downgrade is not supported",
-			zap.Int("current version", before),
-			zap.Int("target version", after),
-		)
-		return before, after, fmt.Errorf("%w: %d > %d", ErrTooNew, before, after)
-	}
-
-	return before, after, nil
+	_ = "STUB: not implemented"
+	return 0, 0, nil
 }
 
 func (s *Schema) setVersion(db Executor, version int) error {
+	_ = "STUB: not implemented"
 	// binding values in pragma statement is not allowed
-	if _, err := db.Exec(fmt.Sprintf("PRAGMA user_version = %d;", version), nil, nil); err != nil {
-		return fmt.Errorf("update user_version to %d: %w", version, err)
-	}
 	return nil
 }
 
@@ -141,42 +59,7 @@ func (s *Schema) setVersion(db Executor, version int) error {
 // version is checked but no migrations are run, and if the database is too old and
 // migrations are disabled, an error is returned.
 func (s *Schema) Migrate(logger *zap.Logger, db Database, before, vacuumState int) error {
-	if logger.Core().Enabled(zap.DebugLevel) {
-		db.Intercept("logQueries", logQueryInterceptor(logger))
-		defer db.RemoveInterceptor("logQueries")
-	}
-	for i, m := range s.Migrations {
-		if m.Order() <= before {
-			continue
-		}
-		if err := db.WithTxImmediate(func(tx Transaction) error {
-			if _, ok := s.skipMigration[m.Order()]; !ok {
-				if err := m.Apply(tx, logger); err != nil {
-					for j := i; j >= 0 && s.Migrations[j].Order() > before; j-- {
-						if e := s.Migrations[j].Rollback(); e != nil {
-							err = errors.Join(err, fmt.Errorf("rollback %s: %w", m.Name(), e))
-							break
-						}
-					}
-
-					return fmt.Errorf("apply %s: %w", m.Name(), err)
-				}
-			}
-			if err := s.setVersion(tx, m.Order()); err != nil {
-				return err
-			}
-			return nil
-		}); err != nil {
-			return err
-		}
-
-		if vacuumState != 0 && before <= vacuumState {
-			if err := Vacuum(db); err != nil {
-				return err
-			}
-		}
-		before = m.Order()
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -187,56 +70,21 @@ func (s *Schema) Migrate(logger *zap.Logger, db Database, before, vacuumState in
 // synced after the migrations are completed before setting the database version,
 // which triggers file sync.
 func (s *Schema) MigrateTempDB(logger *zap.Logger, db Database, before int) error {
-	if logger.Core().Enabled(zap.DebugLevel) {
-		db.Intercept("logQueries", logQueryInterceptor(logger))
-		defer db.RemoveInterceptor("logQueries")
-	}
-	v := before
-	for _, m := range s.Migrations {
-		if m.Order() <= v {
-			continue
-		}
-
-		if _, ok := s.skipMigration[m.Order()]; !ok {
-			if err := db.WithTxImmediate(func(tx Transaction) error {
-				return m.Apply(tx, logger)
-			}); err != nil {
-				return fmt.Errorf("apply %s: %w", m.Name(), err)
-			}
-		}
-
-		// We don't set the version here as if any migration fails,
-		// the temporary database is considered invalid and should be discarded.
-		v = m.Order()
-	}
-
-	logger.Info("syncing temporary database")
-
-	// Enable WAL journal and synchronous mode to ensure the database is synced
-	if _, err := db.Exec("PRAGMA journal_mode=WAL", nil, nil); err != nil {
-		return fmt.Errorf("setting WAL journal mode: %w", err)
-	}
-
-	if _, err := db.Exec("PRAGMA synchronous=FULL", nil, nil); err != nil {
-		return fmt.Errorf("setting synchronous mode: %w", err)
-	}
-
-	// This should trigger file sync
-	if err := s.setVersion(db, v); err != nil {
-		return fmt.Errorf("setting DB schema version: %w", err)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// We don't set the version here as if any migration fails,
+// the temporary database is considered invalid and should be discarded.
+
+// Enable WAL journal and synchronous mode to ensure the database is synced
+
+// This should trigger file sync
 
 // SchemaGenOpt represents a schema generator option.
 type SchemaGenOpt func(g *SchemaGen)
 
-func withDefaultOut(w io.Writer) SchemaGenOpt {
-	return func(g *SchemaGen) {
-		g.defaultOut = w
-	}
-}
+func withDefaultOut(w io.Writer) SchemaGenOpt { _ = "STUB: not implemented"; return *new(SchemaGenOpt) }
 
 // SchemaGen generates database schema files.
 type SchemaGen struct {
@@ -247,51 +95,15 @@ type SchemaGen struct {
 
 // NewSchemaGen creates a new SchemaGen instance.
 func NewSchemaGen(logger *zap.Logger, schema *Schema, opts ...SchemaGenOpt) *SchemaGen {
-	g := &SchemaGen{logger: logger, schema: schema, defaultOut: os.Stdout}
-	for _, opt := range opts {
-		opt(g)
-	}
-	return g
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Generate generates database schema and writes it to the specified file.
 // If an empty string is specified as outputFile, os.Stdout is used for output.
-func (g *SchemaGen) Generate(outputFile string) error {
-	db, err := OpenInMemory(
-		WithLogger(g.logger),
-		WithDatabaseSchema(g.schema),
-		WithForceMigrations(true),
-		WithNoCheckSchemaDrift(),
-	)
-	if err != nil {
-		return fmt.Errorf("error opening in-memory db: %w", err)
-	}
-	defer func() {
-		if err := db.Close(); err != nil {
-			g.logger.Error("error closing in-memory db: %w", zap.Error(err))
-		}
-	}()
-	loadedScript, err := LoadDBSchemaScript(db)
-	if err != nil {
-		return fmt.Errorf("error loading DB schema script: %w", err)
-	}
-	if outputFile == "" {
-		if _, err := io.WriteString(g.defaultOut, loadedScript); err != nil {
-			return fmt.Errorf("error writing schema file: %w", err)
-		}
-	} else if err := os.WriteFile(outputFile, []byte(loadedScript), 0o777); err != nil {
-		return fmt.Errorf("error writing schema file %q: %w", outputFile, err)
-	}
-	return nil
-}
+func (g *SchemaGen) Generate(outputFile string) error { _ = "STUB: not implemented"; return nil }
 
 func logQueryInterceptor(logger *zap.Logger) Interceptor {
-	return func(query string) error {
-		query = strings.TrimSpace(query)
-		if p := strings.Index(query, "\n"); p >= 0 {
-			query = query[:p]
-		}
-		logger.Debug("executing query", zap.String("query", query))
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Interceptor)
 }

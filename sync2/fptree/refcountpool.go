@@ -1,7 +1,6 @@
 package fptree
 
 import (
-	"strconv"
 	"sync/atomic"
 )
 
@@ -37,84 +36,25 @@ func (rc *rcPool[T, I]) init(n int) {
 }
 
 // count returns the number of items in the rcPool.
-func (rc *rcPool[T, I]) count() int {
-	return int(rc.allocCount.Load())
-}
+func (rc *rcPool[T, I]) count() int { _ = "STUB: not implemented"; return 0 }
 
 // item returns the item at the given index.
-func (rc *rcPool[T, I]) item(idx I) T {
-	return rc.entry(idx).content
-}
+func (rc *rcPool[T, I]) item(idx I) T { _ = "STUB: not implemented"; return *new(T) }
 
 // entry returns the pool entry at the given index.
-func (rc *rcPool[T, I]) entry(idx I) *poolEntry[T, I] {
-	entry := &rc.entries[idx]
-	if entry.refCount&freeBit != 0 {
-		panic("BUG: referencing a free nodePool entry " + strconv.Itoa(int(idx)))
-	}
-	return entry
-}
+func (rc *rcPool[T, I]) entry(idx I) *poolEntry[T, I] { _ = "STUB: not implemented"; return nil }
 
 // replace replaces the item at the given index.
-func (rc *rcPool[T, I]) replace(idx I, item T) {
-	entry := &rc.entries[idx]
-	if entry.refCount&freeBit != 0 {
-		panic("BUG: replace of a free rcPool[T, I] entry")
-	}
-	if entry.refCount != 1 {
-		panic("BUG: bad rcPool[T, I] entry refcount for replace")
-	}
-	entry.content = item
-}
+func (rc *rcPool[T, I]) replace(idx I, item T) { _ = "STUB: not implemented"; return }
 
 // add adds an item to the rcPool and returns its index.
-func (rc *rcPool[T, I]) add(item T) I {
-	var idx I
-	if rc.freeList != 0 {
-		idx = I(rc.freeList - 1)
-		rc.freeList = rc.entries[idx].refCount & freeListMask
-		if rc.freeList > uint32(len(rc.entries)) {
-			panic("BUG: bad freeList linkage")
-		}
-		rc.entries[idx].refCount = 1
-	} else {
-		idx = I(len(rc.entries))
-		rc.entries = append(rc.entries, poolEntry[T, I]{refCount: 1})
-	}
-	rc.entries[idx].content = item
-	rc.allocCount.Add(1)
-	return idx
-}
+func (rc *rcPool[T, I]) add(item T) I { _ = "STUB: not implemented"; return *new(I) }
 
 // release releases the item at the given index.
-func (rc *rcPool[T, I]) release(idx I) bool {
-	entry := &rc.entries[idx]
-	if entry.refCount&freeBit != 0 {
-		panic("BUG: release of a free rcPool[T, I] entry")
-	}
-	if entry.refCount <= 0 {
-		panic("BUG: bad rcPool[T, I] entry refcount")
-	}
-	entry.refCount--
-	if entry.refCount == 0 {
-		if rc.freeList > uint32(len(rc.entries)) {
-			panic("BUG: bad freeList")
-		}
-		entry.refCount = rc.freeList | freeBit
-		rc.freeList = uint32(idx + 1)
-		rc.allocCount.Add(-1)
-		return true
-	}
-
-	return false
-}
+func (rc *rcPool[T, I]) release(idx I) bool { _ = "STUB: not implemented"; return false }
 
 // ref adds a reference to the item at the given index.
-func (rc *rcPool[T, I]) ref(idx I) {
-	rc.entries[idx].refCount++
-}
+func (rc *rcPool[T, I]) ref(idx I) { _ = "STUB: not implemented"; return }
 
 // refCount returns the reference count for the item at the given index.
-func (rc *rcPool[T, I]) refCount(idx I) uint32 {
-	return rc.entries[idx].refCount
-}
+func (rc *rcPool[T, I]) refCount(idx I) uint32 { _ = "STUB: not implemented"; return 0 }

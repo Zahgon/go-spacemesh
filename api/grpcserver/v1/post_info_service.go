@@ -21,36 +21,20 @@ type PostInfoService struct {
 }
 
 // RegisterService registers this service with a grpc server instance.
-func (s *PostInfoService) RegisterService(server *grpc.Server) {
-	pb.RegisterPostInfoServiceServer(server, s)
-}
+func (s *PostInfoService) RegisterService(server *grpc.Server) { _ = "STUB: not implemented"; return }
 
 func (s *PostInfoService) RegisterHandlerService(mux *runtime.ServeMux) error {
-	return pb.RegisterPostInfoServiceHandlerServer(context.Background(), mux, s)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // String returns the name of this service.
-func (s *PostInfoService) String() string {
-	return "PostInfoService"
-}
+func (s *PostInfoService) String() string { _ = "STUB: not implemented"; return "" }
 
 // NewPostInfoService creates a new instance of the post info grpc service.
-func NewPostInfoService(states postState) *PostInfoService {
-	return &PostInfoService{
-		states: states,
-	}
-}
+func NewPostInfoService(states postState) *PostInfoService { _ = "STUB: not implemented"; return nil }
 
 func (s *PostInfoService) PostStates(context.Context, *pb.PostStatesRequest) (*pb.PostStatesResponse, error) {
-	states := s.states.PostStates()
-	pbStates := make([]*pb.PostState, 0, len(states))
-	for id, state := range states {
-		pbStates = append(pbStates, &pb.PostState{
-			Id:    id.NodeID().Bytes(),
-			Name:  id.Name(),
-			State: statusMap[state],
-		})
-	}
-
-	return &pb.PostStatesResponse{States: pbStates}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

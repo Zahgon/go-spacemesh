@@ -10,7 +10,6 @@
 package mocks
 
 import (
-	reflect "reflect"
 	time "time"
 
 	rangesync "github.com/spacemeshos/go-spacemesh/sync2/rangesync"
@@ -31,29 +30,24 @@ type MockOrderedSetMockRecorder struct {
 
 // NewMockOrderedSet creates a new mock instance.
 func NewMockOrderedSet(ctrl *gomock.Controller) *MockOrderedSet {
-	mock := &MockOrderedSet{ctrl: ctrl}
-	mock.recorder = &MockOrderedSetMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockOrderedSet) EXPECT() *MockOrderedSetMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Add mocks base method.
+	return nil
 }
 
-// Add mocks base method.
-func (m *MockOrderedSet) Add(k rangesync.KeyBytes) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Add", k)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockOrderedSet) Add(k rangesync.KeyBytes) error { _ = "STUB: not implemented"; return nil }
 
 // Add indicates an expected call of Add.
 func (mr *MockOrderedSetMockRecorder) Add(k any) *MockOrderedSetAddCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Add", reflect.TypeOf((*MockOrderedSet)(nil).Add), k)
-	return &MockOrderedSetAddCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetAddCall wrap *gomock.Call
@@ -63,35 +57,29 @@ type MockOrderedSetAddCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetAddCall) Return(arg0 error) *MockOrderedSetAddCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetAddCall) Do(f func(rangesync.KeyBytes) error) *MockOrderedSetAddCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetAddCall) DoAndReturn(f func(rangesync.KeyBytes) error) *MockOrderedSetAddCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Advance mocks base method.
-func (m *MockOrderedSet) Advance() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Advance")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockOrderedSet) Advance() error { _ = "STUB: not implemented"; return nil }
 
 // Advance indicates an expected call of Advance.
 func (mr *MockOrderedSetMockRecorder) Advance() *MockOrderedSetAdvanceCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Advance", reflect.TypeOf((*MockOrderedSet)(nil).Advance))
-	return &MockOrderedSetAdvanceCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetAdvanceCall wrap *gomock.Call
@@ -101,35 +89,29 @@ type MockOrderedSetAdvanceCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetAdvanceCall) Return(arg0 error) *MockOrderedSetAdvanceCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetAdvanceCall) Do(f func() error) *MockOrderedSetAdvanceCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetAdvanceCall) DoAndReturn(f func() error) *MockOrderedSetAdvanceCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EnsureLoaded mocks base method.
-func (m *MockOrderedSet) EnsureLoaded() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EnsureLoaded")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockOrderedSet) EnsureLoaded() error { _ = "STUB: not implemented"; return nil }
 
 // EnsureLoaded indicates an expected call of EnsureLoaded.
 func (mr *MockOrderedSetMockRecorder) EnsureLoaded() *MockOrderedSetEnsureLoadedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnsureLoaded", reflect.TypeOf((*MockOrderedSet)(nil).EnsureLoaded))
-	return &MockOrderedSetEnsureLoadedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetEnsureLoadedCall wrap *gomock.Call
@@ -139,36 +121,32 @@ type MockOrderedSetEnsureLoadedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetEnsureLoadedCall) Return(arg0 error) *MockOrderedSetEnsureLoadedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetEnsureLoadedCall) Do(f func() error) *MockOrderedSetEnsureLoadedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetEnsureLoadedCall) DoAndReturn(f func() error) *MockOrderedSetEnsureLoadedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Has mocks base method.
 func (m *MockOrderedSet) Has(arg0 rangesync.KeyBytes) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Has", arg0)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // Has indicates an expected call of Has.
 func (mr *MockOrderedSetMockRecorder) Has(arg0 any) *MockOrderedSetHasCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Has", reflect.TypeOf((*MockOrderedSet)(nil).Has), arg0)
-	return &MockOrderedSetHasCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetHasCall wrap *gomock.Call
@@ -178,35 +156,29 @@ type MockOrderedSetHasCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetHasCall) Return(arg0 bool, arg1 error) *MockOrderedSetHasCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetHasCall) Do(f func(rangesync.KeyBytes) (bool, error)) *MockOrderedSetHasCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetHasCall) DoAndReturn(f func(rangesync.KeyBytes) (bool, error)) *MockOrderedSetHasCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Loaded mocks base method.
-func (m *MockOrderedSet) Loaded() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Loaded")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockOrderedSet) Loaded() bool { _ = "STUB: not implemented"; return false }
 
 // Loaded indicates an expected call of Loaded.
 func (mr *MockOrderedSetMockRecorder) Loaded() *MockOrderedSetLoadedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Loaded", reflect.TypeOf((*MockOrderedSet)(nil).Loaded))
-	return &MockOrderedSetLoadedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetLoadedCall wrap *gomock.Call
@@ -216,36 +188,32 @@ type MockOrderedSetLoadedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetLoadedCall) Return(arg0 bool) *MockOrderedSetLoadedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetLoadedCall) Do(f func() bool) *MockOrderedSetLoadedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetLoadedCall) DoAndReturn(f func() bool) *MockOrderedSetLoadedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RangeInfo mocks base method.
 func (m *MockOrderedSet) RangeInfo(x, y rangesync.KeyBytes) (rangesync.RangeInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RangeInfo", x, y)
-	ret0, _ := ret[0].(rangesync.RangeInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(rangesync.RangeInfo), nil
 }
 
 // RangeInfo indicates an expected call of RangeInfo.
 func (mr *MockOrderedSetMockRecorder) RangeInfo(x, y any) *MockOrderedSetRangeInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RangeInfo", reflect.TypeOf((*MockOrderedSet)(nil).RangeInfo), x, y)
-	return &MockOrderedSetRangeInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetRangeInfoCall wrap *gomock.Call
@@ -255,35 +223,29 @@ type MockOrderedSetRangeInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetRangeInfoCall) Return(arg0 rangesync.RangeInfo, arg1 error) *MockOrderedSetRangeInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetRangeInfoCall) Do(f func(rangesync.KeyBytes, rangesync.KeyBytes) (rangesync.RangeInfo, error)) *MockOrderedSetRangeInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetRangeInfoCall) DoAndReturn(f func(rangesync.KeyBytes, rangesync.KeyBytes) (rangesync.RangeInfo, error)) *MockOrderedSetRangeInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Receive mocks base method.
-func (m *MockOrderedSet) Receive(k rangesync.KeyBytes) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Receive", k)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockOrderedSet) Receive(k rangesync.KeyBytes) error { _ = "STUB: not implemented"; return nil }
 
 // Receive indicates an expected call of Receive.
 func (mr *MockOrderedSetMockRecorder) Receive(k any) *MockOrderedSetReceiveCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockOrderedSet)(nil).Receive), k)
-	return &MockOrderedSetReceiveCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetReceiveCall wrap *gomock.Call
@@ -293,35 +255,32 @@ type MockOrderedSetReceiveCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetReceiveCall) Return(arg0 error) *MockOrderedSetReceiveCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetReceiveCall) Do(f func(rangesync.KeyBytes) error) *MockOrderedSetReceiveCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetReceiveCall) DoAndReturn(f func(rangesync.KeyBytes) error) *MockOrderedSetReceiveCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Received mocks base method.
 func (m *MockOrderedSet) Received() rangesync.SeqResult {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Received")
-	ret0, _ := ret[0].(rangesync.SeqResult)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(rangesync.SeqResult)
 }
 
 // Received indicates an expected call of Received.
 func (mr *MockOrderedSetMockRecorder) Received() *MockOrderedSetReceivedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Received", reflect.TypeOf((*MockOrderedSet)(nil).Received))
-	return &MockOrderedSetReceivedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetReceivedCall wrap *gomock.Call
@@ -331,36 +290,32 @@ type MockOrderedSetReceivedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetReceivedCall) Return(arg0 rangesync.SeqResult) *MockOrderedSetReceivedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetReceivedCall) Do(f func() rangesync.SeqResult) *MockOrderedSetReceivedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetReceivedCall) DoAndReturn(f func() rangesync.SeqResult) *MockOrderedSetReceivedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Recent mocks base method.
 func (m *MockOrderedSet) Recent(since time.Time) (rangesync.SeqResult, int) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Recent", since)
-	ret0, _ := ret[0].(rangesync.SeqResult)
-	ret1, _ := ret[1].(int)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(rangesync.SeqResult), 0
 }
 
 // Recent indicates an expected call of Recent.
 func (mr *MockOrderedSetMockRecorder) Recent(since any) *MockOrderedSetRecentCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Recent", reflect.TypeOf((*MockOrderedSet)(nil).Recent), since)
-	return &MockOrderedSetRecentCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetRecentCall wrap *gomock.Call
@@ -370,36 +325,32 @@ type MockOrderedSetRecentCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetRecentCall) Return(arg0 rangesync.SeqResult, arg1 int) *MockOrderedSetRecentCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetRecentCall) Do(f func(time.Time) (rangesync.SeqResult, int)) *MockOrderedSetRecentCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetRecentCall) DoAndReturn(f func(time.Time) (rangesync.SeqResult, int)) *MockOrderedSetRecentCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetInfo mocks base method.
 func (m *MockOrderedSet) SetInfo() (rangesync.RangeInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetInfo")
-	ret0, _ := ret[0].(rangesync.RangeInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(rangesync.RangeInfo), nil
 }
 
 // SetInfo indicates an expected call of SetInfo.
 func (mr *MockOrderedSetMockRecorder) SetInfo() *MockOrderedSetSetInfoCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetInfo", reflect.TypeOf((*MockOrderedSet)(nil).SetInfo))
-	return &MockOrderedSetSetInfoCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetSetInfoCall wrap *gomock.Call
@@ -409,36 +360,32 @@ type MockOrderedSetSetInfoCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetSetInfoCall) Return(arg0 rangesync.RangeInfo, arg1 error) *MockOrderedSetSetInfoCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetSetInfoCall) Do(f func() (rangesync.RangeInfo, error)) *MockOrderedSetSetInfoCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetSetInfoCall) DoAndReturn(f func() (rangesync.RangeInfo, error)) *MockOrderedSetSetInfoCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SplitRange mocks base method.
 func (m *MockOrderedSet) SplitRange(x, y rangesync.KeyBytes, count int) (rangesync.SplitInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SplitRange", x, y, count)
-	ret0, _ := ret[0].(rangesync.SplitInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(rangesync.SplitInfo), nil
 }
 
 // SplitRange indicates an expected call of SplitRange.
 func (mr *MockOrderedSetMockRecorder) SplitRange(x, y, count any) *MockOrderedSetSplitRangeCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SplitRange", reflect.TypeOf((*MockOrderedSet)(nil).SplitRange), x, y, count)
-	return &MockOrderedSetSplitRangeCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetSplitRangeCall wrap *gomock.Call
@@ -448,35 +395,32 @@ type MockOrderedSetSplitRangeCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetSplitRangeCall) Return(arg0 rangesync.SplitInfo, arg1 error) *MockOrderedSetSplitRangeCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetSplitRangeCall) Do(f func(rangesync.KeyBytes, rangesync.KeyBytes, int) (rangesync.SplitInfo, error)) *MockOrderedSetSplitRangeCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetSplitRangeCall) DoAndReturn(f func(rangesync.KeyBytes, rangesync.KeyBytes, int) (rangesync.SplitInfo, error)) *MockOrderedSetSplitRangeCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithCopy mocks base method.
 func (m *MockOrderedSet) WithCopy(toCall func(rangesync.OrderedSet) error) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "WithCopy", toCall)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithCopy indicates an expected call of WithCopy.
 func (mr *MockOrderedSetMockRecorder) WithCopy(toCall any) *MockOrderedSetWithCopyCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithCopy", reflect.TypeOf((*MockOrderedSet)(nil).WithCopy), toCall)
-	return &MockOrderedSetWithCopyCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockOrderedSetWithCopyCall wrap *gomock.Call
@@ -486,18 +430,18 @@ type MockOrderedSetWithCopyCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockOrderedSetWithCopyCall) Return(arg0 error) *MockOrderedSetWithCopyCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockOrderedSetWithCopyCall) Do(f func(func(rangesync.OrderedSet) error) error) *MockOrderedSetWithCopyCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockOrderedSetWithCopyCall) DoAndReturn(f func(func(rangesync.OrderedSet) error) error) *MockOrderedSetWithCopyCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

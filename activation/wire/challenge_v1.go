@@ -3,9 +3,7 @@ package wire
 import (
 	"go.uber.org/zap/zapcore"
 
-	"github.com/spacemeshos/go-spacemesh/codec"
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/hash"
 )
 
 //go:generate scalegen
@@ -29,21 +27,11 @@ type NIPostChallengeV1 struct {
 // The serialized challenge is first prepended with a byte 0x00, and then hashed
 // for second preimage resistance of poet membership merkle tree.
 func (c *NIPostChallengeV1) Hash() types.Hash32 {
-	ncBytes := codec.MustEncode(c)
-	return hash.Sum([]byte{0x00}, ncBytes)
+	_ = "STUB: not implemented"
+	return *new(types.Hash32)
 }
 
 func (c *NIPostChallengeV1) MarshalLogObject(encoder zapcore.ObjectEncoder) error {
-	if c == nil {
-		return nil
-	}
-	encoder.AddUint32("PublishEpoch", c.PublishEpoch.Uint32())
-	encoder.AddUint64("Sequence", c.Sequence)
-	encoder.AddString("PrevATXID", c.PrevATXID.String())
-	encoder.AddString("PositioningATX", c.PositioningATXID.String())
-	if c.CommitmentATXID != nil {
-		encoder.AddString("CommitmentATX", c.CommitmentATXID.String())
-	}
-	encoder.AddObject("InitialPost", c.InitialPost)
+	_ = "STUB: not implemented"
 	return nil
 }

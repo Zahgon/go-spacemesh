@@ -10,8 +10,6 @@
 package v2alpha1
 
 import (
-	reflect "reflect"
-
 	types "github.com/spacemeshos/go-spacemesh/common/types"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,30 +27,27 @@ type MockaccountConStateMockRecorder struct {
 
 // NewMockaccountConState creates a new mock instance.
 func NewMockaccountConState(ctrl *gomock.Controller) *MockaccountConState {
-	mock := &MockaccountConState{ctrl: ctrl}
-	mock.recorder = &MockaccountConStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockaccountConState) EXPECT() *MockaccountConStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetProjection mocks base method.
+	return nil
 }
 
-// GetProjection mocks base method.
 func (m *MockaccountConState) GetProjection(arg0 types.Address) (uint64, uint64) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetProjection", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(uint64)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, 0
 }
 
 // GetProjection indicates an expected call of GetProjection.
 func (mr *MockaccountConStateMockRecorder) GetProjection(arg0 any) *MockaccountConStateGetProjectionCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProjection", reflect.TypeOf((*MockaccountConState)(nil).GetProjection), arg0)
-	return &MockaccountConStateGetProjectionCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockaccountConStateGetProjectionCall wrap *gomock.Call
@@ -62,18 +57,18 @@ type MockaccountConStateGetProjectionCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockaccountConStateGetProjectionCall) Return(arg0, arg1 uint64) *MockaccountConStateGetProjectionCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockaccountConStateGetProjectionCall) Do(f func(types.Address) (uint64, uint64)) *MockaccountConStateGetProjectionCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockaccountConStateGetProjectionCall) DoAndReturn(f func(types.Address) (uint64, uint64)) *MockaccountConStateGetProjectionCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

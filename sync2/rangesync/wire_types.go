@@ -14,17 +14,24 @@ type EmptyRangeMessage struct {
 
 var _ SyncMessage = &EmptyRangeMessage{}
 
-func (m *EmptyRangeMessage) Type() MessageType           { return MessageTypeEmptyRange }
-func (m *EmptyRangeMessage) X() KeyBytes                 { return m.RangeX.ToOrdered() }
-func (m *EmptyRangeMessage) Y() KeyBytes                 { return m.RangeY.ToOrdered() }
-func (m *EmptyRangeMessage) Fingerprint() Fingerprint    { return EmptyFingerprint() }
-func (m *EmptyRangeMessage) Count() int                  { return 0 }
-func (m *EmptyRangeMessage) Keys() []KeyBytes            { return nil }
-func (m *EmptyRangeMessage) Since() time.Time            { return time.Time{} }
-func (m *EmptyRangeMessage) Sample() []MinhashSampleItem { return nil }
+func (m *EmptyRangeMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }
+func (m *EmptyRangeMessage) X() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *EmptyRangeMessage) Y() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *EmptyRangeMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
+}
+func (m *EmptyRangeMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *EmptyRangeMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
+func (m *EmptyRangeMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *EmptyRangeMessage) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
 
-// FingerprintMessage contains range fingerprint for comparison against the
-// peer's fingerprint of the range with the same bounds [RangeX, RangeY).
+	// FingerprintMessage contains range fingerprint for comparison against the
+	// peer's fingerprint of the range with the same bounds [RangeX, RangeY).
+	return nil
+}
+
 type FingerprintMessage struct {
 	RangeX, RangeY   CompactHash
 	RangeFingerprint Fingerprint
@@ -33,18 +40,28 @@ type FingerprintMessage struct {
 
 var _ SyncMessage = &FingerprintMessage{}
 
-func (m *FingerprintMessage) Type() MessageType           { return MessageTypeFingerprint }
-func (m *FingerprintMessage) X() KeyBytes                 { return m.RangeX.ToOrdered() }
-func (m *FingerprintMessage) Y() KeyBytes                 { return m.RangeY.ToOrdered() }
-func (m *FingerprintMessage) Fingerprint() Fingerprint    { return m.RangeFingerprint }
-func (m *FingerprintMessage) Count() int                  { return int(m.NumItems) }
-func (m *FingerprintMessage) Keys() []KeyBytes            { return nil }
-func (m *FingerprintMessage) Since() time.Time            { return time.Time{} }
-func (m *FingerprintMessage) Sample() []MinhashSampleItem { return nil }
+func (m *FingerprintMessage) Type() MessageType {
+	_ = "STUB: not implemented"
+	return *new(MessageType)
+}
+func (m *FingerprintMessage) X() KeyBytes { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *FingerprintMessage) Y() KeyBytes { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *FingerprintMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
+}
+func (m *FingerprintMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *FingerprintMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
+func (m *FingerprintMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *FingerprintMessage) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
 
-// RangeContentsMessage denotes a range for which the set of items has been sent.
-// The peer needs to send back any items it has in the same range bounded
-// by [RangeX, RangeY).
+	// RangeContentsMessage denotes a range for which the set of items has been sent.
+	// The peer needs to send back any items it has in the same range bounded
+	// by [RangeX, RangeY).
+	return nil
+}
+
 type RangeContentsMessage struct {
 	RangeX, RangeY CompactHash
 	NumItems       uint32
@@ -52,35 +69,51 @@ type RangeContentsMessage struct {
 
 var _ SyncMessage = &RangeContentsMessage{}
 
-func (m *RangeContentsMessage) Type() MessageType           { return MessageTypeRangeContents }
-func (m *RangeContentsMessage) X() KeyBytes                 { return m.RangeX.ToOrdered() }
-func (m *RangeContentsMessage) Y() KeyBytes                 { return m.RangeY.ToOrdered() }
-func (m *RangeContentsMessage) Fingerprint() Fingerprint    { return EmptyFingerprint() }
-func (m *RangeContentsMessage) Count() int                  { return int(m.NumItems) }
-func (m *RangeContentsMessage) Keys() []KeyBytes            { return nil }
-func (m *RangeContentsMessage) Since() time.Time            { return time.Time{} }
-func (m *RangeContentsMessage) Sample() []MinhashSampleItem { return nil }
+func (m *RangeContentsMessage) Type() MessageType {
+	_ = "STUB: not implemented"
+	return *new(MessageType)
+}
+func (m *RangeContentsMessage) X() KeyBytes { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *RangeContentsMessage) Y() KeyBytes { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *RangeContentsMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
+}
+func (m *RangeContentsMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *RangeContentsMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
+func (m *RangeContentsMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *RangeContentsMessage) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
 
-// ItemBatchMessage denotes a batch of items to be added to the peer's set.
+	// ItemBatchMessage denotes a batch of items to be added to the peer's set.
+	return nil
+}
+
 type ItemBatchMessage struct {
 	ContentKeys KeyCollection `scale:"max=1024"`
 }
 
 var _ SyncMessage = &ItemBatchMessage{}
 
-func (m *ItemBatchMessage) Type() MessageType        { return MessageTypeItemBatch }
-func (m *ItemBatchMessage) X() KeyBytes              { return nil }
-func (m *ItemBatchMessage) Y() KeyBytes              { return nil }
-func (m *ItemBatchMessage) Fingerprint() Fingerprint { return EmptyFingerprint() }
-func (m *ItemBatchMessage) Count() int               { return 0 }
-func (m *ItemBatchMessage) Keys() []KeyBytes {
-	return m.ContentKeys.Keys
+func (m *ItemBatchMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }
+func (m *ItemBatchMessage) X() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *ItemBatchMessage) Y() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *ItemBatchMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
 }
-func (m *ItemBatchMessage) Since() time.Time            { return time.Time{} }
-func (m *ItemBatchMessage) Sample() []MinhashSampleItem { return nil }
+func (m *ItemBatchMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *ItemBatchMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
 
-// ProbeMessage requests bounded range fingerprint and count from the peer,
-// along with a minhash sample if fingerprints differ.
+func (m *ItemBatchMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *ItemBatchMessage) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
+
+	// ProbeMessage requests bounded range fingerprint and count from the peer,
+	// along with a minhash sample if fingerprints differ.
+	return nil
+}
+
 type ProbeMessage struct {
 	RangeX, RangeY   CompactHash
 	RangeFingerprint Fingerprint
@@ -89,16 +122,23 @@ type ProbeMessage struct {
 
 var _ SyncMessage = &ProbeMessage{}
 
-func (m *ProbeMessage) Type() MessageType           { return MessageTypeProbe }
-func (m *ProbeMessage) X() KeyBytes                 { return m.RangeX.ToOrdered() }
-func (m *ProbeMessage) Y() KeyBytes                 { return m.RangeY.ToOrdered() }
-func (m *ProbeMessage) Fingerprint() Fingerprint    { return m.RangeFingerprint }
-func (m *ProbeMessage) Count() int                  { return int(m.SampleSize) }
-func (m *ProbeMessage) Keys() []KeyBytes            { return nil }
-func (m *ProbeMessage) Since() time.Time            { return time.Time{} }
-func (m *ProbeMessage) Sample() []MinhashSampleItem { return nil }
+func (m *ProbeMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }
+func (m *ProbeMessage) X() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *ProbeMessage) Y() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *ProbeMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
+}
+func (m *ProbeMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *ProbeMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
+func (m *ProbeMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *ProbeMessage) Sample() []MinhashSampleItem {
+	_ = "STUB: not implemented"
 
-// SampleMessage is a sample of set items.
+	// SampleMessage is a sample of set items.
+	return nil
+}
+
 type SampleMessage struct {
 	RangeX, RangeY   CompactHash
 	RangeFingerprint Fingerprint
@@ -109,14 +149,17 @@ type SampleMessage struct {
 
 var _ SyncMessage = &SampleMessage{}
 
-func (m *SampleMessage) Type() MessageType           { return MessageTypeSample }
-func (m *SampleMessage) X() KeyBytes                 { return m.RangeX.ToOrdered() }
-func (m *SampleMessage) Y() KeyBytes                 { return m.RangeY.ToOrdered() }
-func (m *SampleMessage) Fingerprint() Fingerprint    { return m.RangeFingerprint }
-func (m *SampleMessage) Count() int                  { return int(m.NumItems) }
-func (m *SampleMessage) Keys() []KeyBytes            { return nil }
-func (m *SampleMessage) Since() time.Time            { return time.Time{} }
-func (m *SampleMessage) Sample() []MinhashSampleItem { return m.SampleItems }
+func (m *SampleMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }
+func (m *SampleMessage) X() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *SampleMessage) Y() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *SampleMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
+}
+func (m *SampleMessage) Count() int                  { _ = "STUB: not implemented"; return 0 }
+func (m *SampleMessage) Keys() []KeyBytes            { _ = "STUB: not implemented"; return nil }
+func (m *SampleMessage) Since() time.Time            { _ = "STUB: not implemented"; return *new(time.Time) }
+func (m *SampleMessage) Sample() []MinhashSampleItem { _ = "STUB: not implemented"; return nil }
 
 // RecentMessage is a SyncMessage that denotes a set of items that have been
 // added to the peer's set since the specific point in time.
@@ -126,16 +169,15 @@ type RecentMessage struct {
 
 var _ SyncMessage = &RecentMessage{}
 
-func (m *RecentMessage) Type() MessageType        { return MessageTypeRecent }
-func (m *RecentMessage) X() KeyBytes              { return nil }
-func (m *RecentMessage) Y() KeyBytes              { return nil }
-func (m *RecentMessage) Fingerprint() Fingerprint { return EmptyFingerprint() }
-func (m *RecentMessage) Count() int               { return 0 }
-func (m *RecentMessage) Keys() []KeyBytes         { return nil }
-func (m *RecentMessage) Since() time.Time {
-	if m.SinceTime == 0 {
-		return time.Time{}
-	}
-	return time.Unix(0, int64(m.SinceTime))
+func (m *RecentMessage) Type() MessageType { _ = "STUB: not implemented"; return *new(MessageType) }
+func (m *RecentMessage) X() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *RecentMessage) Y() KeyBytes       { _ = "STUB: not implemented"; return *new(KeyBytes) }
+func (m *RecentMessage) Fingerprint() Fingerprint {
+	_ = "STUB: not implemented"
+	return *new(Fingerprint)
 }
-func (m *RecentMessage) Sample() []MinhashSampleItem { return nil }
+func (m *RecentMessage) Count() int       { _ = "STUB: not implemented"; return 0 }
+func (m *RecentMessage) Keys() []KeyBytes { _ = "STUB: not implemented"; return nil }
+func (m *RecentMessage) Since() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
+
+func (m *RecentMessage) Sample() []MinhashSampleItem { _ = "STUB: not implemented"; return nil }

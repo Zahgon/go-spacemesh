@@ -11,7 +11,6 @@ package mocks
 
 import (
 	context "context"
-	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,29 +29,27 @@ type MockSyncStateProviderMockRecorder struct {
 
 // NewMockSyncStateProvider creates a new mock instance.
 func NewMockSyncStateProvider(ctrl *gomock.Controller) *MockSyncStateProvider {
-	mock := &MockSyncStateProvider{ctrl: ctrl}
-	mock.recorder = &MockSyncStateProviderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockSyncStateProvider) EXPECT() *MockSyncStateProviderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// IsSynced mocks base method.
+	return nil
 }
 
-// IsSynced mocks base method.
 func (m *MockSyncStateProvider) IsSynced(arg0 context.Context) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsSynced", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // IsSynced indicates an expected call of IsSynced.
 func (mr *MockSyncStateProviderMockRecorder) IsSynced(arg0 any) *MockSyncStateProviderIsSyncedCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsSynced", reflect.TypeOf((*MockSyncStateProvider)(nil).IsSynced), arg0)
-	return &MockSyncStateProviderIsSyncedCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockSyncStateProviderIsSyncedCall wrap *gomock.Call
@@ -62,18 +59,18 @@ type MockSyncStateProviderIsSyncedCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockSyncStateProviderIsSyncedCall) Return(arg0 bool) *MockSyncStateProviderIsSyncedCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockSyncStateProviderIsSyncedCall) Do(f func(context.Context) bool) *MockSyncStateProviderIsSyncedCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockSyncStateProviderIsSyncedCall) DoAndReturn(f func(context.Context) bool) *MockSyncStateProviderIsSyncedCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }

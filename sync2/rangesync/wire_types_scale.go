@@ -8,343 +8,71 @@ import (
 )
 
 func (t *EmptyRangeMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.RangeX.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *EmptyRangeMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.RangeX.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *FingerprintMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.RangeX.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeByteArray(enc, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeCompact32(enc, uint32(t.NumItems))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *FingerprintMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.RangeX.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.DecodeByteArray(dec, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		field, n, err := scale.DecodeCompact32(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.NumItems = uint32(field)
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *RangeContentsMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.RangeX.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeCompact32(enc, uint32(t.NumItems))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *RangeContentsMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.RangeX.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		field, n, err := scale.DecodeCompact32(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.NumItems = uint32(field)
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *ItemBatchMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.ContentKeys.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *ItemBatchMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.ContentKeys.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *ProbeMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.RangeX.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeByteArray(enc, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeCompact32(enc, uint32(t.SampleSize))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *ProbeMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.RangeX.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.DecodeByteArray(dec, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		field, n, err := scale.DecodeCompact32(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.SampleSize = uint32(field)
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *SampleMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := t.RangeX.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.EncodeScale(enc)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeByteArray(enc, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeCompact32(enc, uint32(t.NumItems))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.EncodeStructSliceWithLimit(enc, t.SampleItems, 1000)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *SampleMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		n, err := t.RangeX.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := t.RangeY.DecodeScale(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		n, err := scale.DecodeByteArray(dec, t.RangeFingerprint[:])
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	{
-		field, n, err := scale.DecodeCompact32(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.NumItems = uint32(field)
-	}
-	{
-		field, n, err := scale.DecodeStructSliceWithLimit[MinhashSampleItem](dec, 1000)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.SampleItems = field
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *RecentMessage) EncodeScale(enc *scale.Encoder) (total int, err error) {
-	{
-		n, err := scale.EncodeCompact64(enc, uint64(t.SinceTime))
-		if err != nil {
-			return total, err
-		}
-		total += n
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (t *RecentMessage) DecodeScale(dec *scale.Decoder) (total int, err error) {
-	{
-		field, n, err := scale.DecodeCompact64(dec)
-		if err != nil {
-			return total, err
-		}
-		total += n
-		t.SinceTime = uint64(field)
-	}
-	return total, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

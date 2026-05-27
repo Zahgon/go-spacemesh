@@ -69,12 +69,7 @@ var (
 )
 
 // logCacheHit logs cache hit.
-func logCacheHit(hint datastore.Hint) {
-	totalHits.WithLabelValues(string(hint)).Inc()
-	total.WithLabelValues(string(hint)).Inc()
-}
+func logCacheHit(hint datastore.Hint) { _ = "STUB: not implemented"; return }
 
 // logCacheMiss logs cache miss.
-func logCacheMiss(hint datastore.Hint) {
-	total.WithLabelValues(string(hint)).Inc()
-}
+func logCacheMiss(hint datastore.Hint) { _ = "STUB: not implemented"; return }

@@ -14,12 +14,12 @@ var _ Tracer = noopTracer{}
 
 type noopTracer struct{}
 
-func (noopTracer) OnStart(types.LayerID) {}
+func (noopTracer) OnStart(types.LayerID) { _ = "STUB: not implemented"; return }
 
-func (noopTracer) OnStop(types.LayerID) {}
+func (noopTracer) OnStop(types.LayerID) { _ = "STUB: not implemented"; return }
 
-func (noopTracer) OnActive([]*types.HareEligibility) {}
+func (noopTracer) OnActive([]*types.HareEligibility) { _ = "STUB: not implemented"; return }
 
-func (noopTracer) OnMessageSent(*Message) {}
+func (noopTracer) OnMessageSent(*Message) { _ = "STUB: not implemented"; return }
 
-func (noopTracer) OnMessageReceived(*Message) {}
+func (noopTracer) OnMessageReceived(*Message) { _ = "STUB: not implemented"; return }

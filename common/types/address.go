@@ -4,10 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cosmos/btcutil/bech32"
 	"github.com/spacemeshos/go-scale"
-
-	"github.com/spacemeshos/go-spacemesh/log"
 )
 
 const (
@@ -31,114 +28,60 @@ var (
 // Config is the configuration of the address package.
 var networkHrp = "sm"
 
-func SetNetworkHRP(update string) {
-	networkHrp = update
-	log.With().Debug("network hrp updated", log.String("hrp", update))
-}
+func SetNetworkHRP(update string) { _ = "STUB: not implemented"; return }
 
 func NetworkHRP() string {
-	return networkHrp
+	_ = "STUB: not implemented"
+
+	// Address represents the address of a spacemesh account with AddressLength length.
+	return ""
 }
 
-// Address represents the address of a spacemesh account with AddressLength length.
 type Address [AddressLength]byte
 
 // StringToAddress returns a new Address from a given string like `sm1abc...`.
 func StringToAddress(src string) (Address, error) {
-	var addr Address
-	hrp, data, err := bech32.DecodeNoLimit(src)
-	if err != nil {
-		return addr, fmt.Errorf("%w: %w", ErrDecodeBech32, err)
-	}
-
-	// for encoding bech32 uses slice of 5-bit unsigned integers. convert it back it 8-bit uints.
-	dataConverted, err := bech32.ConvertBits(data, 5, 8, true)
-	if err != nil {
-		return addr, fmt.Errorf("error converting bech32 bits: %w", err)
-	}
-
-	// AddressLength+1 cause ConvertBits append empty byte to the end of the slice.
-	if len(dataConverted) != AddressLength+1 {
-		return addr, fmt.Errorf("expected %d bytes, got %d: %w", AddressLength, len(data), ErrWrongAddressLength)
-	}
-	if networkHrp != hrp {
-		return addr, fmt.Errorf(
-			"wrong network id: expected `%s`, got `%s`: %w",
-			NetworkHRP(),
-			hrp,
-			ErrUnsupportedNetwork,
-		)
-	}
-	// check that first 4 bytes are 0.
-	for i := 0; i < AddressReservedSpace; i++ {
-		if dataConverted[i] != 0 {
-			return addr, fmt.Errorf(
-				"expected first %d bytes to be 0, got %d: %w",
-				AddressReservedSpace,
-				dataConverted[i],
-				ErrMissingReservedSpace,
-			)
-		}
-	}
-
-	copy(addr[:], dataConverted[:])
-	return addr, nil
+	_ = "STUB: not implemented"
+	return *new(Address), nil
 }
+
+// for encoding bech32 uses slice of 5-bit unsigned integers. convert it back it 8-bit uints.
+
+// AddressLength+1 cause ConvertBits append empty byte to the end of the slice.
+
+// check that first 4 bytes are 0.
 
 // Bytes gets the string representation of the underlying address.
-func (a Address) Bytes() []byte { return a[:] }
+func (a Address) Bytes() []byte {
+	_ = "STUB: not implemented"
 
-// IsEmpty checks if address is empty.
-func (a Address) IsEmpty() bool {
-	for i := AddressReservedSpace; i < AddressLength; i++ {
-		if a[i] != 0 {
-			return false
-		}
-	}
-	return true
+	// IsEmpty checks if address is empty.
+	return nil
 }
+
+func (a Address) IsEmpty() bool { _ = "STUB: not implemented"; return false }
 
 // String implements fmt.Stringer.
-func (a Address) String() string {
-	dataConverted, err := bech32.ConvertBits(a[:], 8, 5, true)
-	if err != nil {
-		log.Panic("error converting bech32 bits: ", err.Error())
-	}
-
-	result, err := bech32.Encode(NetworkHRP(), dataConverted)
-	if err != nil {
-		log.Panic("error encoding to bech32: ", err.Error())
-	}
-	return result
-}
+func (a Address) String() string { _ = "STUB: not implemented"; return "" }
 
 // Format implements fmt.Formatter, forcing the byte slice to be formatted as is,
 // without going through the stringer interface used for logging.
-func (a Address) Format(s fmt.State, c rune) {
-	fmt.Fprintf(s, "%"+string(c), a[:])
-}
+func (a Address) Format(s fmt.State, c rune) { _ = "STUB: not implemented"; return }
 
 // EncodeScale implements scale codec interface.
 func (a *Address) EncodeScale(e *scale.Encoder) (int, error) {
-	return scale.EncodeByteArray(e, a[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // DecodeScale implements scale codec interface.
 func (a *Address) DecodeScale(d *scale.Decoder) (int, error) {
-	return scale.DecodeByteArray(d, a[:])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GenerateAddress generates an address from a public key.
-func GenerateAddress(publicKey []byte) Address {
-	var addr Address
-	if len(publicKey) > len(addr)-AddressReservedSpace {
-		publicKey = publicKey[len(publicKey)-AddressLength+AddressReservedSpace:]
-	}
-	copy(addr[AddressReservedSpace:], publicKey[:])
-	return addr
-}
+func GenerateAddress(publicKey []byte) Address { _ = "STUB: not implemented"; return *new(Address) }
 
 // GetHRPNetwork returns the Human-Readable-Part of bech32 addresses for a networkID.
-func (a Address) GetHRPNetwork() string {
-	return NetworkHRP()
-}
+func (a Address) GetHRPNetwork() string { _ = "STUB: not implemented"; return "" }

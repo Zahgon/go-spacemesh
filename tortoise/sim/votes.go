@@ -16,46 +16,18 @@ type VotesGenerator func(rng *rand.Rand, layers []*types.Layer, i int) Voting
 // PerfectVoting selects base ballot from previous layer and supports all blocks from previous layer.
 // Used by default.
 func PerfectVoting(rng *rand.Rand, layers []*types.Layer, _ int) Voting {
-	baseLayer := layers[len(layers)-1]
-	ballots := baseLayer.Ballots()
-	base := ballots[rng.Intn(len(ballots))]
-	votes := Voting{Base: base.ID()}
-	if len(layers[len(layers)-1].BlocksIDs()) > 0 {
-		support := layers[len(layers)-1].Blocks()[0]
-		votes.Support = append(votes.Support,
-			types.Vote{
-				ID:      support.ID(),
-				LayerID: support.LayerIndex,
-				Height:  support.TickHeight,
-			})
-	}
-	return votes
+	_ = "STUB: not implemented"
+	return *new(Voting)
 }
 
 // ConsistentVoting selects same base ballot for ballot at a specific index.
 func ConsistentVoting(rng *rand.Rand, layers []*types.Layer, i int) Voting {
-	baseLayer := layers[len(layers)-1]
-	ballots := baseLayer.Ballots()
-	base := ballots[i%len(ballots)]
-	votes := Voting{Base: base.ID()}
-	if len(layers[len(layers)-1].BlocksIDs()) > 0 {
-		support := layers[len(layers)-1].Blocks()[0]
-		votes.Support = append(votes.Support,
-			types.Vote{
-				ID:      support.ID(),
-				LayerID: support.LayerIndex,
-				Height:  support.TickHeight,
-			})
-	}
-	return votes
+	_ = "STUB: not implemented"
+	return *new(Voting)
 }
 
 // VaryingVoting votes using first generator for ballots before mid, and with second generator after mid.
 func VaryingVoting(mid int, first, second VotesGenerator) VotesGenerator {
-	return func(rng *rand.Rand, layers []*types.Layer, i int) Voting {
-		if i < mid {
-			return first(rng, layers, i)
-		}
-		return second(rng, layers, i)
-	}
+	_ = "STUB: not implemented"
+	return *new(VotesGenerator)
 }

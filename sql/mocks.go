@@ -10,8 +10,6 @@
 package sql
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 	zap "go.uber.org/zap"
 )
@@ -29,31 +27,25 @@ type MockExecutorMockRecorder struct {
 }
 
 // NewMockExecutor creates a new mock instance.
-func NewMockExecutor(ctrl *gomock.Controller) *MockExecutor {
-	mock := &MockExecutor{ctrl: ctrl}
-	mock.recorder = &MockExecutorMockRecorder{mock}
-	return mock
-}
+func NewMockExecutor(ctrl *gomock.Controller) *MockExecutor { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockExecutor) EXPECT() *MockExecutorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Exec mocks base method.
+	return nil
 }
 
-// Exec mocks base method.
 func (m *MockExecutor) Exec(arg0 string, arg1 Encoder, arg2 Decoder) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Exec", arg0, arg1, arg2)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Exec indicates an expected call of Exec.
 func (mr *MockExecutorMockRecorder) Exec(arg0, arg1, arg2 any) *MockExecutorExecCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exec", reflect.TypeOf((*MockExecutor)(nil).Exec), arg0, arg1, arg2)
-	return &MockExecutorExecCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockExecutorExecCall wrap *gomock.Call
@@ -63,20 +55,20 @@ type MockExecutorExecCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockExecutorExecCall) Return(arg0 int, arg1 error) *MockExecutorExecCall {
-	c.Call = c.Call.Return(arg0, arg1)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockExecutorExecCall) Do(f func(string, Encoder, Decoder) (int, error)) *MockExecutorExecCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockExecutorExecCall) DoAndReturn(f func(string, Encoder, Decoder) (int, error)) *MockExecutorExecCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMigration is a mock of Migration interface.
@@ -93,29 +85,27 @@ type MockMigrationMockRecorder struct {
 
 // NewMockMigration creates a new mock instance.
 func NewMockMigration(ctrl *gomock.Controller) *MockMigration {
-	mock := &MockMigration{ctrl: ctrl}
-	mock.recorder = &MockMigrationMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockMigration) EXPECT() *MockMigrationMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Apply mocks base method.
+	return nil
 }
 
-// Apply mocks base method.
 func (m *MockMigration) Apply(db Executor, logger *zap.Logger) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Apply", db, logger)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Apply indicates an expected call of Apply.
 func (mr *MockMigrationMockRecorder) Apply(db, logger any) *MockMigrationApplyCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*MockMigration)(nil).Apply), db, logger)
-	return &MockMigrationApplyCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMigrationApplyCall wrap *gomock.Call
@@ -125,35 +115,29 @@ type MockMigrationApplyCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMigrationApplyCall) Return(arg0 error) *MockMigrationApplyCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMigrationApplyCall) Do(f func(Executor, *zap.Logger) error) *MockMigrationApplyCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMigrationApplyCall) DoAndReturn(f func(Executor, *zap.Logger) error) *MockMigrationApplyCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Name mocks base method.
-func (m *MockMigration) Name() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Name")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
+func (m *MockMigration) Name() string { _ = "STUB: not implemented"; return "" }
 
 // Name indicates an expected call of Name.
 func (mr *MockMigrationMockRecorder) Name() *MockMigrationNameCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Name", reflect.TypeOf((*MockMigration)(nil).Name))
-	return &MockMigrationNameCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMigrationNameCall wrap *gomock.Call
@@ -163,35 +147,29 @@ type MockMigrationNameCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMigrationNameCall) Return(arg0 string) *MockMigrationNameCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMigrationNameCall) Do(f func() string) *MockMigrationNameCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMigrationNameCall) DoAndReturn(f func() string) *MockMigrationNameCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Order mocks base method.
-func (m *MockMigration) Order() int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Order")
-	ret0, _ := ret[0].(int)
-	return ret0
-}
+func (m *MockMigration) Order() int { _ = "STUB: not implemented"; return 0 }
 
 // Order indicates an expected call of Order.
 func (mr *MockMigrationMockRecorder) Order() *MockMigrationOrderCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Order", reflect.TypeOf((*MockMigration)(nil).Order))
-	return &MockMigrationOrderCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMigrationOrderCall wrap *gomock.Call
@@ -201,35 +179,29 @@ type MockMigrationOrderCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMigrationOrderCall) Return(arg0 int) *MockMigrationOrderCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMigrationOrderCall) Do(f func() int) *MockMigrationOrderCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMigrationOrderCall) DoAndReturn(f func() int) *MockMigrationOrderCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Rollback mocks base method.
-func (m *MockMigration) Rollback() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Rollback")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockMigration) Rollback() error { _ = "STUB: not implemented"; return nil }
 
 // Rollback indicates an expected call of Rollback.
 func (mr *MockMigrationMockRecorder) Rollback() *MockMigrationRollbackCall {
-	mr.mock.ctrl.T.Helper()
-	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Rollback", reflect.TypeOf((*MockMigration)(nil).Rollback))
-	return &MockMigrationRollbackCall{Call: call}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockMigrationRollbackCall wrap *gomock.Call
@@ -239,18 +211,18 @@ type MockMigrationRollbackCall struct {
 
 // Return rewrite *gomock.Call.Return
 func (c *MockMigrationRollbackCall) Return(arg0 error) *MockMigrationRollbackCall {
-	c.Call = c.Call.Return(arg0)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Do rewrite *gomock.Call.Do
 func (c *MockMigrationRollbackCall) Do(f func() error) *MockMigrationRollbackCall {
-	c.Call = c.Call.Do(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockMigrationRollbackCall) DoAndReturn(f func() error) *MockMigrationRollbackCall {
-	c.Call = c.Call.DoAndReturn(f)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
